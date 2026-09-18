@@ -114,9 +114,31 @@ def apply_override(rec: Dict[str, Any], ov: Dict[str, Any]) -> Dict[str, Any]:
 
 def main() -> int:
     ap = argparse.ArgumentParser(description="Build corpus.jsonl from committed raw captures")
-    ap.add_argument("--today", default=dt.date.today().isoformat())
+    ap.add_argument("--today", default=None,
+                    help="as-of date; defaults to the capture date in raw/ so rebuilds are deterministic")
     ap.add_argument("--out", default=os.path.join(HERE, "corpus.jsonl"))
     args = ap.parse_args()
+    if not args.today:
+        # Determinism rule: the seed build is a function of raw/, not of the clock.
+        stamps = []
+        # Both capture files stamp their own pull date; the newest one is the truth
+        # about how current this snapshot is, so it anchors every derived date.
+        for fname in ("deep_records.json", "events.json"):
+            fp = os.path.join(RAW, fname)
+            if not os.path.exists(fp):
+                continue
+            with open(fp, encoding="utf-8") as fh:
+                blob = json.load(fh)
+            pool = blob.get("records") or blob.get("events") or []
+            recs = list(pool.values()) if isinstance(pool, dict) else list(pool)
+            cand_dates = [r.get("harvested_at") or r.get("end_date") for r in recs if isinstance(r, dict)]
+            for cand in [blob.get("harvested_at")] + cand_dates:
+                day = str(cand or "")[:10]
+                if len(day) == 10:
+                    stamps.append(day)
+        stamps = [x for x in stamps if len(x) == 10]
+        args.today = max(stamps) if stamps else dt.date.today().isoformat()
+        print(f"🗓  as-of date derived from raw captures: {args.today}")
 
     events = load_events(os.path.join(RAW, "events.json"))
     deep = load_deep(os.path.join(RAW, "deep_records.json"))

@@ -16,7 +16,7 @@
 | --- | --- | --- |
 | Hosting | $0/mo, no server, no key to read | GitHub Pages, static files |
 | Corpus | quality-gated, expandable | 104 seed projects / 5 event sources, 18 moves |
-| Tier-1 index | < 1.2 MB gzip hard gate | **8.8 KB** gzip → headroom for ~13k records |
+| Tier-1 index | < 1.2 MB gzip hard gate | **9.8 KB** gzip → headroom for ~12k records |
 | Search | sub-5ms at 10⁵ rows | inverted index over 104 rows in <1ms; linear-scan ceiling ≈ 40k rows/frame |
 | JS payload | < 250 KB | 198 KB raw / **62.6 KB** gzip |
 | Rebuild | offline, deterministic, no secrets | `pipeline/corpus.jsonl` → all surfaces, byte-stable (`--check`) |
@@ -241,7 +241,7 @@ Ideasgalore/
 │   ├── taxonomy_hacks.py  harvest_devpost.py  ingest_seed.py
 │   ├── shard_builder.py   generate_remixes.py  build_agent_api.py
 │   ├── corpus.jsonl        ← single source of truth
-│   └── tests/test_pipeline.py  (33 tests)
+│   └── tests/test_pipeline.py  (34 tests)
 └── web/
     ├── public/
     │   ├── catalog-packed.json  catalog-stats.json  manifest.json
@@ -253,5 +253,18 @@ Ideasgalore/
 ```
 
 `make verify` = ingest → build → regenerate in a temp dir → byte-diff → parity +
-budget + schema gates → unittest suite. CI runs exactly that, so the repo can
-never contain data the code cannot reproduce.
+budget + schema gates → 34-test suite. CI runs exactly that, so the repo can never
+contain data the code cannot reproduce.
+
+Two rules make that claim survive contact with reality, both found by the gate itself:
+- **The as-of date is a property of the corpus, not of the clock.** `recency` feeds
+  `coolness`, so a packer that read `date.today()` would silently re-rank the catalog
+  every morning and make the byte-diff gate useless. `shard_builder.corpus_as_of()`
+  therefore defaults to the newest `harvested_at` in `corpus.jsonl` (and
+  `ingest_seed.py` derives its date from the stamp inside `raw/`); `--today` remains
+  the explicit override for a live refresh.
+- **Gzip gets `mtime=0`.** A gzipped artifact that embeds build time in its header
+  differs on every run, which is how `data/ideasgalore.sqlite.gz` once passed a
+  three-file determinism check and failed a full-tree one. The test now walks *every*
+  emitted file except `manifest.json` (the one surface that is build metadata on
+  purpose, and the one path CI's drift check excludes).

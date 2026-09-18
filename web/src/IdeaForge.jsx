@@ -101,6 +101,16 @@ export default function IdeaForge({ rows, onOpen, onJump }) {
               </div>
               {open ? (
                 <div className="mt-3 space-y-2.5 border-t border-bone-300 pt-3">
+                  <p className="font-mono text-[10.5px] text-bone-600">
+                    {r.shared_moves?.length
+                      ? <>shared moves: {r.shared_moves.map((m) => m.replace(/-/g, ' ')).join(' · ')}</>
+                      : <>no shared move — this pairing works by contrast
+                        {r.domain_distance ? ` (domain distance ${r.domain_distance})` : ''}</>}
+                    {typeof r.score === 'number' && (
+                      <span className="text-bone-500"> · collision score {r.score.toFixed(3)}
+                        {r.provenance ? ` · ${r.provenance}` : ''}</span>
+                    )}
+                  </p>
                   <Field label="why these two" body={r.why_these_two} />
                   <Field label="the wedge" body={r.the_wedge} />
                   {!!r.starter_stack?.length && (

@@ -241,7 +241,7 @@ def build(records: List[Dict[str, Any]], out_dir: str, today: str) -> Dict[str, 
     raw = json.dumps(packed, separators=(",", ":")).encode("utf-8")
     with open(packed_path, "wb") as f:
         f.write(raw)
-    gz_kb = len(gzip.compress(raw, compresslevel=9)) / 1024
+    gz_kb = len(gzip.compress(raw, compresslevel=9, mtime=0)) / 1024
 
     shard_sizes = {}
     for slug, bucket in sorted(details.items()):
@@ -410,7 +410,9 @@ def _write_sqlite(path: str, events: Dict[str, Tuple], projects: List[Tuple],
     con.close()
     size_before = os.path.getsize(tmp)
     with open(tmp, "rb") as f:
-        blob = gzip.compress(f.read(), compresslevel=9)
+        # mtime=0: a gzipped artifact whose bytes depend on wall clock is not
+        # a build output, it is a lottery ticket. Same input -> same bytes.
+        blob = gzip.compress(f.read(), compresslevel=9, mtime=0)
     if size_before / 1024 > SQLITE_BUDGET_KB:
         os.remove(tmp)
         print(f"  ⚠ sqlite skipped: {size_before / 1024:.0f} KB > {SQLITE_BUDGET_KB:.0f} KB budget")
@@ -445,17 +447,32 @@ def gate_checks(records: List[Dict[str, Any]], stats: Dict[str, Any], out_dir: s
     return problems
 
 
+def corpus_as_of(records, override=None) -> str:
+    """The corpus is a snapshot. Scores are computed as-of that snapshot, not as-of
+    whatever day someone re-ran the packer: deriving the date from the newest
+    `harvested_at` makes rebuilds byte-identical across days (ADR-10) and keeps
+    `recency` from silently re-ranking the catalog every morning. Pass --today to
+    opt into a re-dated refresh (the live harvest path)."""
+    if override:
+        return override
+    days = [str(r.get("harvested_at") or "")[:10] for r in records if r.get("harvested_at")]
+    return max(days) if days else dt.date.today().isoformat()
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description="Emit all Ideas Galore read surfaces from corpus.jsonl")
     ap.add_argument("--out", default=OUT_DEFAULT)
     ap.add_argument("--corpus", default=CORPUS)
-    ap.add_argument("--today", default=dt.date.today().isoformat())
+    ap.add_argument("--today", default=None,
+                    help="as-of date for recency; defaults to the newest harvested_at in the corpus")
     ap.add_argument("--check", action="store_true", help="rebuild into temp dir and verify parity/budgets")
     args = ap.parse_args()
 
     records = load_corpus(args.corpus)
-    print(f"📦 Packing {len(records)} hackathon projects into two-tier + tabular surfaces...")
-    stats = build(records, args.out, args.today)
+    today = corpus_as_of(records, args.today)
+    print(f"📦 Packing {len(records)} hackathon projects into two-tier + tabular surfaces "
+          f"(as-of {today})...")
+    stats = build(records, args.out, today)
 
     corpus_sha = hashlib.sha256(open(args.corpus, "rb").read()).hexdigest()[:16]
     manifest = {
@@ -487,12 +504,21 @@ def main() -> int:
     problems = gate_checks(records, stats, args.out)
     if args.check:
         with tempfile.TemporaryDirectory() as td:
-            build(records, td, args.today)
-            for name in ["catalog-packed.json", "data/ideas.csv", "data/ideas.ndjson",
-                         "data/moves.json", "data/hackathons.json"]:
-                a, b = f"{args.out}/{name}", f"{td}/{name}"
-                if hashlib.sha256(open(a, "rb").read()).digest() != hashlib.sha256(open(b, "rb").read()).digest():
-                    problems.append(f"non-deterministic output: {name} differs on rebuild")
+            build(records, td, today)
+            checked = 0
+            for root, _dirs, files in os.walk(td):
+                for name in sorted(files):
+                    if name == "manifest.json":   # carries build time by design
+                        continue
+                    rel = os.path.relpath(os.path.join(root, name), td)
+                    a, b = os.path.join(args.out, rel), os.path.join(td, rel)
+                    if not os.path.exists(a):
+                        problems.append(f"missing from committed build: {rel}")
+                        continue
+                    if hashlib.sha256(open(a, "rb").read()).digest() != hashlib.sha256(open(b, "rb").read()).digest():
+                        problems.append(f"non-deterministic output: {rel} differs on rebuild")
+                    checked += 1
+            print(f"   🔁 determinism: {checked} surfaces byte-identical on rebuild")
     if problems:
         print("\n❌ BUILD GATE FAILED:")
         for p in problems[:20]:

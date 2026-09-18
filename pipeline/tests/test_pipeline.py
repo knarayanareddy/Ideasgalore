@@ -211,13 +211,36 @@ class TestSurfaces(unittest.TestCase):
             problems = shard_builder.gate_checks(broken, stats, td)
         self.assertTrue(any("required field" in p for p in problems))
 
-    def test_deterministic_rebuild(self):
+    def test_every_surface_is_byte_stable_across_rebuilds(self):
+        """Not just the packed index: the *gzipped* SQLite is the file that taught us
+        this lesson, because gzip writes the current time into its header. A build
+        artifact whose bytes depend on wall clock makes every drift gate a coin flip,
+        so the comparison walks every emitted file (ADR-10)."""
         with tempfile.TemporaryDirectory() as td:
             shard_builder.build(enrich_all(FIXTURE), td, "2026-09-18")
-            for name in ("catalog-packed.json", "data/ideas.csv", "data/moves.json"):
-                a = open(f"{self.tmp}/{name}", "rb").read()
-                b = open(f"{td}/{name}", "rb").read()
-                self.assertEqual(a, b, f"{name} must be byte-stable across builds")
+            seen = []
+            for root, _dirs, files in os.walk(td):
+                for name in sorted(files):
+                    if name == "manifest.json":   # build-time metadata, exempt by design
+                        continue
+                    rel = os.path.relpath(os.path.join(root, name), td)
+                    with open(os.path.join(self.tmp, rel), "rb") as fa, open(os.path.join(root, name), "rb") as fb:
+                        self.assertEqual(fa.read(), fb.read(), f"{rel} must be byte-stable across builds")
+                    seen.append(rel)
+            self.assertIn("data/ideasgalore.sqlite.gz", seen, "the gzipped surface must be covered")
+            self.assertGreaterEqual(len(seen), 8, "the walk should cover Tier 1, Tier 2 and tabular surfaces")
+
+    def test_as_of_date_is_derived_from_the_corpus(self):
+        self.assertEqual(shard_builder.corpus_as_of([{"harvested_at": "2026-01-05"},
+                                                    {"harvested_at": "2026-03-01"}]), "2026-03-01")
+        self.assertEqual(shard_builder.corpus_as_of([{"harvested_at": "2026-03-01"}], "2026-09-18"),
+                         "2026-09-18", "--today must still override for live refreshes")
+        stamped = json.loads(open(shard_builder.CORPUS, encoding="utf-8").readline())["harvested_at"] \
+            if os.path.exists(shard_builder.CORPUS) else None
+        if stamped:
+            recs = [json.loads(l) for l in open(shard_builder.CORPUS, encoding="utf-8")]
+            self.assertEqual(shard_builder.corpus_as_of(recs), max(r["harvested_at"] for r in recs),
+                             "committed corpus must repack without re-dating its scores")
 
 
 class TestHarvestParsers(unittest.TestCase):

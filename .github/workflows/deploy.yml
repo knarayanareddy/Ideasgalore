@@ -41,8 +41,10 @@ jobs:
         with:
           python-version: '3.11'
 
+      # No --today on purpose: the as-of date is derived from the captures in
+      # pipeline/raw/, so a rebuild in CI is byte-comparable to the commit.
       - name: Rebuild corpus from committed raw captures (offline, no network)
-        run: python3 pipeline/ingest_seed.py --today $(date -u +%F)
+        run: python3 pipeline/ingest_seed.py
 
       - name: Emit all six read surfaces + agent contract, then verify gates
         run: |
@@ -55,9 +57,10 @@ jobs:
 
       - name: Fail if committed artifacts drifted from reproducible build
         run: |
-          if [ -n "$(git status --porcelain web/public pipeline/corpus.jsonl)" ]; then
+          # manifest.json carries build time, so it is exempt from the byte-diff by design
+          if [ -n "$(git status --porcelain -- web/public ':(exclude)web/public/manifest.json' pipeline/corpus.jsonl)" ]; then
             echo "::error::build output differs from committed artifacts — run 'make build' and commit";
-            git status --porcelain web/public pipeline/corpus.jsonl; exit 1;
+            git status --porcelain -- web/public ':(exclude)web/public/manifest.json' pipeline/corpus.jsonl; exit 1;
           fi
 
       - uses: actions/setup-node@v4
