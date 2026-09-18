@@ -3,7 +3,7 @@
  "scoring_version":1,
  "corpus_sha256":"a87267629964d787",
  "corpus_records":104,
- "generated_at":"2026-09-18T22:39:39+00:00",
+ "generated_at":"2026-09-18T22:39:45+00:00",
  "surfaces":{
   "tier1":"catalog-packed.json",
   "tier2":[
