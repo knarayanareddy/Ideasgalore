@@ -1,0 +1,58 @@
+{
+  "source": "https://devpost.com/api/hackathons (public, no auth)",
+  "harvested_at": "2026-09-18",
+  "events": {
+    "xprize": {
+      "id": 29541, "slug": "xprize", "title": "Build with Gemini XPRIZE",
+      "organization_name": "XPRIZE", "url": "https://xprize.devpost.com/",
+      "submission_gallery_url": "https://xprize.devpost.com/project-gallery",
+      "registrations_count": 26445, "prize_usd": 2000000, "cash_prizes": 11,
+      "submission_period_dates": "May 19 - Aug 17, 2026", "ended_at": "2026-08-17",
+      "themes": ["Machine Learning/AI", "Education", "Productivity"],
+      "featured": false, "winners_announced": false, "invite_only": false,
+      "managed_by_devpost": true, "open_state": "ended"
+    },
+    "allthingsagentic": {
+      "id": 30845, "slug": "allthingsagentichackathon", "title": "All Things Agentic Hackathon",
+      "organization_name": "Google", "url": "https://allthingsagentichackathon.devpost.com/",
+      "submission_gallery_url": "https://allthingsagentichackathon.devpost.com/project-gallery",
+      "registrations_count": 12308, "prize_usd": 180000, "cash_prizes": 9,
+      "submission_period_dates": "Aug 04 - 31, 2026", "ended_at": "2026-08-31",
+      "themes": ["Enterprise", "Machine Learning/AI", "Productivity"],
+      "featured": false, "winners_announced": false, "invite_only": false,
+      "managed_by_devpost": true, "open_state": "ended"
+    },
+    "agenticcinema": {
+      "id": 30721, "slug": "agentic-cinema", "title": "Agentic Cinema: The Blockbuster Hackathon",
+      "organization_name": "Google", "url": "https://agentic-cinema.devpost.com/",
+      "submission_gallery_url": "https://agentic-cinema.devpost.com/project-gallery",
+      "registrations_count": 10133, "prize_usd": 75000, "cash_prizes": 15,
+      "submission_period_dates": "Jul 27 - Sep 09, 2026", "ended_at": "2026-09-09",
+      "themes": ["Databases", "Machine Learning/AI", "Open Ended"],
+      "featured": false, "winners_announced": false, "invite_only": false,
+      "managed_by_devpost": true, "open_state": "ended"
+    },
+    "hackforhumanity": {
+      "id": 29151, "slug": "hack-for-humanity-summer-26", "title": "Hack for Humanity | Summer 2026",
+      "organization_name": "Hack for Humanity",
+      "url": "https://hack-for-humanity-summer-26.devpost.com/",
+      "submission_gallery_url": "https://hack-for-humanity-summer-26.devpost.com/project-gallery",
+      "blurb": "AI for Mental/Physical Health and Concussion Recovery",
+      "registrations_count": 1361, "prize_usd": 100, "cash_prizes": 1,
+      "submission_period_dates": "Aug 07 - Sep 04, 2026", "ended_at": "2026-09-04",
+      "themes": ["Beginner Friendly", "Health", "Machine Learning/AI"],
+      "featured": false, "winners_announced": false, "invite_only": false,
+      "managed_by_devpost": false, "open_state": "ended"
+    },
+    "showcase": {
+      "id": null, "slug": null, "title": "Devpost Software Showcase — Staff Picks & Rails",
+      "organization_name": "Devpost Editorial", "url": "https://devpost.com/software",
+      "blurb": "Curated rails: Staff picks, Popular, Trending tags, Built-with partner rails.",
+      "registrations_count": null, "prize_usd": null, "cash_prizes": null,
+      "submission_period_dates": "Rolling", "ended_at": "2026-09-18",
+      "themes": ["Staff Picks"], "featured": true, "winners_announced": null,
+      "invite_only": false, "managed_by_devpost": true, "open_state": "rolling",
+      "editorial_note": "Not a single hackathon: these projects surfaced on the public /software showcase rails (verified 2026-09-18)."
+    }
+  }
+}

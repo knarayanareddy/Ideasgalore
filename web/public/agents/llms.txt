@@ -1,0 +1,105 @@
+# Ideas Galore — the Hackathon Inspiration Index
+
+> A curated, scored, machine-readable index of hackathon projects mined from the
+> Devpost public showcase, organized so a builder (human or agent) can answer
+> "what should I steal next?" — not "what exists?".
+> Static files only: no auth, no keys, no rate limit. CORS-open. Last build:
+> 2026-09-18 · 104 admitted projects ·
+> 5 hackathons · 18 transferable moves.
+
+## Read this before you use the data
+
+- `agents/schema.json` — record contract, with `x-provenance` on every field.
+- `agents/ethics.json` — usage policy we are ourselves bound by; honour it downstream.
+- `agents/RECIPES.md` — curl + jq patterns that actually work.
+- Attribution: every record carries `url`. When you surface a project, link back to
+  its Devpost page and name the hackathon. Do not republish the teams' authored text
+  at bulk scale; summarize and link.
+- `likes: null` means "not fetched", never "zero". Same for `award: "Unknown"`.
+
+## Endpoints (relative to the site root)
+
+- `catalog-packed.json` — Tier-1: every admitted row, dictionary-encoded. Best for
+  whole-corpus ranking/filtering in one request (~9.8 KB gzip).
+- `data/ideas.csv` — the tabular database; stable column order, spreadsheet-safe.
+- `data/ideas.ndjson` — full metadata, one record per line, no bulk prose.
+- `data/hackathons.json` — event dimension: prize, registrations, themes, gallery URL.
+- `data/moves.json` — the inspiration vocabulary: definition + `steal_this` per move,
+  with posting counts and example project ids. Start here for "ideas for X".
+- `data/details/<domain>.json` — Tier-2 deep shard per sector (the only place the
+  condensed authored sections and quotes live). Lazy-load one, not all.
+- `data/remixes.json` — pre-computed idea collisions with build briefs
+  (`first_48_hours`, `kill_criteria`).
+- `catalog-stats.json` / `manifest.json` — corpus counts + build provenance (sha256).
+
+## Sectors
+
+- Agentic Autonomy & Orchestration — Projects where software acts on your behalf: crews, watchers, gates, and the machinery that keeps autonomous behaviour governable.
+- Developer Tooling & Code Intelligence — Tools that change how software gets written, shipped, diagnosed, or repaired — including agents that edit real repositories.
+- Health, Care & Human Performance — Clinical, therapeutic, and bodily-self-tracking projects — where the cost of a wrong answer is paid by a human, not a server.
+- Climate, Energy & the Physical World — Sensing and acting on matter: grids, farms, fleets, sensors, robots, and anything with a physical consequence.
+- Public Trust, Safety & Compliance — Verification, provenance, moderation, forensics, and the paperwork of modern institutions rebuilt as machine-readable evidence.
+- Money, Commerce & Marketplaces — Transactions, matching, pricing, and the boring plumbing that makes an exchange actually settle.
+- Creative Media, Story & Play — Film, games, music, writing and interactive narrative — including the production machinery behind generated media.
+- Learning & Knowledge Systems — Teaching, studying, tutoring, and the organization of what a group knows — from personal notes to institutional wikis.
+- Accessibility & Assistive Tech — Projects that widen who can use software: vision, hearing, speech, literacy, motor access, and language barriers.
+- Data, Retrieval & Memory Infrastructure — The substrate layer: state that survives a session, storage with opinions, and the ledgers everything else argues from.
+
+## Moves (the axis that generates new projects)
+
+- `evidence-graph` — Store the citation as a first-class row, not a footnote. The moment evidence is structured, 'explain yourself' becomes a SELECT.
+- `price-before-generate` — Model your most expensive operation as a priced quote with an expected-retry figure. Users forgive slowness, not surprise bills.
+- `human-holds-the-last-button` — Decide which single action is expensive enough to require a human, and make that gate a schema state transition rather than a prompt request.
+- `deterministic-guardrail` — Anything the architecture can enforce, the architecture enforces. Probabilistic components get proposals; deterministic components get verdicts.
+- `make-the-invisible-measurable` — Find the metric practitioners already eyeball, instrument it, and ship the delta. A number turns a vibe into a product.
+- `offline-first-fallback` — Put the model on the device and make connectivity a quality setting. It reads as a privacy feature and buys reliability for free.
+- `long-horizon-watcher` — Replace chat turns with a scheduled process that wakes on a condition. Patience is a feature nobody else ships.
+- `verification-first` — Invert the pipeline: generate last, verify first. Ship the checker as the artifact and the content as its output.
+- `wrap-the-legacy-surface` — Ship as a plugin/widget/block inside the incumbent UI. Adoption is one checkbox, not a migration project.
+- `crew-of-specialists` — Name the roles, give each a single responsibility and an output contract, and let the handoffs be where quality is enforced.
+
+…full list in `data/moves.json` (first six alphabetically: artifacts-not-forms, constraint-is-the-feature, crew-of-specialists, data-flywheel, deterministic-guardrail, evidence-graph).
+
+## Scoring (explainable by design)
+
+`coolness = 0.30·engagement + 0.22·validation + 0.14·event_prestige + 0.10·recency +
+0.14·specificity + 0.10·signal_richness − 0.12·redundancy` (scoring_version 1).
+Each component ships per record in `coolness_parts`, so re-ranking is a division, not
+a guess. `engagement` is log-scaled Devpost likes; `validation` is judge/editorial
+awards; `redundancy` only ever de-duplicates browse views, it never deletes records.
+
+## Doing this in SQL instead
+
+Unzip the SQLite surface and use stdlib `sqlite3` (or DuckDB / Datasette if you have them):
+
+```bash
+curl -sL https://knarayanareddy.github.io/Ideasgalore/data/ideasgalore.sqlite.gz | gunzip > idea_galore.sqlite
+python3 -c "import sqlite3; print(sqlite3.connect('idea_galore.sqlite').execute(
+  'SELECT name, domain, round(coolness,3) FROM projects ORDER BY coolness DESC LIMIT 5'
+).fetchall())"
+```
+
+Tables: `events`, `projects`, `moves`, `project_moves` (many-to-many). The CSV surface
+is equally queryable without a database step:
+
+```bash
+duckdb -c "SELECT name, domain, moves FROM 'https://knarayanareddy.github.io/Ideasgalore/data/ideas.csv'
+           WHERE list_contains(string_split(moves, '|'), 'evidence-graph')
+           ORDER BY coolness DESC LIMIT 10"
+```
+
+## Give an agent tools, not a dump
+
+```bash
+git clone https://github.com/knarayanareddy/Ideasgalore
+python3 Ideasgalore/mcp/ideasgalore_mcp.py --base https://knarayanareddy.github.io/Ideasgalore   # stdio MCP, stdlib only
+```
+
+Tools: `search_projects`, `get_project`, `list_moves`, `ideas_for_goal`, `similar_to`,
+`random_muse`, `remix_briefs`.
+
+## Source & freshness
+
+Devpost public pages (`api/hackathons`, `project-gallery`, `/software/*`). Refreshed
+weekly (Mondays) — hackathon records are effectively immutable, so staleness here
+means "a new project exists", not "the data is wrong". See `docs/DATA_ETHICS.md`.

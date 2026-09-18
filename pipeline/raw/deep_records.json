@@ -1,0 +1,39 @@
+{
+  "policy": "Condensed paraphrase of the project's own authored sections, not a verbatim mirror (docs/EXPERT_PANEL.md ADR-12). Kept short; full prose stays on Devpost behind the link-out.",
+  "harvested_at": "2026-09-18",
+  "records": {
+    "audionova": {
+      "software_id": 880846,
+      "likes": 547,
+      "award": "Featured by Devpost Staff",
+      "built_with": ["fastapi", "python", "react", "qualcomm", "qualcomm-ai-hub"],
+      "video_url": "https://www.youtube.com/watch?v=hLuvG3pIVWM",
+      "gallery_images": 2,
+      "page": {
+        "inspiration": "Cloud TTS forces a trade between privacy, latency and cost, and nobody teaches the on-device path. They targeted people who already have a finished script and no interest in learning prompt engineering.",
+        "what_it_does": "Windows app with two modes: generate speech from text with one of five built-in voices or a cloned voice, and re-voice any uploaded or recorded clip. Transcription and synthesis both run on the Snapdragon X device.",
+        "how_we_built_it": "FastAPI pipeline around Qualcomm Whisper for ASR and Vall-E-X for TTS/voice cloning; the Whisper weights are optimized and quantized through Qualcomm AI Hub so the DSP/GPU paths are used; React frontend for Windows.",
+        "challenges": "Getting Whisper onto Snapdragon X's DSP and GPU needed the AI Hub optimization pipeline; quantization and pruning had to be balanced against transcription accuracy; the UI had to stay usable while exposing voice cloning.",
+        "accomplishments": "Reported up to 2x faster transcription and ~35% lower power draw on Snapdragon X versus the unoptimized path; modular design so new voices, languages and audio effects can be added without a rewrite.",
+        "learned": "Quantization plus hardware-specific kernels move on-device performance more than model choice does; local-first wins on latency, privacy and cost simultaneously.",
+        "next": "Emotional intonation and prosody controls, ports to other Snapdragon devices, and partnerships with assistive-technology and healthcare users."
+      }
+    },
+    "greenlight-nine-agent-production-crew": {
+      "software_id": null,
+      "likes": null,
+      "award": "Submitted / No Award",
+      "built_with": ["google-cloud-run", "vertex-ai", "gemini", "firestore", "clickhouse", "mcp", "react"],
+      "video_url": "https://www.youtube.com/watch?v=sS_gIU9flCE",
+      "page": {
+        "inspiration": "Video models are good enough for anyone to make a film, but they levy an entry fee: you must already know which words work, which quality tier to pick, and what three minutes of footage will cost. Screenwriters and novelists with finished work should not have to learn prompt engineering to see it move.",
+        "what_it_does": "Drop a screenplay. Nine agents read it whole, split it into chapters and shots, cast characters, write the prompts, generate footage, then review their own output and fold failures into the retry instruction. The user only presses keep or again. Cost and success odds are quoted per chapter before anything is generated.",
+        "how_we_built_it": "One Cloud Run service shipping frontend and backend together; the Gemini family on Vertex AI assigned by shape of work (Pro for whole-screenplay reasoning and chapter splitting, Flash for well-formatted prompt writing and counting, Flash-Lite for high-volume low-judgement batches); Firestore for state, Cloud Storage for media, ClickHouse for the keep/again verdict log reached over the official mcp-clickhouse server.",
+        "challenges": "A $150 credit budget against ~$1 per ten seconds of footage meant every failure cost real money, which is why success-rate prediction and a cost ladder exist at all. Gates were implemented as schema state transitions rather than prompts, because a probabilistic component cannot guarantee a hard requirement.",
+        "accomplishments": "Measured that locking a character reference before shooting lifts first-pass shot success from 29% to 49% and cuts expected retry cost from $1.86 to $1.17, for about two cents per candidate image; style buttons carry an explicit odds adjustment because photorealistic rates ~35% first-pass against ~50% for animation; all prompts are exportable after casting.",
+        "learned": "Being underfunded was the correct design position: it produced the pricing and odds features that a team with budget would never bother to build.",
+        "next": "Wider style support, per-chapter reshoot workflows at higher quality tiers, and letting the accumulated verdicts drive estimates for other users' projects."
+      }
+    }
+  }
+}

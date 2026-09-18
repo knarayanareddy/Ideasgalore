@@ -1,0 +1,7 @@
+{
+  "_comment": "Editorial correction layer (ADR-9). Only records where a human/agent read the source rail and can state something the classifier could not infer. Each entry must carry `why`.",
+  "audionova": {"award": "Featured by Devpost Staff", "why": "Listed under the Staff picks rail on devpost.com/software, verified 2026-09-18."},
+  "snapdragon-ai-multilingual-translator": {"award": "Featured by Devpost Staff", "why": "Staff picks rail, 2026-09-18."},
+  "civil-dialog": {"award": "Featured by Devpost Staff", "why": "Staff picks rail, 2026-09-18."},
+  "neuthera-drug-discovery-platform": {"award": "Featured by Devpost Staff", "why": "Staff picks rail, 2026-09-18."}
+}

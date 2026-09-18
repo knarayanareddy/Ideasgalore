@@ -1,0 +1,45 @@
+{
+ "policy": "Ideas Galore data-usage policy (ADR-12)",
+ "generated_for": "both this project and downstream consumers of it",
+ "source": {
+  "site": "https://devpost.com",
+  "endpoints": [
+   "https://devpost.com/api/hackathons",
+   "{slug}.devpost.com/project-gallery",
+   "https://devpost.com/software/{slug}"
+  ],
+  "robots_txt": "User-agent: * / Disallow: (open) \u2014 verified 2026-09-18; the operator explicitly blocks named AI-training crawlers, which is respected by design."
+ },
+ "we_collect": [
+  "project identity + summary",
+  "public engagement count (likes)",
+  "awards where shown",
+  "author-declared technology tags",
+  "links the team published",
+  "event metadata from the public JSON API"
+ ],
+ "we_refuse": [
+  "verbatim full-page mirroring or bulk prose in exports (Tier-2 stores a <=220-char quote)",
+  "team-member names, avatars, emails, votes, or profile pages",
+  "copying image/video assets into this repo (CDN URLs only)",
+  "authenticated or judge-only endpoints, scraper-token workarounds",
+  "sponsor prize claims not present in the public payload"
+ ],
+ "crawling": {
+  "min_interval_seconds": 1.25,
+  "jitter": true,
+  "user_agent": "IdeasGaloreBot/1.0 (+repo URL; contact in UA)",
+  "robots": "honored, cached in pipeline/state/robots.txt, fail-closed",
+  "backoff": "exponential on 429/503, hard stop on repeated failure",
+  "cadence": "weekly; records are write-once upstream"
+ },
+ "takedown": "Open an issue in the repository naming the record id; removal is a one-line change to pipeline/raw/overrides.json plus a rebuild, and is honoured before any dispute.",
+ "licensing": "Metadata is factual and shared with attribution. Project source code remains under each team's own terms \u2014 check the repo before reuse; absence of a licence is not permission.",
+ "for_downstream_agents": [
+  "keep the `url` attribution on anything you render",
+  "do not treat `likes: null` as zero",
+  "do not present `derived` fields as the team's own claims",
+  "summarize prose; link for the original",
+  "cache; the corpus changes weekly, not hourly"
+ ]
+}

@@ -1,0 +1,20 @@
+# Node / frontend dependencies
+node_modules/
+dist/
+.vite/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+
+# Harvest scratch & politeness caches (never committed: they are transient state)
+pipeline/state/
+pipeline/raw/live_*.jsonl
+*.sqlite
+
+# Editors / OS
+.DS_Store
+.idea/
+.vscode/

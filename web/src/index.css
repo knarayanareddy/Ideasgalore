@@ -1,0 +1,189 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ---------------------------------------------------------------------------
+   Field Museum of Ideas — global layer. Tokens live in tailwind.config.js;
+   anything repeated across components lives here. docs/DESIGN.md is authority.
+--------------------------------------------------------------------------- */
+@layer base {
+  :root {
+    --bone: #f4f1ea;
+    --card: #fbf9f4;
+    --rule: #ddd6c6;
+    --ink: #221f19;
+    --ink-soft: #665e4b;
+    --signal: #c9421a;
+    --brass: #b28e3c;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    /* Uncoated paper: one very low-amplitude fibre texture, no gradients */
+    background-image: radial-gradient(rgba(34, 31, 25, 0.028) 0.5px, transparent 0.5px);
+    background-size: 4px 4px;
+  }
+
+  ::selection {
+    background: #f7d9c9;
+    color: #431508;
+  }
+
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: #c7bda6 transparent;
+  }
+
+  *::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+
+  *::-webkit-scrollbar-thumb {
+    background: #c7bda6;
+    border: 3px solid #f4f1ea;
+    border-radius: 99px;
+  }
+
+  button:focus-visible,
+  a:focus-visible,
+  input:focus-visible,
+  select:focus-visible {
+    outline: 2px solid var(--signal);
+    outline-offset: 2px;
+  }
+
+  input[type='range'] {
+    accent-color: var(--signal);
+  }
+}
+
+@layer components {
+  /* Mono micro-label: the voice of the accession system */
+  .micro {
+    @apply font-mono text-[10px] uppercase tracking-label text-bone-600;
+  }
+
+  .accession {
+    @apply font-mono text-[10px] uppercase tracking-accession text-brass-700;
+  }
+
+  /* Engraved framing under the masthead, above the footer */
+  .double-rule {
+    border-top: 1px solid var(--rule);
+    border-bottom: 3px double var(--rule);
+    height: 4px;
+  }
+
+  .hairline {
+    @apply border border-bone-300 bg-bone-50;
+  }
+
+  /* Card: elevation by hairline only (no shadows, ever) */
+  .plate {
+    @apply relative border border-bone-300 bg-bone-50 rounded-lg transition-colors duration-150;
+  }
+
+  .plate:hover {
+    @apply border-bone-400 bg-white;
+  }
+
+  /* Gold-tick corner marks appear on hover — the "object handled" tell */
+  .plate:hover .tick {
+    opacity: 1;
+    transform: none;
+  }
+
+  .tick {
+    @apply absolute h-2 w-2 opacity-0 transition-all duration-200 pointer-events-none;
+    border-color: var(--brass);
+    transform: scale(0.6);
+  }
+
+  .chip {
+    @apply inline-flex items-center gap-1.5 border border-bone-300 bg-bone-100 px-1.5 py-0.5
+           font-mono text-[10px] uppercase tracking-label text-bone-700 rounded;
+  }
+
+  .pill {
+    @apply inline-flex items-center gap-1.5 rounded-full border border-bone-300 bg-bone-50
+           px-2.5 py-1 font-mono text-[10px] uppercase tracking-label text-bone-700
+           transition-colors hover:border-bone-400;
+  }
+
+  .pill-active {
+    @apply border-signal-500 text-signal-700 bg-signal-100;
+  }
+
+  .btn-signal {
+    @apply inline-flex items-center gap-1.5 rounded border border-signal-700 bg-signal-500
+           px-2.5 py-1.5 font-mono text-[11px] font-medium uppercase tracking-label
+           text-bone-50 transition-colors hover:bg-signal-600 active:translate-y-px;
+  }
+
+  .btn-quiet {
+    @apply inline-flex items-center gap-1.5 rounded border border-bone-300 bg-bone-50 px-2.5 py-1.5
+           font-mono text-[11px] uppercase tracking-label text-bone-700
+           transition-colors hover:border-bone-400 hover:bg-bone-100;
+  }
+
+  /* Dotted leader line, like a printed catalogue row */
+  .leader {
+    flex: 1 1 auto;
+    border-bottom: 1px dotted #c7bda6;
+    margin: 0 0.5rem 0.25rem;
+  }
+
+  /* Ink stamp for provenance + depth badges */
+  .stamp {
+    @apply inline-flex items-center gap-1 rounded-sm border px-1 py-px font-mono text-[9px]
+           uppercase tracking-accession;
+  }
+
+  /* Dark sanctioned surface #1: the Atlas viewport */
+  .gallery-night {
+    background:
+      radial-gradient(120% 80% at 50% 0%, #1b1a18 0%, #101010 55%, #0a0a0b 100%);
+  }
+
+  /* Dark sanctioned surface #2: code/quote blocks on paper */
+  .ink-panel {
+    @apply rounded-md border border-bone-900 bg-bone-950 p-3 font-mono text-[11.5px] leading-relaxed text-bone-200;
+  }
+
+  .scorebar {
+    @apply h-1.5 rounded-sm bg-bone-200 overflow-hidden;
+  }
+
+  .scorebar > span {
+    @apply block h-full;
+    background: linear-gradient(90deg, var(--signal), #d9744a);
+  }
+
+  .rise-in {
+    animation: riseIn 0.28s cubic-bezier(0.22, 0.72, 0.24, 1) both;
+  }
+
+  @keyframes riseIn {
+    from {
+      opacity: 0;
+      transform: translateY(6px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .rise-in {
+      animation: none;
+    }
+    html {
+      scroll-behavior: auto;
+    }
+  }
+}
