@@ -178,8 +178,14 @@ export default function App() {
             ))}
             {stats?.records_hazarded > 0 && (
               <span className="stamp border-signal-500 text-signal-700 hidden lg:inline"
-                title="records carrying a regulated-claim hazard note">
+                title={`published records carrying a regulated-claim hazard note${
+                  stats.records_hazarded_held ? `, plus ${stats.records_hazarded_held} held in the pool` : ''}`}>
                 {stats.records_hazarded} hazard-noted
+                {stats.records_hazarded_held > 0 && (
+                  <span className="font-mono text-[10px] text-bone-500">
+                    &nbsp;+{stats.records_hazarded_held} held
+                  </span>
+                )}
               </span>
             )}
             <button onClick={() => setShelfOpen(true)} className="btn-quiet ml-1">

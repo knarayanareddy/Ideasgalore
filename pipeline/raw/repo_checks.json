@@ -1,7 +1,60 @@
 {
  "_meta": {
-  "last_run": "2026-09-19T13:53:45Z",
+  "last_run": "2026-09-19T15:16:04Z",
   "requests_used": 4
+ },
+ "justin-theodorus/techjam": {
+  "archived": false,
+  "checked_at": "2026-09-19",
+  "created_at": "2026-08-25",
+  "default_branch": "main",
+  "description": "TikTok TechJam 2026 conversational e-commerce search agent. Live pipeline inspector: https://techjam-playground.vercel.app",
+  "entry_files": [
+   "README.md"
+  ],
+  "exists": true,
+  "file_count": 92,
+  "forks": 0,
+  "has_tests": true,
+  "homepage": "https://techjam-playground.vercel.app",
+  "language": "Python",
+  "languages": {
+   "Makefile": 0.5,
+   "Python": 99.5
+  },
+  "license": null,
+  "open_issues": 0,
+  "owner_type": "User",
+  "pushed_at": "2026-08-31",
+  "readme_bytes": 15214,
+  "readme_has_setup": true,
+  "readme_headings": [
+   "Conversational Shopping Agent",
+   "How it works",
+   "Setup",
+   "Reproduce our results",
+   "Limitations",
+   "Given more time",
+   "Team",
+   "Layout"
+  ],
+  "size_kb": 5195,
+  "source_dirs": [
+   "data",
+   "docs",
+   "evaluator",
+   "harness"
+  ],
+  "stars": 2,
+  "test_paths": [
+   "harness/tests/__init__.py",
+   "harness/tests/fixtures.py",
+   "harness/tests/test_analysis.py",
+   "harness/tests/test_deviations.py"
+  ],
+  "topics": [],
+  "tree_truncated": false,
+  "url": "https://github.com/justin-theodorus/techjam"
  },
  "knarayanareddy/Ideasgalore": {
   "archived": false,

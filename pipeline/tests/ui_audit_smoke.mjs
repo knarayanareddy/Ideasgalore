@@ -54,6 +54,26 @@ for (const needle of ['**Audit verdict:** sound-with-caveats · worth copying: s
 }
 if (!md.includes('numbers_add_up') && !md.includes('Numbers, with the arithmetic')) { /* check label mapping ok */ }
 console.log('audit markdown ok,', md.split('\n').length, 'lines')
-console.log('pool:', JSON.parse(readFileSync(pub + 'data/pool.json', 'utf8')).count, 'records,',
-  (JSON.parse(readFileSync(pub + 'data/pool.json', 'utf8')).records[0].why_not_promoted || []).length, 'reasons on first row')
+const poolJson = JSON.parse(readFileSync(pub + 'data/pool.json', 'utf8'))
+console.log('pool:', poolJson.count, 'records,',
+  (poolJson.records[0].why_not_promoted || []).length, 'reasons on first row')
+
+// The hazard census is a claim about the corpus, published in three places at once: the
+// stats line, the audits index and the pool. If they disagree, the UI badge is lying — and a
+// count that silently excludes held records understates regulated claims in the catalog.
+const stats = JSON.parse(readFileSync(pub + 'catalog-stats.json', 'utf8'))
+const idxRecs = Object.values(JSON.parse(readFileSync(pub + 'data/audits.json', 'utf8')).records)
+const idxHaz = idxRecs.filter(r => r.hazard).length
+const poolHaz = poolJson.records.filter(r => r.provenance === 'audited-hold' && (r.audit || {}).hazard).length
+if (stats.records_hazarded !== idxHaz) {
+  throw new Error(`stats.records_hazarded=${stats.records_hazarded} but the audits index carries ${idxHaz}`)
+}
+if (stats.records_hazarded_held !== poolHaz) {
+  throw new Error(`stats.records_hazarded_held=${stats.records_hazarded_held} but ${poolHaz} held rows are hazarded`)
+}
+for (const r of idxRecs) {
+  if (!r.url || !r.name || !r.verdict) throw new Error('audit index row missing name/url/verdict: ' + JSON.stringify(r))
+}
+console.log('hazard census:', idxHaz, 'published ·', poolHaz, 'held · agrees with stats and the badge;',
+  idxRecs.length, 'index rows with name+url+verdict')
 console.log('\n✅ browser decode + audit layer consistent with the built catalog')

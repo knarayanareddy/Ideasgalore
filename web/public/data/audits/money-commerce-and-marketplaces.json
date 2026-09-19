@@ -2,6 +2,252 @@
  "audit_version":1,
  "generated_at":"2026-09-18",
  "records":{
+  "satu":{
+   "audit_version":1,
+   "audited_at":"2026-09-19",
+   "award":null,
+   "built_with":[],
+   "checks":{
+    "artifact_exists":{
+     "pass":1.0,
+     "status":"confirmed",
+     "why":"repo justin-theodorus/techjam exists (5195 KB, Python), last push 2026-08-31"
+    },
+    "build_is_real":{
+     "pass":1.0,
+     "status":"confirmed",
+     "why":"5195 KB, source dirs data, docs, evaluator, harness, README 15214 B incl. setup steps"
+    },
+    "limits_disclosed":{
+     "pass":0.6,
+     "status":"supported",
+     "why":"the team described how hard the build was, but not a limitation of the system itself \u2014 no accuracy, coverage, privacy or failure-mode statement"
+    },
+    "numbers_add_up":{
+     "pass":1.0,
+     "status":"confirmed",
+     "why":"TechnicalScore 0.9672 (SATU) versus 0.1067 (BM25 baseline) (recomputed: recomputed: 0.50*1.000 + 0.30*0.975 + 0.20*clip((11-2.27)/10,0,1) = 0.9671 for SATU, and 0.50*0.125 + 0.30*0.068 + 0.20*clip((11-9.81)/10,0,1) = 0.1067 for the baseline - both rows reproduce the printed figures); HitRate@10 1.000, MRR 0.975, MTTC 2.27 (recomputed: internally consistent with the recomputed objective above; the per-session log was not needed to check the aggregate)"
+    },
+    "stack_consistency":{
+     "pass":0.5,
+     "status":"partial",
+     "why":"repo languages makefile, python; page lists no `Built With` tags to compare"
+    },
+    "test_or_eval_evidence":{
+     "pass":1.0,
+     "status":"confirmed",
+     "why":"test paths in repo: harness/tests/__init__.py, harness/tests/fixtures.py, harness/tests/test_analysis.py"
+    }
+   },
+   "evidence":[
+    {
+     "checked_at":"2026-09-19",
+     "claim":"Is there an artifact at all \u2014 a repo, a deployed app, or a video of it running?",
+     "detail":"repo justin-theodorus/techjam exists (5195 KB, Python), last push 2026-08-31",
+     "id":"satu:artifact_exists",
+     "kind":"api",
+     "source":"https://github.com/justin-theodorus/techjam",
+     "status":"confirmed"
+    },
+    {
+     "checked_at":"2026-09-19",
+     "claim":"Does the repo's language/file mix match the stack they described?",
+     "detail":"repo languages makefile, python; page lists no `Built With` tags to compare",
+     "id":"satu:stack_consistency",
+     "kind":"api",
+     "source":"https://api.github.com/repos/justin-theodorus/techjam/languages",
+     "status":"partial"
+    },
+    {
+     "checked_at":"2026-09-19",
+     "claim":"Is the code a real build (source tree, setup steps, non-trivial size) rather than a stub or zip?",
+     "detail":"5195 KB, source dirs data, docs, evaluator, harness, README 15214 B incl. setup steps",
+     "id":"satu:build_is_real",
+     "kind":"api",
+     "source":"https://github.com/justin-theodorus/techjam",
+     "status":"confirmed"
+    },
+    {
+     "checked_at":"2026-09-19",
+     "claim":"Do their metrics have a denominator, and is the arithmetic internally consistent?",
+     "detail":"TechnicalScore 0.9672 (SATU) versus 0.1067 (BM25 baseline) (recomputed: recomputed: 0.50*1.000 + 0.30*0.975 + 0.20*clip((11-2.27)/10,0,1) = 0.9671 for SATU, and 0.50*0.125 + 0.30*0.068 + 0.20*clip((11-9.81)/10,0,1) = 0.1067 for the baseline - both rows reproduce the printed figures); HitRate@10 1.000, MRR 0.975, MTTC 2.27 (recomputed: internally consistent with the recomputed objective above; the per-session log was not needed to check the aggregate)",
+     "id":"satu:numbers_add_up",
+     "kind":"page",
+     "source":"https://devpost.com/software/satu",
+     "status":"confirmed"
+    },
+    {
+     "checked_at":"2026-09-19",
+     "claim":"Did they state what does not work, or where it fails?",
+     "detail":"the team described how hard the build was, but not a limitation of the system itself \u2014 no accuracy, coverage, privacy or failure-mode statement",
+     "id":"satu:limits_disclosed",
+     "kind":"page",
+     "source":"https://devpost.com/software/satu",
+     "status":"supported"
+    },
+    {
+     "checked_at":"2026-09-19",
+     "claim":"Any test suite, eval harness, or measured benchmark we can see?",
+     "detail":"test paths in repo: harness/tests/__init__.py, harness/tests/fixtures.py, harness/tests/test_analysis.py",
+     "id":"satu:test_or_eval_evidence",
+     "kind":"api",
+     "source":"https://api.github.com/repos/justin-theodorus/techjam/git/trees",
+     "status":"confirmed"
+    }
+   ],
+   "fields":{
+    "built_with_verified":{
+     "provenance":"derived",
+     "value":"page published no 'Built With' tags; the linked repository reports Makefile, Python (verified via the GitHub API), which is the only evidence of the real stack \u2014 library choices asserted in prose remain unverified"
+    },
+    "clone_cost":{
+     "note":"our estimate with assumptions visible; not a claim about the team",
+     "provenance":"derived",
+     "value":{
+      "assumptions":[
+       "you have a catalog with attributes and ratings, since the question value term comes from attribute coverage",
+       "you accept a rule-based scored path; the moment a model enters it, the latency and cost claims no longer transfer",
+       "the benchmark is the organiser's, so porting it means building your own session harness"
+      ],
+      "estimate":"2-4 days to reproduce the architecture on a catalog you already have; weeks to earn the numbers",
+      "why":"The scored path is stdlib Python with no model, so the retrieval, ranking, slate shaping and question selection logic is legible in a day and the harness is in the repo. What does not come free is the evaluator and the catalog statistics it leans on - popularity priors, attribute lead lines and rare-phrase evidence are all derived from that specific 50,000-product dump."
+     }
+    },
+    "data_and_models":{
+     "provenance":"observed",
+     "value":"No trained model in the scored path. Retrieval is BM25 over the supplied 50,000-product catalog with a shared regex tokenizer and 31-word stopword list, a popularity prior ln(1+rating_number), a rare-phrase evidence index, and an optional dense asset that the design documents as rejected at weight zero. Scoring is a fixed convex combination of HitRate@10, MRR and an efficiency term derived from mean turns to conversion."
+    },
+    "how_it_works":{
+     "provenance":"observed",
+     "value":"Python standard library only, all in memory, no external call on the scored path. At construction (about 5.6 s and 280 MB peak) it builds coarse category buckets for hard filtering, a BM25 index whose regex word tokenizer and 31-word stopword list are the identical function used for indexing and for queries, a popularity prior ln(1+rating_number), an attribute vocabulary with lead lines for question scoring, and a rare-phrase index for per-product evidence. A dense vector asset is built optionally and then rejected at weight zero. The turn path is parse, fold state, select behaviour, retrieve, rank, shape slate, choose or suppress question, recovery check, then response plus session trace. Files named on the page include submission/src/text.py, with evaluator/ and harness/ directories alongside."
+    },
+    "how_they_tested":{
+     "provenance":"observed",
+     "value":"test modules present in the linked repository \u2014 harness/tests/__init__.py, harness/tests/fixtures.py, harness/tests/test_analysis.py, harness/tests/test_deviations.py \u2014 which is what the page's harness figures were produced with; the page itself describes no further evaluation protocol"
+    },
+    "limits_they_disclosed":{
+     "provenance":"observed",
+     "value":"The two decisions they defend are restraint ones. The tokenizer is deliberately not learned and not subword, because one shared function means an indexing choice can never disagree with a lookup choice. The dense retrieval asset is included in the architecture and given weight zero, documented as rejected rather than quietly dropped. The objective itself is the hardest part: the 0.30 reciprocal-rank term is what makes slate width a real decision, since exposing ten products immediately improves turns-to-conversion while hurting rank enough to lower the combined score."
+    },
+    "numbers_with_arithmetic":{
+     "provenance":"observed",
+     "value":[
+      {
+       "arithmetic":"recomputed: 0.50*1.000 + 0.30*0.975 + 0.20*clip((11-2.27)/10,0,1) = 0.9671 for SATU, and 0.50*0.125 + 0.30*0.068 + 0.20*clip((11-9.81)/10,0,1) = 0.1067 for the baseline - both rows reproduce the printed figures",
+       "claim":"TechnicalScore 0.9672 (SATU) versus 0.1067 (BM25 baseline)",
+       "denominator":"per-session ranks and turns over the evaluation sessions",
+       "verifiable":true
+      },
+      {
+       "arithmetic":"internally consistent with the recomputed objective above; the per-session log was not needed to check the aggregate",
+       "claim":"HitRate@10 1.000, MRR 0.975, MTTC 2.27",
+       "denominator":"N evaluation sessions, misses assigned turn 11",
+       "verifiable":true
+      },
+      {
+       "arithmetic":"structural: a reader can rerun the harness in the linked repo, but the machine is not specified",
+       "claim":"Latency about 1 ms per turn (p50 0.96, p95 3.2)",
+       "denominator":"per-turn wall clock on their harness",
+       "verifiable":true
+      },
+      {
+       "arithmetic":"structural: measurable by running the shipped code",
+       "claim":"Startup about 5.6 s and about 280 MB peak",
+       "denominator":"one construction pass over 50,000 products",
+       "verifiable":true
+      },
+      {
+       "arithmetic":"structural: follows from the stdlib-only, in-memory design they describe",
+       "claim":"Runtime cost $0.00 per turn",
+       "denominator":"no external calls on the scored path",
+       "verifiable":true
+      }
+     ]
+    },
+    "prior_art":{
+     "note":"each entry resolves to a URL we opened this session or a corpus id",
+     "provenance":"editorial",
+     "value":[
+      {
+       "corpus_id":"greenlight-nine-agent-production-crew",
+       "relation":"same genre - an agent pipeline that reports a measured before/after with a cost figure - but the two sit at opposite ends of auditability: Greenlight's numbers are asserted with a stated cost ladder and no harness, SATU's can be recomputed from the formula on the page and its harness is in the linked repository."
+      },
+      {
+       "corpus_id":"sketchwish",
+       "relation":"both treat the free/default path as a design constraint to be engineered rather than a concession; SketchWish does it with sign-in gates and hard caps against abuse, SATU by keeping the scored path model-free at $0.00 per turn."
+      }
+     ]
+    },
+    "what_breaks_first":{
+     "provenance":"editorial",
+     "value":"The evaluator's proxy. Optimising 'the session ends when the target appears in the slate' rewards wide early slates and precise question-baiting, which is not the same thing as a shopper being helped; HitRate@10 of 1.000 with 2.27 turns says the target was surfaced, not that the other nine products were good or that the user trusted the answer. Second: state robustness - typed slots, refusals and an exhaustion path are all deterministic logic over a 50k catalog, and the page reports no adversarial or human sessions to show the behaviour selection recovering from a shopper who changes their mind."
+    },
+    "what_it_does":{
+     "provenance":"observed",
+     "value":"Takes a shopper message per turn and returns a slate of products plus optionally one clarification question. Six behaviours are selected from state (discovery, precision, recovery, boundary, stagnation, coverage); retrieval narrows to an active category with hard filters, ranking orders the candidates, slate shaping decides how many products to expose now, question selection either offers the most informative attribute probe or suppresses the question, and a recovery check watches for a shopper who has been shown everything relevant. Each turn is ~1 ms and every number the page quotes is derived from a published harness."
+    },
+    "what_it_is":{
+     "provenance":"derived",
+     "value":"A deterministic stateful shopping agent for a 50,000-product catalog that treats recommendation as a sequential decision problem, choosing both slate width and whether to ask another question, and reports a recomputable score against a BM25 baseline."
+    },
+    "what_to_steal":{
+     "provenance":"editorial",
+     "value":"Publish the objective function next to the results, including how failures are counted, so the number can be checked rather than trusted; make the expensive optional component visible at weight zero instead of deleting it, which documents a decision and its cost; use one shared preprocessing function for index and query; and treat 'how many items do I show now' and 'is another question worth a turn' as two explicit, stateful decisions rather than fixed constants."
+    }
+   },
+   "hazard":null,
+   "id":"satu",
+   "likes":null,
+   "links":{
+    "demo":null,
+    "repo":"https://github.com/justin-theodorus/techjam",
+    "video":"https://www.youtube.com/watch?v=mqsMewtdZdY"
+   },
+   "moves":[
+    "make-the-invisible-measurable",
+    "price-before-generate",
+    "deterministic-guardrail",
+    "artifacts-not-forms"
+   ],
+   "name":"SATU: Shopping Assistant That Understands",
+   "provenance":{
+    "checks":"derived",
+    "clone_cost":"derived",
+    "evidence":"observed",
+    "fields":"observed",
+    "verdict":"derived",
+    "worth":"editorial"
+   },
+   "publishable":true,
+   "repo":{
+    "checked_at":"2026-09-19",
+    "full_name":"justin-theodorus/techjam",
+    "language":"Python",
+    "pushed_at":"2026-08-31",
+    "readme_bytes":15214,
+    "size_kb":5195,
+    "stars":2,
+    "test_paths":[
+     "harness/tests/__init__.py",
+     "harness/tests/fixtures.py",
+     "harness/tests/test_analysis.py",
+     "harness/tests/test_deviations.py"
+    ],
+    "url":"https://github.com/justin-theodorus/techjam"
+   },
+   "right_of_reply":"https://github.com/knarayanareddy/Ideasgalore/issues/new?labels=audit-recheck",
+   "rubric_coverage":1.0,
+   "soundness":"verified",
+   "soundness_score":0.862,
+   "source_url":"https://devpost.com/software/satu",
+   "unknowns":[],
+   "verdict":"strong",
+   "verdict_reasons":[
+    "soundness 0.86, zero unknowns, 100% of the rubric was checkable \u2192 strong"
+   ],
+   "worth":"breakthrough",
+   "worth_note":"Not for the score - for the discipline. A hackathon team published the objective, the metric definitions, the convention for misses, and a baseline row, then made every design decision answerable to it: slate width as a real variable because reciprocal rank is weighted, the dense asset kept in the architecture at weight zero and labelled rejected, one tokenizer shared by index and query so the two can never disagree. It is the rare submission where a reader can recompute the headline number from the page, and the arithmetic closes to four decimals."
+  },
   "sketchwish":{
    "audit_version":1,
    "audited_at":"2026-09-19",
@@ -199,7 +445,7 @@
      "value":"Upload a photo, pick one of ten styles (pencil, charcoal, ink, watercolor, line art and others), get a high-resolution sketch exportable for print up to 4K. Three free renders after one-tap Google sign-in, then credits. Running in production."
     },
     "what_it_is":{
-     "provenance":"observed",
+     "provenance":"derived",
      "value":"Photo to print-ready sketch in ten styles at up to 4K, live in production, with a free tier that is defensible because sign-in, caps and rate limits were engineered first."
     },
     "what_to_steal":{
@@ -210,6 +456,11 @@
    "hazard":null,
    "id":"sketchwish",
    "likes":2,
+   "links":{
+    "demo":"https://sketchwish.com",
+    "repo":null,
+    "video":"https://www.youtube.com/watch?v=fS0kO-mert4"
+   },
    "moves":[
     "wrap-the-legacy-surface",
     "constraint-is-the-feature"

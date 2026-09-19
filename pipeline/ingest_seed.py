@@ -50,6 +50,50 @@ def load_deep(path: str) -> Dict[str, Dict[str, Any]]:
         return json.load(f)["records"]
 
 
+# What a row is allowed to know about a page read. Prose stays in the capture (ADR-12);
+# these are the fields that only exist *on* the page, so a bulk export that says "listing"
+# for a record someone actually opened is simply wrong.
+CAPTURE_ROW_FIELDS = ("likes", "award", "software_id", "built_with", "gallery_images")
+CAPTURE_LINK_FIELDS = (("repo_url", "repo"), ("demo_url", "demo"), ("video_url", "video"))
+
+
+def load_capture_projection(path: str) -> Dict[str, Dict[str, Any]]:
+    """Project `raw/deep_captures/*.json` down to row metadata.
+
+    The harvester writes `deep_records.json`; the audit panel writes its own page reads to
+    `deep_captures/`. Until now only the first reached the corpus row, so six audited
+    records still published `depth: listing` with no artifact links — which broke the UI's
+    "project page fetched" badge, its depth filter, and any agent that trusts the row over
+    the audit. Absent stays absent: a capture with no demo link must not gain one here.
+    """
+    out: Dict[str, Dict[str, Any]] = {}
+    if not os.path.isdir(path):
+        return out
+    for name in sorted(os.listdir(path)):
+        if not name.endswith(".json"):
+            continue
+        with open(os.path.join(path, name), encoding="utf-8") as fh:
+            cap = json.load(fh)
+        rid = str(cap.get("id") or name[:-5])
+        # `depth` is the flag; `page` stays a harvester-only field (its value is a dict of
+        # section prose that other stages walk, so a boolean here would crash them).
+        proj: Dict[str, Any] = {"depth": "deep"}
+        for key in CAPTURE_ROW_FIELDS:
+            # `likes` is a real zero; everything else in an empty list is "the page read did
+            # not see this widget", which must not erase what the listing scrape already knew.
+            if key == "likes":
+                if cap.get(key) is not None:
+                    proj[key] = cap[key]
+            elif cap.get(key):
+                proj[key] = cap[key]
+        links = cap.get("links") or {}
+        for row_key, cap_key in CAPTURE_LINK_FIELDS:
+            if links.get(cap_key):
+                proj[row_key] = links[cap_key]
+        out[rid] = proj
+    return out
+
+
 def parse_tsv(path: str) -> List[Dict[str, Any]]:
     rows: List[Dict[str, Any]] = []
     with open(path, "r", encoding="utf-8") as f:
@@ -142,10 +186,12 @@ def main() -> int:
 
     events = load_events(os.path.join(RAW, "events.json"))
     deep = load_deep(os.path.join(RAW, "deep_records.json"))
+    caps = load_capture_projection(os.path.join(RAW, "deep_captures"))
     overrides = load_overrides(os.path.join(RAW, "overrides.json"))
     rows = parse_tsv(os.path.join(RAW, "seed_gallery.tsv"))
     print(f"🌱 Seed ingest: {len(rows)} listing rows, {len(deep)} deep overrides, "
-          f"{len(events)} events, {len(overrides)} editorial corrections")
+          f"{len(caps)} audit page-reads, {len(events)} events, "
+          f"{len(overrides)} editorial corrections")
 
     merged: List[Dict[str, Any]] = []
     for r in rows:
@@ -155,6 +201,13 @@ def main() -> int:
         if override:
             rec = {**rec, **override, "depth": "deep"}
             rec["source"] = "seed:deep"
+        cap = caps.get(rec["id"])
+        if cap:
+            # The audit read the page more recently than the gallery scrape did, so its
+            # observations win. `source` is updated descriptively only — no score may read
+            # it (see compute_coolness) or enrichment would silently change a ranking.
+            rec = {**rec, **cap}
+            rec["source"] = "seed:audit-capture"
         # event join (denormalize what the browser needs — ADR-2)
         rec.update({
             "event_slug": ev.get("slug"),
@@ -196,7 +249,7 @@ def main() -> int:
                     depth=e.get("depth", "listing"), has_thumbnail=bool(e.get("thumbnail")),
                     has_links=bool(e.get("repo_url") or e.get("demo_url") or e.get("video_url")),
                     kin_redundancy=e["coolness_parts"]["redundancy"],
-                    staff_pick=(e.get("source") == "showcase"),
+                    staff_pick=(e.get("event_key") == "showcase"),
                 )
                 e["coolness"] = e["coolness_parts"]["total"]
         enriched.append(e)

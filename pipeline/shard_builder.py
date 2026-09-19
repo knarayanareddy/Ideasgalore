@@ -433,6 +433,12 @@ def build(records: List[Dict[str, Any]], out_dir: str, today: str,
         "audit_index_kb": round(index_kb, 1),
         "audit_sheets_kb": round(sheets_kb, 1),
         "records_hazarded": sum(1 for sh in audit_index.values() if sh["hazard"]),
+        # Held-but-scored records can carry hazard notes too, and a single number that mixes
+        # the two populations would tell a reader the catalog is the whole story about
+        # regulated claims when six times as many pages are sitting unreleased.
+        "records_hazarded_held": sum(1 for x in pool
+                                     if x.get("provenance") == "audited-hold"
+                                     and (x.get("audit") or {}).get("hazard")),
         "domains": len(dom_enc.map),
         "subsystems": len(sub_enc.map),
         "moves": sum(1 for m in move_postings.values() if m),
@@ -470,8 +476,7 @@ def _detail_record(r: Dict[str, Any], sheet: Optional[Dict[str, Any]] = None) ->
         "award": r.get("award") or "Unknown",
         "depth": r.get("depth") or "listing",
         "thumbnail": r.get("thumbnail"),
-        "repo_url": r.get("repo_url"),
-        "demo_url": r.get("demo_url"),
+        "repo_url": r.get("repo_url"), "demo_url": r.get("demo_url"),
         "video_url": r.get("video_url"),
         "software_id": r.get("software_id"),
         "event": {"slug": r.get("event_slug"), "title": r.get("event_title"),
@@ -543,8 +548,14 @@ def _ndjson_record(r: Dict[str, Any], sheet: Optional[Dict[str, Any]] = None) ->
         "moves": r.get("moves") or [], "stack": r.get("stack") or [],
         "likes": r.get("likes"), "award": r.get("award") or "Unknown",
         "coolness": r.get("coolness"), "coolness_parts": r.get("coolness_parts"),
-        "depth": r.get("depth"), "has_deep": 1 if r.get("page") else 0,
+        # One definition for both tabular and streaming surfaces: a row is deep when we hold
+        # the page (harvester blob or audit capture), not only when a harvester wrote it.
+        "depth": r.get("depth"), "has_deep": 1 if (r.get("page") or r.get("depth") == "deep") else 0,
+        # The bulk listing never carries links; a deep capture does, and the audit already
+        # read them. Without the fallback the ndjson row says "no repo" for the one record in
+        # the corpus whose repository *is* the reason it was published.
         "repo_url": r.get("repo_url"), "demo_url": r.get("demo_url"),
+        "video_url": r.get("video_url"),
         "provenance": r.get("provenance"), "harvested_at": r.get("harvested_at"),
         "audit": None if sheet is None else {
             "verdict": sheet.get("verdict"), "worth": sheet.get("worth"),
@@ -749,6 +760,29 @@ def audit_gate_checks(records, stats, out_dir, audits) -> List[str]:
                  if r.get("admitted", True) and (audits.get(str(r["id"])) or {}).get("publishable")]
     if sorted(ids) != sorted(published):
         problems.append("Tier-1 rows are not exactly the audited-and-publishable set")
+    # A page read has to show up on the row. Until the audit's captures were folded into ingest,
+    # six vetted records published `depth: listing` with no artifact link while the sheet beside
+    # them quoted their README — the row contradicted the audit. This is the pin.
+    caps_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "raw", "deep_captures")
+    if os.path.isdir(caps_dir):
+        by_id = {str(r.get("id")): r for r in records}
+        for name in sorted(os.listdir(caps_dir)):
+            if not name.endswith(".json"):
+                continue
+            with open(os.path.join(caps_dir, name), encoding="utf-8") as fh:
+                cap = json.load(fh)
+            rid = str(cap.get("id") or name[:-5])
+            row = by_id.get(rid)
+            if row is None:
+                continue  # a partial record set (a fixture) is not a missing row
+            if row.get("depth") != "deep":
+                problems.append(f"captured record {rid} publishes depth={row.get('depth')!r}: "
+                                f"a full page read must not present itself as a listing row")
+            links = cap.get("links") or {}
+            for row_key, cap_key in (("repo_url", "repo"), ("demo_url", "demo"), ("video_url", "video")):
+                if links.get(cap_key) and row.get(row_key) != links[cap_key]:
+                    problems.append(f"{rid}: row {row_key}={row.get(row_key)!r} disagrees with the "
+                                    f"page's own {links[cap_key]!r}")
     for rid in ids:
         sh = audits.get(rid)
         if not sh:

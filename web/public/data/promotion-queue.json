@@ -1,33 +1,9 @@
 {
  "audit_version": 1,
- "pool_size": 153,
+ "pool_size": 151,
  "queued": 12,
  "note": "Ranking of never-audited candidates by expected information gain (ADR-A7). Nothing here has been verified; the order is only 'what would teach us most'. `pool_size` counts records with no sheet at all \u2014 the full holding area, including audited-but-held records (thin, duplicate, hazard), is data/pool.json.",
  "candidates": [
-  {
-   "id": "vms-ai-guard-fisheries-compliance-monitoring-alerts",
-   "name": "VMS AI Guard - Fisheries Compliance Monitoring & Alerts",
-   "domain": "Public Trust, Safety & Compliance",
-   "coolness": 0.408,
-   "expected_gain": 0.562,
-   "why": "sector Public Trust has 14 rows and no audit",
-   "would_settle_it": [
-    "project page capture",
-    "repo link check"
-   ]
-  },
-  {
-   "id": "satu",
-   "name": "SATU: Shopping Assistant That Understands",
-   "domain": "Money, Commerce & Marketplaces",
-   "coolness": 0.429,
-   "expected_gain": 0.5527,
-   "why": "sector Money has 10 rows and no audit",
-   "would_settle_it": [
-    "project page capture",
-    "repo link check"
-   ]
-  },
   {
    "id": "ax4u-academy",
    "name": "AX4U Academy",
@@ -143,6 +119,30 @@
    "coolness": 0.391,
    "expected_gain": 0.5116,
    "why": "sector Creative Media has 29 rows and no audit",
+   "would_settle_it": [
+    "project page capture",
+    "repo link check"
+   ]
+  },
+  {
+   "id": "mercury-bx4dun",
+   "name": "Mercury",
+   "domain": "Money, Commerce & Marketplaces",
+   "coolness": 0.411,
+   "expected_gain": 0.5114,
+   "why": "sector Money has 10 rows and no audit",
+   "would_settle_it": [
+    "project page capture",
+    "repo link check"
+   ]
+  },
+  {
+   "id": "antislop-vkjag3",
+   "name": "Antislop",
+   "domain": "Learning & Knowledge Systems",
+   "coolness": 0.368,
+   "expected_gain": 0.5112,
+   "why": "sector Learning & Knowledge Systems has 13 rows and no audit",
    "would_settle_it": [
     "project page capture",
     "repo link check"

@@ -206,7 +206,7 @@
      "value":"Passive biometric sync pulls resting heart rate, HRV, VO2 max, sleep architecture and daily steps from HealthKit or Google Health Connect. A multimodal parser reads un-standardised lab PDFs and blood panels (HbA1c, hs-CRP, lipid profile, albumin, alkaline phosphatase) into structured biomarker values. A clock engine computes a biological age and compares it with the chronological baseline. A weekly Longevity Delta loop names the user's biometric bottleneck and returns three targeted lifestyle, protocol or supplement interventions. Monthly Wrapped-style proof cards are generated for sharing."
     },
     "what_it_is":{
-     "provenance":"observed",
+     "provenance":"derived",
      "value":"A biological-age dashboard that parses lab PDFs with Gemini into validated schemas, runs the Levine PhenoAge clock over wearable streams, and returns a weekly three-item intervention list."
     },
     "what_to_steal":{
@@ -221,6 +221,11 @@
    },
    "id":"vitalis-bio",
    "likes":0,
+   "links":{
+    "demo":null,
+    "repo":null,
+    "video":"https://www.youtube.com/watch?v=sYupP9m-aqE"
+   },
    "moves":[
     "make-the-invisible-measurable"
    ],
@@ -428,7 +433,7 @@
      "value":"Free-text symptom description plus optional guided questions, a structured symptom summary, a conservative risk assessment, a five-stage recovery plan, evidence supporting the guidance, multi-day trend view (improving / stable / worsening), and a caregiver or clinician handoff summary. Urgent warning signs replace normal advice with escalation."
     },
     "what_it_is":{
-     "provenance":"observed",
+     "provenance":"derived",
      "value":"A daily concussion check-in that extracts symptoms deterministically, scores risk against recovery history, and escalates red flags before it offers any advice."
     },
     "what_to_steal":{
@@ -443,6 +448,11 @@
    },
    "id":"neuroguard-ai-adaptiveconcussionrecoveryintelligencesystem",
    "likes":null,
+   "links":{
+    "demo":null,
+    "repo":null,
+    "video":"https://www.youtube.com/watch?v=6VTxPCeStvo"
+   },
    "moves":[
     "human-holds-the-last-button",
     "deterministic-guardrail"

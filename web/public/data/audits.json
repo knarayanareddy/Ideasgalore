@@ -55,6 +55,30 @@
    "url":"https://devpost.com/software/greenlight-nine-agent-production-crew",
    "name":"Greenlight - Nine-Agent Production Crew"
   },
+  "satu":{
+   "verdict":"strong",
+   "worth":"breakthrough",
+   "soundness":"verified",
+   "soundness_score":0.862,
+   "rubric_coverage":1.0,
+   "checks":{
+    "artifact_exists":"confirmed",
+    "build_is_real":"confirmed",
+    "limits_disclosed":"supported",
+    "numbers_add_up":"confirmed",
+    "stack_consistency":"partial",
+    "test_or_eval_evidence":"confirmed"
+   },
+   "unknowns":[],
+   "evidence":6,
+   "contradicted":0,
+   "hazard":false,
+   "repo":"https://github.com/justin-theodorus/techjam",
+   "audited_at":"2026-09-19",
+   "audit_version":1,
+   "url":"https://devpost.com/software/satu",
+   "name":"SATU: Shopping Assistant That Understands"
+  },
   "sketchwish":{
    "verdict":"sound-with-caveats",
    "worth":"strong",

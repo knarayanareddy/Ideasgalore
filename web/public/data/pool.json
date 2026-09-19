@@ -1,7 +1,7 @@
 {
  "audit_version":1,
  "generated_at":"2026-09-18",
- "count":158,
+ "count":157,
  "meaning":"Records held out of the catalog. `provenance` splits them in two: `unaudited` rows were never captured or checked; `audited-hold` rows were captured, scored and held for cause (thin, duplicate or hazard-capped) and carry the same audit columns the catalog does. Neither kind is a judgement of merit \u2014 read why_not_promoted and would_settle_it before quoting one (ADR-A1/A10).",
  "records":[
   {
@@ -62,27 +62,6 @@
    ],
    "specificity":0.86,
    "summary":"$13T Industry. Built on paper and WhatsApp. Capo turns any quote into a full job plan, schedules the crew, and runs the build through chat. The AI co-pilot for every contractor on earth.",
-   "provenance":"unaudited",
-   "why_not_promoted":[
-    "not_audited"
-   ],
-   "would_settle_it":[
-    "project page capture (deep)",
-    "artifact check via repo_verify.py"
-   ],
-   "audit":null
-  },
-  {
-   "id":"satu",
-   "name":"SATU: Shopping Assistant That Understands",
-   "url":"https://devpost.com/software/satu",
-   "domain":"Money, Commerce & Marketplaces",
-   "subsystem":"Retail & Conversion",
-   "event":"Devpost Software Showcase \u2014 Staff Picks & Rails",
-   "coolness":0.4294,
-   "moves":[],
-   "specificity":0.52,
-   "summary":"A shopping copilot that treats every product it shows as a commitment rather than a list, and every question it asks as a turn it has to earn.",
    "provenance":"unaudited",
    "why_not_promoted":[
     "not_audited"
@@ -183,6 +162,109 @@
    "audit":null
   },
   {
+   "id":"mcop",
+   "name":"MCOP",
+   "url":"https://devpost.com/software/mcop",
+   "domain":"Agentic Autonomy & Orchestration",
+   "subsystem":"Multi-Agent Crews",
+   "event":"Build with Gemini XPRIZE",
+   "coolness":0.4193,
+   "moves":[
+    "institutional-grade-reliability",
+    "deterministic-guardrail",
+    "offline-first-fallback",
+    "crew-of-specialists"
+   ],
+   "specificity":0.68,
+   "summary":"MCOP is deterministic, crypto-verifiable substrate for recursive triad orchestration - delivering byte-identical reasoning reproducibility across Node, browser, and edge in 4.4 milliseconds.",
+   "provenance":"audited-hold",
+   "why_not_promoted":[
+    "verdict:thin",
+    "artifact_exists failed \u2192 capped at 'thin' (A3)"
+   ],
+   "would_settle_it":[
+    "artifact_exists: a repository, deployment or store listing we can resolve",
+    "stack_consistency: a repository to compare the declared stack against",
+    "build_is_real: a readable source tree (a repo link, then `python3 pipeline/repo_verify.py`)",
+    "numbers_add_up: a denominator and baseline for the headline figure, or the raw log behind it"
+   ],
+   "audit":{
+    "verdict":"thin",
+    "worth":"niche",
+    "soundness":"weak",
+    "soundness_score":0.4141,
+    "rubric_coverage":0.64,
+    "audited_at":"2026-09-19",
+    "unknowns":0,
+    "duplicate_of":null,
+    "hazard":false,
+    "evidence":6,
+    "reasons":[
+     "artifact_exists failed \u2192 capped at 'thin' (A3)"
+    ]
+   },
+   "verdict":"thin",
+   "worth":"niche",
+   "soundness":"weak",
+   "soundness_score":0.4141,
+   "rubric_coverage":0.64,
+   "audited_at":"2026-09-19",
+   "unknowns":0,
+   "repo_url":null
+  },
+  {
+   "id":"vms-ai-guard-fisheries-compliance-monitoring-alerts",
+   "name":"VMS AI Guard - Fisheries Compliance Monitoring & Alerts",
+   "url":"https://devpost.com/software/vms-ai-guard-fisheries-compliance-monitoring-alerts",
+   "domain":"Public Trust, Safety & Compliance",
+   "subsystem":"Regulatory & Audit Machinery",
+   "event":"Build with Gemini XPRIZE",
+   "coolness":0.4153,
+   "moves":[
+    "deterministic-guardrail",
+    "long-horizon-watcher",
+    "make-the-invisible-measurable"
+   ],
+   "specificity":0.78,
+   "summary":"VMS AI Guard is an AI system for the Directorate of Fisheries of Vietnam that monitors VMS disconnections, scores compliance, and evaluates provider quality using incident and investigation data.",
+   "provenance":"audited-hold",
+   "why_not_promoted":[
+    "verdict:thin",
+    "artifact_exists failed \u2192 capped at 'thin' (A3)",
+    "hazard: compliance-signoff (no team disclaimer found)"
+   ],
+   "would_settle_it":[
+    "artifact_exists: a repository, deployment or store listing we can resolve",
+    "stack_consistency: a repository to compare the declared stack against",
+    "build_is_real: a readable source tree (a repo link, then `python3 pipeline/repo_verify.py`)",
+    "numbers_add_up: a denominator and baseline for the headline figure, or the raw log behind it",
+    "test_or_eval_evidence: a published eval table, harness or CI run link with a case count"
+   ],
+   "audit":{
+    "verdict":"thin",
+    "worth":"niche",
+    "soundness":"weak",
+    "soundness_score":0.3594,
+    "rubric_coverage":0.64,
+    "audited_at":"2026-09-19",
+    "unknowns":0,
+    "duplicate_of":null,
+    "hazard":true,
+    "evidence":6,
+    "reasons":[
+     "artifact_exists failed \u2192 capped at 'thin' (A3)"
+    ]
+   },
+   "verdict":"thin",
+   "worth":"niche",
+   "soundness":"weak",
+   "soundness_score":0.3594,
+   "rubric_coverage":0.64,
+   "audited_at":"2026-09-19",
+   "unknowns":0,
+   "repo_url":null
+  },
+  {
    "id":"autobom",
    "name":"AutoBOM",
    "url":"https://devpost.com/software/autobom",
@@ -256,31 +338,6 @@
    "moves":[],
    "specificity":0.65,
    "summary":"One news event. Every regional lens. Side-by-side. Newspectives uses Google Gemini and Search grounding to compare how USA, China, Russia, Arab World and more frame each story - daily.",
-   "provenance":"unaudited",
-   "why_not_promoted":[
-    "not_audited"
-   ],
-   "would_settle_it":[
-    "project page capture (deep)",
-    "artifact check via repo_verify.py"
-   ],
-   "audit":null
-  },
-  {
-   "id":"vms-ai-guard-fisheries-compliance-monitoring-alerts",
-   "name":"VMS AI Guard - Fisheries Compliance Monitoring & Alerts",
-   "url":"https://devpost.com/software/vms-ai-guard-fisheries-compliance-monitoring-alerts",
-   "domain":"Public Trust, Safety & Compliance",
-   "subsystem":"Regulatory & Audit Machinery",
-   "event":"Build with Gemini XPRIZE",
-   "coolness":0.4082,
-   "moves":[
-    "deterministic-guardrail",
-    "long-horizon-watcher",
-    "make-the-invisible-measurable"
-   ],
-   "specificity":0.64,
-   "summary":"VMS AI Guard is an AI system for the Directorate of Fisheries of Vietnam that monitors VMS disconnections, scores compliance, and evaluates provider quality using incident and investigation data.",
    "provenance":"unaudited",
    "why_not_promoted":[
     "not_audited"
@@ -378,57 +435,6 @@
     "artifact check via repo_verify.py"
    ],
    "audit":null
-  },
-  {
-   "id":"mcop",
-   "name":"MCOP",
-   "url":"https://devpost.com/software/mcop",
-   "domain":"Agentic Autonomy & Orchestration",
-   "subsystem":"Multi-Agent Crews",
-   "event":"Build with Gemini XPRIZE",
-   "coolness":0.3992,
-   "moves":[
-    "institutional-grade-reliability",
-    "deterministic-guardrail",
-    "offline-first-fallback",
-    "crew-of-specialists"
-   ],
-   "specificity":0.59,
-   "summary":"MCOP is deterministic, crypto-verifiable substrate for recursive triad orchestration - delivering byte-identical reasoning reproducibility across Node, browser, and edge in 4.4 milliseconds.",
-   "provenance":"audited-hold",
-   "why_not_promoted":[
-    "verdict:thin",
-    "artifact_exists failed \u2192 capped at 'thin' (A3)"
-   ],
-   "would_settle_it":[
-    "artifact_exists: a repository, deployment or store listing we can resolve",
-    "stack_consistency: a repository to compare the declared stack against",
-    "build_is_real: a readable source tree (a repo link, then `python3 pipeline/repo_verify.py`)",
-    "numbers_add_up: a denominator and baseline for the headline figure, or the raw log behind it"
-   ],
-   "audit":{
-    "verdict":"thin",
-    "worth":"niche",
-    "soundness":"weak",
-    "soundness_score":0.4141,
-    "rubric_coverage":0.64,
-    "audited_at":"2026-09-19",
-    "unknowns":0,
-    "duplicate_of":null,
-    "hazard":false,
-    "evidence":6,
-    "reasons":[
-     "artifact_exists failed \u2192 capped at 'thin' (A3)"
-    ]
-   },
-   "verdict":"thin",
-   "worth":"niche",
-   "soundness":"weak",
-   "soundness_score":0.4141,
-   "rubric_coverage":0.64,
-   "audited_at":"2026-09-19",
-   "unknowns":0,
-   "repo_url":null
   },
   {
    "id":"neuthera-drug-discovery-platform",
@@ -888,6 +894,55 @@
    "audit":null
   },
   {
+   "id":"medvoice-y87kei",
+   "name":"Medvoice",
+   "url":"https://devpost.com/software/medvoice-y87kei",
+   "domain":"Health, Care & Human Performance",
+   "subsystem":"Care Navigation & Records",
+   "event":"Hack for Humanity | Summer 2026",
+   "coolness":0.3814,
+   "moves":[],
+   "specificity":0.32,
+   "summary":"A voice-first, visual medication assistant designed by a nurse to help elderly and low-literacy patients take the right medicine at the right time.",
+   "provenance":"audited-hold",
+   "why_not_promoted":[
+    "verdict:thin",
+    "soundness 0.27 is too low to certify; stays in the pool",
+    "unknown: numbers_with_arithmetic \u2014 no measurable outcome is asserted; a benchmark table would settle it",
+    "hazard: clinical (no team disclaimer found)"
+   ],
+   "would_settle_it":[
+    "no measurable outcome is asserted; a benchmark table would settle it",
+    "artifact_exists: a repository, deployment or store listing we can resolve",
+    "stack_consistency: a repository to compare the declared stack against",
+    "build_is_real: a readable source tree (a repo link, then `python3 pipeline/repo_verify.py`)",
+    "numbers_add_up: a denominator and baseline for the headline figure, or the raw log behind it"
+   ],
+   "audit":{
+    "verdict":"thin",
+    "worth":"strong",
+    "soundness":"weak",
+    "soundness_score":0.2656,
+    "rubric_coverage":0.64,
+    "audited_at":"2026-09-19",
+    "unknowns":1,
+    "duplicate_of":null,
+    "hazard":true,
+    "evidence":6,
+    "reasons":[
+     "soundness 0.27 is too low to certify; stays in the pool"
+    ]
+   },
+   "verdict":"thin",
+   "worth":"strong",
+   "soundness":"weak",
+   "soundness_score":0.2656,
+   "rubric_coverage":0.64,
+   "audited_at":"2026-09-19",
+   "unknowns":1,
+   "repo_url":null
+  },
+  {
    "id":"toyoboaz",
    "name":"Gospel Align",
    "url":"https://devpost.com/software/toyoboaz",
@@ -975,57 +1030,6 @@
     "artifact check via repo_verify.py"
    ],
    "audit":null
-  },
-  {
-   "id":"greenlight-screenplay-to-film",
-   "name":"Greenlight - Screenplay to Film",
-   "url":"https://devpost.com/software/greenlight-screenplay-to-film",
-   "domain":"Creative Media, Story & Play",
-   "subsystem":"Production & Direction",
-   "event":"Agentic Cinema: The Blockbuster Hackathon",
-   "coolness":0.3802,
-   "moves":[
-    "data-flywheel"
-   ],
-   "specificity":0.7,
-   "summary":"Turn a screenplay into a film you can afford. Nine Gemini agents storyboard, cast, shoot and cut it, quoting cost and odds first. Learns from every take in ClickHouse.",
-   "provenance":"audited-hold",
-   "why_not_promoted":[
-    "verdict:duplicate",
-    "soundness 0.77 over 64% of the rubric; 1 named unknown(s) remain \u2192 publishable with caveats",
-    "resubmission of the same product \u2014 name match False, listing-title equality False, shared mechanism/text overlap 0.25, shared numeric fingerprints ['$0.02', '$20', '$238', '$4.50'] (0.60 jaccard); merged into the better-evidenced copy (A5)",
-    "unknown: prior_art \u2014 no named competitor; a search pass would settle it",
-    "hazard: regulated-claim (no team disclaimer found)",
-    "merged into greenlight-nine-agent-production-crew \u2014 same submission, richer twin published",
-    "duplicate_of:greenlight-nine-agent-production-crew"
-   ],
-   "would_settle_it":[
-    "nothing \u2014 greenlight-nine-agent-production-crew is the same submission with more evidence; read its audit sheet instead"
-   ],
-   "audit":{
-    "verdict":"duplicate",
-    "worth":"strong",
-    "soundness":"verified",
-    "soundness_score":0.7734,
-    "rubric_coverage":0.64,
-    "audited_at":"2026-09-19",
-    "unknowns":1,
-    "duplicate_of":"greenlight-nine-agent-production-crew",
-    "hazard":true,
-    "evidence":6,
-    "reasons":[
-     "soundness 0.77 over 64% of the rubric; 1 named unknown(s) remain \u2192 publishable with caveats",
-     "resubmission of the same product \u2014 name match False, listing-title equality False, shared mechanism/text overlap 0.25, shared numeric fingerprints ['$0.02', '$20', '$238', '$4.50'] (0.60 jaccard); merged into the better-evidenced copy (A5)"
-    ]
-   },
-   "verdict":"duplicate",
-   "worth":"strong",
-   "soundness":"verified",
-   "soundness_score":0.7734,
-   "rubric_coverage":0.64,
-   "audited_at":"2026-09-19",
-   "unknowns":1,
-   "repo_url":null
   },
   {
    "id":"fragmentos-del-crepusculo",
@@ -1226,6 +1230,56 @@
    "audit":null
   },
   {
+   "id":"neuroguard-ai-0qb34c",
+   "name":"NeuroGuard AI (v2)",
+   "url":"https://devpost.com/software/neuroguard-ai-0qb34c",
+   "domain":"Health, Care & Human Performance",
+   "subsystem":"Screening & Diagnostics",
+   "event":"Hack for Humanity | Summer 2026",
+   "coolness":0.3765,
+   "moves":[
+    "deterministic-guardrail"
+   ],
+   "specificity":0.54,
+   "summary":"Uses personalized cognitive and physical tests to track concussion recovery, detect unusual changes, and provide AI-powered recovery insights.",
+   "provenance":"audited-hold",
+   "why_not_promoted":[
+    "verdict:thin",
+    "soundness 0.33 is too low to certify; stays in the pool",
+    "hazard: clinical"
+   ],
+   "would_settle_it":[
+    "artifact_exists: a repository, deployment or store listing we can resolve",
+    "stack_consistency: a repository to compare the declared stack against",
+    "build_is_real: a readable source tree (a repo link, then `python3 pipeline/repo_verify.py`)",
+    "numbers_add_up: a denominator and baseline for the headline figure, or the raw log behind it",
+    "limits_disclosed: a statement of what the system itself cannot do (accuracy, coverage, privacy, failure modes)"
+   ],
+   "audit":{
+    "verdict":"thin",
+    "worth":"niche",
+    "soundness":"weak",
+    "soundness_score":0.3281,
+    "rubric_coverage":0.64,
+    "audited_at":"2026-09-19",
+    "unknowns":0,
+    "duplicate_of":null,
+    "hazard":true,
+    "evidence":6,
+    "reasons":[
+     "soundness 0.33 is too low to certify; stays in the pool"
+    ]
+   },
+   "verdict":"thin",
+   "worth":"niche",
+   "soundness":"weak",
+   "soundness_score":0.3281,
+   "rubric_coverage":0.64,
+   "audited_at":"2026-09-19",
+   "unknowns":0,
+   "repo_url":null
+  },
+  {
    "id":"exefast",
    "name":"ExeFast",
    "url":"https://devpost.com/software/exefast",
@@ -1266,6 +1320,55 @@
     "artifact check via repo_verify.py"
    ],
    "audit":null
+  },
+  {
+   "id":"gemini-box",
+   "name":"Gemini-Box",
+   "url":"https://devpost.com/software/gemini-box",
+   "domain":"Agentic Autonomy & Orchestration",
+   "subsystem":"General",
+   "event":"Build with Gemini XPRIZE",
+   "coolness":0.3729,
+   "moves":[
+    "institutional-grade-reliability"
+   ],
+   "specificity":0.4,
+   "summary":"Gemini-Box: Bounded cryptographic execution claims for autonomous Gemini agents. Any mutation collapses verification instantly.",
+   "provenance":"audited-hold",
+   "why_not_promoted":[
+    "verdict:duplicate",
+    "soundness 0.33 is too low to certify; stays in the pool",
+    "resubmission of the same product \u2014 name match True, listing-title equality True, shared mechanism/text overlap 0.07, shared numeric fingerprints [] (0.00 jaccard); merged into the better-evidenced copy (A5)",
+    "merged into adversarial-compliance-matrix \u2014 same submission, richer twin published",
+    "duplicate_of:adversarial-compliance-matrix"
+   ],
+   "would_settle_it":[
+    "nothing \u2014 adversarial-compliance-matrix is the same submission with more evidence; read its audit sheet instead"
+   ],
+   "audit":{
+    "verdict":"duplicate",
+    "worth":"strong",
+    "soundness":"weak",
+    "soundness_score":0.3281,
+    "rubric_coverage":0.64,
+    "audited_at":"2026-09-19",
+    "unknowns":0,
+    "duplicate_of":"adversarial-compliance-matrix",
+    "hazard":false,
+    "evidence":6,
+    "reasons":[
+     "soundness 0.33 is too low to certify; stays in the pool",
+     "resubmission of the same product \u2014 name match True, listing-title equality True, shared mechanism/text overlap 0.07, shared numeric fingerprints [] (0.00 jaccard); merged into the better-evidenced copy (A5)"
+    ]
+   },
+   "verdict":"duplicate",
+   "worth":"strong",
+   "soundness":"weak",
+   "soundness_score":0.3281,
+   "rubric_coverage":0.64,
+   "audited_at":"2026-09-19",
+   "unknowns":0,
+   "repo_url":null
   },
   {
    "id":"nua-offline-on-device-lecture-translator",
@@ -1312,6 +1415,57 @@
     "artifact check via repo_verify.py"
    ],
    "audit":null
+  },
+  {
+   "id":"greenlight-screenplay-to-film",
+   "name":"Greenlight - Screenplay to Film",
+   "url":"https://devpost.com/software/greenlight-screenplay-to-film",
+   "domain":"Creative Media, Story & Play",
+   "subsystem":"Production & Direction",
+   "event":"Agentic Cinema: The Blockbuster Hackathon",
+   "coolness":0.3712,
+   "moves":[
+    "data-flywheel"
+   ],
+   "specificity":0.74,
+   "summary":"Turn a screenplay into a film you can afford. Nine Gemini agents storyboard, cast, shoot and cut it, quoting cost and odds first. Learns from every take in ClickHouse.",
+   "provenance":"audited-hold",
+   "why_not_promoted":[
+    "verdict:duplicate",
+    "soundness 0.77 over 64% of the rubric; 1 named unknown(s) remain \u2192 publishable with caveats",
+    "resubmission of the same product \u2014 name match False, listing-title equality False, shared mechanism/text overlap 0.25, shared numeric fingerprints ['$0.02', '$20', '$238', '$4.50'] (0.60 jaccard); merged into the better-evidenced copy (A5)",
+    "unknown: prior_art \u2014 no named competitor; a search pass would settle it",
+    "hazard: regulated-claim (no team disclaimer found)",
+    "merged into greenlight-nine-agent-production-crew \u2014 same submission, richer twin published",
+    "duplicate_of:greenlight-nine-agent-production-crew"
+   ],
+   "would_settle_it":[
+    "nothing \u2014 greenlight-nine-agent-production-crew is the same submission with more evidence; read its audit sheet instead"
+   ],
+   "audit":{
+    "verdict":"duplicate",
+    "worth":"strong",
+    "soundness":"verified",
+    "soundness_score":0.7734,
+    "rubric_coverage":0.64,
+    "audited_at":"2026-09-19",
+    "unknowns":1,
+    "duplicate_of":"greenlight-nine-agent-production-crew",
+    "hazard":true,
+    "evidence":6,
+    "reasons":[
+     "soundness 0.77 over 64% of the rubric; 1 named unknown(s) remain \u2192 publishable with caveats",
+     "resubmission of the same product \u2014 name match False, listing-title equality False, shared mechanism/text overlap 0.25, shared numeric fingerprints ['$0.02', '$20', '$238', '$4.50'] (0.60 jaccard); merged into the better-evidenced copy (A5)"
+    ]
+   },
+   "verdict":"duplicate",
+   "worth":"strong",
+   "soundness":"verified",
+   "soundness_score":0.7734,
+   "rubric_coverage":0.64,
+   "audited_at":"2026-09-19",
+   "unknowns":1,
+   "repo_url":null
   },
   {
    "id":"docpulse-ihxu9r",
@@ -2431,55 +2585,6 @@
    "audit":null
   },
   {
-   "id":"gemini-box",
-   "name":"Gemini-Box",
-   "url":"https://devpost.com/software/gemini-box",
-   "domain":"Agentic Autonomy & Orchestration",
-   "subsystem":"General",
-   "event":"Build with Gemini XPRIZE",
-   "coolness":0.3372,
-   "moves":[
-    "institutional-grade-reliability"
-   ],
-   "specificity":0.31,
-   "summary":"Gemini-Box: Bounded cryptographic execution claims for autonomous Gemini agents. Any mutation collapses verification instantly.",
-   "provenance":"audited-hold",
-   "why_not_promoted":[
-    "verdict:duplicate",
-    "soundness 0.33 is too low to certify; stays in the pool",
-    "resubmission of the same product \u2014 name match True, listing-title equality True, shared mechanism/text overlap 0.07, shared numeric fingerprints [] (0.00 jaccard); merged into the better-evidenced copy (A5)",
-    "merged into adversarial-compliance-matrix \u2014 same submission, richer twin published",
-    "duplicate_of:adversarial-compliance-matrix"
-   ],
-   "would_settle_it":[
-    "nothing \u2014 adversarial-compliance-matrix is the same submission with more evidence; read its audit sheet instead"
-   ],
-   "audit":{
-    "verdict":"duplicate",
-    "worth":"strong",
-    "soundness":"weak",
-    "soundness_score":0.3281,
-    "rubric_coverage":0.64,
-    "audited_at":"2026-09-19",
-    "unknowns":0,
-    "duplicate_of":"adversarial-compliance-matrix",
-    "hazard":false,
-    "evidence":6,
-    "reasons":[
-     "soundness 0.33 is too low to certify; stays in the pool",
-     "resubmission of the same product \u2014 name match True, listing-title equality True, shared mechanism/text overlap 0.07, shared numeric fingerprints [] (0.00 jaccard); merged into the better-evidenced copy (A5)"
-    ]
-   },
-   "verdict":"duplicate",
-   "worth":"strong",
-   "soundness":"weak",
-   "soundness_score":0.3281,
-   "rubric_coverage":0.64,
-   "audited_at":"2026-09-19",
-   "unknowns":0,
-   "repo_url":null
-  },
-  {
    "id":"intent-compiler",
    "name":"Kosmo",
    "url":"https://devpost.com/software/intent-compiler",
@@ -2896,56 +3001,6 @@
    "audit":null
   },
   {
-   "id":"neuroguard-ai-0qb34c",
-   "name":"NeuroGuard AI (v2)",
-   "url":"https://devpost.com/software/neuroguard-ai-0qb34c",
-   "domain":"Health, Care & Human Performance",
-   "subsystem":"Screening & Diagnostics",
-   "event":"Hack for Humanity | Summer 2026",
-   "coolness":0.3227,
-   "moves":[
-    "deterministic-guardrail"
-   ],
-   "specificity":0.4,
-   "summary":"Uses personalized cognitive and physical tests to track concussion recovery, detect unusual changes, and provide AI-powered recovery insights.",
-   "provenance":"audited-hold",
-   "why_not_promoted":[
-    "verdict:thin",
-    "soundness 0.33 is too low to certify; stays in the pool",
-    "hazard: clinical"
-   ],
-   "would_settle_it":[
-    "artifact_exists: a repository, deployment or store listing we can resolve",
-    "stack_consistency: a repository to compare the declared stack against",
-    "build_is_real: a readable source tree (a repo link, then `python3 pipeline/repo_verify.py`)",
-    "numbers_add_up: a denominator and baseline for the headline figure, or the raw log behind it",
-    "limits_disclosed: a statement of what the system itself cannot do (accuracy, coverage, privacy, failure modes)"
-   ],
-   "audit":{
-    "verdict":"thin",
-    "worth":"niche",
-    "soundness":"weak",
-    "soundness_score":0.3281,
-    "rubric_coverage":0.64,
-    "audited_at":"2026-09-19",
-    "unknowns":0,
-    "duplicate_of":null,
-    "hazard":true,
-    "evidence":6,
-    "reasons":[
-     "soundness 0.33 is too low to certify; stays in the pool"
-    ]
-   },
-   "verdict":"thin",
-   "worth":"niche",
-   "soundness":"weak",
-   "soundness_score":0.3281,
-   "rubric_coverage":0.64,
-   "audited_at":"2026-09-19",
-   "unknowns":0,
-   "repo_url":null
-  },
-  {
    "id":"cinepilot-ai-multi-agent-film-production-assistant",
    "name":"CinePilot - Production Assistant",
    "url":"https://devpost.com/software/cinepilot-ai-multi-agent-film-production-assistant",
@@ -3294,55 +3349,6 @@
     "artifact check via repo_verify.py"
    ],
    "audit":null
-  },
-  {
-   "id":"medvoice-y87kei",
-   "name":"Medvoice",
-   "url":"https://devpost.com/software/medvoice-y87kei",
-   "domain":"Health, Care & Human Performance",
-   "subsystem":"Care Navigation & Records",
-   "event":"Hack for Humanity | Summer 2026",
-   "coolness":0.2966,
-   "moves":[],
-   "specificity":0.18,
-   "summary":"A voice-first, visual medication assistant designed by a nurse to help elderly and low-literacy patients take the right medicine at the right time.",
-   "provenance":"audited-hold",
-   "why_not_promoted":[
-    "verdict:thin",
-    "soundness 0.27 is too low to certify; stays in the pool",
-    "unknown: numbers_with_arithmetic \u2014 no measurable outcome is asserted; a benchmark table would settle it",
-    "hazard: clinical (no team disclaimer found)"
-   ],
-   "would_settle_it":[
-    "no measurable outcome is asserted; a benchmark table would settle it",
-    "artifact_exists: a repository, deployment or store listing we can resolve",
-    "stack_consistency: a repository to compare the declared stack against",
-    "build_is_real: a readable source tree (a repo link, then `python3 pipeline/repo_verify.py`)",
-    "numbers_add_up: a denominator and baseline for the headline figure, or the raw log behind it"
-   ],
-   "audit":{
-    "verdict":"thin",
-    "worth":"strong",
-    "soundness":"weak",
-    "soundness_score":0.2656,
-    "rubric_coverage":0.64,
-    "audited_at":"2026-09-19",
-    "unknowns":1,
-    "duplicate_of":null,
-    "hazard":true,
-    "evidence":6,
-    "reasons":[
-     "soundness 0.27 is too low to certify; stays in the pool"
-    ]
-   },
-   "verdict":"thin",
-   "worth":"strong",
-   "soundness":"weak",
-   "soundness_score":0.2656,
-   "rubric_coverage":0.64,
-   "audited_at":"2026-09-19",
-   "unknowns":1,
-   "repo_url":null
   },
   {
    "id":"cinema-os",

@@ -170,7 +170,10 @@ def run_checks(cap: Dict[str, Any], repo_name: Optional[str], repo: Optional[Dic
     # A structural figure ("10 styles", "three free renders") is checkable by opening the
     # product, which is not the same as a performance figure we re-derived. Counting the
     # first as the second would let a feature list vouch for an accuracy claim.
-    checkable = [n for n in numbers if n not in ok
+    # "structural:" means *a reader can look*; it does not survive the team's own
+    # verdict that the figure is not falsifiable, and counting a disclaimed number as
+    # checkable would let a page buy credit by describing its gap in the right tense.
+    checkable = [n for n in numbers if n not in ok and n.get("verifiable") is not False
                  and re.match(r"structural", str(n.get("arithmetic") or ""), re.I)]
     unfalsifiable = [n for n in numbers
                      if n.get("arithmetic") or n.get("denominator") or n.get("verifiable") is False]
@@ -282,7 +285,11 @@ def run_checks(cap: Dict[str, Any], repo_name: Optional[str], repo: Optional[Dic
         return False
 
     measured = [n for n in with_denom if n not in checkable and _stated(n)]
-    if checkable and unfalsifiable:
+    if ok:
+        emit("numbers_add_up", 1.0, "confirmed",
+             "; ".join(f"{n['claim']} (recomputed: {n['arithmetic']})" for n in ok[:2]),
+             "page", cap.get("source_url", ""), when)
+    elif checkable and unfalsifiable:
         # Some of the arithmetic is checkable and the headline is not; that is a different
         # finding from "nothing here is testable", and merging the two would let a feature
         # list launder an unmeasured claim (or hide a measured one).
@@ -305,10 +312,6 @@ def run_checks(cap: Dict[str, Any], repo_name: Optional[str], repo: Optional[Dic
              f"{len(unfalsifiable)} figure(s) we could not test: "
              + "; ".join(n["claim"] for n in unfalsifiable[:2])
              + " — no published harness, baseline or reproduction command to check against",
-             "page", cap.get("source_url", ""), when)
-    elif ok:
-        emit("numbers_add_up", 1.0, "confirmed",
-             "; ".join(f"{n['claim']} (recomputed: {n['arithmetic']})" for n in ok[:2]),
              "page", cap.get("source_url", ""), when)
     elif with_denom:
         emit("numbers_add_up", 0.75, "supported",
@@ -454,7 +457,12 @@ def build_fields(cap: Dict[str, Any], notes: Dict[str, Any], repo_name: Optional
         else:
             unknowns.append({"field": name, "missing": settle})
 
-    put("what_it_is", cap.get("one_line") or sec.get("what_it_does"), "observed",
+    _one_line = str(cap.get("one_line") or "").strip()
+    put("what_it_is", _one_line or sec.get("what_it_does"),
+        # A capture's `one_line` is the auditor's condensation of the page, not a transcription
+        # — the authors' own sentence rides on the catalog row as `summary`. Marking ours
+        # `observed` would tell a reader the page said it in those words.
+        "derived" if _one_line else "observed",
         "the page's own summary section is missing or generic; a demo link would settle it")
     put("what_it_does", sec.get("what_it_does") or sec.get("inspiration"), "observed",
         "no step-by-step description of user-visible behaviour on the page")
@@ -464,8 +472,8 @@ def build_fields(cap: Dict[str, Any], notes: Dict[str, Any], repo_name: Optional
     # happened — a bare tag list was being dropped as "too short to be a finding", which
     # turned a format floor into an unfiled mandatory field and failed the build gate.
     tags = [str(t).strip() for t in (cap.get("built_with") or []) if str(t).strip()]
+    langs = ", ".join(sorted({str(k) for k in ((repo or {}).get("languages") or {})}))
     if tags:
-        langs = ", ".join(sorted({str(k) for k in ((repo or {}).get("languages") or {})}))
         declared = f"declared by the authors ({len(tags)}): {', '.join(tags[:8])}"
         if langs:
             declared += f" · repo languages say: {langs[:70]}"
@@ -473,13 +481,26 @@ def build_fields(cap: Dict[str, Any], notes: Dict[str, Any], repo_name: Optional
             declared += " · no repository published, so these are the team's own claim and nothing corroborates them"
         put("built_with_verified", declared, "observed",
             "authors published no 'Built With' tags, and no repo exists to read the stack from")
+    elif langs:
+        # The field answers "what is this actually built with, verified" — a repository census
+        # answers that whether or not the team filled in the tag sidebar. Leaving it unfiled
+        # because a UI widget was empty would punish the one record type that can be checked.
+        put("built_with_verified",
+            f"page published no 'Built With' tags; the linked repository reports {langs[:80]} "
+            f"(verified via the GitHub API), which is the only evidence of the real stack — "
+            f"library choices asserted in prose remain unverified",
+            "derived",
+            "neither tags nor a repository describe the stack")
     else:
         put("built_with_verified", None, "observed",
             "authors published no 'Built With' tags, and no repo exists to read the stack from")
     put("data_and_models", cap.get("data_and_models") or sec.get("how_we_built_it"), "observed",
         "which model(s), on what data, and at what cost are not stated anywhere public")
+    repo_tests = (", ".join(repo.get("test_paths") or []) if repo and repo.get("test_paths") else None)
     put("how_they_tested",
-        (", ".join(repo.get("test_paths") or []) if repo and repo.get("test_paths") else None) or
+        (f"test modules present in the linked repository — {repo_tests} — which is what the "
+         f"page's harness figures were produced with; the page itself describes no further "
+         f"evaluation protocol" if repo_tests else None) or
         (cap.get("testing") or None) or
         (sec.get("accomplishments") if re.search(r"(test|eval|bench|accuracy|measured)", sec.get("accomplishments", "").lower()) else None),
         "observed", "no test suite in the repo and no evaluation described on the page")
@@ -715,6 +736,10 @@ def audit(corpus_path: str = CORPUS, out_path: str = AUDIT_OUT, report: bool = F
                       "readme_bytes": (repo or {}).get("readme_bytes"),
                       "test_paths": (repo or {}).get("test_paths"),
                       "checked_at": (repo or {}).get("checked_at")} if repo_name else None),
+            # The page's own artifact links, copied verbatim, so every surface that publishes a
+            # row can point at the same demo the audit opened. Absent stays null — a missing
+            # demo link is a fact about the submission, not a hole to fill in (A10).
+            "links": {k: (cap.get("links") or {}).get(k) or None for k in ("repo", "demo", "video")},
             "hazard": hazard_for(rec, cap, notes),
             "likes": cap.get("likes", rec.get("likes")),
             "award": cap.get("award") or rec.get("award"),

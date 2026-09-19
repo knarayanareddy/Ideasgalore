@@ -175,15 +175,31 @@ Tier-2 detail record — the full shape is generated into
 }
 ```
 
-Tier-1 row (14 columns, dictionary-encoded):
+Tier-1 row (16 columns, dictionary-encoded):
 
 ```
 [id, name, hook≤140, event_id, likes|-1, coolness_x1000, domain_id, subsystem_id,
- move_ids[], stack_ids[], is_deep, has_thumbnail, award_id, event_age_days]
+ move_ids[], stack_ids[], is_deep, has_thumbnail, award_id, event_age_days,
+ verdict_id, worth_id]
 ```
 
 `likes: -1` ⇄ `null` — a missing signal is encoded as *missing*, never as zero.
 That single convention is what keeps the ranking honest at listing depth.
+
+**Two kinds of page read, one `is_deep`.** A row counts as deep when someone opened the
+project page and stored what it said — either the harvester (`raw/deep_records.json`) or an
+audit capture (`raw/deep_captures/*.json`). At ingest the capture is projected onto the row:
+`likes`, `award`, `software_id`, `built_with` and `gallery_images` when the capture actually
+read them, plus the artifact links (`repo_url`, `demo_url`, `video_url`), plus `depth: deep`.
+Prose never crosses that boundary (ADR-12 — the page's own sections live in the capture and
+the audit sheet, not in bulk exports), and an *unread* widget is treated as absence of
+evidence rather than evidence of absence, so a capture with no Built With sidebar cannot
+clear a stack the gallery scrape already knew. This exists because the audit's captures were
+for a while read-only for the audit: eight vetted records published `is_deep = 0` with no
+links while their sheet quoted their README, and the UI's depth filter and "project page
+fetched" badge were wrong about all of them. `shard_builder`'s capture-parity gate now refuses
+that state, and `source` — which stage wrote the row last — is descriptive only: a score may
+never read it, or enrichment would lower a record for having been enriched.
 
 ---
 
@@ -247,10 +263,12 @@ Ideasgalore/
 ├── mcp/ideasgalore_mcp.py              stdio MCP server, 11 tools (audit_report, promotion_queue, audit_rubric), stdlib only
 ├── pipeline/
 │   ├── raw/{seed_gallery.tsv,events.json,deep_records.json,overrides.json}
+│   ├── raw/deep_captures/*.json   audit page reads · raw/audit_notes.json   the panel's judgement
 │   ├── taxonomy_hacks.py  harvest_devpost.py  ingest_seed.py
 │   ├── shard_builder.py   generate_remixes.py  build_agent_api.py
+│   ├── audit_projects.py  repo_verify.py   → audit.jsonl (12 sheets per record, 6 checks each)
 │   ├── corpus.jsonl        ← single source of truth
-│   └── tests/test_pipeline.py  (39 tests)
+│   └── tests/test_pipeline.py  (76 tests, incl. the audit engine, the gates and the CSV contract)
 └── web/
     ├── public/
     │   ├── catalog-packed.json  catalog-stats.json  manifest.json

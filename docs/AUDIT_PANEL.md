@@ -335,7 +335,8 @@ assumptions, all in the *same* direction: the engine was too generous, not too s
     `rubric_coverage`, `audited_at`, `unknowns`, `repo_url`) so one parser reads both surfaces,
     and `would_settle_it` is derived from the ledger (open unknowns first, then each check below
     0.75 with the artifact named in `AUDIT_CHECKS[*].settles_with`, which is also in the rubric).
-    `catalog-stats.json` publishes `pool_audited_held` beside `pool_unaudited` so no consumer has
+    `catalog-stats.json` publishes `pool_audited_held` beside `pool_unaudited`, and
+    `records_hazarded_held` beside `records_hazarded`, so no consumer has
     to infer the split. Same lesson as deviation 4: a derived flag must be recomputed when the
     world it describes changes — a label that was accurate for a 165-row unchecked pool is a
     false statement about a pool that is now 5-of-160 scored.

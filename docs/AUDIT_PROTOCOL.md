@@ -42,7 +42,7 @@ and §4 explains why that is a finding about hackathon pages rather than about t
 
 | Input | Path | Provides | May it decide a status? |
 | --- | --- | --- | --- |
-| capture | `pipeline/raw/deep_captures/<id>.json` | the page's own structure: `sections`, `built_with`, `links`, `numbers[{claim, denominator, arithmetic, verifiable}]`, `testing`, `data_and_models`, `captured_at` | it *supplies evidence*; the status is recomputed |
+| capture | `pipeline/raw/deep_captures/<id>.json` | the page's own structure: `sections`, `built_with`, `links`, `numbers[{claim, denominator, arithmetic, verifiable}]`, `testing`, `data_and_models`, `captured_at`; plus `one_line`, which is *ours* — the auditor's condensation, never a quotation | it *supplies evidence*; the status is recomputed |
 | repo check | `pipeline/raw/repo_checks.json` | `api.github.com` facts: language, size, last push, README size, test paths | yes — it is the only independent signal we have |
 | editorial notes | `pipeline/raw/audit_notes.json` | `worth`, `worth_note`, `what_to_steal`, `what_breaks_first`, `prior_art`, `clone_cost`, `hazard_note` | **no** — judgement fields only, never a check status |
 
@@ -50,7 +50,7 @@ The split is load-bearing. An auditor cannot mark its own `arithmetic: "not fals
 as presented"` as confirmation, and cannot claim a benchmark by writing the word
 "benchmark". `run_checks()` derives every status from the shape of the data.
 
-Two rules came out of mistakes the panel actually made:
+Three rules came out of mistakes the panel actually made:
 
 - **A page's framing is not evidence.** A capture that labels its own number
   `verifiable: false`, or whose arithmetic note starts with *not / unfalsifiable / cannot /
@@ -59,6 +59,11 @@ Two rules came out of mistakes the panel actually made:
   `test_or_eval_evidence` scan `testing` for first-pass rates, A/B denominators, seeds,
   sample sizes and calibration runs. (Greenlight's 29% → 49% before/after read as
   "no tests visible" before this.)
+- **A restatement is not a transcription.** `what_it_is` filled from the capture's `one_line`
+  is filed `derived`; only a sentence taken from an authored section is `observed`. Every
+  field carries its own provenance, because a reader who thinks our summary is the team's
+  words will quote us at them — and the catalog row's `summary`, which *is* the team's
+  sentence (truncated to the documented 140-character hook), is where to quote from.
 
 ---
 
@@ -82,8 +87,10 @@ Checks, each `status` + `pass ∈ [0,1]` + `why` + evidence ids:
 | `stack_consistency` | does the claimed stack do the job claimed? | tag/section cross-check |
 | `limits_disclosed` | did they say what it cannot do? | presence of real constraints, costs, refusals |
 
-`soundness_score` is the mean of scored checks; `rubric_coverage` is the fraction of the 12
-fields filed with an evidence status. Both are emitted, never a composite of them.
+`soundness_score` is the mean of scored checks. `rubric_coverage` is the share of the weighted
+rubric that resolved with an evidence status — a field we could not file drags it down and also
+surfaces as a named unknown, which is the load-bearing form of the same fact. Both are emitted,
+never a composite of them.
 
 ### Reading prose without being fooled by it
 
@@ -130,7 +137,7 @@ mechanical, not judgement calls, and each is pinned by a test.
 contradicted on a load-bearing claim  →  unsound      (pool)
 no artifact                            →  thin          (pool, hard cap)
 coverage < 0.34 or >2 load-bearing unknowns → thin    (pool)
-score ≥ 0.70 and coverage ≥ 0.80       →  strong       (publish)
+score ≥ 0.70, coverage ≥ 0.80, zero unknowns →  strong   (publish)
 score ≥ 0.45                           →  sound-with-caveats (publish, unknowns listed)
 otherwise                              →  thin          (pool)
 same product under another name/slug   →  duplicate → best-sourced sibling (pool)
@@ -139,8 +146,9 @@ same product under another name/slug   →  duplicate → best-sourced sibling (
 Two deviations from the panel's first draft, both of which the code enforced on its own:
 
 1. **Coverage-aware renormalisation.** A record cannot be `strong` at 64% coverage however
-   high its score: `strong` requires `rubric_coverage ≥ 0.80`. Greenlight sits at
-   `sound-with-caveats` for exactly this reason — its scores are high and its gaps are many.
+   high its score: `strong` requires `rubric_coverage ≥ 0.80` *and* no open unknown. Greenlight
+   sits at `sound-with-caveats` for exactly this reason — its scores are high and its gaps are
+   many, and a mean over the checks it happened to answer is not the same claim as a clean sheet.
 2. **Listing-title equality merges what prose cannot.** Two records whose *published display
    names are identical* inside one event are one product submitted twice — on Devpost each page
    carries the platform's title, and the teams' own prose diverges on purpose. `gemini-box` and
@@ -160,10 +168,13 @@ Two deviations from the panel's first draft, both of which the code enforced on 
 
 One consequence is worth stating plainly, because it looks like a scoring bug until you read
 the corpus: `rubric_coverage` tops out near **0.64** for any record without a repository, since
-`built_with_verified`, `build_is_real` and `stack_consistency` can never be *filed with
-evidence* without one. `strong` needs coverage ≥ 0.80. So **`strong` is unreachable for
-projects that publish no code** — and 0 of the 165 admitted records link a repository. The top
-rung of the ladder is currently aspirational by construction, which is a finding about
+`build_is_real` and `stack_consistency` can never be *confirmed* without one and the fields that
+depend on code end up unfiled. `strong` needs coverage ≥ 0.80 and no unknowns. So **`strong` is
+effectively unreachable for projects that publish no code**, and of the fourteen records
+deep-captured so far exactly one — SATU — links a repository. That one landed at `strong`
+(0.86, zero unknowns, its headline score recomputed from the formula on the page), which is the
+proof the ladder works in both directions: the top rung is not decoration, it is just reserved
+for submissions whose build someone can actually open. For the rest this is a finding about
 hackathon submission pages, not a defect: from a page alone, nobody can certify a build.
 
 `worth` (`breakthrough | strong | niche | tired`) is decided *only* after soundness, and
@@ -250,7 +261,7 @@ with many rows and no audit is worth more than a 12th agentic-crew project. It i
 | Surface | What to expect |
 | --- | --- |
 | `data/audits.json` | id → verdict, worth, score, coverage, per-check `status`, unknown field names, sheet pointer (~150 B/record) |
-| `data/audits/<sector>.json` | full sheets: `fields[f] = {value, evidence[], confidence, status, why?}`, per-check `why`, the evidence ledger, `right_of_reply` |
+| `data/audits/<sector>.json` | full sheets: `fields[f] = {value, provenance}` (`provenance` is `observed` for text lifted from the page or the repo, `derived` for a conclusion we drew), `checks[c] = {status, pass, why}`, the evidence ledger with a URL and a date per entry, and `right_of_reply` |
 | `data/audit-rubric.json` | the rubric itself: mandatory fields, check weights, verdict ladder, hard caps, dedup thresholds, banned words, policy |
 | `data/pool.json` / `pool.csv` | held-out records with `why_not_promoted[]` and `would_settle_it[]`; `provenance` splits `audited-hold` (scored, capped) from `unaudited` (never captured), and the CSV repeats `ideas.csv`'s column order so one parser reads both |
 | `data/promotion-queue.json` | the work list |
@@ -259,6 +270,13 @@ with many rows and no audit is worth more than a 12th agentic-crew project. It i
 
 A `null` audit block in a record, or a `verdict_id` outside the enum, means *unaudited* —
 never "passed".
+
+The row and the sheet must not contradict each other, so the build gate also runs a
+**capture-parity** check: for every id in `raw/deep_captures/`, the corpus row must carry
+`depth: deep` and the same `repo_url` / `demo_url` / `video_url` the page printed. A record
+whose audit quotes its README and its demo while the catalog row says "listing, no links" is
+not a cosmetic mismatch — it is a published surface making a false statement about the
+evidence, and it is exactly what happened to the first eight audited records.
 
 ---
 

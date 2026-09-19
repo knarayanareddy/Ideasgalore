@@ -172,7 +172,7 @@
      "value":"Windows app with two modes: generate speech from text using one of five built-in voices or a cloned voice, or re-voice any uploaded or recorded clip. Transcription and synthesis both run on the Snapdragon X device."
     },
     "what_it_is":{
-     "provenance":"observed",
+     "provenance":"derived",
      "value":"Local A.I voice generation and transformation, powered by Qualcomm."
     },
     "what_to_steal":{
@@ -183,6 +183,11 @@
    "hazard":null,
    "id":"audionova",
    "likes":547,
+   "links":{
+    "demo":null,
+    "repo":null,
+    "video":"https://www.youtube.com/watch?v=hLuvG3pIVWM"
+   },
    "moves":[
     "offline-first-fallback",
     "make-the-invisible-measurable",
@@ -418,7 +423,7 @@
      "value":"User drops a screenplay. The system reads it whole, splits it into chapters, breaks chapters into shots, casts characters, writes prompts, generates footage, then inspects what it made: if shot 3 contains a person who should not be there it notices and folds that into the retry instruction. The user presses keep or again. Before any spend it quotes odds: this chapter is 12 shots, ~$4.50, about half will pass first try. Casting is a hard gate; a character reference costs $0.02 while a shot costs $1 and a finished segment ~$20, so every decision is pushed down the cost ladder. Face is an input, look is an output: an uploaded photo is locked as identity while only the style re-renders, and wardrobe is per chapter. Style buttons carry their own success adjustment (photorealistic \u221210pt vs animation +12/+15pt). Every generation and every keep/again verdict is written to ClickHouse, so once enough similar shots exist the estimate switches from built-in priors to that user's own numbers and says which one you are looking at plus the sample size. After casting, every prompt is exportable."
     },
     "what_it_is":{
-     "provenance":"observed",
+     "provenance":"derived",
      "value":"Drop a screenplay; nine agents read it, cast it, price it, shoot it, and watch what they made \u2014 with the quote shown before you press the button."
     },
     "what_to_steal":{
@@ -433,6 +438,11 @@
    },
    "id":"greenlight-nine-agent-production-crew",
    "likes":1,
+   "links":{
+    "demo":null,
+    "repo":null,
+    "video":"https://www.youtube.com/watch?v=sS_gIU9flCE"
+   },
    "moves":[
     "make-the-invisible-measurable",
     "crew-of-specialists",

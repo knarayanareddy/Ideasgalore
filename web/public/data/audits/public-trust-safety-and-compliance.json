@@ -207,7 +207,7 @@
      "value":"Upload a document (PDF, text, CSV or image). An ingestion agent extracts the facts with Gemini; a compliance agent reasons over them against the ruleset for that industry and jurisdiction and returns a risk score where every verdict carries its citation. Routine documents auto-approve, edge cases escalate to a human reviewer with the reasoning attached, every decision is appended to an immutable audit trail, and a scheduled workflow produces weekly reports with a Gemini executive summary. Currently 16 rulesets, 88 rules, 12 jurisdiction profiles: NDIS and aged care in Australia, corporate compliance in India, and GDPR, CCPA, PIPEDA, LGPD, PDPA and POPIA."
     },
     "what_it_is":{
-     "provenance":"observed",
+     "provenance":"derived",
      "value":"Document compliance checks where every verdict must cite a rule in a versioned ruleset, with an append-only audit trail the writing identity cannot rewrite."
     },
     "what_to_steal":{
@@ -222,6 +222,11 @@
    },
    "id":"complianceguardian-kcqs32",
    "likes":2,
+   "links":{
+    "demo":null,
+    "repo":null,
+    "video":"https://www.youtube.com/watch?v=eiWb3Vt31cQ"
+   },
    "moves":[
     "evidence-graph",
     "deterministic-guardrail",

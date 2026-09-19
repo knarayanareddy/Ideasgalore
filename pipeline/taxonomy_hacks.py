@@ -811,7 +811,11 @@ def enrich_project_record(raw: Dict[str, Any], today: str,
         has_thumbnail=bool(rec.get("thumbnail")),
         has_links=bool(rec.get("repo_url") or rec.get("demo_url") or rec.get("video_url")),
         kin_redundancy=kin_redundancy,
-        staff_pick=bool(rec.get("source") == "showcase"),
+        # `source` records which stage last wrote the row and changes when a page is fetched
+        # or a capture is folded in; `event_key` is what actually says "this came from the
+        # staff-picked showcase feed". Deriving a score from the former meant a record could
+        # lose its staff-pick credit purely by being deepened.
+        staff_pick=bool(rec.get("event_key") == "showcase"),
     )
     rec["coolness"] = rec["coolness_parts"]["total"]
     noisy = looks_noisy(rec.get("summary") or "")

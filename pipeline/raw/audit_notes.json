@@ -266,6 +266,32 @@
   "worth": "strong",
   "worth_note": "The architecture is the contribution: deterministic extraction, rule-based history-aware scoring, retrieval over a guideline corpus, and escalation that pre-empts advice - with the generative model kept out of the decision path. That is the correct shape for software that touches a regulated outcome, and it is rare to see it chosen deliberately at hackathon scale. Held below breakthrough because the pieces are standard practice in clinical decision support."
  },
+ "satu": {
+  "clone_cost": {
+   "assumptions": [
+    "you have a catalog with attributes and ratings, since the question value term comes from attribute coverage",
+    "you accept a rule-based scored path; the moment a model enters it, the latency and cost claims no longer transfer",
+    "the benchmark is the organiser's, so porting it means building your own session harness"
+   ],
+   "estimate": "2-4 days to reproduce the architecture on a catalog you already have; weeks to earn the numbers",
+   "why": "The scored path is stdlib Python with no model, so the retrieval, ranking, slate shaping and question selection logic is legible in a day and the harness is in the repo. What does not come free is the evaluator and the catalog statistics it leans on - popularity priors, attribute lead lines and rare-phrase evidence are all derived from that specific 50,000-product dump."
+  },
+  "hazard_note": "No regulated-outcome claim: a shopping copilot measured against an organiser's evaluator. The one thing a builder should carry forward is that the metric is the product's opinion of itself - the page is unusually clear that conversion of the session, not shopper satisfaction, is what terminates the evaluation.",
+  "prior_art": [
+   {
+    "corpus_id": "greenlight-nine-agent-production-crew",
+    "relation": "same genre - an agent pipeline that reports a measured before/after with a cost figure - but the two sit at opposite ends of auditability: Greenlight's numbers are asserted with a stated cost ladder and no harness, SATU's can be recomputed from the formula on the page and its harness is in the linked repository."
+   },
+   {
+    "corpus_id": "sketchwish",
+    "relation": "both treat the free/default path as a design constraint to be engineered rather than a concession; SketchWish does it with sign-in gates and hard caps against abuse, SATU by keeping the scored path model-free at $0.00 per turn."
+   }
+  ],
+  "what_breaks_first": "The evaluator's proxy. Optimising 'the session ends when the target appears in the slate' rewards wide early slates and precise question-baiting, which is not the same thing as a shopper being helped; HitRate@10 of 1.000 with 2.27 turns says the target was surfaced, not that the other nine products were good or that the user trusted the answer. Second: state robustness - typed slots, refusals and an exhaustion path are all deterministic logic over a 50k catalog, and the page reports no adversarial or human sessions to show the behaviour selection recovering from a shopper who changes their mind.",
+  "what_to_steal": "Publish the objective function next to the results, including how failures are counted, so the number can be checked rather than trusted; make the expensive optional component visible at weight zero instead of deleting it, which documents a decision and its cost; use one shared preprocessing function for index and query; and treat 'how many items do I show now' and 'is another question worth a turn' as two explicit, stateful decisions rather than fixed constants.",
+  "worth": "breakthrough",
+  "worth_note": "Not for the score - for the discipline. A hackathon team published the objective, the metric definitions, the convention for misses, and a baseline row, then made every design decision answerable to it: slate width as a real variable because reciprocal rank is weighted, the dense asset kept in the architecture at weight zero and labelled rejected, one tokenizer shared by index and query so the two can never disagree. It is the rare submission where a reader can recompute the headline number from the page, and the arithmetic closes to four decimals."
+ },
  "sketchwish": {
   "clone_cost": {
    "assumptions": [
@@ -321,5 +347,31 @@
   "what_to_steal": "Force the extraction model into a strict response schema per provider instead of writing per-provider parsers, and keep the raw values alongside the parsed ones; smooth noisy physiological inputs over a short and a long window so a derived score cannot jitter day to day; ship the derived score against a baseline the user already trusts (chronological age) rather than as a bare number.",
   "worth": "niche",
   "worth_note": "Two pieces are worth taking and one is worth doubting. Grammar-constrained decoding for provider-specific PDF layouts is a real technique for any document pipeline, and smoothing volatile wearable inputs with nested EMAs before feeding a scoring model is the unglamorous fix that makes a score stable enough to display. The product itself sits in a crowded longevity-dashboard category whose hardest part - whether the number means anything - is exactly where the page offers a percentage with no denominator."
+ },
+ "vms-ai-guard-fisheries-compliance-monitoring-alerts": {
+  "clone_cost": {
+   "assumptions": [
+    "you can obtain a VMS feed or an open equivalent (national fisheries authorities publish some)",
+    "an authority will stand behind a vendor ranking, or you keep the score internal",
+    "you have someone who can read the flag-state rules the alerts would be judged against"
+   ],
+   "estimate": "1-2 weeks for the pipeline skeleton; the data agreement is the project",
+   "why": "Time-series reconstruction, gap detection and a scoring rollup are ordinary work. What takes months is getting incident, violation and investigation records for a jurisdiction in a usable form, and being allowed to publish a score about a licensed provider."
+  },
+  "hazard_note": "IUU fishing enforcement and a provider quality score: alerts that may trigger boardings or sanctions, and a ranking that could cost a licensed vendor business. The page acknowledges the absence of ground truth as a challenge and states no review step, appeal path or human gate before an alert reaches an authority.",
+  "prior_art": [
+   {
+    "corpus_id": "complianceguardian-kcqs32",
+    "relation": "both sell compliance judgement to a regulator, and the contrast is the whole lesson: one requires every verdict to cite a versioned rule and cannot rewrite its audit trail, the other produces a risk classification with no published basis, denominator or ground truth."
+   },
+   {
+    "corpus_id": "adversarial-compliance-matrix",
+    "relation": "same audience (evidence a machine can check), opposite coverage: that project argues its case with named files, a fixture generator and a CI matrix, this one with four bullet lists."
+   }
+  ],
+  "what_breaks_first": "The provider score, because the page states there is no ground truth for provider quality: a number that ranks vendors on incident history without a validated label is an accusation with an arithmetic flavour, and the incidents themselves come from the same fragmented sources the team lists as a challenge. Second: root-cause attribution, since distinguishing a dead device from a deliberate shutdown is the whole enforcement question and no method is described.",
+  "what_to_steal": "Split one data feed into per-stakeholder workflows (owner, regulator, vendor) instead of one dashboard for everyone, and make the disconnection *duration* the primary signal rather than the position - the compliance failure is the gap in reporting, not the coordinate.",
+  "worth": "niche",
+  "worth_note": "The idea worth keeping is the third workflow: scoring the monitoring *provider* from incident and investigation history turns a vendor relationship into something measurable, which is a genuinely useful reflex in any compliance stack. The submission itself is a bullet list of capabilities: no schema, no model, no data source, no metric, no link to code or demo, and no numbers a reader could recompute - so nothing here can be credited beyond the intention."
  }
 }

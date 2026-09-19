@@ -23,6 +23,7 @@ sys.path.insert(0, os.path.join(REPO, "pipeline"))
 sys.path.insert(0, os.path.join(REPO, "mcp"))
 
 import audit_projects as A  # noqa: E402
+import ingest_seed as I  # noqa: E402
 import shard_builder  # noqa: E402
 import taxonomy_hacks as T  # noqa: E402
 
@@ -741,6 +742,157 @@ class TestAuditEngine(unittest.TestCase):
         self.assertGreaterEqual(chk["pass"], 0.9)
         self.assertIn("49", chk["why"] + json.dumps(chk.get("evidence", [])))
         self.assertEqual(sh["verdict"], "sound-with-caveats")
+
+    def test_our_own_summary_is_never_marked_as_the_teams(self):
+        """`what_it_is` is `derived` when it comes from the capture's `one_line`.
+
+        A reader who believes a sentence is transcribed will attribute it to the authors.
+        Only text taken from an authored section earns `observed`.
+        """
+        cap = {"id": "fixture", "name": "Fixture", "source_url": "https://devpost.com/software/fixture",
+               "one_line": "A restatement of the page in the auditor's own words, filed as derived.",
+               "sections": {"what_it_does": "The page's own description of its behaviour, verbatim."},
+               "built_with": [], "links": {}, "numbers": [], "data_and_models": None, "testing": None}
+        notes = {"worth": "niche"}
+        fields, _ = A.build_fields(cap, notes, None, None, {})
+        self.assertEqual(fields["what_it_is"]["provenance"], "derived", fields["what_it_is"])
+        cap2 = {**cap, "one_line": None}
+        fields2, _ = A.build_fields(cap2, notes, None, None, {})
+        self.assertEqual(fields2["what_it_is"]["provenance"], "observed", fields2["what_it_is"])
+
+    def test_a_page_read_shows_up_on_the_row_it_came_from(self):
+        """Depth and artifact links are row facts, not sheet-only facts.
+
+        Every id in `raw/deep_captures` was read in full, so its corpus row must say
+        `depth: deep` and carry the links the page published. The bug this pins: the
+        projection existed for harvester records only, and the UI's "project page fetched"
+        badge, its depth filter and every bulk export described the six audited records as
+        un-fetched listing rows.
+        """
+        caps = {}
+        for name in sorted(os.listdir(os.path.join(REPO, "pipeline", "raw", "deep_captures"))):
+            if name.endswith(".json"):
+                with open(os.path.join(REPO, "pipeline", "raw", "deep_captures", name), encoding="utf-8") as fh:
+                    cap = json.load(fh)
+                caps[str(cap["id"])] = cap
+        self.assertGreaterEqual(len(caps), 12)
+        with open(os.path.join(REPO, "pipeline", "corpus.jsonl"), encoding="utf-8") as fh:
+            rows = {json.loads(l)["id"]: json.loads(l) for l in fh}
+        for rid, cap in caps.items():
+            r = rows.get(rid)
+            self.assertIsNotNone(r, f"{rid} captured but absent from the corpus")
+            self.assertEqual(r.get("depth"), "deep", f"{rid}: a full page read must not publish as a listing row")
+            self.assertEqual(r.get("has_deep", 1), 1, rid)
+            for row_key, cap_key in (("repo_url", "repo"), ("demo_url", "demo"), ("video_url", "video")):
+                if (cap.get("links") or {}).get(cap_key):
+                    self.assertEqual(r.get(row_key), cap["links"][cap_key],
+                                     f"{rid}: {row_key} must be the link the page actually printed")
+
+    def test_enriching_a_row_cannot_change_its_staff_pick_credit(self):
+        """`staff_pick` reads the feed the row came from, not which stage wrote to it last.
+
+        Deriving it from `source` meant a harvester or audit capture that stamps its own
+        provenance silently moved a row's `validation` term — enrichment lowering a score is
+        an invitation to stop enriching.
+        """
+        base = dict(likes=None, award=None, registrations=100, prize_usd=1000, featured=True,
+                    winners_announced=True, event_date="2026-09-12", today="2026-09-19",
+                    specificity=0.6, depth="listing", has_thumbnail=True, has_links=False,
+                    kin_redundancy=0.0)
+        showcase = T.compute_coolness(**base, staff_pick=True)
+        gallery = T.compute_coolness(**base, staff_pick=False)
+        self.assertGreater(showcase["validation"], gallery["validation"])
+        for depth, links in (("deep", True), ("listing", False)):
+            same = T.compute_coolness(**{**base, "depth": depth, "has_links": links}, staff_pick=True)
+            self.assertEqual(round(same["validation"], 6), round(showcase["validation"], 6),
+                             "validation must not depend on capture stage")
+
+    def test_an_empty_capture_field_cannot_erase_what_the_listing_knew(self):
+        """A page read that saw no tag sidebar is an absence of evidence, not evidence of absence."""
+        with tempfile.TemporaryDirectory() as td:
+            cap = {"id": "x", "likes": 0, "award": None, "software_id": None, "built_with": [],
+                   "gallery_images": 0, "links": {"repo": "https://github.com/o/x", "demo": None,
+                                                   "video": None}}
+            with open(os.path.join(td, "x.json"), "w", encoding="utf-8") as fh:
+                json.dump(cap, fh)
+            proj = I.load_capture_projection(td)["x"]
+        self.assertEqual(proj["depth"], "deep")
+        self.assertEqual(proj["likes"], 0, "zero likes is an observation")
+        self.assertEqual(proj["repo_url"], "https://github.com/o/x")
+        self.assertNotIn("built_with", proj, "an unread tag list must not clear the row's stack")
+        self.assertNotIn("demo_url", proj)
+        self.assertNotIn("award", proj)
+
+    def test_a_recomputed_figure_outranks_a_structural_one(self):
+        """`ok` must sit above `checkable` in the numbers ladder.
+
+        SATU's headline is recomputable from the formula printed on the page and it also
+        publishes latency figures a reader could re-measure. Crediting only the weaker tier
+        because a branch was ordered badly is the quietest possible way to fail a good
+        submission, and it did exactly that once.
+        """
+        cap = {"id": "fixture", "name": "Fixture", "source_url": "https://devpost.com/software/fixture",
+               "sections": {}, "testing": "", "built_with": [], "links": {},
+               "numbers": [
+                   {"claim": "Composite 0.9672", "denominator": "per-session ranks and turns",
+                    "arithmetic": "recomputed: 0.50*1.000 + 0.30*0.975 + 0.20*0.873 = 0.9671",
+                    "verifiable": True},
+                   {"claim": "Latency about 1 ms", "denominator": "harness runs",
+                    "arithmetic": "structural: rerun the shipped harness to check", "verifiable": True}]}
+        chk = A.run_checks(cap, None, None, {})[0]["numbers_add_up"]
+        self.assertEqual((chk["status"], chk["pass"]), ("confirmed", 1.0), chk["why"])
+
+    def test_a_figure_the_team_called_unfalsifiable_is_not_credit_as_checkable(self):
+        """A disclaimer in the right tense is still a disclaimer.
+
+        Fisheries-guard described its risk score as structural and explicitly not
+        falsifiable; matching the word "structural" handed it the same tier as a figure a
+        reader can actually open.
+        """
+        cap = {"id": "fixture", "name": "Fixture", "source_url": "https://devpost.com/software/fixture",
+               "sections": {}, "testing": "", "built_with": [], "links": {},
+               "numbers": [
+                   {"claim": "Risk classification", "denominator": "no ground truth, per the page",
+                    "arithmetic": "not falsifiable from the page: no evaluation set", "verifiable": False},
+                   {"claim": "Real-time detection", "denominator": "no latency figure given",
+                    "arithmetic": "structural: claimed capability, nothing to recompute", "verifiable": False}]}
+        chk = A.run_checks(cap, None, None, {})[0]["numbers_add_up"]
+        self.assertEqual((chk["status"], chk["pass"]), ("unverifiable", 0.25), chk["why"])
+
+    def test_a_verified_repo_files_the_stack_even_when_the_tag_sidebar_is_empty(self):
+        """The field asks what the project is built with, *verified*.
+
+        A repository census answers that. A Devpost widget nobody filled in is a formatting
+        gap on the page, and treating it as an unfiled mandatory field would leave the single
+        most checkable record in the corpus looking less documented than one that published
+        nothing — an unknown has to name something that would settle it, and here it already
+        is settled.
+        """
+        cap = {"id": "fixture", "name": "Fixture", "source_url": "https://devpost.com/software/fixture",
+               "one_line": "A shopping agent that answers with a slate and a question." * 2,
+               "sections": {k: "It normalises the feed, folds state, then ranks candidates. " * 2
+                              for k in ("inspiration", "what_it_does", "how_we_built_it", "challenges",
+                                         "accomplishments", "learned", "what_next")},
+               "data_and_models": "BM25 over the supplied catalog, no model in the scored path. " * 2,
+               "testing": "Harness tests ship in the repository under harness/tests/. " * 2,
+               "numbers": [], "built_with": [], "links": {"repo": "https://github.com/o/r"}}
+        repo = {"exists": True, "size_kb": 900, "language": "Python",
+                "languages": {"Python": 99.4, "Makefile": 0.6}, "test_paths": ["harness/tests/t.py"],
+                "readme_bytes": 4000, "readme_has_setup": True, "source_dirs": ["src"],
+                "pushed_at": "2026-09-01", "open_issues": 0, "default_branch": "main", "license": None}
+        notes = {"worth": "breakthrough", "worth_note": "w" * 60, "what_to_steal": "s" * 60,
+                 "what_breaks_first": "b" * 60, "prior_art": [], "hazard_note": "h" * 60,
+                 "clone_cost": {"estimate": "2 days", "why": "c" * 60, "assumptions": ["a"]}}
+        checks, _ = A.run_checks(cap, "o/r", repo, notes)
+        fields, unknowns = A.build_fields(cap, notes, "o/r", repo, checks)
+        self.assertIn("built_with_verified", fields, [x["field"] for x in unknowns])
+        self.assertIn("python", json.dumps(fields["built_with_verified"]).lower())
+        self.assertNotIn("built_with_verified", [x["field"] for x in unknowns])
+        # a record with neither tags nor a repo keeps its unknown
+        checks2, _ = A.run_checks({**cap, "links": {}}, None, None, notes)
+        fields2, unknowns2 = A.build_fields({**cap, "links": {}}, notes, None, None, checks2)
+        self.assertNotIn("built_with_verified", fields2)
+        self.assertIn("built_with_verified", [x["field"] for x in unknowns2])
 
     def test_resubmission_merges_on_shared_numeric_fingerprints(self):
         sh = self.sheets["greenlight-screenplay-to-film"]
