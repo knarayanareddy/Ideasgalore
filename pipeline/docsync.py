@@ -35,7 +35,10 @@ from typing import Any, Dict, List, Optional
 HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.dirname(HERE)
 PUBLIC = os.path.join(REPO, "web", "public")
-TARGETS = ["README.md", "docs/AGENT_ACCESS.md", "docs/AUDIT_PROTOCOL.md"]
+# PARALLELISM_PANEL is a target for the same reason the others are: it quotes the census. A research
+# document that states "11 of 165 published" in prose goes stale on the next batch, so it gets the
+# generated block and the drift check like every other counted surface.
+TARGETS = ["README.md", "docs/AGENT_ACCESS.md", "docs/AUDIT_PROTOCOL.md", "docs/PARALLELISM_PANEL.md"]
 
 
 def _load(rel: str) -> Any:

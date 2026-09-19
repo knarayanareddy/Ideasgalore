@@ -23,7 +23,10 @@ build: seed audit
 	$(PY) pipeline/docsync.py
 
 ## 4. gates: budget, required fields, cross-surface parity, determinism, then tests
-verify: build
+## `verify` depends on the node install because two of its steps shell into the frontend:
+## a fresh clone (or a CI shard, or this sandbox — `node_modules` is not persisted between
+## sessions) otherwise fails the gate with `vite: not found`, which reads like a broken build.
+verify: build deps
 	$(PY) pipeline/shard_builder.py --check
 	$(PY) pipeline/docsync.py --check
 	$(PY) pipeline/tests/test_pipeline.py
@@ -49,16 +52,18 @@ deep:
 remix:
 	$(PY) pipeline/harvest_devpost.py ingest && $(PY) pipeline/shard_builder.py
 
-## frontend
-serve:
+## frontend — `make serve` is the preview entry point; it installs first so a fresh
+## checkout is a working preview instead of a stack of module errors.
+serve: deps
 	cd web && npm run dev -- --host 0.0.0.0
 
-web/node_modules:
-	cd web && npm install
+## `npm ci` when the lockfile is committed (reproducible), `npm install` otherwise.
+web/node_modules: web/package-lock.json
+	cd web && (test -f package-lock.json && npm ci --no-audit --no-fund || npm install)
 
 deps: web/node_modules
 
-api:
+api: deps
 	cd web && npm run build
 	@echo "static bundle in web/dist — serve with: python3 -m http.server -d web/dist 8080"
 

@@ -406,6 +406,16 @@ def build(records: List[Dict[str, Any]], out_dir: str, today: str,
         with open(f"{out_dir}/data/audits/{slug}.json", "w", encoding="utf-8") as f:
             f.write(blob)
         sheets_kb += len(gzip.compress(blob.encode("utf-8"), compresslevel=9, mtime=0)) / 1024
+    # Sweep sectors that no longer publish anything. A sheet file is addressed by a guessable path
+    # (`data/audits/<sector>.json`, advertised for any sector in the agent API), so leaving an old
+    # one behind publishes a *superseded* audit under a live URL: when Continuity and
+    # Adversarial Compliance Matrix moved sectors, their Dev-Tooling sheet stayed on disk with the
+    # pre-move `moves`, and `audit_sheets_kb` under-reported the bytes actually served by exactly that
+    # file. Sector files are emitted, never inherited.
+    for name in sorted(os.listdir(f"{out_dir}/data/audits")) if os.path.isdir(f"{out_dir}/data/audits") else []:
+        if name.endswith(".json") and name[:-5] not in audit_sheets:
+            os.remove(f"{out_dir}/data/audits/{name}")
+            print(f"   🧹 swept superseded sheet file: data/audits/{name}")
     with open(f"{out_dir}/data/audit-rubric.json", "w", encoding="utf-8") as f:
         json.dump(audit_rubric(), f, indent=1, sort_keys=True)
     pool.sort(key=lambda x: -(x.get("coolness") or 0))
@@ -961,6 +971,24 @@ def main() -> int:
                     if hashlib.sha256(open(a, "rb").read()).digest() != hashlib.sha256(open(b, "rb").read()).digest():
                         problems.append(f"non-deterministic output: {rel} differs on rebuild")
                     checked += 1
+            # The walk above proves every *emitted* file is committed and reproducible. It cannot see the
+            # mirror-image failure — a committed file no build emits — because such a file is absent from
+            # the temp tree and so is never visited. A stale surface is worse than a broken one: it
+            # answers a reader's question with yesterday's answer, quietly. Sector audit sheets are where
+            # that happened (a re-shelved record left its old sector file served, under a path the agent
+            # API advertises for any sector), and `build()` owns that directory end to end, so the reverse
+            # check is scoped to it. Generalising it requires every build step to declare the paths it owns
+            # — `agents/` and the pool/detail shards are written elsewhere, and a whole-tree reverse walk
+            # reports those as orphans. Recorded as an open item in docs/PARALLELISM_PANEL.md §10 rather
+            # than half-built here.
+            sheet_dir = os.path.join(args.out, "data/audits")
+            if os.path.isdir(sheet_dir):
+                for name in sorted(os.listdir(sheet_dir)):
+                    rel = f"data/audits/{name}"
+                    if name.endswith(".json") and not os.path.exists(os.path.join(td, rel)):
+                        problems.append(f"served but not emitted: {rel} is in web/public and no build "
+                                        "step writes it (delete it or emit it — a stale surface is a "
+                                        "false one)")
             print(f"   🔁 determinism: {checked} surfaces byte-identical on rebuild")
     if problems:
         print("\n❌ BUILD GATE FAILED:")

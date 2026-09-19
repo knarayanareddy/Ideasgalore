@@ -9,6 +9,7 @@ behaviour. Run:  python3 -m unittest discover -s pipeline/tests -v
 
 from __future__ import annotations
 
+import glob
 import json
 import os
 import re
@@ -1365,6 +1366,68 @@ class TestHazardFollowsTheClaimNotTheShelf(unittest.TestCase):
         cap = {"sections": {"what_it_does": "The layout follows a standard grid of cards."},
                "one_line": "A design surface.", "testing": "", "numbers": []}
         self.assertIsNone(A.hazard_for(self.REC, cap, {}))
+
+
+class TestServedSurfacesAreSwept(unittest.TestCase):
+    """A file under `web/public/` is an answer to someone's question, so it must be emitted by the
+    build that serves it. Sector audit sheets are addressed by a guessable, API-advertised path
+    (`data/audits/<sector>.json`), which means a sector that stops publishing must stop *having* a
+    file: the build once left a superseded sheet for Developer Tooling whose `moves` disagreed with the
+    record's current sheet elsewhere, and the size budget under-counted it because the budget sums what
+    is emitted."""
+
+    def test_no_sector_sheet_without_published_records(self):
+        import shard_builder as S
+        want = set()
+        with open(os.path.join(REPO, "web/public/data/ideas.ndjson"), encoding="utf-8") as fh:
+            for line in fh:
+                if line.strip():
+                    want.add(S.slugify(json.loads(line).get("domain") or ""))
+        served = {os.path.basename(p)[:-5] for p in
+                  glob.glob(os.path.join(REPO, "web/public/data/audits/*.json"))}
+        self.assertEqual(served, want, "the sector sheets served are not exactly the sectors with "
+                        "published records — a stale sheet is a superseded answer at a live URL")
+
+    def test_build_sweeps_a_superseded_sheet_file(self):
+        import shard_builder as S
+        with tempfile.TemporaryDirectory() as td:
+            S.build(S.load_corpus(os.path.join(REPO, "pipeline/corpus.jsonl")), td,
+                    S.corpus_as_of(S.load_corpus(os.path.join(REPO, "pipeline/corpus.jsonl"))),
+                    S.load_audits())
+            ghost = os.path.join(td, "data/audits/sector-that-nobody-publishes.json")
+            with open(ghost, "w", encoding="utf-8") as fh:
+                fh.write('{"records": {"x": {"verdict": "strong"}}}')
+            S.build(S.load_corpus(os.path.join(REPO, "pipeline/corpus.jsonl")), td,
+                    S.corpus_as_of(S.load_corpus(os.path.join(REPO, "pipeline/corpus.jsonl"))),
+                    S.load_audits())
+            self.assertFalse(os.path.exists(ghost), "re-emitting left a sector sheet behind")
+
+
+class TestScaleHarness(unittest.TestCase):
+    """The parallelism plan (docs/PARALLELISM_PANEL.md) is argued from measurements, so the
+    measurements have to be code. These two tests are what stop ADR-P11 from rotting: the blocked
+    similarity pass must stay lossless against a brute-force reference, and the per-record sheet cost
+    the budget argument rests on must stay in the range the dossier quotes."""
+
+    def test_blocked_similarity_pass_is_lossless_against_the_reference(self):
+        import bench_scale
+        same, ref_actions, blocked_actions = bench_scale.blocking_is_lossless()
+        self.assertTrue(same, "blocking changed a verdict, a reason, a cross-link or a sheet byte")
+        self.assertEqual(ref_actions, blocked_actions, "the blocked pass raised a different set of "
+                        "duplicate actions — admission changed, which is a catalog change")
+
+    def test_budget_math_keeps_the_sector_ceiling_measurable(self):
+        import bench_scale
+        import pathlib
+        bud = bench_scale.budget_math(pathlib.Path(REPO))
+        per_record = bud["gzip_kb_per_published_record"]
+        self.assertGreater(per_record, 0.5, "a published sheet under half a KB gz is not a detailed record")
+        self.assertLess(per_record, 10.0, f"{per_record} KB gz per published record means the prose "
+                        "budget in docs/PARALLELISM_PANEL.md M8 has to be restated")
+        self.assertGreaterEqual(bud["published_records_per_sector_at_budget"], 1)
+        self.assertLess(bud["published_records_per_sector_at_budget"], 1000,
+                        "if a sector could hold 1,000 records the re-shard (ADR-P5) is unnecessary "
+                        "and the dossier's blocking objection was wrong")
 
 
 class TestGeneratedCensus(unittest.TestCase):

@@ -464,3 +464,30 @@ became a **promotion queue**; the score stayed **two orthogonal axes with no com
 pass became **merge/annotate with fixtures that pin the thresholds**; and the biggest structural
 change — **the catalog now refuses to publish what it cannot support**, which the first draft would
 have called a bug because the row count would drop.
+
+
+### 8.2 Scale work (2026-09-19) · the parallelism panel, and two engine fixes it earned
+
+The plan for 500–1,000 detailed, verified records is argued and measured in
+[`docs/PARALLELISM_PANEL.md`](PARALLELISM_PANEL.md), with `python3 pipeline/bench_scale.py` as the
+reproducer. Two of its findings are shipped here rather than left as advice, because both were defects
+the research itself surfaced:
+
+- **The duplicate pass is no longer quadratic.** It rebuilt each record's section text, token set and
+  number fingerprints *inside* the pair loop, so 1,000 audited records cost 67.79 s — and the test
+  suite cost 82.24 s, because fixtures re-run the audit. Blocking candidate pairs on a leading-name-token
+  ∪ shared-number index, with those sets hoisted out of the loop, took the stage to **3.57 s** and the
+  suite to **18.18 s**, with `audit.jsonl` **byte-identical** on the real tree and on a 1,000-record
+  synthetic tree. The equivalence is a shipped check, not a claim: `bench_scale.blocking_is_lossless()`
+  runs the brute-force reference against the blocked pass and compares every verdict, reason, cross-link
+  and sheet byte, and `TestScaleHarness` fails the build if they ever disagree. Admission may not move as
+  a side effect of a speed-up (ADR-P11).
+- **A superseded sector sheet was being served.** `web/public/data/audits/developer-tooling-and-code-intelligence.json`
+  outlived the records that used to be shelved there, and its copy of Continuity's audit disagreed with
+  the live one — four `moves`, including `offline-first-fallback` and `constraint-is-the-feature`, where the
+  current sheet says `make-the-invisible-measurable`. A reader asking for Dev Tooling's audit got a
+  pre-re-shelf answer at a live URL, and the sheet budget under-counted served bytes by exactly that file
+  (44.7 KB emitted vs 51.6 KB served). `build()` now emits and sweeps that directory, `--check` fails on a
+  served sheet no build emits, and two tests pin it in both directions (ADR-P13/P14). The general form —
+  every build step declaring the paths it owns — is recorded as an open item, since P5 would otherwise
+  re-create the same failure one directory over.

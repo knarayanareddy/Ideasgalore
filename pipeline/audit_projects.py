@@ -702,19 +702,51 @@ def numeric_fingerprint(cap: Dict[str, Any]) -> List[str]:
 
 
 def similarity_verdicts(sheets: List[Dict[str, Any]], recs: Dict[str, Dict[str, Any]]) -> List[str]:
-    """A5: merge true duplicates; cross-link parallel invention (it is signal, not dirt)."""
+    """A5: merge true duplicates; cross-link parallel invention (it is signal, not dirt).
+
+    Blocking (docs/PARALLELISM_PANEL.md ADR-P4): the pass is quadratic in the audited set, and every
+    condition that can *act* on a pair needs a shared leading name token or shared
+    numeric-fingerprint text. So the candidate set is the union of those two indexes, visited in the
+    same (i, j) order the unblocked loop used, and skipping a non-candidate pair changes nothing
+    because that branch has no side effect. Proven, not argued: `pipeline/bench_scale.py` runs both
+    implementations over a 1,000-record tree and diffs `audit.jsonl` byte-for-byte. The per-record
+    text, token and number sets are hoisted out of the loop too — they were being rebuilt n times per
+    record, which is what made the pass quadratic in string work rather than in comparisons.
+    """
     actions: List[str] = []
-    for i in range(len(sheets)):
-        for j in range(i + 1, len(sheets)):
+    n = len(sheets)
+    _text: Dict[int, str] = {}
+    _tok: Dict[int, set] = {}
+    _nums: Dict[int, set] = {}
+    _key: Dict[int, str] = {}
+    by_key: Dict[str, List[int]] = {}
+    by_num: Dict[str, List[int]] = {}
+    for idx, a in enumerate(sheets):
+        ra = recs.get(a["id"], {})
+        text = _sections_text({"sections": a.get("_sections")}) or (ra.get("summary") or "").lower()
+        _text[idx] = text
+        _tok[idx] = set(re.findall(r"[a-z]{4,}", text)) | set(a.get("moves") or [])
+        _nums[idx] = set(a.get("_numbers") or [])
+        first = str(a.get("name", "")).strip().lower().split(" ")[0].strip("—-:")
+        _key[idx] = first
+        by_key.setdefault(first, []).append(idx)
+        for num in _nums[idx]:
+            by_num.setdefault(str(num), []).append(idx)
+    cand: List[List[int]] = []
+    for i0 in range(n):
+        ahead = set(x for x in by_key.get(_key[i0], ()) if x > i0)
+        ahead.update(x for num in _nums[i0] for x in by_num.get(str(num), ()) if x > i0)
+        cand.append(sorted(ahead))
+    for i in range(n):
+        for j in cand[i]:
             a, b = sheets[i], sheets[j]
             ra, rb = recs.get(a["id"], {}), recs.get(b["id"], {})
-            ta = _sections_text({"sections": a.get("_sections")}) or (ra.get("summary") or "").lower()
-            tb = _sections_text({"sections": b.get("_sections")}) or (rb.get("summary") or "").lower()
+            ta, tb = _text[i], _text[j]
             na, nb = a.get("name", "").strip().lower(), b.get("name", "").strip().lower()
             same_name = na == nb
             # "Greenlight — Nine-Agent Production Crew" vs "Greenlight — Screenplay to Film":
             # same leading product token, same event → a resubmission, not two teams converging.
-            fa = set(a.get("_numbers") or []); fb = set(b.get("_numbers") or [])
+            fa, fb = _nums[i], _nums[j]
             num_shared = len(fa & fb)
             numjac = num_shared / max(1, len(fa | fb))
             first = na.split(" ")[0].strip("—-:")
@@ -738,8 +770,7 @@ def similarity_verdicts(sheets: List[Dict[str, Any]], recs: Dict[str, Dict[str, 
             # the events differ; two teams colliding on a generic name is not.
             fingerprint = (same_word and num_shared >= 3)
             same_product = same_word and (same_event or fingerprint)
-            tok_a = set(re.findall(r"[a-z]{4,}", ta)) | set(a.get("moves") or [])
-            tok_b = set(re.findall(r"[a-z]{4,}", tb)) | set(b.get("moves") or [])
+            tok_a, tok_b = _tok[i], _tok[j]
             overlap = len(tok_a & tok_b) / max(1, len(tok_a | tok_b))
             if (same_name and overlap >= DUP_TEXT_OVERLAP) or (same_product and overlap >= DUP_MECHANISM_OVERLAP) \
                     or fingerprint or same_listing:
