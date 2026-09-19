@@ -25,7 +25,7 @@
 ## Endpoints (relative to the site root)
 
 - `catalog-packed.json` — Tier-1: every admitted row, dictionary-encoded. Best for
-  whole-corpus ranking/filtering in one request (~14.2 KB gzip).
+  whole-corpus ranking/filtering in one request (~16.1 KB gzip).
 - `data/ideas.csv` — the tabular database; stable column order, spreadsheet-safe.
 - `data/ideas.ndjson` — full metadata, one record per line, no bulk prose.
 - `data/hackathons.json` — event dimension: prize, registrations, themes, gallery URL.

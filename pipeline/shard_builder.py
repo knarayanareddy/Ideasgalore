@@ -50,7 +50,9 @@ OUT_DEFAULT = os.path.join(REPO, "web", "public")
 
 TIER1_GZIP_BUDGET_KB = 1200.0        # ADR-5/P5: hard ceiling, enforced below
 SQLITE_BUDGET_KB = 4096.0            # dissent D1 concession: only commit while small
-HOOK_MAX = 96
+HOOK_MAX = 140   # mechanism words live in the tail of a one-liner ("join-semilattice
+                 # algebraic logic…"); 96 clipped them out of the Tier-1 index. 140
+                 # costs ~4 KB across 165 rows and buys ~85x of the 1.2 MB budget back.
 
 CSV_COLUMNS = [
     "id", "name", "url", "event", "event_org", "domain", "subsystem", "moves",

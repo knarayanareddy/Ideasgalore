@@ -17,7 +17,7 @@
 | Hosting | $0/mo, no server, no key to read | GitHub Pages, static files |
 | Corpus | quality-gated, expandable | **165 published** (167 ingested, 2 held by the noise gate) / 5 event sources, 18 moves |
 | Coverage honesty | a sample must say so | `catalog-stats.json → coverage`: 83 of 1,401 listed XPRIZE entries (4 of 59 pages), computed from `raw/gallery_totals.json` |
-| Tier-1 index | < 1.2 MB gzip hard gate | **14.2 KB** gzip (≈88 B/record) → headroom for ~13k records |
+| Tier-1 index | < 1.2 MB gzip hard gate | **16.1 KB** gzip (≈100 B/record incl. a 140-char hook) → headroom for ~12k records |
 | Search | sub-5ms at 10⁵ rows | inverted index over 165 rows in <1ms; linear-scan ceiling ≈ 40k rows/frame |
 | JS payload | < 250 KB | 198 KB raw / **62.6 KB** gzip |
 | Rebuild | offline, deterministic, no secrets | `pipeline/corpus.jsonl` → all surfaces, byte-stable (`--check`) |
@@ -178,7 +178,7 @@ Tier-2 detail record — the full shape is generated into
 Tier-1 row (14 columns, dictionary-encoded):
 
 ```
-[id, name, hook≤96, event_id, likes|-1, coolness_x1000, domain_id, subsystem_id,
+[id, name, hook≤140, event_id, likes|-1, coolness_x1000, domain_id, subsystem_id,
  move_ids[], stack_ids[], is_deep, has_thumbnail, award_id, event_age_days]
 ```
 

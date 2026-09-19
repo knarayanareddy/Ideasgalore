@@ -18,7 +18,7 @@
  "scoring_version":1,
  "corpus_sha256":"f7a7aa82d360b032",
  "corpus_records":167,
- "generated_at":"2026-09-19T13:34:01+00:00",
+ "generated_at":"2026-09-19T13:36:58+00:00",
  "surfaces":{
   "tier1":"catalog-packed.json",
   "tier2":[
@@ -46,7 +46,7 @@
  },
  "budgets":{
   "tier1_gzip_kb":[
-   14.2,
+   16.1,
    1200.0
   ]
  }

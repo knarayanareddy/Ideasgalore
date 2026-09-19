@@ -25,7 +25,7 @@ JSON + CSV + NDJSON + SQLite on GitHub Pages: **$0/month, no backend, no API key
 | Capability | Detail |
 | --- | --- |
 | **Tabular database** | `data/ideas.csv` (23 stable columns), `data/ideas.ndjson`, and a gzipped **SQLite** file with `events` / `projects` / `moves` / `project_moves` — query it in DuckDB, pandas, Excel or SQL without a server |
-| **Two-tier sharded index** | Tier 1 `catalog-packed.json` (dictionary-encoded, **14.2 KB** gzip for 165 records, budget 1.2 MB) + Tier 2 per-sector deep shards, lazy-loaded |
+| **Two-tier sharded index** | Tier 1 `catalog-packed.json` (dictionary-encoded, **16.1 KB** gzip for 165 records, budget 1.2 MB) + Tier 2 per-sector deep shards, lazy-loaded |
 | **Honest coverage** | the corpus publishes its own sampling rate: `catalog-stats.json → coverage` says 83 of the 1,401 projects listed in the XPRIZE gallery are in here, from 4 captured pages — a *gated sample*, never a claim of completeness |
 | **18 transferable "moves"** | `price-before-generate`, `evidence-graph`, `human-holds-the-last-button`, `offline-first-fallback`, `data-flywheel`… each with a definition, a `steal_this` imperative, and its own postings index — **the axis that produces new projects, not just lists** |
 | **10 sectors + subsystems** | Agentic Autonomy · Dev Tooling · Health & Care · Climate & Physical World · Public Trust · Money & Commerce · Creative Media · Learning · Accessibility · Data & Memory — plus an honest `Emerging & Cross-Domain` bucket for submissions too thin to place |
