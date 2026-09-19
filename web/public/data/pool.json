@@ -5,6 +5,83 @@
  "meaning":"Records held out of the catalog. `provenance` splits them in two: `unaudited` rows were never captured or checked; `audited-hold` rows were captured, scored and held for cause (thin, duplicate or hazard-capped) and carry the same audit columns the catalog does. Neither kind is a judgement of merit \u2014 read why_not_promoted and would_settle_it before quoting one (ADR-A1/A10).",
  "records":[
   {
+   "id":"finova-j9av5f",
+   "name":"Finova",
+   "url":"https://devpost.com/software/finova-j9av5f",
+   "domain":"Money, Commerce & Marketplaces",
+   "subsystem":"Fintech & Personal Finance",
+   "event":"Devpost Software Showcase \u2014 Staff Picks & Rails",
+   "coolness":0.4797,
+   "moves":[
+    "offline-first-fallback"
+   ],
+   "specificity":0.52,
+   "summary":"Personal-finance fintech platform that incentivizes saving through gamification. Flutter mobile app with RESTful Laravel backend.",
+   "provenance":"audited-hold",
+   "why_not_promoted":[
+    "verdict:thin",
+    "soundness 0.42 is too low to certify; stays in the pool",
+    "unknown: limits_they_disclosed \u2014 the team disclosed no limitations; ask on the submission thread",
+    "unknown: prior_art \u2014 prior-art entries must carry a URL or corpus id (A5/C5); 1 bare assertion(s)"
+   ],
+   "would_settle_it":[
+    "the team disclosed no limitations; ask on the submission thread",
+    "prior-art entries must carry a URL or corpus id (A5/C5); 1 bare assertion(s)",
+    "artifact_exists: a repository, deployment or store listing we can resolve",
+    "stack_consistency: a repository to compare the declared stack against",
+    "build_is_real: a readable source tree (a repo link, then `python3 pipeline/repo_verify.py`)"
+   ],
+   "audit":{
+    "verdict":"thin",
+    "worth":"tired",
+    "soundness":"weak",
+    "soundness_score":0.4219,
+    "rubric_coverage":0.64,
+    "audited_at":"2026-09-19",
+    "unknowns":2,
+    "duplicate_of":null,
+    "hazard":false,
+    "evidence":6,
+    "reasons":[
+     "soundness 0.42 is too low to certify; stays in the pool"
+    ]
+   },
+   "verdict":"thin",
+   "worth":"tired",
+   "soundness":"weak",
+   "soundness_score":0.4219,
+   "rubric_coverage":0.64,
+   "audited_at":"2026-09-19",
+   "unknowns":2,
+   "repo_url":null,
+   "detail":{
+    "what_it_is":"A Spanish-language personal-finance app where saving is a game: multi-currency ledgers priced off six live external feeds, and a house whose skies and rooms change as your balance improves.",
+    "what_it_does":"Finova is a mobile money manager (Flutter front end, Laravel REST backend) built around three interlocking loops: record, convert, and be rewarded. Money lives in typed sources \u2014 wallets, bank accounts, cash, cards \u2014 each holding its own balance in its own currency, and the app shows that balance converted into the user's base currency in real time. Income and expense entries are made fast, and an entry in a currency other than the source's is converted automatically; the ledger is then filterable by category, date, type, source and free-text search, grouped by day with running totals. Goals are amounts you aim at, and linking a goal to a source turns on automatic reserve, with progress drawn live. The gamification layer generates periodic financial objectives that behave like missions: completing one awards XP, XP accumulates into levels, and levels unlock visual elements and upgrades in \u201cCasa Finova\u201d, a house that is a rendering of your financial state \u2014 it evolves with your progress, its sky moves through day, sunset and night, and its changes animate in Lottie. Statistics are monthly totals, income versus expense, per-category distribution and a global converted balance, charted with fl_chart. On top of the ledger sit simulators \u2014 loans driven by official central-bank rates, traditional fixed-term investments (plazo fijo) and digital ones (crypto) \u2014 plus a currency converter covering more than 160 currencies with locale-aware formatting, and exportable custom reports.",
+    "how_they_tested":"Nothing on the page describes testing of the product: no test suite, no eval, no measured behaviour, no figure for conversion accuracy or simulator correctness. The word 'Testing' appears exactly twice, and both times inside a list of each author's personal specialties \u2014 a r\u00e9sum\u00e9 claim about the people, not evidence about the software.",
+    "numbers_with_arithmetic":[
+     {
+      "arithmetic":"not falsifiable from the page: no currency list is published, and the number describes what the OpenExchangeRates feed can return rather than something Finova implemented",
+      "claim":"m\u00e1s de 160 monedas compatibles (160+ supported currencies)",
+      "denominator":"currencies the converter claims to handle",
+      "verifiable":false
+     },
+     {
+      "arithmetic":"reproduces: OpenExchangeRates, BCRA DataAPI, CoinGecko, TwelveData, World Bank PPP and Brevo SMTP are each given their own subsection and a stated role",
+      "claim":"six external APIs integrated",
+      "denominator":"the 'APIs Externas Utilizadas' section",
+      "verifiable":true
+     },
+     {
+      "arithmetic":"reproduces: exactly three groups are named, each with its data sources, and the third is explicitly reserved for low-churn macroeconomic data",
+      "claim":"three scheduler cadences (daily, frequent, weekly)",
+      "denominator":"the update system described on the page",
+      "verifiable":true
+     }
+    ],
+    "worth_note":"Executed with real care \u2014 six external feeds, three refresh cadences, multi-currency balances converted at entry time rather than at display time \u2014 but the idea is a genre: a gamified personal-finance app with XP, levels and a mascot that grows is one of the most-rebuilt shapes in this corpus and in the app stores. It does not become a transferable mechanism until the gamification is shown to change behaviour, and the page offers no such evidence: no retention figure, no study, no before/after. What would change the verdict is a measured effect of the challenge system on saving, which is precisely the number a habit app could publish and almost never does."
+   }
+  },
+  {
    "id":"ai-image-detector-9ayw71",
    "name":"realityCheCk.TSX - AI Image Detector",
    "url":"https://devpost.com/software/ai-image-detector-9ayw71",
@@ -278,27 +355,6 @@
    ],
    "specificity":0.74,
    "summary":"29% of Brazilian entrepreneurs are functionally illiterate. AnaDita is the voice AI on WhatsApp that helps them read, write and sell - just by speaking. No app, no keyboard, no barriers.",
-   "provenance":"unaudited",
-   "why_not_promoted":[
-    "not_audited"
-   ],
-   "would_settle_it":[
-    "project page capture (deep)",
-    "artifact check via repo_verify.py"
-   ],
-   "audit":null
-  },
-  {
-   "id":"finova-j9av5f",
-   "name":"Finova",
-   "url":"https://devpost.com/software/finova-j9av5f",
-   "domain":"Money, Commerce & Marketplaces",
-   "subsystem":"Fintech & Personal Finance",
-   "event":"Devpost Software Showcase \u2014 Staff Picks & Rails",
-   "coolness":0.4201,
-   "moves":[],
-   "specificity":0.43,
-   "summary":"Personal-finance fintech platform that incentivizes saving through gamification. Flutter mobile app with RESTful Laravel backend.",
    "provenance":"unaudited",
    "why_not_promoted":[
     "not_audited"

@@ -1510,6 +1510,17 @@ class TestThroughputRails(unittest.TestCase):
     reviewer, two sessions can never be handed the same id, and the batch size is edited by the lint's
     reject rate rather than by anyone's confidence. Each test names the failure it prevents."""
 
+    def test_notes_cannot_be_installed_before_the_capture(self):
+        """The two files are one unit of work; installing the argument before the evidence is how a
+        refused capture leaves a judgement file with nothing to be about."""
+        import capture_lint as L
+        rows = L.validate_blob("notes", {"id": "no-such-record-zzz", "worth": "niche",
+                                         "worth_note": "x", "what_to_steal": "y",
+                                         "what_breaks_first": "z", "prior_art": [{"corpus_id": None,
+                                                                                 "relation": "r"}],
+                                         "clone_cost": {"estimate": "days", "why": "w"}})
+        self.assertIn("notes.order", [r["rule"] for r in rows])
+
     def test_notes_are_one_file_per_record_and_the_legacy_dict_is_empty(self):
         """P4, or the throughput is spent resolving write collisions: three writers on one notes file
         was M10, and a merge conflict in the judgement fields is worse than a slow build."""
@@ -1560,6 +1571,33 @@ class TestThroughputRails(unittest.TestCase):
         self.assertIn("capture.schema", bad.stdout, "the version key is what makes the contract explicit")
         self.assertFalse(os.path.exists(os.path.join(REPO, "pipeline/raw/deep_captures/lint-selftest.json")),
                          "a refused payload must not reach the tree")
+
+    def test_the_installer_refuses_exactly_what_the_gate_refuses(self):
+        """`--install-*` is a preview of the gate, so the two must agree on every payload: a stricter
+        installer tells a worker to invent prose for a page that has none, and a looser one ships a
+        capture that `make verify` will refuse three stages later. This disagreement is what fired on the
+        first real payload through the installer — a Showcase entry with no challenges section."""
+        import capture_lint as L
+        path = os.path.join(REPO, "pipeline/raw/deep_captures/tower-dq18x2.json")
+        with open(path, encoding="utf-8") as fh:
+            base = json.load(fh)
+        for mutate in (lambda c: c["sections"].pop("challenges"),
+                       lambda c: c["sections"].__setitem__("challenges", ""),
+                       lambda c: c["sections"].__setitem__("challenges", "Short"),
+                       lambda c: c.pop("gallery_images"),
+                       lambda c: c["links"].__setitem__("repo", "see their github"),
+                       lambda c: c["numbers"].__setitem__(0, {"claim": "96%"})):
+            cap = json.loads(json.dumps(base))
+            mutate(cap)
+            # one payload kind at a time: `--install-capture` previews the capture rules, and the
+            # notes rules belong to `--install-notes`, which refuses its own kinds separately
+            gate = {r["rule"] for r in L.lint_capture(cap, None, {}).rows
+                    if r["rule"].startswith("capture.")}
+            gate.discard("capture.keys")          # v1 grandfathering applies only to on-disk records
+            gate.discard("capture.numbers.verifiable")
+            inst = {r["rule"] for r in L.validate_blob("capture", cap) if r["rule"].startswith("capture.")}
+            self.assertTrue(gate <= inst or inst <= gate,
+                            f"installer and gate disagree on {sorted(gate ^ inst)}: one of them is wrong")
 
     def test_a_default_hazard_note_is_a_refusal_not_a_fallback(self):
         """The shape of the Tower defect: a stamp attached to the engine's generic sentence because the

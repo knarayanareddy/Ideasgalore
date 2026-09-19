@@ -2,8 +2,8 @@
  "total":12,
  "audited_published":12,
  "pool_records":153,
- "pool_audited_held":8,
- "pool_unaudited":145,
+ "pool_audited_held":9,
+ "pool_unaudited":144,
  "audit_version":1,
  "audit_index_kb":1.1,
  "audit_sheets_kb":51.3,
@@ -13,7 +13,7 @@
  "subsystems":9,
  "moves":12,
  "events":5,
- "deep_records":20,
+ "deep_records":21,
  "tier1_gzip_kb":4.1,
  "tier1_budget_kb":1200.0,
  "sqlite_kb":6.1,
@@ -21,7 +21,7 @@
  "held_back":{
   "placeholder_summary":2
  },
- "records_with_moves":69,
+ "records_with_moves":70,
  "coverage":{
   "events":{
    "xprize":{

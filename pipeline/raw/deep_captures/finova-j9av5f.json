@@ -1,0 +1,55 @@
+{
+  "award": null,
+  "built_with": [
+    "dart",
+    "flutter",
+    "html",
+    "laravel",
+    "php"
+  ],
+  "captured_at": "2026-09-19",
+  "data_and_models": "No model and no training data: the app is deterministic arithmetic over live third-party reference data, with the gamification layer a progression table rather than a predictor. The design question it has to get right is staleness \u2014 every converted balance, loan quote and simulated return is only as current as the last scheduler run \u2014 and the page documents the refresh cadences but publishes no freshness indicator, no last-updated stamp in the UI description, and no fallback for when a feed is down.",
+  "gallery_images": 1,
+  "id": "finova-j9av5f",
+  "likes": null,
+  "links": {
+    "demo": null,
+    "repo": null,
+    "video": "https://www.youtube.com/watch?v=l2ijxGrOUtc"
+  },
+  "name": "Finova",
+  "numbers": [
+    {
+      "arithmetic": "not falsifiable from the page: no currency list is published, and the number describes what the OpenExchangeRates feed can return rather than something Finova implemented",
+      "claim": "m\u00e1s de 160 monedas compatibles (160+ supported currencies)",
+      "denominator": "currencies the converter claims to handle",
+      "verifiable": false
+    },
+    {
+      "arithmetic": "reproduces: OpenExchangeRates, BCRA DataAPI, CoinGecko, TwelveData, World Bank PPP and Brevo SMTP are each given their own subsection and a stated role",
+      "claim": "six external APIs integrated",
+      "denominator": "the 'APIs Externas Utilizadas' section",
+      "verifiable": true
+    },
+    {
+      "arithmetic": "reproduces: exactly three groups are named, each with its data sources, and the third is explicitly reserved for low-churn macroeconomic data",
+      "claim": "three scheduler cadences (daily, frequent, weekly)",
+      "denominator": "the update system described on the page",
+      "verifiable": true
+    }
+  ],
+  "one_line": "A Spanish-language personal-finance app where saving is a game: multi-currency ledgers priced off six live external feeds, and a house whose skies and rooms change as your balance improves.",
+  "schema": 2,
+  "sections": {
+    "accomplishments": "",
+    "challenges": "",
+    "how_we_built_it": "Flutter 3.35.3 on Dart 3.9.2 with Provider for state, fl_chart for charts, flutter_svg for vectors and Lottie for the house animations. Laravel Framework 9.52.20 serves the API with Sanctum tokens for authentication, MySQL for persistence, form Request validation, timezone handling from UTC to local, and Jobs plus artisan Commands to refresh external data. Six external feeds are wired in: OpenExchangeRates for live FX rates and the currency base table; Banco Central de la Rep\u00fablica Argentina's DataAPI for the official rates that back the loan and plazo-fijo simulators; CoinGecko for crypto prices and price history used by the digital-investment simulator; TwelveData for equities and bond data feeding the same simulation model; the World Bank PPP API for purchasing-power parity, which drives Casa Finova's visuals and cross-country purchasing-power comparison; and Brevo SMTP for password-recovery mail delivered through a native deep link. Refresh is a Laravel Scheduler split into three cadences \u2014 daily for BCRA indicators and official rates, frequent for CoinGecko prices and OpenExchangeRates, weekly for slow-moving macroeconomic data such as World Bank PPP. Password reset uses a native deep link, tokens are kept server-side, and avatars are generated or custom.",
+    "inspiration": "",
+    "learned": "",
+    "what_it_does": "Finova is a mobile money manager (Flutter front end, Laravel REST backend) built around three interlocking loops: record, convert, and be rewarded. Money lives in typed sources \u2014 wallets, bank accounts, cash, cards \u2014 each holding its own balance in its own currency, and the app shows that balance converted into the user's base currency in real time. Income and expense entries are made fast, and an entry in a currency other than the source's is converted automatically; the ledger is then filterable by category, date, type, source and free-text search, grouped by day with running totals. Goals are amounts you aim at, and linking a goal to a source turns on automatic reserve, with progress drawn live. The gamification layer generates periodic financial objectives that behave like missions: completing one awards XP, XP accumulates into levels, and levels unlock visual elements and upgrades in \u201cCasa Finova\u201d, a house that is a rendering of your financial state \u2014 it evolves with your progress, its sky moves through day, sunset and night, and its changes animate in Lottie. Statistics are monthly totals, income versus expense, per-category distribution and a global converted balance, charted with fl_chart. On top of the ledger sit simulators \u2014 loans driven by official central-bank rates, traditional fixed-term investments (plazo fijo) and digital ones (crypto) \u2014 plus a currency converter covering more than 160 currencies with locale-aware formatting, and exportable custom reports.",
+    "what_next": ""
+  },
+  "software_id": 1432188,
+  "source_url": "https://devpost.com/software/finova-j9av5f",
+  "testing": "Nothing on the page describes testing of the product: no test suite, no eval, no measured behaviour, no figure for conversion accuracy or simulator correctness. The word 'Testing' appears exactly twice, and both times inside a list of each author's personal specialties \u2014 a r\u00e9sum\u00e9 claim about the people, not evidence about the software."
+}

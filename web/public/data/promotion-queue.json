@@ -1,21 +1,9 @@
 {
  "audit_version": 1,
- "pool_size": 145,
+ "pool_size": 144,
  "queued": 12,
  "note": "Ranking of never-audited candidates by expected information gain (ADR-A7). Nothing here has been verified; the order is only 'what would teach us most'. `pool_size` counts records with no sheet at all \u2014 the full holding area, including audited-but-held records (thin, duplicate, hazard), is data/pool.json.",
  "candidates": [
-  {
-   "id": "finova-j9av5f",
-   "name": "Finova",
-   "domain": "Money, Commerce & Marketplaces",
-   "coolness": 0.42,
-   "expected_gain": 0.5168,
-   "why": "sector Money has 13 rows and no audit",
-   "would_settle_it": [
-    "project page capture",
-    "repo link check"
-   ]
-  },
   {
    "id": "zeroday-ai-autonomous-vulnerability-patching-system",
    "name": "ZeroDay AI",
@@ -143,6 +131,18 @@
    "coolness": 0.378,
    "expected_gain": 0.4946,
    "why": "mechanism-rich hook; depth likely to convert",
+   "would_settle_it": [
+    "project page capture",
+    "repo link check"
+   ]
+  },
+  {
+   "id": "airlock-s2kidr",
+   "name": "Airlock",
+   "domain": "Creative Media, Story & Play",
+   "coolness": 0.383,
+   "expected_gain": 0.4943,
+   "why": "sector Creative Media has 26 rows and no audit",
    "would_settle_it": [
     "project page capture",
     "repo link check"

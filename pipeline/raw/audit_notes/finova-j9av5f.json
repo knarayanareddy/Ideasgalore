@@ -1,0 +1,26 @@
+{
+  "clone_cost": {
+    "assumptions": [
+      "a Flutter client with Provider, charting and animation packages \u2014 commodity",
+      "access to a reliable FX feed plus a central-bank rates API; the Argentine DataAPI is public, but which of its several published series a loan simulator should quote is a judgement call, not a lookup",
+      "currency-format correctness across locales, which is where 'simple' finance apps usually bleed",
+      "no evaluation harness is needed because nothing is measured \u2014 the test surface is arithmetic unit tests plus per-feed failure modes"
+    ],
+    "estimate": "multi-week",
+    "why": "the app itself is a fortnight of competent work \u2014 a Laravel API with Sanctum, MySQL, multi-currency ledger arithmetic, six integrations and a scheduler \u2014 but the parts that make it feel finished are the ones nobody budgets for: locale-aware currency formatting, Lottie-driven progression art, and per-feed degradation policies. An agent team with a component library and no art pipeline lands the ledger and misses the house."
+  },
+  "prior_art": [
+    {
+      "corpus_id": "attaindesk",
+      "relation": "both sell financial competence to people who do not have it, and both were built by tiny teams on a conventional stack \u2014 but they fail in opposite directions: attainDesk has paying customers and no measurement, Finova has a rigorous data architecture and no users or figures at all. Read together they are the same finding about what this pool optimises for: one shipped a business, one shipped a spec."
+    },
+    {
+      "corpus_id": null,
+      "relation": "nothing in this corpus makes the gamified-savings mechanism work \u2014 several records draw charts, goals or streaks, and the genre is common enough in the wider pool that its absence here is about what we have captured, not about the idea being novel."
+    }
+  ],
+  "what_breaks_first": "The rate path. Every balance, simulator and report depends on a converted value, and the only thing keeping it current is a scheduler the page describes without a freshness guard: no 'rates last updated' stamp, no described behaviour when OpenExchangeRates or BCRA is unreachable. A missed run therefore does not error \u2014 it quietly mis-values the whole app, and the number a user acts on looks exactly like the number that was correct. Second is the deep-link reset: a native deep link is one of the few auth surfaces where a mis-registered URL scheme or an Android App Link / iOS Universal Link mismatch turns password recovery into a dead end, and nothing on the page says how that was verified.",
+  "what_to_steal": "Source the difficulty from outside the product. Casa Finova's progression is driven by live external state \u2014 PPP from the World Bank, official rates from the central bank \u2014 so the game layer inherits a world the user cannot farm by doing nothing. For any agent that has to prove something rather than appear helpful, that is the move worth copying: bind rewards or verdicts to data the operator does not control, and the loop stops being self-flattering. Second, cheap: convert on write, not on read. Storing each entry in its own currency and resolving the base-currency value when the record is created makes a stale rate table an immutability problem instead of a silently-rewritten ledger.",
+  "worth": "tired",
+  "worth_note": "Executed with real care \u2014 six external feeds, three refresh cadences, multi-currency balances converted at entry time rather than at display time \u2014 but the idea is a genre: a gamified personal-finance app with XP, levels and a mascot that grows is one of the most-rebuilt shapes in this corpus and in the app stores. It does not become a transferable mechanism until the gamification is shown to change behaviour, and the page offers no such evidence: no retention figure, no study, no before/after. What would change the verdict is a measured effect of the challenge system on saving, which is precisely the number a habit app could publish and almost never does."
+}

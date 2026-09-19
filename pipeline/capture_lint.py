@@ -225,8 +225,10 @@ def lint_capture(cap, notes, corpus_row=None):
         pa = notes.get("prior_art")
         if not isinstance(pa, list) or not pa:
             f.bad("notes.prior-art", "`prior_art` must be a non-empty list",
-                  "name at least one corpus record it resembles, or the single entry "
-                  "{corpus_id: null, relation: 'nothing in this corpus…'}")
+                  "name at least one corpus record it resembles; an entry may instead carry a `url` the "
+                  "session opened (A5/C5 resolves an assertion to something checkable). A bare "
+                  "{corpus_id: null, relation: 'nothing in this corpus…'} is allowed and honest, but the "
+                  "audit will carry it as a load-bearing unknown, so do not use it to avoid a comparison")
         else:
             for i, x in enumerate(pa):
                 if not isinstance(x, dict) or "relation" not in x or "corpus_id" not in x:
@@ -333,7 +335,7 @@ def write_rejects(findings):
             fh.write("\n")
 
 
-def validate_blob(kind, blob):
+def validate_blob(kind, blob, target_id=None):
     """The install path: refuse a payload that would not survive the gate, before it hits the tree.
 
     Returns findings in the same shape as `Findings.rows` (rule/problem/fix dicts) — the first version
@@ -344,7 +346,13 @@ def validate_blob(kind, blob):
     if not isinstance(blob, dict):
         probe.bad(f"{kind}.shape", "stdin is not a JSON object", "pipe one object for one id")
         return probe.rows
-    rid = str(blob.get("id") or "")
+    # The id a worker is installing *for* comes from the command line; the payload's own `id` is
+    # optional for notes (the filename is the key, per ADR-P4) and must match for a capture. Reading the
+    # id out of the blob instead refused the very first notes install, because notes never carried one.
+    rid = str(target_id or blob.get("id") or "")
+    if blob.get("id") and str(blob["id"]) != rid:
+        probe.bad("capture.id", "payload id %r does not match the target %r" % (blob["id"], rid),
+                  "one file per record means the filename is the truth")
     if kind == "capture":
         if int(blob.get("schema") or 1) < CAPTURE_SCHEMA:
             probe.bad("capture.schema", f"schema={blob.get('schema')!r}; new captures must be "
@@ -355,14 +363,30 @@ def validate_blob(kind, blob):
         for k in REQUIRED_CAPTURE_KEYS:
             if k not in blob:
                 probe.bad("capture.keys", "missing key: " + k, "add it (null allowed, absence not)")
-        secs = blob.get("sections") or {}
+        secs = blob.get("sections") if isinstance(blob.get("sections"), dict) else {}
         for name in SEVEN_SECTIONS:
-            if not str(secs.get(name) or "").strip():
-                probe.bad("capture.sections.seven", f"`{name}` empty or absent",
+            # Same rule `lint_capture` applies, deliberately: a key that is *absent* means the read was
+            # incomplete, while a key present as the empty string is the documented answer to that
+            # question ("the page says nothing about this"). The first version of this install check
+            # refused both, which told a worker to go invent prose for a page that has none — and an
+            # admission gate stricter than the gate it previews is worse than no gate, because the
+            # repair it forces is a fabrication. This fired on the first real payload through the
+            # installer (finova-j9av5f, a Showcase entry with no challenges or what's-next section).
+            if name not in secs:
+                probe.bad("capture.sections.seven", f"`{name}` absent",
                           "write the section, or the empty string if the page has nothing")
+            elif 0 < len(str(secs[name]).strip()) < 20:
+                probe.bad("capture.sections.fragment", f"`{name}` is a {len(str(secs[name]).strip())}-char "
+                          "fragment", "quote the page's sentence or write the empty string")
         if not isinstance(blob.get("numbers"), list):
             probe.bad("capture.numbers.shape", "`numbers` is not a list",
                       "[] is the honest answer when the page carries no figures")
+    elif kind == "notes" and not os.path.exists(os.path.join(CAPTURES, rid + ".json")):
+        # The unit of work is a capture *and* its notes for one id (Okoro, §4). Installing them in the
+        # other order is how a refused capture leaves an orphan judgement file behind, which then reads
+        # as a record that was audited and held. Capture first; the notes are judgement *about* it.
+        probe.bad("notes.order", f"no capture on disk for {rid!r} — notes are installed after the read",
+                  "write the capture first (it is the evidence; the notes are the argument about it)")
     else:
         for k in REQUIRED_NOTES_KEYS:
             if k not in blob:
@@ -398,7 +422,7 @@ def main():
                              (args.install_notes, "notes", NOTES_DIR)):
         if flag:
             blob = json.load(sys.stdin)
-            problems = validate_blob(kind, blob)
+            problems = validate_blob(kind, blob, flag)
             if problems:
                 for row in problems:
                     print(f"{flag}\t{row['rule']}\t{row['problem']}\t→ {row['fix']}")

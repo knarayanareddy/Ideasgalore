@@ -9,6 +9,13 @@
       "reason": "reject rate 0.00 \u2264 0.20 \u2192 restore toward the ceiling",
       "reject_rate": 0.0,
       "rejected": 0
+    },
+    {
+      "batch_size": 1,
+      "next_batch_size": 4,
+      "reason": "reject rate 0.00 \u2264 0.20 \u2192 restore toward the ceiling",
+      "reject_rate": 0.0,
+      "rejected": 0
     }
   ],
   "next_batch_size": 4,
