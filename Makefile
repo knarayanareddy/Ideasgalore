@@ -26,6 +26,7 @@ verify: build
 	$(PY) pipeline/shard_builder.py --check
 	$(PY) pipeline/tests/test_pipeline.py
 	cd web && npm run build
+	node pipeline/tests/ui_audit_smoke.mjs
 
 test:
 	$(PY) pipeline/tests/test_pipeline.py

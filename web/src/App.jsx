@@ -4,9 +4,10 @@ import {
   RotateCcw, Search, Sparkles, Star, X,
 } from 'lucide-react'
 import {
-  buildIndex, copyText, decodeRows, domainSlug, downloadText, getJson, searchRows,
-  shelfMarkdown, SORTS,
+  auditHeadline, buildIndex, copyText, decodeRows, domainSlug, downloadText, fetchPool,
+  getJson, searchRows, shelfMarkdown, SORTS, toneClass, fetchRubric,
 } from './lib.js'
+import AuditPool from './AuditPool.jsx'
 import IdeaAtlas from './IdeaAtlas.jsx'
 import IdeaInspector from './IdeaInspector.jsx'
 import IdeaForge from './IdeaForge.jsx'
@@ -33,6 +34,9 @@ export default function App() {
     try { return JSON.parse(localStorage.getItem(SHELF_KEY)) || [] } catch { return [] }
   })
   const [shelfOpen, setShelfOpen] = useState(false)
+  const [poolOpen, setPoolOpen] = useState(false)
+  const [pool, setPool] = useState(null)
+  const [rubric, setRubric] = useState(null)
   const [toast, setToast] = useState(null)
   const searchRef = useRef(null)
 
@@ -41,6 +45,8 @@ export default function App() {
     let alive = true
     Promise.all([getJson('catalog-packed.json'), getJson('catalog-stats.json'), getJson('data/moves.json')])
       .then(([p, s, m]) => { if (alive) { setPacked(p); setStats(s); setMovesMeta(m.moves || {}) } })
+    fetchRubric().then((r) => alive && setRubric(r))
+    fetchPool().then((d) => alive && setPool(d))
       .catch((e) => alive && setError(String(e.message || e)))
     return () => { alive = false }
   }, [])
@@ -170,6 +176,12 @@ export default function App() {
                 <Icon className="h-3.5 w-3.5" />{label}
               </button>
             ))}
+            {stats?.records_hazarded > 0 && (
+              <span className="stamp border-signal-500 text-signal-700 hidden lg:inline"
+                title="records carrying a regulated-claim hazard note">
+                {stats.records_hazarded} hazard-noted
+              </span>
+            )}
             <button onClick={() => setShelfOpen(true)} className="btn-quiet ml-1">
               <Archive className="h-3.5 w-3.5" />Shelf
               <span className="font-mono text-[10px] text-bone-500">{shelf.length}</span>
@@ -202,7 +214,13 @@ export default function App() {
       {/* ── corpus telemetry strip ───────────────────────────── */}
       <div className="mx-auto max-w-[1400px] px-4 pt-3 sm:px-6">
         <div className="flex flex-wrap items-center gap-x-5 gap-y-1 font-mono text-[10.5px] uppercase tracking-label text-bone-600">
-          <span><b className="text-bone-900">{stats?.total ?? rows.length}</b> admitted</span>
+          <span title="only records that passed the evidence audit are in the catalog">
+            <b className="text-bone-900">{stats?.total ?? rows.length}</b> audited in catalog
+          </span>
+          <button onClick={() => setPoolOpen(true)} className="underline decoration-dotted hover:text-signal-700"
+            title="held out of the catalog by the audit — leads, not vetted examples">
+            <b className="text-bone-900">{stats?.pool_records ?? pool?.count ?? 0}</b> unaudited pool
+          </button>
           <span><b className="text-bone-900">{Object.keys(movesMeta).length}</b> moves</span>
           <span><b className="text-bone-900">{events.length}</b> hackathons</span>
           <span><b className="text-bone-900">{stats?.deep_records ?? 0}</b> deep</span>
@@ -286,7 +304,8 @@ export default function App() {
           {/* grid */}
           <div className="mt-4 grid grid-cols-1 gap-2.5 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
             {filtered.slice(0, limit).map((row, i) => (
-              <PlateCard key={row.id} row={row} hue={sectors[row.domain]?.hue || '#877c63'}
+              <PlateCard key={row.id} row={row} rubric={rubric}
+                hue={sectors[row.domain]?.hue || '#877c63'}
                 rank={i} onOpen={() => open(row)} inShelf={inShelf(row.id)}
                 onShelf={() => {
                   setShelf((s) => (s.includes(row.id) ? s.filter((x) => x !== row.id) : [...s, row.id]))
@@ -306,7 +325,12 @@ export default function App() {
           {!filtered.length && (
             <div className="plate mt-8 p-8 text-center">
               <p className="font-display text-lg">Nothing accessioned under those constraints.</p>
-              <p className="mt-1 text-sm text-bone-700">Loosen the coolness floor or drop a move filter — the corpus is deliberately small and honest.</p>
+              <p className="mt-1 text-sm text-bone-700">
+              The catalog is audited-only, so an empty result is an honest one: loosen the coolness floor,
+              drop a move filter, or open the {' '}
+              <button className="underline decoration-dotted" onClick={() => setPoolOpen(true)}>unaudited pool</button>
+              {' '}({stats?.pool_records ?? 0} records) to see what has not been checked yet.
+            </p>
               <button className="btn-quiet mt-3" onClick={reset}>reset filters</button>
             </div>
           )}
@@ -373,11 +397,14 @@ export default function App() {
 
       {selected && (
         <IdeaInspector row={selected} detail={detail} moveMeta={movesMeta} sector={sectors[selected.domain]}
+          rubric={rubric}
           rows={rows} shards={shards} onClose={() => open(null)} onOpen={open}
           inShelf={inShelf(selected.id)}
           onShelf={() => setShelf((s) => (s.includes(selected.id) ? s.filter((x) => x !== selected.id) : [...s, selected.id]))}
           flash={flash} />
       )}
+
+      <AuditPool open={poolOpen} pool={pool} stats={stats} onClose={() => setPoolOpen(false)} />
 
       {toast && (
         <div className="fixed bottom-5 left-1/2 z-50 -translate-x-1/2">
@@ -402,7 +429,7 @@ export default function App() {
   )
 }
 
-function PlateCard({ row, hue, rank, onOpen, inShelf, onShelf, moveMeta }) {
+function PlateCard({ row, hue, rank, onOpen, inShelf, onShelf, moveMeta, rubric }) {
   return (
     <article className="plate rise-in group flex flex-col p-3" style={{ animationDelay: `${Math.min(rank, 18) * 12}ms` }}>
       <span className="tick -left-px -top-px border-l border-t" style={{ borderColor: hue }} />
@@ -441,6 +468,10 @@ function PlateCard({ row, hue, rank, onOpen, inShelf, onShelf, moveMeta }) {
           <span className="leader" />
           <span className="stamp border-signal-500/40 text-signal-700" title="coolness = explainable ranking score">
             {row.coolness.toFixed(2)}
+          </span>
+          <span className={`stamp ${toneClass(auditHeadline(row, null, rubric).tone)}`}
+            title={auditHeadline(row, null, rubric).verdictLabel}>
+            {row.verdict === 'strong' ? 'strong' : row.verdict === 'sound-with-caveats' ? 'vetted' : row.verdict || 'unaudited'}
           </span>
           <span className={`stamp ${row.depth === 'deep' ? 'border-brass-500 text-brass-700' : 'border-bone-400 text-bone-500'}`}
             title={row.depth === 'deep' ? 'project page fetched: likes, tags, authored sections' : 'listing row: title, summary, sector, moves'}>

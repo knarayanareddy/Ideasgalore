@@ -46,6 +46,14 @@ export function decodeRows(packed) {
       ageDays: r[13],
       url: `https://devpost.com/software/${r[0]}`,
       accession: `ACC·${String(i + 1).padStart(4, '0')}`,
+      // audit layer (row_format 15/16): dictionary ids -> verdict names. A pre-audit
+      // build has 14 columns, so read them defensively: absent must mean "unaudited",
+      // never "verified".
+      verdict: r.length > 15 ? (packed.verdicts || {})[String(r[14])] ?? null : null,
+      worth: r.length > 15 ? (packed.worth || {})[String(r[15])] ?? null : null,
+      vetted: r.length > 15
+        ? ['strong', 'sound-with-caveats'].includes((packed.verdicts || {})[String(r[14])])
+        : false,
     }
   })
 }
@@ -182,4 +190,152 @@ export function downloadText(name, text, type = 'text/markdown') {
   a.download = name
   a.click()
   setTimeout(() => URL.revokeObjectURL(url), 2000)
+}
+
+/* ── audit layer ─────────────────────────────────────────────────────────
+   Everything here reads the same files the gates validate and the MCP server
+   serves, so "is this vetted?" has one answer in the browser and in the API. */
+
+export const AUDIT_STATUS_TONE = {
+  confirmed: 'ok', supported: 'ok', partial: 'warn', unverifiable: 'mute',
+  contradicted: 'bad', duplicate: 'mute',
+}
+
+/** Check order in the inspector: can you hold it → is the build real → is it honest. */
+export const AUDIT_CHECK_ORDER = [
+  'artifact_exists', 'build_is_real', 'test_or_eval_evidence',
+  'numbers_add_up', 'stack_consistency', 'limits_disclosed',
+]
+
+export const AUDIT_CHECK_LABELS = {
+  artifact_exists: 'artifact exists',
+  build_is_real: 'build is real',
+  test_or_eval_evidence: 'tests / eval evidence',
+  numbers_add_up: 'numbers add up',
+  stack_consistency: 'stack is consistent',
+  limits_disclosed: 'limits disclosed',
+}
+
+/** The 12 mandatory fields, in reading order for a builder. */
+export const AUDIT_FIELD_ORDER = [
+  'what_it_is', 'what_it_does', 'how_it_works', 'numbers_with_arithmetic',
+  'data_and_models', 'how_they_tested', 'limits_they_disclosed', 'built_with_verified',
+  'what_to_steal', 'what_breaks_first', 'clone_cost', 'prior_art',
+]
+
+export const AUDIT_FIELD_LABELS = {
+  what_it_is: 'what it is',
+  what_it_does: 'what it does',
+  how_it_works: 'how it works',
+  numbers_with_arithmetic: 'the numbers, with the arithmetic',
+  data_and_models: 'data & models',
+  how_they_tested: 'how they tested it',
+  limits_they_disclosed: 'limits they disclosed',
+  built_with_verified: 'built with (verified)',
+  what_to_steal: 'what to steal',
+  what_breaks_first: 'what breaks first in a rebuild',
+  clone_cost: 'cost to clone it',
+  prior_art: 'prior art it should credit',
+}
+
+export function toneClass(tone) {
+  return {
+    ok: 'border-brass-500 text-brass-700',
+    warn: 'border-signal-500 text-signal-700',
+    bad: 'border-signal-700 text-signal-900 bg-signal-100/50',
+    mute: 'border-bone-400 text-bone-500',
+  }[tone] || 'border-bone-400 text-bone-500'
+}
+
+const _jsonCache = new Map()
+async function cachedJson(path) {
+  if (!_jsonCache.has(path)) {
+    _jsonCache.set(path, getJson(path).catch(() => null))
+  }
+  return _jsonCache.get(path)
+}
+
+/** The rubric, so the UI explains verdicts with the same words the gates enforce. */
+export async function fetchRubric() {
+  const rub = await cachedJson('data/audit-rubric.json')
+  return rub && rub.verdicts ? rub : null
+}
+
+/** Full audit sheet for one record: fields + evidence + per-check reasoning. */
+export async function fetchAuditSheet(row) {
+  if (!row) return null
+  const key = `data/audits/${domainSlug(row.domain)}.json`
+  const sheet = await cachedJson(key)
+  const fromSheet = sheet?.records?.[row.id]
+  if (fromSheet) return fromSheet
+  const index = await cachedJson('data/audits.json')     // pre-audit / small-build fallback
+  return index?.records?.[row.id] || null
+}
+
+/** Records the audit held out of the catalog — leads, not vetted examples. */
+export async function fetchPool() {
+  const pool = await cachedJson('data/pool.json')
+  return pool ? { count: pool.count || (pool.records || []).length, records: pool.records || [] } : null
+}
+
+export function verdictTone(verdict) {
+  if (!verdict) return 'mute'
+  return { strong: 'ok', 'sound-with-caveats': 'ok', thin: 'mute', duplicate: 'warn', unsound: 'bad' }[verdict] || 'mute'
+}
+
+export function auditHeadline(row, sheet, rubric) {
+  const verdict = row?.verdict || sheet?.verdict || null
+  const score = sheet?.soundness_score
+  const cov = sheet?.rubric_coverage
+  return {
+    verdict,
+    verdictLabel: verdict ? (rubric?.verdicts?.[verdict] || verdict) : 'not audited yet',
+    worth: row?.worth || sheet?.worth || null,
+    worthLabel: row?.worth ? (rubric?.worth?.[row.worth] || row.worth) : null,
+    score: typeof score === 'number' ? score : null,
+    coverage: typeof cov === 'number' ? cov : null,
+    tone: verdictTone(verdict),
+    vetted: verdict === 'strong' || verdict === 'sound-with-caveats',
+  }
+}
+
+/** Markdown for the audit block — appended to ideaMarkdown() so an exported brief
+   carries the caveats instead of leaving the reader to guess them. */
+export function auditMarkdown(row, sheet, rubric) {
+  const head = auditHeadline(row, sheet, rubric)
+  const lines = ['', `**Audit verdict:** ${head.verdict || 'unaudited'}` +
+    (head.worth ? ` · worth copying: ${head.worth}` : '') +
+    (head.score !== null ? ` · soundness ${head.score.toFixed(2)} over ${Math.round((head.coverage ?? 0) * 100)}% of the rubric` : '')]
+  if (sheet?.worth_note) lines.push(`> ${sheet.worth_note}`)
+  const steal = sheet?.fields?.what_to_steal?.value
+  if (steal) lines.push(`**What to steal:** ${steal}`)
+  const breaks = sheet?.fields?.what_breaks_first?.value
+  if (breaks) lines.push(`**What breaks first:** ${breaks}`)
+  const cc = sheet?.fields?.clone_cost?.value
+  if (cc?.estimate) {
+    lines.push(`**Cost to clone:** ${cc.estimate}${cc.why ? ` — ${cc.why}` : ''}`)
+    if (cc.assumptions?.length) lines.push(cc.assumptions.map((a) => `  - assumes: ${a}`).join('\n'))
+  }
+  const checks = sheet?.checks || {}
+  const names = Object.keys(checks).length ? Object.keys(checks) : []
+  if (names.length) {
+    lines.push('', '**Checks:**')
+    names.forEach((k) => {
+      const c = checks[k] || {}
+      lines.push(`- ${AUDIT_CHECK_LABELS[k] || k}: ${c.status}${typeof c.pass === 'number' ? ` (${c.pass.toFixed(2)})` : ''}${c.why ? ` — ${c.why}` : ''}`)
+    })
+  }
+  const unknowns = sheet?.unknowns || []
+  if (unknowns.length) {
+    lines.push('', '**What we could not fill in (do not guess these):**')
+    unknowns.forEach((u) => lines.push(`- ${AUDIT_FIELD_LABELS[u.field] || u.field}: ${u.missing || 'not filed'}` +
+      (u.how ? ` → ${u.how}` : '')))
+  }
+  const hz = sheet?.hazard
+  if (hz?.class) {
+    lines.push('', `**Hazard:** ${hz.class}${hz.team_disclaimed ? ' (team disclaims it)' : ' (no disclaimer found)'} — ${hz.note || ''}`)
+  }
+  if (sheet?.duplicate_of) lines.push('', `**Merged into:** ${sheet.duplicate_of} — same submission, the richer record is published.`)
+  if (sheet?.source_url) lines.push('', `_Audited ${sheet.audited_at || '?'} against ${sheet.source_url} · ${sheet.evidence?.length || 0} evidence rows._`)
+  return lines.filter((l) => l !== '').join('\n')
 }

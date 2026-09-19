@@ -1,8 +1,13 @@
-import React, { useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import {
-  BookOpen, Copy, Github, ExternalLink, Loader2, Play, Star, X,
+  AlertTriangle, BookOpen, Check, Copy, Github, ExternalLink, Loader2, Moon,
+  Play, ShieldAlert, Star, X,
 } from 'lucide-react'
-import { copyText, ideaMarkdown } from './lib.js'
+import {
+  AUDIT_CHECK_LABELS, AUDIT_CHECK_ORDER, AUDIT_FIELD_LABELS, AUDIT_FIELD_ORDER,
+  AUDIT_STATUS_TONE, auditHeadline, auditMarkdown, copyText, fetchAuditSheet,
+  ideaMarkdown, toneClass,
+} from './lib.js'
 
 const WEIGHTS = {
   engagement: [0.30, 'Devpost likes, log-scaled — community noticed it'],
@@ -14,9 +19,24 @@ const WEIGHTS = {
   redundancy: [-0.12, 'near-duplicate of another record (browse only)'],
 }
 
-export default function IdeaInspector({ row, detail, moveMeta, sector, rows, shards, onClose, onOpen, inShelf, onShelf, flash }) {
+export default function IdeaInspector({ row, detail, moveMeta, sector, rows, shards, onClose, onOpen, inShelf, onShelf, flash, rubric }) {
   const [busy, setBusy] = useState(false)
+  const [sheet, setSheet] = useState(null)
+  const [sheetState, setSheetState] = useState('idle')
   const loading = !detail && !shards[slugOf(row.domain)]
+
+  // The audit sheet lives per sector, not per record: one fetch on open, cached in lib.
+  useEffect(() => {
+    let alive = true
+    setSheet(null); setSheetState('loading')
+    fetchAuditSheet(row).then((sh) => {
+      if (!alive) return
+      setSheet(sh || null)
+      setSheetState(sh ? 'ready' : 'missing')
+    })
+    return () => { alive = false }
+  }, [row])
+  const head = auditHeadline(row, sheet, rubric)
 
   const neighbors = useMemo(() => rows
     .filter((r) => r.id !== row.id && (r.subsystem === row.subsystem || r.moves.some((m) => row.moves.includes(m))))
@@ -57,7 +77,8 @@ export default function IdeaInspector({ row, detail, moveMeta, sector, rows, sha
             </button>
             <button className="btn-quiet" disabled={busy} onClick={async () => {
               setBusy(true)
-              const ok = await copyText(ideaMarkdown(row, detail))
+              const audit = sheet ? auditMarkdown(row, sheet, rubric) : ''
+              const ok = await copyText(ideaMarkdown(row, detail) + (audit ? `\n${audit}` : ''))
               flash(ok ? 'copied — paste into your next project brief' : 'copy blocked by browser')
               setBusy(false)
             }}><Copy className="h-3.5 w-3.5" />copy as markdown</button>
@@ -67,6 +88,182 @@ export default function IdeaInspector({ row, detail, moveMeta, sector, rows, sha
         <div className="space-y-6 px-5 py-5">
           {/* the summary */}
           <p className="font-display text-[17px] leading-relaxed text-bone-900">{detail?.summary || row.hook}</p>
+
+          {/* the audit — publication was conditional on this */}
+          <div className="plate !border-brass-300 p-3.5" style={{ borderLeft: `3px solid ${sector?.hue || '#877c63'}` }}>
+            <div className="flex flex-wrap items-baseline gap-2">
+              <h3 className="micro">audit · evidence-gated</h3>
+              <span className={`stamp ${toneClass(head.tone)}`} title={head.verdictLabel}>
+                {head.verdict || 'unaudited'}
+              </span>
+              {head.worth && (
+                <span className="stamp border-bone-400 text-bone-600" title={head.worthLabel}>
+                  worth: {head.worth}
+                </span>
+              )}
+              {head.score !== null && (
+                <span className="font-mono text-[10.5px] text-bone-600">
+                  soundness {head.score.toFixed(2)} · rubric {Math.round((head.coverage ?? 0) * 100)}%
+                </span>
+              )}
+              <a className="ml-auto font-mono text-[10px] text-bone-500 hover:text-signal-700"
+                 href={`data/audits/${slugOf(row.domain)}.json`} target="_blank" rel="noreferrer noopener">
+                raw sheet
+              </a>
+            </div>
+
+            {sheetState === 'loading' && (
+              <p className="micro mt-2 flex items-center gap-1.5 text-bone-500">
+                <Loader2 className="h-3 w-3 animate-spin" /> loading the audit sheet…
+              </p>
+            )}
+            {sheetState === 'missing' && (
+              <p className="mt-2 text-[12.5px] leading-snug text-bone-700">
+                No audit sheet in this build — treat everything below as unaudited. The catalog is
+                audited-only, so a missing sheet means the record predates the audit layer.
+              </p>
+            )}
+
+            {head.verdictLabel && head.verdict && (
+              <p className="mt-2 text-[13px] leading-snug text-bone-800">{head.verdictLabel}</p>
+            )}
+            {sheet?.worth_note && (
+              <p className="mt-1.5 text-[13px] italic leading-snug text-bone-800">“{sheet.worth_note}”</p>
+            )}
+            {!!sheet?.why_not_promoted?.length && (
+              <ul className="mt-2 space-y-1 border-t border-dashed border-bone-300 pt-2">
+                {sheet.why_not_promoted.map((w) => (
+                  <li key={w} className="flex gap-1.5 text-[12.5px] leading-snug text-signal-700">
+                    <AlertTriangle className="mt-0.5 h-3 w-3 shrink-0" />{w}
+                  </li>
+                ))}
+              </ul>
+            )}
+            {sheet?.duplicate_of && (
+              <p className="mt-2 flex items-start gap-1.5 text-[12.5px] text-bone-700">
+                <ShieldAlert className="mt-0.5 h-3.5 w-3.5 shrink-0 text-signal-700" />
+                merged into <button className="underline" onClick={() => {
+                  const twin = rows.find((r) => r.id === sheet.duplicate_of)
+                  if (twin) onOpen(twin)
+                }}>{sheet.duplicate_of}</button> — same product resubmitted; the better-sourced record is published.
+              </p>
+            )}
+
+            {/* the six technical checks */}
+            {!!sheet?.checks && (
+              <div className="mt-3 grid grid-cols-1 gap-1.5 sm:grid-cols-2">
+                {(AUDIT_CHECK_ORDER.filter((k) => sheet.checks[k]).concat(
+                  Object.keys(sheet.checks).filter((k) => !AUDIT_CHECK_ORDER.includes(k))
+                )).map((k) => {
+                  const c = sheet.checks[k] || {}
+                  const tone = AUDIT_STATUS_TONE[c.status] || 'mute'
+                  return (
+                    <div key={k} className="flex items-baseline gap-1.5" title={c.why || ''}>
+                      <span className={`stamp ${toneClass(tone)} !px-1 !py-0`}>
+                        {tone === 'ok' ? <Check className="inline h-2.5 w-2.5" />
+                          : tone === 'bad' ? <AlertTriangle className="inline h-2.5 w-2.5" />
+                            : <Moon className="inline h-2.5 w-2.5" />}
+                      </span>
+                      <span className="font-mono text-[10px] uppercase tracking-label text-bone-700">
+                        {AUDIT_CHECK_LABELS[k] || k}
+                      </span>
+                      <span className="leader" />
+                      <span className="font-mono text-[10px] text-bone-600">{c.status}</span>
+                    </div>
+                  )
+                })}
+              </div>
+            )}
+            {!!sheet?.evidence?.length && (
+              <p className="mt-2 font-mono text-[10px] text-bone-500">
+                {sheet.evidence.length} evidence rows · every status cites a locator a reader can re-check ·
+                {' '}audited {sheet.audited_at || '?'} · v{sheet.audit_version}
+              </p>
+            )}
+
+            {/* the twelve mandatory fields, filled or honestly missing */}
+            {!!sheet?.fields && (
+              <div className="mt-3 space-y-2 border-t border-bone-300 pt-3">
+                {AUDIT_FIELD_ORDER.filter((f) => sheet.fields[f] || AUDIT_FIELD_LABELS[f]).map((f) => {
+                  const cell = sheet.fields[f]
+                  const v = cell?.value
+                  return (
+                    <div key={f}>
+                      <p className="micro">
+                        {AUDIT_FIELD_LABELS[f] || f}
+                        {cell?.status && (
+                          <span className={`stamp ml-1 !px-1 !py-0 ${toneClass(AUDIT_STATUS_TONE[cell.status] || (cell.status === 'filed' ? 'ok' : 'mute'))}`}>
+                            {cell.status}
+                          </span>
+                        )}
+                        {typeof cell?.confidence === 'string' && cell.confidence !== 'high' && (
+                          <span className="ml-1 font-mono text-[9.5px] text-bone-500">{cell.confidence}</span>
+                        )}
+                      </p>
+                      {!v && v !== 0 && (
+                        <p className="mt-0.5 text-[12.5px] italic leading-snug text-bone-500">
+                          not filed — the page says nothing we could check
+                        </p>
+                      )}
+                      {typeof v === 'string' && <p className="mt-0.5 text-[13px] leading-relaxed text-bone-900">{v}</p>}
+                      {v && typeof v !== 'string' && Array.isArray(v) && (
+                        <ul className="mt-0.5 space-y-0.5">
+                          {v.map((item, i) => (
+                            <li key={i} className="text-[12.5px] leading-snug text-bone-800">
+                              {item?.url ? (
+                                <a className="text-signal-700 hover:underline" href={item.url} target="_blank" rel="noreferrer noopener">
+                                  {item.title || item.name || item.url}
+                                </a>
+                              ) : (typeof item === 'string' ? item : jsonish(item))}
+                            </li>
+                          ))}
+                        </ul>
+                      )}
+                      {v && typeof v === 'object' && !Array.isArray(v) && (
+                        <div className="mt-0.5 text-[12.5px] leading-snug text-bone-800">
+                          {v.estimate && <p><b className="font-mono text-[12px] text-bone-900">{v.estimate}</b>{v.why ? ` — ${v.why}` : ''}</p>}
+                          {!!v.assumptions?.length && (
+                            <p className="mt-1 font-mono text-[10.5px] text-bone-600">
+                              assumes: {v.assumptions.join(' · ')}
+                            </p>
+                          )}
+                          {!v.estimate && <p>{jsonish(v)}</p>}
+                        </div>
+                      )}
+                    </div>
+                  )
+                })}
+              </div>
+            )}
+
+            {/* what is still unknown, stated as unknown (A1: no blank-filling) */}
+            {!!sheet?.unknowns?.length && (
+              <div className="mt-3 border-t border-bone-300 pt-2.5">
+                <p className="micro mb-1">what we could not fill in</p>
+                <ul className="space-y-1">
+                  {sheet.unknowns.map((u, i) => (
+                    <li key={i} className="plate !bg-bone-100/70 p-2 text-[12.5px] leading-snug">
+                      <span className="font-mono text-[10px] uppercase tracking-label text-signal-700">
+                        {AUDIT_FIELD_LABELS[u.field] || u.field}
+                      </span>
+                      <p className="mt-0.5 text-bone-800">{u.missing || 'not filed'}</p>
+                      {u.how && <p className="mt-0.5 font-mono text-[10.5px] text-bone-600">settles it: {u.how}</p>}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
+            {sheet?.hazard?.class && (
+              <p className="mt-2.5 flex items-start gap-1.5 border-t border-dashed border-signal-300 pt-2 text-[12.5px] leading-snug text-signal-700">
+                <ShieldAlert className="mt-0.5 h-3.5 w-3.5 shrink-0" />
+                <span>
+                  <b className="font-mono text-[10px] uppercase tracking-label">hazard · {sheet.hazard.class}</b>
+                  {' '}{sheet.hazard.note}{sheet.hazard.team_disclaimed ? ' (the team disclaims it)' : ''}
+                </span>
+              </p>
+            )}
+          </div>
 
           {/* score decomposition */}
           <div className="plate p-3.5">
@@ -210,6 +407,10 @@ export default function IdeaInspector({ row, detail, moveMeta, sector, rows, sha
       </section>
     </div>
   )
+}
+
+function jsonish(v) {
+  try { return typeof v === 'string' ? v : JSON.stringify(v) } catch { return String(v) }
 }
 
 function slugOf(name) {

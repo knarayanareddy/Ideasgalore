@@ -12,6 +12,7 @@ from __future__ import annotations
 import json
 import os
 import re
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -485,6 +486,33 @@ class TestCliEntrypoints(unittest.TestCase):
         r = subprocess.run([sys.executable, "pipeline/shard_builder.py", "--check"],
                            cwd=REPO, capture_output=True, text=True)
         self.assertEqual(r.returncode, 0, r.stdout[-800:] + r.stderr[-400:])
+
+
+class TestUiContract(unittest.TestCase):
+    """The browser decodes the same bytes the gates validated; a UI that reads a stale
+    column order shows readers the wrong verdict. Checked with node, no DOM needed
+    (`pipeline/tests/ui_audit_smoke.mjs` also asserts the UI field list == the rubric)."""
+
+    @unittest.skipIf(shutil.which("node") is None, "node not available")
+    def test_ui_audit_smoke_passes_on_the_built_catalog(self):
+        run = subprocess.run(["node", os.path.join(REPO, "pipeline", "tests", "ui_audit_smoke.mjs")],
+                             cwd=REPO, capture_output=True, text=True)
+        self.assertEqual(run.returncode, 0, run.stdout[-1200:] + run.stderr[-600:])
+        self.assertIn("consistent with the built catalog", run.stdout)
+
+    def test_ui_field_labels_cover_the_rubric(self):
+        """Parse the UI's field list and check it against the rubric — a JS-side drift
+        the node harness proves at run time, and this proves even where node is absent."""
+        js = open(os.path.join(REPO, "web", "src", "lib.js"), encoding="utf-8").read()
+        block = js.split("AUDIT_FIELD_ORDER = [", 1)[1].split("]", 1)[0]
+        listed = re.findall(r"'([a-z_]+)'", block)
+        # The inspector re-orders the fields for reading (identity → mechanism → honesty),
+        # so compare membership, not position; position is a design choice, not drift.
+        self.assertEqual(sorted(listed), sorted(T.AUDIT_MANDATORY_FIELDS),
+                         "the inspector must show every mandatory field — no blanks, no extras")
+        labels = js.split("AUDIT_FIELD_LABELS = {", 1)[1].split("}", 1)[0]
+        for f in T.AUDIT_MANDATORY_FIELDS:
+            self.assertIn(f"{f}:", labels, f"no display label for {f}")
 
 
 class TestAuditGate(unittest.TestCase):
