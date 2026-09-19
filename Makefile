@@ -20,10 +20,12 @@ build: seed audit
 	$(PY) pipeline/shard_builder.py
 	$(PY) pipeline/generate_remixes.py
 	$(PY) pipeline/build_agent_api.py
+	$(PY) pipeline/docsync.py
 
 ## 4. gates: budget, required fields, cross-surface parity, determinism, then tests
 verify: build
 	$(PY) pipeline/shard_builder.py --check
+	$(PY) pipeline/docsync.py --check
 	$(PY) pipeline/tests/test_pipeline.py
 	cd web && npm run build
 	node pipeline/tests/ui_audit_smoke.mjs

@@ -369,6 +369,29 @@ metric and a provider score its own page says has no ground truth — hazard `co
 no disclaimer). 77 tests green; the batch also removed four ways the *row* could contradict its
 own audit sheet, all of them documented in the protocol §2/§6/§8 and pinned by gates.
 
+**After queue batch 4** the catalog is 9 of 157: **Continuity 0.50 / `strong`** (a MediaWiki fact
+-re-verification agent: one button, a per-claim ledger with due dates, `sources disagree` as a
+terminal state, a cited diff handed to the maintainer and an explicit refusal to publish; a YouTube
+artifact so `artifact_exists` is `supported`, no repository so the ceiling holds; its own page says
+"six stages" and then lists seven, which the `reconciles: false` path now records instead of
+crediting) and `AX4U Academy` `thin` 0.11 / `tired` (an AI education platform whose 140-character
+hook is seven slogans, with no cohort, no outcome, no architecture section and eleven Built With
+tags spanning two backends). 83 tests green.
+
+Two of those changes were about the audit contradicting itself, and two were about the catalog
+contradicting the audit: `rather than measured` no longer reads as a benchmark, and a failed
+recomputation no longer reads as a confirmed one; the audit's captures now project onto corpus rows
+(depth, links, likes, tags) instead of living beside them, and an "Academy" in a project *name*
+outranks a stack list in the classifier — three records re-shelved into Learning & Knowledge Systems,
+two of them previously filed under Creative Media and "Unclassified".
+
+**Doc drift became a build failure.** Every count in README, `AGENT_ACCESS` and this protocol's §1
+used to be copied by hand, and each was wrong within one batch of being written — three documents at
+once, twice running. Those numbers now live in a generated block between `<!-- census:begin -->`
+sentinels, emitted from `catalog-stats.json` by `pipeline/docsync.py` on `make build` and asserted by
+`docsync.py --check` on `make verify`: a document that restates a stale count fails the build, and
+qualitative prose stays hand-written because that is the part a program cannot derive.
+
 ## 9 · What changed against the first instinct
 
 First instinct was: add a `quality_flag` column, hand-label the 165 rows, keep publishing them all.

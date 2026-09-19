@@ -52,6 +52,32 @@
   "worth": "strong",
   "worth_note": "547 likes and a staff feature on a Windows-on-Snapdragon app is not luck: it deletes the cloud bill, the latency and the privacy argument at once. Held back from 'breakthrough' because on-device TTS is a crowded field and the moat here is toolchain work (AI Hub quantisation), not a new capability."
  },
+ "ax4u-academy": {
+  "clone_cost": {
+   "assumptions": [
+    "you have material worth packaging — exercises with answer keys, not an introduction to prompts",
+    "an audience that will pay for execution rather than information, which is the whole bet",
+    "a maintenance rhythm for tool guidance, since a stale curriculum is worse than none in this domain"
+   ],
+   "estimate": "days for the platform shell; the curriculum and the evidence are the months",
+   "why": "A content library, a template store and accounts are ordinary work, and nothing described needs FastAPI and Firestore and Streamlit and Node at once. What takes months is repeatable exercises that reliably leave a non-technical person with something deployed, and someone keeping the model and API guidance current as the ecosystem the page itself calls overwhelming turns over."
+  },
+  "hazard_note": "No regulated-outcome claim: nothing here asserts credentials, employment results or exam outcomes, so no hazard flag is raised. The relevant caution is for whoever copies the framing — promising published books and deployable systems without measuring a single learner is a marketing surface, and the exposure sits with the buyer, not with a reader of this record.",
+  "prior_art": [
+   {
+    "corpus_id": "sketchwish",
+    "relation": "both serve a non-technical user who wants the finished artifact rather than the skill, and the contrast is about commitment: SketchWish names one output, discloses its caps and costs, and can be opened and tried; this promises five kinds of output and links nothing a reader can try."
+   },
+   {
+    "corpus_id": "greenlight-nine-agent-production-crew",
+    "relation": "both sell time saved; Greenlight states a measured before/after with a cost per run, which is the shape of claim this page's 'save measurable time' principle asks for and does not make."
+   }
+  ],
+  "what_breaks_first": "Every claim about effectiveness, immediately, because there is nothing to break gracefully — no cohort size, no completion rate, no hours saved, no named organisation that onboarded. Second: the product boundary. A course, a template library and a hosted automation workspace have different failure modes, different owners and different prices, and the page does not say which of the three it is; the eleven Built With tags span two backend frameworks, two hosting stacks, two storage engines and two front-end approaches, which reads as the tool list a student touches across a year rather than the stack one service runs on.",
+  "what_to_steal": "Segment a curriculum by the artifact the learner leaves with — a deployed workflow, a published book, a live dashboard — rather than by topic, because each module then has a one-question success test: did this produce a thing. And name the barrier concretely (API sprawl, coding environments, model selection, an ecosystem that changes monthly) instead of 'practical AI skills': that list is a usable brief for what a first session must hide.",
+  "worth": "tired",
+  "worth_note": "The genre is crowded and this entry is indistinguishable from it: practical application rather than theory, a list of output types, a stated tension between too simple and too technical. What would move it off this label is a single number from a real cohort, and the page itself names which number — people learn faster when they can automate something useful, publish a real result or save measurable time. The record is held for the absence of the measurement it argues for, not for the aim, which is a good one."
+ },
  "complianceguardian-kcqs32": {
   "clone_cost": {
    "assumptions": [
@@ -77,6 +103,36 @@
   "what_to_steal": "Grant the writer identity the append permission and deny it the job-starting permission, so history cannot be rewritten by the application that writes it; derive tenant identity only from verified token claims so there is no request field to tamper with; record prompt and model version against every generated verdict so a decision can be reproduced months later; make environment variables required rather than defaulted, because a permissive default on a fresh checkout silently removed credentials.",
   "worth": "strong",
   "worth_note": "The product decision is the transferable one: refuse to let a model answer unless the answer names a rule from a versioned file, and escalate when it cannot. Pair that with an audit trail enforced at the permission layer and an entitlement model that spends counters inside a transaction, and you have three moves that apply to any agent product expected to produce evidence a third party will rely on. The incident write-up is unusually useful too - six failures behind each other, none of which crashed."
+ },
+ "continuity-g7bty0": {
+  "clone_cost": {
+   "assumptions": [
+    "a wiki or knowledge base with a review workflow you can post diffs into (MediaWiki pending changes, or a PR-style flow)",
+    "a per-claim research budget, since a pass costs a search plus several model calls for every claim on the page",
+    "a decision about contested facts: staff the disagreement bucket, or suppress that category rather than flood maintainers"
+   ],
+   "estimate": "2-3 weeks — the ledger is the project, the model calls are glue",
+   "why": "The walkthrough is ordinary orchestration over two APIs: extract, prioritise, research, judge, draft, cross-check, render a diff. What takes the time is the claim ledger — extracting claims reliably, keying them so a re-run recognises the same claim in a re-edited article, and the due-date and link graph on top — plus the fixture recorder that keeps iteration cheap. The dependency-free core design is what makes the second part cheap to get right."
+  },
+  "hazard_note": "Wiki content is public-knowledge infrastructure, so an edit proposal has a public consequence even though the agent never publishes: the team disclaims authority explicitly (it 'never decides anything', 'nothing reaches the page until a person says so'), which is the review posture this catalog asks for. The two figures that should exist before running it on a busy article are the share of claims that land in sources-disagree and the false-negative rate — a stale fact the agent checked and passed is indistinguishable from one it never reached, and a maintainer cannot tell those apart from a clean report.",
+  "prior_art": [
+   {
+    "corpus_id": "vms-ai-guard-fisheries-compliance-monitoring-alerts",
+    "relation": "the same shape — a machine ranking facts for a human to act on, deliberately stopping short of acting — and the two pages differ almost entirely on whether the judgement is checkable: Continuity returns old text, new text, a citation and a confidence score per claim, while the fisheries tool returns a risk classification whose own page says there is no ground truth for it."
+   },
+   {
+    "corpus_id": "adversarial-compliance-matrix",
+    "relation": "both convert an unverifiable judgement into an artifact a person can check (a cited diff, a signed finding) and both keep the human as the writer of record; the difference is what they attach evidence to — one grounds a claim against the live web on a schedule, the other against a versioned rule set in CI."
+   },
+   {
+    "corpus_id": "greenlight-nine-agent-production-crew",
+    "relation": "both are staged agent pipelines that publish a dollar figure, and read together they move the number worth tracking: Greenlight quotes cost per run against a measured output, Continuity quotes total build cost and explains that fixtures made every later iteration free — so iteration cost, not run cost, is what decides whether a pipeline is developable."
+   }
+  ],
+  "what_breaks_first": "The fixed staleness window. 'Skip what was verified last week' is a single guess about decay rates applied uniformly, and it is wrong in both directions for the facts this targets: a film's release date almost never moves, while 'current holder of X' can move in a day — so the budget is spent re-checking stable facts while the volatile ones age out between passes. Second: the reviewer's queue. 'Sources disagree' is a terminal category with no triage described, and on a long contested article it can hold a large share of the claims; a maintainer handed forty cited diffs and thirty unresolved disagreements has been given a new job, not a lighter one.",
+  "what_to_steal": "Record fixtures on the first live run — write every search result and model response to disk once, and every later iteration is free; that single habit is what made the whole thing developable on a hackathon budget. Keep vendor SDKs at the edges around a dependency-free core so the interesting logic runs on a bare interpreter with no key. Schedule re-verification per claim with a last-checked and next-due time rather than per page, and keep a link graph between claims so an edit to one paragraph can be checked against its neighbours. And always hand back a diff with citations instead of writing to the system of record.",
+  "worth": "strong",
+  "worth_note": "The diagnosis is worth more than the demo: a fact that used to be true and quietly stopped being true looks exactly like every correct sentence around it, and nobody edited the page — the world moved on. Treating wiki rot as a decay problem with a per-claim due date instead of an error problem is the right shape, and keeping the human as writer of record (a cited diff, never a publish) is the right posture for public knowledge infrastructure. The write-up also documents its own development discipline in the same breath as the product, which lets a reader check the cost claim against the fixture claim."
  },
  "gemini-box": {
   "clone_cost": {

@@ -125,12 +125,18 @@ DOMAINS: Dict[str, Dict[str, Any]] = {
         },
     },
     "Learning & Knowledge Systems": {
-        "signature": ['learn', 'study', 'tutor', 'course', 'quiz', 'wiki', 'document', 'ocr', 'transcri', 'retrieval', 'graphrag', 'notes'],
+        # Institution words belong here even though they say nothing about technology: a
+        # record named "… Academy" was shelving under Data Infrastructure because its
+        # (accurate) Built With tags outvoted one stem in the summary. Signature terms are
+        # weighted 3x on name+summary, so the fix is to recognise what the *name* is saying.
+        "signature": ['learn', 'study', 'tutor', 'course', 'quiz', 'wiki', 'document', 'ocr', 'transcri', 'retrieval', 'graphrag', 'notes',
+                      'educat', 'academy', 'bootcamp', 'curricul', 'classroom', 'teach', 'lesson', 'upskill', 'training program', 'coursework'],
         "hue": "#087f5b",
         "blurb": "Teaching, studying, tutoring, and the organization of what a group "
                  "knows — from personal notes to institutional wikis.",
         "subsystems": {
-            "Tutors & Adaptive Learning": ["tutor", "learn", "study", "quiz", "roadmap", "adaptive"],
+            "Tutors & Adaptive Learning": ["tutor", "learn", "study", "quiz", "roadmap", "adaptive",
+                                          "academy", "lesson", "curricul", "classroom", "exercise", "bootcamp"],
             "Documents & Extraction": ["pdf", "document", "ocr", "extract", "table", "transcribe"],
             "Search & Retrieval": ["search", "retrieval", "rag", "index", "embed", "graphrag"],
             "Knowledge Curation": ["wiki", "note", "archive", "catalog", "memory", "curat"],

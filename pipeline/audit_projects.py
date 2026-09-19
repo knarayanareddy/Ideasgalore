@@ -105,7 +105,12 @@ def _sections_text(cap: Dict[str, Any]) -> str:
 
 
 _NEG_CUE = re.compile(r"\b(no|not|never|none|nothing|without|absent|lacks?|missing|"
-                      r"unpublished|undocumented|unsaid|omitted|does ?n.t|didn?t|zero|yet)\b", re.I)
+                      r"unpublished|undocumented|unsaid|omitted|does ?n.t|didn?t|zero|yet|"
+                      # A comparative denial is still a denial: "a harness discipline is
+                      # described rather than measured" contains the word "measured" only to
+                      # say it does not apply, and a lookback that stops at the usual negations
+                      # reads it as a benchmark.
+                      r"rather than|instead of|allegedly|purportedly)\b", re.I)
 # Deliberately excludes the bare word "baseline": in this corpus a "personal baseline" is
 # an architecture choice, not an evaluation. A comparison needs comparator words.
 _BENCH_RE = re.compile(r"(accuracy|f1\b|auc|precision|recall|latency|p95|benchmark|ab test|"
@@ -177,7 +182,16 @@ def run_checks(cap: Dict[str, Any], repo_name: Optional[str], repo: Optional[Dic
                  and re.match(r"structural", str(n.get("arithmetic") or ""), re.I)]
     unfalsifiable = [n for n in numbers
                      if n.get("arithmetic") or n.get("denominator") or n.get("verifiable") is False]
-    unfalsifiable = [n for n in unfalsifiable if n not in ok and n not in checkable]
+    # A recomputation that *disagrees* with the page is a finding, not a confirmation, and
+    # the capture has to say so out loud (`reconciles: false`): reading polarity back out of
+    # "the walkthrough enumerates seven, the cost narrative says six" is precisely the
+    # judgement a keyword check cannot be trusted with. Continuity's stage count landed in the
+    # top tier before this, because we had in fact done the arithmetic — on the wrong side of it.
+    mismatch = [n for n in ok if n.get("reconciles") is False]
+    ok = [n for n in ok if n.get("reconciles") is not False]
+    load_bearing = [n for n in mismatch if n.get("load_bearing")]
+    unfalsifiable = [n for n in unfalsifiable
+                     if n not in ok and n not in checkable and n not in mismatch]
     sec = cap.get("sections") or {}
 
     def emit(name: str, passed: Optional[float], status: str, why: str,
@@ -285,7 +299,18 @@ def run_checks(cap: Dict[str, Any], repo_name: Optional[str], repo: Optional[Dic
         return False
 
     measured = [n for n in with_denom if n not in checkable and _stated(n)]
-    if ok:
+    if load_bearing:
+        emit("numbers_add_up", 0.0, "contradicted",
+             "the figure this record's case rests on does not reconcile: "
+             + "; ".join(f"{n['claim']} — {n['arithmetic']}" for n in load_bearing[:2]),
+             "page", cap.get("source_url", ""), when)
+    elif mismatch:
+        emit("numbers_add_up", 0.5, "partial",
+             f"{len(mismatch)} figure(s) we re-derived do not match the page"
+             + (f" ({len(ok)} did reconcile)" if ok else "") + ": "
+             + "; ".join(f"{n['claim']} — {n['arithmetic']}" for n in mismatch[:2]),
+             "page", cap.get("source_url", ""), when)
+    elif ok:
         emit("numbers_add_up", 1.0, "confirmed",
              "; ".join(f"{n['claim']} (recomputed: {n['arithmetic']})" for n in ok[:2]),
              "page", cap.get("source_url", ""), when)
@@ -335,7 +360,7 @@ def run_checks(cap: Dict[str, Any], repo_name: Optional[str], repo: Optional[Dic
     # sentence-scoped: a capability word sitting in a build-process sentence is not a
     # disclosure about the system
     _sentences = re.split(r"(?<=[.!?])\s+", limits or "")
-    capability = [c for i, sent in enumerate(_sentences)
+    capability = [c for sent in _sentences
                   for c in _affirmative(_CAPABILITY_RE, sent.lower())
                   if not _PROCESS_RE.search(sent)]
     capability = list(dict.fromkeys(capability))
@@ -352,6 +377,19 @@ def run_checks(cap: Dict[str, Any], repo_name: Optional[str], repo: Optional[Dic
              "the team described how hard the build was, but not a limitation of the "
              "system itself — no accuracy, coverage, privacy or failure-mode statement",
              "page", cap.get("source_url", ""), when)
+    elif len(limits) >= 60:
+        # An operating-constraint disclosure is honest in a different register: what costs
+        # money, what does not scale, what had to be recorded as a fixture to be affordable at
+        # all. Credit it, name its kind, and stop calling the section missing when the check is
+        # quoting from it - Continuity's why string did exactly that.
+        costly = bool(re.search(r"(cost|money|price|expensive|afford|budget|billing)", limits.lower()))
+        tail = ("; the future-work section implies the remaining open edges"
+                if str(sec.get("what_next") or "").strip() else "")
+        emit("limits_disclosed", 0.5, "supported",
+             "the challenges section discloses operating constraints"
+             + (" (what the pipeline costs to run and to iterate on)" if costly else "")
+             + ", but no accuracy, coverage or failure-mode limit" + tail, "page",
+             cap.get("source_url", ""), when)
     elif str(sec.get("what_next") or "").strip():
         emit("limits_disclosed", 0.5, "supported",
              "no limitations section, but 'what's next' implies the open edges", "page",

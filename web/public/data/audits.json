@@ -103,6 +103,30 @@
    "url":"https://devpost.com/software/sketchwish",
    "name":"SketchWish"
   },
+  "continuity-g7bty0":{
+   "verdict":"sound-with-caveats",
+   "worth":"strong",
+   "soundness":"partial",
+   "soundness_score":0.5,
+   "rubric_coverage":0.64,
+   "checks":{
+    "artifact_exists":"supported",
+    "build_is_real":"unverifiable",
+    "limits_disclosed":"supported",
+    "numbers_add_up":"partial",
+    "stack_consistency":"unverifiable",
+    "test_or_eval_evidence":"partial"
+   },
+   "unknowns":[],
+   "evidence":6,
+   "contradicted":0,
+   "hazard":false,
+   "repo":null,
+   "audited_at":"2026-09-19",
+   "audit_version":1,
+   "url":"https://devpost.com/software/continuity-g7bty0",
+   "name":"Continuity"
+  },
   "complianceguardian-kcqs32":{
    "verdict":"sound-with-caveats",
    "worth":"strong",

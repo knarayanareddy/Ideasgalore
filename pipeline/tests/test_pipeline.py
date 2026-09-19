@@ -823,6 +823,73 @@ class TestAuditEngine(unittest.TestCase):
         self.assertNotIn("demo_url", proj)
         self.assertNotIn("award", proj)
 
+    def test_a_cost_disclosure_is_credited_as_what_it_is(self):
+        """A challenges section about money is honest, but it is not a capability limit.
+
+        Continuity discloses that every run costs a search plus several model calls and that
+        fixtures are what made iteration affordable. That belongs in the ledger at 0.5; what did
+        not belong there was the reason string, which said the page had no limitations section at
+        all while quoting material from one.
+        """
+        cap = {"id": "fixture", "name": "Fixture", "source_url": "https://devpost.com/software/fixture",
+               "built_with": [], "links": {}, "numbers": [], "testing": "",
+               "sections": {"challenges": ("Every run costs money: one pass is a web search per claim "
+                                           "plus several model calls, so we recorded fixtures on the "
+                                           "first live run and replayed everything else from disk."),
+                            "what_next": "A queue that ranks unresolved disagreements by page traffic."},
+               "one_line": None}
+        chk = A.run_checks(cap, None, None, {})[0]["limits_disclosed"]
+        self.assertEqual((chk["status"], chk["pass"]), ("supported", 0.5), chk["why"])
+        self.assertIn("operating constraints", chk["why"])
+        self.assertNotIn("no limitations section", chk["why"])
+
+    def test_a_recomputation_that_disagrees_is_not_reported_as_confirmation(self):
+        """`reconciles: false` must cost the record, not buy it a `confirmed`.
+
+        Continuity's page says "run all six stages" and then enumerates seven steps. We caught
+        that by actually counting — which is exactly why it must not land in the tier reserved
+        for figures that *add up*: a check that reports "recomputed, see above" on a mismatch
+        tells the next reader the page is arithmetically sound when it is not.
+        """
+        cap = {"id": "fixture", "name": "Fixture", "source_url": "https://devpost.com/software/fixture",
+               "sections": {}, "testing": "", "built_with": [], "links": {},
+               "numbers": [{"claim": "'six stages' versus the seven listed steps",
+                            "denominator": "the pipeline's own stage list",
+                            "arithmetic": "internally inconsistent as written: seven enumerated, six claimed",
+                            "verifiable": True, "reconciles": False, "load_bearing": False}]}
+        chk = A.run_checks(cap, None, None, {})[0]["numbers_add_up"]
+        self.assertEqual(chk["status"], "partial", chk["why"])
+        self.assertEqual(chk["pass"], 0.5)
+        self.assertIn("do not match", chk["why"])
+
+    def test_a_disagreement_on_the_figure_the_case_rests_on_is_a_contradiction(self):
+        """The load-bearing variant routes to `contradicted`, which the ladder then treats as unsound."""
+        cap = {"id": "fixture", "name": "Fixture", "source_url": "https://devpost.com/software/fixture",
+               "sections": {}, "testing": "", "built_with": [], "links": {},
+               "numbers": [{"claim": "Latency 12 ms p95", "denominator": "400 logged sessions",
+                            "arithmetic": "recomputed from the published log: 41 ms p95, not 12 ms",
+                            "verifiable": True, "reconciles": False, "load_bearing": True}]}
+        chk = A.run_checks(cap, None, None, {})[0]["numbers_add_up"]
+        self.assertEqual((chk["status"], chk["pass"]), ("contradicted", 0.0), chk["why"])
+        self.assertIn("does not reconcile", chk["why"])
+
+    def test_rather_than_is_a_denial_of_the_thing_it_names(self):
+        """"described rather than measured" must not read as a benchmark.
+
+        The word carries the tier, so a comparative denial of it has to be filtered like the
+        plain negations already are — otherwise a page earns credit for evaluation language by
+        writing that it lacks the evaluation.
+        """
+        cap = {"id": "fixture", "name": "Fixture", "source_url": "https://devpost.com/software/fixture",
+               "sections": {}, "built_with": [], "links": {}, "numbers": [],
+               "testing": ("A real harness discipline is described rather than measured: the first live "
+                           "run recorded fixtures so later runs replay free, and a test suite exists for "
+                           "the core. No case count or pass rate is published.")}
+        chk = A.run_checks(cap, None, None, {})[0]["test_or_eval_evidence"]
+        self.assertLess(chk["pass"], 0.75, chk["why"])
+        self.assertEqual(chk["status"], "partial", chk["why"])
+        self.assertIn("harness", chk["why"].lower(), chk["why"])
+
     def test_a_recomputed_figure_outranks_a_structural_one(self):
         """`ok` must sit above `checkable` in the numbers ladder.
 
@@ -1141,6 +1208,78 @@ def audit_sheets_for(records, over=None):
             sheet[k] = v
         sheets[rid] = sheet
     return sheets
+
+
+class TestShelvingAcademy(unittest.TestCase):
+    """A name that says "Academy" has to beat a tag list that says "postgres".
+
+    Two bugs in one: the Learning lexicon had no institution words at all, and `core` includes
+    the Built With tags — so the moment a capture put honest tags on a row, an education product
+    started shelving under Data Infrastructure on the strength of `sqlite, node.js, fastapi`.
+    """
+
+    def test_an_academy_shelves_with_education_not_with_its_tags(self):
+        rec = {"name": "AX4U Academy",
+               "summary": "AI Skills. Real Results. Build with AI. Learn AI by Doing. Practical AI Academy.",
+               "built_with": ["fastapi", "firebase", "gcp", "geminiapi", "github", "html/css",
+                              "javascript", "node.js", "python", "sqlite", "streamlit"]}
+        domain, sub, margin = T.classify_record(rec)
+        self.assertEqual(domain, "Learning & Knowledge Systems", (domain, sub, margin))
+        self.assertEqual(sub, "Tutors & Adaptive Learning", (domain, sub, margin))
+
+    def test_the_same_tags_under_a_non_education_name_stay_out_of_learning(self):
+        """The fix must not become a rule that any stack list is an education signal."""
+        rec = {"name": "Syncboard", "summary": "Postgres-backed sync console for ops teams.",
+               "built_with": ["fastapi", "firebase", "gcp", "github", "javascript", "node.js",
+                              "python", "sqlite", "streamlit"]}
+        domain, sub, margin = T.classify_record(rec)
+        self.assertNotEqual(domain, "Learning & Knowledge Systems", (domain, sub, margin))
+
+
+class TestGeneratedCensus(unittest.TestCase):
+    """The docs quote counts, and the counting is done by a program.
+
+    Hand-copied stats were wrong inside a batch of being written — three documents at once — so
+    every count in that prose lives between sentinels and is emitted from `catalog-stats.json`.
+    These two tests are the gate in unittest form; `pipeline/docsync.py --check` is the same claim
+    on the committed tree.
+    """
+
+    def test_every_doc_carries_the_generated_census(self):
+        import docsync
+        for rel in docsync.TARGETS:
+            with open(os.path.join(REPO, rel), encoding="utf-8") as fh:
+                src = fh.read()
+            self.assertIn(docsync.BEGIN, src, f"{rel} lost its census sentinel")
+            self.assertIn(docsync.END, src, f"{rel} lost its census end sentinel")
+            self.assertLess(src.index(docsync.BEGIN), src.index(docsync.END), rel)
+            self.assertNotIn("placeholder", src[src.index(docsync.BEGIN):src.index(docsync.END)],
+                            f"{rel}: census block was never generated")
+
+    def test_the_census_says_what_the_stats_say(self):
+        import docsync
+        with open(os.path.join(REPO, "web", "public", "catalog-stats.json"), encoding="utf-8") as fh:
+            stats = json.load(fh)
+        with open(os.path.join(REPO, "pipeline", "corpus.jsonl"), encoding="utf-8") as fh:
+            corpus = [json.loads(l) for l in fh]
+        block = "\n".join(docsync.render(stats))
+        self.assertIn(f"**{stats['audited_published']} of {stats['coverage']['published_total']}**", block)
+        self.assertIn(f"**{stats['pool_records']}** sit in", block)
+        self.assertIn(f"{stats['pool_audited_held']} captured, scored and held for cause", block)
+        self.assertIn(f"{stats['pool_unaudited']} never captured at all", block)
+        self.assertEqual(stats["audited_published"] + stats["pool_records"],
+                        stats["coverage"]["published_total"],
+                        "catalog + pool must still be the whole admitted corpus, or the census is a lie")
+        capdir = os.path.join(REPO, "pipeline", "raw", "deep_captures")
+        caps = []
+        for name in sorted(os.listdir(capdir)):
+            if name.endswith(".json"):
+                with open(os.path.join(capdir, name), encoding="utf-8") as fh:
+                    caps.append(json.load(fh))
+        self.assertEqual(len(caps), stats["deep_records"], "capture count in stats must match the files")
+        self.assertTrue(all(c["id"] in {r["id"] for r in corpus} for c in caps),
+                        "every capture must have a corpus row — see the capture-parity gate")
+        self.assertEqual("placeholder" in block, False)
 
 
 if __name__ == "__main__":

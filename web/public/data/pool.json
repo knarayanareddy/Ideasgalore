@@ -1,7 +1,7 @@
 {
  "audit_version":1,
  "generated_at":"2026-09-18",
- "count":157,
+ "count":156,
  "meaning":"Records held out of the catalog. `provenance` splits them in two: `unaudited` rows were never captured or checked; `audited-hold` rows were captured, scored and held for cause (thin, duplicate or hazard-capped) and carry the same audit columns the catalog does. Neither kind is a judgement of merit \u2014 read why_not_promoted and would_settle_it before quoting one (ADR-A1/A10).",
  "records":[
   {
@@ -27,6 +27,54 @@
     "artifact check via repo_verify.py"
    ],
    "audit":null
+  },
+  {
+   "id":"ax4u-academy",
+   "name":"AX4U Academy",
+   "url":"https://devpost.com/software/ax4u-academy",
+   "domain":"Learning & Knowledge Systems",
+   "subsystem":"Tutors & Adaptive Learning",
+   "event":"Build with Gemini XPRIZE",
+   "coolness":0.4387,
+   "moves":[],
+   "specificity":0.74,
+   "summary":"AI Skills. Real Results. Build with AI. Learn AI by Doing. AI for Real Work. Practical AI Academy. Turn AI Into Action. AI Automation Starts Here.",
+   "provenance":"audited-hold",
+   "why_not_promoted":[
+    "verdict:thin",
+    "artifact_exists failed \u2192 capped at 'thin' (A3)",
+    "unknown: numbers_with_arithmetic \u2014 no measurable outcome is asserted; a benchmark table would settle it"
+   ],
+   "would_settle_it":[
+    "no measurable outcome is asserted; a benchmark table would settle it",
+    "artifact_exists: a repository, deployment or store listing we can resolve",
+    "stack_consistency: a repository to compare the declared stack against",
+    "build_is_real: a readable source tree (a repo link, then `python3 pipeline/repo_verify.py`)",
+    "numbers_add_up: a denominator and baseline for the headline figure, or the raw log behind it"
+   ],
+   "audit":{
+    "verdict":"thin",
+    "worth":"tired",
+    "soundness":"unverified",
+    "soundness_score":0.1125,
+    "rubric_coverage":0.64,
+    "audited_at":"2026-09-19",
+    "unknowns":1,
+    "duplicate_of":null,
+    "hazard":false,
+    "evidence":6,
+    "reasons":[
+     "artifact_exists failed \u2192 capped at 'thin' (A3)"
+    ]
+   },
+   "verdict":"thin",
+   "worth":"tired",
+   "soundness":"unverified",
+   "soundness_score":0.1125,
+   "rubric_coverage":0.64,
+   "audited_at":"2026-09-19",
+   "unknowns":1,
+   "repo_url":null
   },
   {
    "id":"ccss-laboratory-efficiency-tools",
@@ -544,27 +592,6 @@
    "audit":null
   },
   {
-   "id":"ax4u-academy",
-   "name":"AX4U Academy",
-   "url":"https://devpost.com/software/ax4u-academy",
-   "domain":"Learning & Knowledge Systems",
-   "subsystem":"Tutors & Adaptive Learning",
-   "event":"Build with Gemini XPRIZE",
-   "coolness":0.3921,
-   "moves":[],
-   "specificity":0.6,
-   "summary":"AI Skills. Real Results. Build with AI. Learn AI by Doing. AI for Real Work. Practical AI Academy. Turn AI Into Action. AI Automation Starts Here.",
-   "provenance":"unaudited",
-   "why_not_promoted":[
-    "not_audited"
-   ],
-   "would_settle_it":[
-    "project page capture (deep)",
-    "artifact check via repo_verify.py"
-   ],
-   "audit":null
-  },
-  {
    "id":"fast-emergency-action-response-system",
    "name":"Fast Emergency Action Response System",
    "url":"https://devpost.com/software/fast-emergency-action-response-system",
@@ -634,36 +661,13 @@
    "id":"scholesa-education",
    "name":"Scholesa Education",
    "url":"https://devpost.com/software/scholesa-education",
-   "domain":"Creative Media, Story & Play",
-   "subsystem":"Games & Interactive Fiction",
+   "domain":"Learning & Knowledge Systems",
+   "subsystem":"General",
    "event":"Build with Gemini XPRIZE",
    "coolness":0.3896,
    "moves":[],
    "specificity":0.52,
    "summary":"Kids don't need more coding. They need to ship real work in an AI world. Scholesa: scripted K-12 units, from Grade 1 inventions to Grade 12 venture pitches. Teacher-ready. Already built.",
-   "provenance":"unaudited",
-   "why_not_promoted":[
-    "not_audited"
-   ],
-   "would_settle_it":[
-    "project page capture (deep)",
-    "artifact check via repo_verify.py"
-   ],
-   "audit":null
-  },
-  {
-   "id":"continuity-g7bty0",
-   "name":"Continuity",
-   "url":"https://devpost.com/software/continuity-g7bty0",
-   "domain":"Learning & Knowledge Systems",
-   "subsystem":"Knowledge Curation",
-   "event":"Agentic Cinema: The Blockbuster Hackathon",
-   "coolness":0.3891,
-   "moves":[
-    "verification-first"
-   ],
-   "specificity":0.6,
-   "summary":"Wiki facts rot silently: nobody edited the page, the world just moved. Continuity re-checks each fact against the live web and drafts the fix for a maintainer to approve.",
    "provenance":"unaudited",
    "why_not_promoted":[
     "not_audited"
@@ -3048,8 +3052,8 @@
    "id":"maintmentor-ai",
    "name":"Maintmentor.ai",
    "url":"https://devpost.com/software/maintmentor-ai",
-   "domain":"Emerging & Cross-Domain",
-   "subsystem":"Unclassified",
+   "domain":"Learning & Knowledge Systems",
+   "subsystem":"General",
    "event":"Build with Gemini XPRIZE",
    "coolness":0.322,
    "moves":[],

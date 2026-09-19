@@ -46,7 +46,7 @@
     "limits_disclosed":{
      "pass":0.5,
      "status":"supported",
-     "why":"no limitations section, but 'what's next' implies the open edges"
+     "why":"the challenges section discloses operating constraints, but no accuracy, coverage or failure-mode limit; the future-work section implies the remaining open edges"
     },
     "numbers_add_up":{
      "pass":0.5,
@@ -104,7 +104,7 @@
     {
      "checked_at":"2026-09-19",
      "claim":"Did they state what does not work, or where it fails?",
-     "detail":"no limitations section, but 'what's next' implies the open edges",
+     "detail":"the challenges section discloses operating constraints, but no accuracy, coverage or failure-mode limit; the future-work section implies the remaining open edges",
      "id":"vitalis-bio:limits_disclosed",
      "kind":"page",
      "source":"https://devpost.com/software/vitalis-bio",
@@ -281,7 +281,7 @@
     "limits_disclosed":{
      "pass":0.5,
      "status":"supported",
-     "why":"no limitations section, but 'what's next' implies the open edges"
+     "why":"the challenges section discloses operating constraints, but no accuracy, coverage or failure-mode limit; the future-work section implies the remaining open edges"
     },
     "numbers_add_up":{
      "pass":0.5,
@@ -339,7 +339,7 @@
     {
      "checked_at":"2026-09-19",
      "claim":"Did they state what does not work, or where it fails?",
-     "detail":"no limitations section, but 'what's next' implies the open edges",
+     "detail":"the challenges section discloses operating constraints, but no accuracy, coverage or failure-mode limit; the future-work section implies the remaining open edges",
      "id":"neuroguard-ai-adaptiveconcussionrecoveryintelligencesystem:limits_disclosed",
      "kind":"page",
      "source":"https://devpost.com/software/neuroguard-ai-adaptiveconcussionrecoveryintelligencesystem",
