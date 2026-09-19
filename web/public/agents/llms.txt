@@ -4,10 +4,15 @@
 > Devpost public showcase, organized so a builder (human or agent) can answer
 > "what should I steal next?" — not "what exists?".
 > Static files only: no auth, no keys, no rate limit. CORS-open. Last build:
-> 2026-09-18 · 104 admitted projects ·
+> 2026-09-18 · 165 admitted projects ·
 > 5 hackathons · 18 transferable moves.
 
 ## Read this before you use the data
+
+- **This index is a gated sample, not the platform.** The galleries we crawled report
+  their own totals (xprize 83/1401); `catalog-stats.json` -> `coverage` repeats it in data.
+  Never write "every hackathon project" about this corpus — the defensible phrasing is
+  "165 admitted projects from the pages captured".
 
 - `agents/schema.json` — record contract, with `x-provenance` on every field.
 - `agents/ethics.json` — usage policy we are ourselves bound by; honour it downstream.
@@ -20,7 +25,7 @@
 ## Endpoints (relative to the site root)
 
 - `catalog-packed.json` — Tier-1: every admitted row, dictionary-encoded. Best for
-  whole-corpus ranking/filtering in one request (~9.8 KB gzip).
+  whole-corpus ranking/filtering in one request (~14.2 KB gzip).
 - `data/ideas.csv` — the tabular database; stable column order, spreadsheet-safe.
 - `data/ideas.ndjson` — full metadata, one record per line, no bulk prose.
 - `data/hackathons.json` — event dimension: prize, registrations, themes, gallery URL.

@@ -226,3 +226,33 @@ Each ADR names the file that implements it, so this document cannot rot silently
 7. **Near-duplicates are informative, not deleted** — the two-`NeuroGuard AI` case (R12) turned a dedupe bug into a feature.
 
 *Converged: 2026-09-18 · Adjudicator sign-off: 9/9 proposals adopted, 3 dissent notes logged, 1 deferral (semantic vectors) with an explicit non-goal statement.*
+
+---
+
+## 10 · Amendment (2026-09-19) · corpus expansion — and the one risk that paid off immediately
+
+Re-opening the XPRIZE gallery showed it holds **1,401 projects across 59 pages**, not the ~22
+that page 1 of our seed captured. Pages 2–4 were transcribed into `pipeline/raw/seed_gallery.tsv`
+(+63 rows) → **167 ingested / 165 published**. The panel rules were not edited for this; here is
+what they did to live data on their own:
+
+- **ADR-5 noise gate** rejected exactly the two junk listings on page 4 (`test`/`test`, and a
+  two-word slogan entry) via `hold_reason: placeholder_summary`, with no hand-intervention. The
+  gate was argued as theoretical; it fired on the first un-curated page we touched.
+- **ADR-6 monotonic scoring** moved ranks predictably: `Capo` (0.431 — concrete numbers, a
+  $13T-industry wedge) entered the top five, and prior records shifted ≤0.004 as `redundancy`
+  caught the new Gemini-Box near-twins, reordering browse views without deleting either — the
+  exact behaviour specified.
+- **ADR-10 determinism** caught nothing (19 surfaces byte-identical after a corpus that grew
+  59%), and the Tier-1 budget still holds ~85× headroom at 14.2 KB.
+- **R7 ("corpus youth") was the right risk to log and the wrong way to discharge it.** We had
+  planned to state the small-N caveat in prose. Prose is not a control: a downstream agent
+  reading `catalog-packed.json` never sees it. So sampling rate is now **data** —
+  `raw/gallery_totals.json` (what Devpost's own pagination reported) → `catalog-stats.json →
+  coverage` → `manifest.json`, with `agents/llms.txt` opening by telling agents never to write
+  "every" about this corpus — and `gallery_for_event` can now tell a *stopped* crawl from a
+  *finished* one (halt when captured ≥ total). Held-back rows stay in `corpus.jsonl` with a
+  reason, so the corpus doubles as an audit trail.
+
+Net change to the architecture: **one new field, one new raw capture, zero new dependencies.**
+

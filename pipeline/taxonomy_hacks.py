@@ -686,7 +686,13 @@ def enrich_project_record(raw: Dict[str, Any], today: str,
         staff_pick=bool(rec.get("source") == "showcase"),
     )
     rec["coolness"] = rec["coolness_parts"]["total"]
-    rec["admitted"] = rec["coolness"] >= 0.18 and not looks_noisy(rec.get("summary") or "")
+    noisy = looks_noisy(rec.get("summary") or "")
+    rec["admitted"] = rec["coolness"] >= 0.18 and not noisy
+    if not rec["admitted"]:
+        # corpus.jsonl keeps rejected records for the audit trail, so a reader (human
+        # or agent) must be able to tell *why* a row exists but is unpublished: a low
+        # score is a ranking opinion, a placeholder summary is a data-quality refusal.
+        rec["hold_reason"] = "placeholder_summary" if noisy else "below_min_coolness"
     rec["taxonomy_version"] = TAXONOMY_VERSION
     rec["scoring_version"] = SCORING_VERSION
     rec["provenance"] = {

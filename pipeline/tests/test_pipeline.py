@@ -243,6 +243,59 @@ class TestSurfaces(unittest.TestCase):
                              "committed corpus must repack without re-dating its scores")
 
 
+class TestCoverageAndHolds(unittest.TestCase):
+    """The corpus's honesty about its own size. Two failures we specifically guard
+    against: a rejected record that does not say why (so a reader assumes the data is
+    wrong rather than thin), and a sample that reads like a complete index."""
+
+    def test_held_back_records_state_a_reason(self):
+        for line in open(os.path.join(REPO, "pipeline", "corpus.jsonl"), encoding="utf-8"):
+            rec = json.loads(line)
+            if not rec.get("admitted", True):
+                self.assertIn(rec.get("hold_reason"),
+                              {"placeholder_summary", "below_min_coolness"},
+                              f"{rec['id']} is unpublished but unexplained")
+
+    def test_placeholder_summary_is_held_and_reasoned(self):
+        rec = dict(FIXTURE[0]); rec["summary"] = "test"; rec["id"] = rec["slug"] = "junk"
+        out = T.enrich_project_record(rec, "2026-09-18", 0.0, {})
+        self.assertFalse(out["admitted"])
+        self.assertEqual(out["hold_reason"], "placeholder_summary")
+
+    def test_gallery_total_is_read_from_the_pagination_label(self):
+        import harvest_devpost as H
+        for frag, want in (("<strong>1</strong> – <strong>24</strong> of <strong>1,401</strong>", 1401),
+                           ("1 - 24 of 1401", 1401),
+                           ("Showing 25 – 48 of 1,401 projects", 1401),
+                           ("no numbers on this page", None)):
+            self.assertEqual(H.parse_gallery_total(frag), want, frag)
+
+    def test_coverage_is_published_when_totals_are_recorded(self):
+        with tempfile.TemporaryDirectory() as td:
+            json.dump({"_note": "x", "demo": {"total_projects": 400, "pages_captured": 2}},
+                      open(f"{td}/gallery_totals.json", "w"))
+            recs = enrich_all(FIXTURE)
+            for r in recs:
+                r["event_key"] = "demo"
+            admitted = sum(1 for r in recs if r.get("admitted", True))
+            cov = shard_builder.coverage(recs, raw_dir=td)
+            self.assertLess(admitted, len(recs), "fixture must contain a held-back record for this to mean anything")
+            self.assertEqual(cov["events"]["demo"]["upstream_total"], 400)
+            self.assertEqual(cov["events"]["demo"]["published"], admitted)
+            self.assertEqual(cov["events"]["demo"]["ingested"], len(recs),
+                             "ingested counts rejects; published counts what ships")
+            self.assertEqual(cov["events"]["demo"]["coverage_pct"], round(100.0 * admitted / 400, 1))
+
+    def test_shipped_stats_report_coverage(self):
+        stats = json.load(open(os.path.join(REPO, "web", "public", "catalog-stats.json"), encoding="utf-8"))
+        cov = stats.get("coverage")
+        self.assertTrue(cov, "committed build must report coverage from raw/gallery_totals.json")
+        for v in cov["events"].values():
+            self.assertLessEqual(v["published"], v["upstream_total"])
+            self.assertGreater(v["published"], 0)
+        self.assertEqual(stats["total"], stats["corpus_ingested"] - sum(stats["held_back"].values()))
+
+
 class TestHarvestParsers(unittest.TestCase):
     """Parsers are the part that rots when the site changes; pin their contracts."""
 

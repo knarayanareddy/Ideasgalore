@@ -38,6 +38,7 @@ import re
 import sqlite3
 import sys
 import tempfile
+from collections import Counter
 from typing import Any, Dict, List, Optional, Tuple
 
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
@@ -293,6 +294,10 @@ def build(records: List[Dict[str, Any]], out_dir: str, today: str) -> Dict[str, 
         "tier1_gzip_kb": round(gz_kb, 1),
         "tier1_budget_kb": TIER1_GZIP_BUDGET_KB,
         "sqlite_kb": sqlite_kb,
+        "corpus_ingested": len(records),
+        "held_back": hold_tally(records),
+        "records_with_moves": sum(1 for r in records if r.get("moves") and r.get("admitted", True)),
+        "coverage": coverage(records),
         "generated_at": today,
         "shards": shard_sizes,
     }
@@ -447,6 +452,45 @@ def gate_checks(records: List[Dict[str, Any]], stats: Dict[str, Any], out_dir: s
     return problems
 
 
+def coverage(records, raw_dir=None) -> Optional[Dict[str, Any]]:
+    """Cross-check the corpus against the sizes Devpost's own pagination reports. This
+    is the field that stops a reader concluding "there are 165 hackathon projects worth
+    stealing from" when the truth is "165 admitted out of 1,401 XPRIZE entries alone"."""
+    raw_dir = raw_dir or os.path.join(os.path.dirname(os.path.abspath(CORPUS)), "raw")
+    path = os.path.join(raw_dir, "gallery_totals.json")
+    if not os.path.exists(path):
+        return None
+    with open(path, encoding="utf-8") as fh:
+        totals = json.load(fh)
+    pub = Counter(r.get("event_key") for r in records if r.get("admitted", True))
+    seen = Counter(r.get("event_key") for r in records)
+    events = {}
+    for slug, meta in totals.items():
+        if slug.startswith("_") or not isinstance(meta, dict):
+            continue
+        up = meta.get("total_projects")
+        events[slug] = {
+            "published": pub.get(slug, 0),
+            "ingested": seen.get(slug, 0),
+            "upstream_total": up,
+            "pages_captured": meta.get("pages_captured"),
+            "coverage_pct": round(100.0 * pub.get(slug, 0) / up, 1) if up else None,
+        }
+    known = sum(v["published"] for v in events.values())
+    return {
+        "events": events,
+        "published_total": sum(pub.values()),
+        "published_in_sized_events": known,
+        "upstream_total_known": sum(v["upstream_total"] or 0 for v in events.values()),
+        "reading": "corpus is a quality-gated sample of the pages crawled, not the platform",
+    }
+
+
+def hold_tally(records) -> Dict[str, int]:
+    t = Counter(r.get("hold_reason", "unspecified") for r in records if not r.get("admitted", True))
+    return dict(t)
+
+
 def corpus_as_of(records, override=None) -> str:
     """The corpus is a snapshot. Scores are computed as-of that snapshot, not as-of
     whatever day someone re-ran the packer: deriving the date from the newest
@@ -473,10 +517,15 @@ def main() -> int:
     print(f"📦 Packing {len(records)} hackathon projects into two-tier + tabular surfaces "
           f"(as-of {today})...")
     stats = build(records, args.out, today)
+    if stats["coverage"]:
+        for slug, v in sorted(stats["coverage"]["events"].items()):
+            print(f"   📏 coverage {slug}: {v['published']} published of {v['upstream_total']} "
+                  f"listed ({v['coverage_pct']}%, {v['pages_captured']} pages captured)")
 
     corpus_sha = hashlib.sha256(open(args.corpus, "rb").read()).hexdigest()[:16]
     manifest = {
         "schema_version": 1,
+        "coverage": stats["coverage"],
         "scoring_version": records[0].get("scoring_version", 1) if records else 1,
         "corpus_sha256": corpus_sha,
         "corpus_records": len(records),

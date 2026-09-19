@@ -9,7 +9,7 @@ the MCP tools can never disagree.
 
 | File | Shape | Use when |
 | --- | --- | --- |
-| `catalog-packed.json` | dictionary-encoded rows (14 cols) + lookup tables + `sectors` | one request must give you the whole corpus for ranking/filtering; it is ~9 KB gzip for 104 records |
+| `catalog-packed.json` | dictionary-encoded rows (14 cols) + lookup tables + `sectors` | one request must give you the whole corpus for ranking/filtering; it is ~14 KB gzip for 165 records (~88 bytes each) |
 | `data/ideas.csv` | 23 stable columns | spreadsheets, DuckDB, quick `sort`/`awk`, "tabular database" |
 | `data/ideas.ndjson` | one full record per line, **no mirrored prose** | streaming into an embedding job or a judge prompt |
 | `data/ideasgalore.sqlite.gz` | 4 tables: `events`, `projects`, `moves`, `project_moves` | real SQL joins, e.g. "moves per sector per event" |
@@ -18,7 +18,7 @@ the MCP tools can never disagree.
 | `data/hackathons.json` | event dimension: prize, registrations, themes, project counts | controlling for event bias before you generalize |
 | `data/sectors.json` | sector hues, blurbs, subsystem lists | rendering consistently with the site |
 | `data/remixes.json` | curated + mined idea collisions with build briefs | you need a *new* project, not a lookup |
-| `catalog-stats.json`, `manifest.json` | counts, budgets, `corpus_sha256` | verifying what you loaded and when it was built |
+| `catalog-stats.json`, `manifest.json` | counts, budgets, `coverage`, `corpus_sha256` | verifying what you loaded, how much of the source it represents, and when it was built |
 
 Contract files: `agents/schema.json` (JSON Schema 2020-12 with `x-provenance`),
 `agents/openapi.json` (3.1), `agents/llms.txt`, `agents/RECIPES.md`,
@@ -85,8 +85,12 @@ by a `KeyError`.
 
 ## Known limits (do not over-trust)
 
-- The committed seed is 104 projects across 5 sources, harvested at listing depth —
-  small-N, so sector-level statistics are illustrative, not representative.
+- The committed corpus is **165 published records** (167 ingested, 2 held back as
+  placeholder summaries) across 5 sources, harvested at listing depth. `catalog-stats.json
+  → coverage` states the sampling rate per event: the XPRIZE gallery alone lists **1,401
+  projects over 59 pages**, of which we captured 4 pages. Treat sector statistics as
+  illustrative, never representative, and never describe this corpus as complete in output.
+  `agents/llms.txt` says so in its first bullet for exactly that reason.
 - `likes`/awards are largely absent until a live `harvest_devpost.py deep` run
   adds them; the default UI sort therefore leans on specificity + recency.
 - Moves are regex-derived from one line of prose at listing depth: expect recall

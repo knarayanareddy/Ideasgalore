@@ -1,0 +1,12 @@
+{
+ "_note": "Sizes reported by Devpost gallery pagination. Coverage in catalog-stats.json is computed from these: the corpus is a gated sample of what was crawled, never the whole platform.",
+ "xprize": {
+  "note": "captured pages 1-4 of 59; the seed's page-1 rows came from the 2026-09-18 recon pass",
+  "observed_at": "2026-09-19",
+  "pager_last_page": 59,
+  "pages_captured": 4,
+  "per_page": 24,
+  "total_projects": 1401,
+  "url": "https://xprize.devpost.com/project-gallery?page=1"
+ }
+}

@@ -325,25 +325,68 @@ def parse_gallery(html: str) -> List[Dict[str, Any]]:
     return list(out.values())
 
 
-def gallery_for_event(slug: str, pages: int, dry: bool) -> List[Dict[str, Any]]:
+_TOTAL_RE = re.compile(r"(\d[\d,]*)\s*(?:\u2013|\u2014|-|\bto\b)\s*(\d[\d,]*)\s*of\s*(\d[\d,]*)", re.I)
+
+
+def parse_gallery_total(html: str) -> Optional[int]:
+    """Galleries print their own size ("1 - 24 of 1401"). Keep that number: without it,
+    a four-page capture of 165 rows is indistinguishable from a complete index, which is
+    the difference between a sample and a claim."""
+    text = re.sub(r"<[^>]+>", " ", html or "")
+    m = _TOTAL_RE.search(text)
+    return int(m.group(3).replace(",", "")) if m else None
+
+
+def record_gallery_total(slug: str, meta: Dict[str, Any]) -> None:
+    """Observations about upstream size belong in raw/ (committed), not in the polite
+    scratch state, so the published catalog can always state its own coverage."""
+    path = os.path.join(RAW_DIR, "gallery_totals.json")
+    data = {}
+    if os.path.exists(path):
+        try:
+            data = json.load(open(path, encoding="utf-8"))
+        except Exception:
+            data = {}
+    entry = dict(meta)
+    entry["observed_at"] = dt.date.today().isoformat()
+    entry["url"] = f"https://{slug}.devpost.com/project-gallery"
+    data[slug] = {**data.get(slug, {}), **entry}
+    data.setdefault("_note", "Sizes reported by Devpost gallery pagination. Coverage in "
+                             "catalog-stats.json is computed from these: the corpus is a "
+                             "gated sample of what was crawled, never the whole platform.")
+    with open(path, "w", encoding="utf-8") as f:
+        json.dump(data, f, indent=1, sort_keys=True)
+
+
+def gallery_for_event(slug: str, pages: int, dry: bool):
+    """Returns (rows, meta) where meta carries the gallery's reported total, so the
+    caller can log coverage and stop early when the crawl is actually complete."""
     base = f"https://{slug}.devpost.com/project-gallery"
     collected: List[Dict[str, Any]] = []
+    meta: Dict[str, Any] = {"pages_captured": 0, "total_projects": None, "per_page": None}
     for page in range(1, pages + 1):
         url = base if page == 1 else f"{base}?page={page}"
         html = fetch(url, dry=dry)
         if not html:
             break
+        if meta["total_projects"] is None:
+            meta["total_projects"] = parse_gallery_total(html)
         rows = parse_gallery(html)
         if not rows:
             print(f"  ⚠ {slug} page {page}: parsed 0 cards — markup may have changed. "
                   f"Add a parse strategy (see parse_gallery docstring).")
             break
+        meta["per_page"] = meta["per_page"] or len(rows)
         for r in rows:
             r["event_key"] = slug
         collected.extend(rows)
+        meta["pages_captured"] += 1
+        if meta["total_projects"] and len(collected) >= meta["total_projects"]:
+            print(f"  ✓ {slug}: captured all {meta['total_projects']} listed projects")
+            break
         if len(rows) < 8:
             break
-    return collected
+    return collected, meta
 
 
 def cmd_gallery(args: argparse.Namespace) -> int:
@@ -363,10 +406,14 @@ def cmd_gallery(args: argparse.Namespace) -> int:
 
     total = 0
     for slug in targets:
-        rows = gallery_for_event(slug, args.pages, args.dry_run)
+        rows, meta = gallery_for_event(slug, args.pages, args.dry_run)
         added = append_jsonl(GALLERY_OUT, rows) if rows else 0
         total += added
-        print(f"🖼  {slug}: {len(rows)} cards parsed, {added} new")
+        cov = (f" · {100.0 * len(rows) / meta['total_projects']:.1f}% of "
+               f"{meta['total_projects']} listed") if meta.get("total_projects") else ""
+        print(f"🖼  {slug}: {len(rows)} cards parsed, {added} new{cov}")
+        if not args.dry_run and meta.get("total_projects"):
+            record_gallery_total(slug, meta)
         if not args.dry_run:
             state.setdefault("events_done", []).append(slug)
             state["gallery_pages"] = state.get("gallery_pages", {})

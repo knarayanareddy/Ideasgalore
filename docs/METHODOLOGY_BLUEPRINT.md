@@ -15,9 +15,10 @@
 | Constraint | Target | Measured (committed build) |
 | --- | --- | --- |
 | Hosting | $0/mo, no server, no key to read | GitHub Pages, static files |
-| Corpus | quality-gated, expandable | 104 seed projects / 5 event sources, 18 moves |
-| Tier-1 index | < 1.2 MB gzip hard gate | **9.8 KB** gzip → headroom for ~12k records |
-| Search | sub-5ms at 10⁵ rows | inverted index over 104 rows in <1ms; linear-scan ceiling ≈ 40k rows/frame |
+| Corpus | quality-gated, expandable | **165 published** (167 ingested, 2 held by the noise gate) / 5 event sources, 18 moves |
+| Coverage honesty | a sample must say so | `catalog-stats.json → coverage`: 83 of 1,401 listed XPRIZE entries (4 of 59 pages), computed from `raw/gallery_totals.json` |
+| Tier-1 index | < 1.2 MB gzip hard gate | **14.2 KB** gzip (≈88 B/record) → headroom for ~13k records |
+| Search | sub-5ms at 10⁵ rows | inverted index over 165 rows in <1ms; linear-scan ceiling ≈ 40k rows/frame |
 | JS payload | < 250 KB | 198 KB raw / **62.6 KB** gzip |
 | Rebuild | offline, deterministic, no secrets | `pipeline/corpus.jsonl` → all surfaces, byte-stable (`--check`) |
 | Agent access | readable without a human | 6 read surfaces + schema + OpenAPI + `llms.txt` + SKILL.md + MCP stdio server |
@@ -109,6 +110,14 @@ reads committed captures in `pipeline/raw/`) and `pipeline/harvest_devpost.py`
 (live, network) both end in `enrich_project_record()`, so seed and live records are
 indistinguishable downstream. That is what lets the repo build inside a network-
 isolated sandbox and still be a real crawler.
+
+**A capture records its own size.** Devpost galleries print `1 – 24 of 1401`; `parse_gallery_total()`
+reads it and `raw/gallery_totals.json` keeps it, so `shard_builder.coverage()` can publish
+"83 of 1,401 for this event" beside the corpus. Two reasons this is in the *data* and not a
+README aside: it stops a reader mistaking a 4-page sample for a complete index, and it lets a
+stopped crawl be distinguished from a finished one — `gallery_for_event` halts when captured ≥
+total. Rejected records are equally legible: `admitted: false` plus `hold_reason`
+(`placeholder_summary` | `below_min_coolness`) so `corpus.jsonl` doubles as an audit trail.
 
 **Politeness is implemented, not promised:** ≥1.25 s between requests with jitter,
 declared `User-Agent` with contact, robots.txt cached in `pipeline/state/` and
@@ -241,7 +250,7 @@ Ideasgalore/
 │   ├── taxonomy_hacks.py  harvest_devpost.py  ingest_seed.py
 │   ├── shard_builder.py   generate_remixes.py  build_agent_api.py
 │   ├── corpus.jsonl        ← single source of truth
-│   └── tests/test_pipeline.py  (34 tests)
+│   └── tests/test_pipeline.py  (39 tests)
 └── web/
     ├── public/
     │   ├── catalog-packed.json  catalog-stats.json  manifest.json

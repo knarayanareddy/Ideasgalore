@@ -1,13 +1,33 @@
 {
- "total":104,
+ "total":165,
  "domains":11,
- "subsystems":33,
+ "subsystems":36,
  "moves":18,
  "events":5,
  "deep_records":2,
- "tier1_gzip_kb":9.8,
+ "tier1_gzip_kb":14.2,
  "tier1_budget_kb":1200.0,
- "sqlite_kb":16.3,
+ "sqlite_kb":22.4,
+ "corpus_ingested":167,
+ "held_back":{
+  "placeholder_summary":2
+ },
+ "records_with_moves":68,
+ "coverage":{
+  "events":{
+   "xprize":{
+    "published":83,
+    "ingested":85,
+    "upstream_total":1401,
+    "pages_captured":4,
+    "coverage_pct":5.9
+   }
+  },
+  "published_total":165,
+  "published_in_sized_events":83,
+  "upstream_total_known":1401,
+  "reading":"corpus is a quality-gated sample of the pages crawled, not the platform"
+ },
  "generated_at":"2026-09-18",
  "shards":{
   "accessibility-and-assistive-tech":{
@@ -15,44 +35,44 @@
    "kb":10.7
   },
   "agentic-autonomy-and-orchestration":{
-   "records":20,
-   "kb":42.2
+   "records":32,
+   "kb":67.5
   },
   "climate-energy-and-the-physical-world":{
+   "records":6,
+   "kb":12.3
+  },
+  "creative-media-story-and-play":{
+   "records":28,
+   "kb":62.3
+  },
+  "data-retrieval-and-memory-infrastructure":{
    "records":5,
    "kb":10.3
   },
-  "creative-media-story-and-play":{
-   "records":18,
-   "kb":41.2
-  },
-  "data-retrieval-and-memory-infrastructure":{
-   "records":3,
-   "kb":6.1
-  },
   "developer-tooling-and-code-intelligence":{
-   "records":4,
-   "kb":8.4
+   "records":6,
+   "kb":12.3
   },
   "emerging-and-cross-domain":{
-   "records":7,
-   "kb":13.1
+   "records":20,
+   "kb":38.5
   },
   "health-care-and-human-performance":{
-   "records":20,
-   "kb":41.9
+   "records":24,
+   "kb":50.2
   },
   "learning-and-knowledge-systems":{
-   "records":5,
-   "kb":9.8
+   "records":13,
+   "kb":25.8
   },
   "money-commerce-and-marketplaces":{
-   "records":7,
-   "kb":13.6
+   "records":10,
+   "kb":19.8
   },
   "public-trust-safety-and-compliance":{
-   "records":10,
-   "kb":22.0
+   "records":16,
+   "kb":34.8
   }
  }
 }

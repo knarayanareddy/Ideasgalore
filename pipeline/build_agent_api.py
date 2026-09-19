@@ -156,6 +156,16 @@ def openapi() -> Dict[str, Any]:
 
 def llms_txt(stats: Dict[str, Any]) -> str:
     top = ", ".join(sorted(MOVES)[:6])
+    cov = (stats.get("coverage") or {})
+    sized = {k: v for k, v in (cov.get("events") or {}).items() if v.get("upstream_total")}
+    cov_line = ""
+    if sized:
+        parts = ", ".join(f"{k} {v['published']}/{v['upstream_total']}" for k, v in sorted(sized.items()))
+        cov_line = (
+            "\n- **This index is a gated sample, not the platform.** The galleries we crawled report\n"
+            f"  their own totals ({parts}); `catalog-stats.json` -> `coverage` repeats it in data.\n"
+            "  Never write \"every hackathon project\" about this corpus — the defensible phrasing is\n"
+            f"  \"{stats.get('total')} admitted projects from the pages captured\".\n")
     return f"""# Ideas Galore — the Hackathon Inspiration Index
 
 > A curated, scored, machine-readable index of hackathon projects mined from the
@@ -166,7 +176,7 @@ def llms_txt(stats: Dict[str, Any]) -> str:
 > {stats.get('events')} hackathons · {stats.get('moves')} transferable moves.
 
 ## Read this before you use the data
-
+{cov_line}
 - `agents/schema.json` — record contract, with `x-provenance` on every field.
 - `agents/ethics.json` — usage policy we are ourselves bound by; honour it downstream.
 - `agents/RECIPES.md` — curl + jq patterns that actually work.
