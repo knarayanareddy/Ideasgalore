@@ -2,6 +2,265 @@
  "audit_version":1,
  "generated_at":"2026-09-18",
  "records":{
+  "tower-dq18x2":{
+   "audit_version":1,
+   "audited_at":"2026-09-19",
+   "award":null,
+   "built_with":[
+    "docker",
+    "fastapi",
+    "gemini-3.5-flash",
+    "gemini-3.7-flash",
+    "google-cloud-firestore",
+    "google-cloud-run",
+    "google-cloud-scheduler",
+    "google-gemini",
+    "python",
+    "twilio",
+    "vertex-ai"
+   ],
+   "checks":{
+    "artifact_exists":{
+     "pass":0.5,
+     "status":"supported",
+     "why":"no source repo linked, but the page publishes a working artifact: https://www.youtube.com/watch?v=gDaQpZghCN0"
+    },
+    "build_is_real":{
+     "pass":null,
+     "status":"unverifiable",
+     "why":"no repository published, so the build cannot be read"
+    },
+    "limits_disclosed":{
+     "pass":1.0,
+     "status":"confirmed",
+     "why":"the team stated where the system fails, in production terms (fail)"
+    },
+    "numbers_add_up":{
+     "pass":0.5,
+     "status":"partial",
+     "why":"1 figure(s) we re-derived do not match the page (1 did reconcile): a thirty-minute schedule without the idempotency guard 'phones you ninety six times a day about the same missing file' \u2014 contradicted by the page's own stated cadence: every thirty minutes is 48 ticks a day, not 96; 96 is what a fifteen-minute schedule would give. The guard's necessity is unaffected - one call per tick per open finding is still dozens a day - but this is the one figure on the page that its own inputs refute, and it is quoted here rather than smoothed over"
+    },
+    "stack_consistency":{
+     "pass":null,
+     "status":"unverifiable",
+     "why":"no repo to cross-check the declared stack against"
+    },
+    "test_or_eval_evidence":{
+     "pass":0.75,
+     "status":"supported",
+     "why":"a measured evaluation with a stated denominator is described on the page (an A/B comparison or a logged-outcome harness counts; a bare 'we tested it' does not)"
+    }
+   },
+   "evidence":[
+    {
+     "checked_at":"2026-09-19",
+     "claim":"Is there an artifact at all \u2014 a repo, a deployed app, or a video of it running?",
+     "detail":"no source repo linked, but the page publishes a working artifact: https://www.youtube.com/watch?v=gDaQpZghCN0",
+     "id":"tower-dq18x2:artifact_exists",
+     "kind":"page",
+     "source":"https://devpost.com/software/tower-dq18x2",
+     "status":"supported"
+    },
+    {
+     "checked_at":"2026-09-19",
+     "claim":"Does the repo's language/file mix match the stack they described?",
+     "detail":"no repo to cross-check the declared stack against",
+     "id":"tower-dq18x2:stack_consistency",
+     "kind":"page",
+     "source":"https://devpost.com/software/tower-dq18x2",
+     "status":"unverifiable"
+    },
+    {
+     "checked_at":"2026-09-19",
+     "claim":"Is the code a real build (source tree, setup steps, non-trivial size) rather than a stub or zip?",
+     "detail":"no repository published, so the build cannot be read",
+     "id":"tower-dq18x2:build_is_real",
+     "kind":"page",
+     "source":"https://devpost.com/software/tower-dq18x2",
+     "status":"unverifiable"
+    },
+    {
+     "checked_at":"2026-09-19",
+     "claim":"Do their metrics have a denominator, and is the arithmetic internally consistent?",
+     "detail":"1 figure(s) we re-derived do not match the page (1 did reconcile): a thirty-minute schedule without the idempotency guard 'phones you ninety six times a day about the same missing file' \u2014 contradicted by the page's own stated cadence: every thirty minutes is 48 ticks a day, not 96; 96 is what a fifteen-minute schedule would give. The guard's necessity is unaffected - one call per tick per open finding is still dozens a day - but this is the one figure on the page that its own inputs refute, and it is quoted here rather than smoothed over",
+     "id":"tower-dq18x2:numbers_add_up",
+     "kind":"page",
+     "source":"https://devpost.com/software/tower-dq18x2",
+     "status":"partial"
+    },
+    {
+     "checked_at":"2026-09-19",
+     "claim":"Did they state what does not work, or where it fails?",
+     "detail":"the team stated where the system fails, in production terms (fail)",
+     "id":"tower-dq18x2:limits_disclosed",
+     "kind":"page",
+     "source":"https://devpost.com/software/tower-dq18x2",
+     "status":"confirmed"
+    },
+    {
+     "checked_at":"2026-09-19",
+     "claim":"Any test suite, eval harness, or measured benchmark we can see?",
+     "detail":"a measured evaluation with a stated denominator is described on the page (an A/B comparison or a logged-outcome harness counts; a bare 'we tested it' does not)",
+     "id":"tower-dq18x2:test_or_eval_evidence",
+     "kind":"page",
+     "source":"https://devpost.com/software/tower-dq18x2",
+     "status":"supported"
+    }
+   ],
+   "fields":{
+    "built_with_verified":{
+     "provenance":"observed",
+     "value":"declared by the authors (11): docker, fastapi, gemini-3.5-flash, gemini-3.7-flash, google-cloud-firestore, google-cloud-run, google-cloud-scheduler, google-gemini \u00b7 no repository published, so these are the team's own claim and nothing corroborates them"
+    },
+    "clone_cost":{
+     "note":"our estimate with assumptions visible; not a claim about the team",
+     "provenance":"derived",
+     "value":{
+      "assumptions":[
+       "a rulebook per competition small enough to enumerate as obligations - the eval key here is 29 items, and a hundred-page rulebook with nested exceptions changes the extraction problem, not just the prompt",
+       "reachable artifacts with stable identities: the whole design depends on mapping a requirement to a URL, file or video that can be re-fetched anonymously, so a private repo or an unlisted video is a checker you cannot write",
+       "a telephony channel with call-status callbacks if you want retraction to mean anything (Twilio-shaped, and it needs an opt-in consent path for the number)",
+       "somebody to read the UNVERIFIED list - the honest output of this design is a report that says 'I could not check these five', which is only an asset in an org that will act on it"
+      ],
+      "estimate":"3-4 weeks for the four-agent skeleton on one rulebook; add a week per artifact class you want checked honestly, and a day or two per new competition to hand-write the ground truth",
+      "why":"The control flow is the cheap part and the page says so: two model calls total, a pure function for the state machine, a policy table for escalation, FastAPI on Cloud Run with Firestore state and a scheduler - an engineer who has shipped a cron with a queue can build that in a week or two. The cost is everywhere else. Each requirement class needs a real checker against a real surface (GitHub contents API, HEAD requests that can distinguish a login wall from a page, YouTube oEmbed, the platform's own project page), each with its own auth and 200-lies-to-you edge cases; the phone path needs idempotency, call-history and stand-down semantics; the extraction needs a hand-written obligation key per rulebook before you can say anything at all about whether it worked; and 'unknown' has to be threaded through the data model from the start, which is a refactor in any codebase where a boolean is already doing the work. The escalation number they quote as the reason (48 evaluations a day, not the 96 the page says) is exactly the kind of detail that has to be re-derived per deployment rather than copied."
+     }
+    },
+    "data_and_models":{
+     "provenance":"observed",
+     "value":"Nothing is trained. Two model call sites and only two - Gemini 3.7 Flash and 3.5 Flash via the Google GenAI SDK on Vertex AI for rulebook extraction and for writing the sentence a human hears on the phone - with the observation and decision path deliberately model-free: Watch makes zero model calls and the state machine is a pure function, on the stated principle that control flow a model can talk itself out of is not control flow. Intake's second pass may structure only what its first pass extracted, which is what makes an invented requirement traceable, and every requirement carries the source wording it came from. Infrastructure: Cloud Run, Cloud Scheduler, Firestore, FastAPI, Docker, Twilio voice. One deployment fact is recorded as forced: Vertex in the global region while Firestore sits in nam5, because no Gemini 3.x model was available in us-central1, discovered by probing every model in every region rather than reading a model list. What is measured is extraction against a 29-obligation key; no accuracy, false-positive or missed-check figure is published for the checker itself, which is the part that phones you."
+    },
+    "how_it_works":{
+     "provenance":"observed",
+     "value":"Four agents under deterministic control flow. Intake reads the rulebook in two passes: pass one extracts obligation statements verbatim with no interpretation, pass two structures only what pass one found, so an invented requirement has nowhere to come from, and every requirement keeps the words it came from - which is what makes hallucination checkable 'in seconds'. Watch observes and nothing else: it makes zero model calls, mapping requirements to real tool surfaces (files in the live GitHub repo, public URLs, YouTube oEmbed, the Devpost project page) and reporting what it saw. Analyst decides what an observation means, with the state machine written as a pure function so a model never decides whether to escalate. Escalation is a policy table rather than a judgement: Kill requirements call immediately, Major wait until seven days out, Minor never call, and every call is idempotent because a thirty-minute schedule without that guard would phone about the same missing file repeatedly. Gemini is used in exactly two places - extracting the rulebook and writing the sentence a human hears - with the stated principle that control flow a model can talk itself out of is not control flow. Stack: Gemini 3.7 Flash and 3.5 Flash through the Google GenAI SDK on Vertex AI, Cloud Run, Cloud Scheduler, Firestore, Twilio for voice, Docker, FastAPI, Python. One architecture decision is recorded as forced rather than chosen: Vertex runs in the global region while Firestore sits in nam5, because no Gemini 3.x model was available in us-central1 for this project - found by writing a script that tries every candidate model in every region and prints what actually answers, rather than trusting a model list."
+    },
+    "how_they_tested":{
+     "provenance":"observed",
+     "value":"Two separate things, and the page is candid that they cover different ground. An eval: extraction scored against a hand-written ground-truth key of 29 obligations from the official rules, run three times, with recall, precision and F1 published for each run and the reason for each movement stated (a scorer bug, then four false credits found by auditing matched pairs by eye), plus 96% severity and 91% class agreement. A harness: 32 offline assertions over the state machine including both reversal paths, the escalation policy including idempotency, checker honesty and login-wall detection, running in about a second with no credentials. And one honest negative result that outweighs both: the harness was green for the entire period in which the login-wall defect existed, so thirty passing assertions proved the logic was correct and proved nothing about whether the logic could run on real input. No repository is linked, so neither suite can be read or re-run from here - the numbers are the author's, and only the F1 arithmetic is independently checkable."
+    },
+    "limits_they_disclosed":{
+     "provenance":"observed",
+     "value":"Eight defects are listed, and the page's own reading is that they are the same bug wearing different hats: the system claiming knowledge it did not have. (1) Requirement IDs were unstable across extraction runs - the same obligation came back as `spinup-instructions-readme` one run and `spin-up-instructions` the next, and because the routing table keyed off those slugs, 9 of 12 requirements silently lost their tool surface and reported as unverifiable; routes now match on content, since content survives re-extraction and model-generated slugs do not. (2) Blank configuration read as failure - an unset URL reported UNMET rather than UNCHECKED, one tick from phoning the author at three in the morning about its own empty config file. (3) Expired credentials retried silently for five minutes and then died, which for a scheduled unattended agent is indistinguishable from a tick that found nothing wrong: silence meant both 'all clear' and 'I am broken'. (4) Conditional requirements were checked unconditionally - the rules say *if* the hosted site is private *then* supply credentials, Tower dropped the 'if' and the model invented the premise, narrating a private website that does not exist; declared facts now default to false so an unknown premise is never assumed true. (5) Narration was tied to state changes, so on the one tick where a call actually went out the requirement was already open, nothing changed, no sentence was generated, and Twilio read a raw Python fallback string down the phone line, list brackets included. (6) Tower apologised for a call it never made - it reversed a finding that had never been escalated and said 'please disregard our previous alert' when there had been none; call history is now an input to narration. (7) A dry run mutated state, resolving a pending finding and silently consuming it; dry runs are read-only. (8) The worst: Tower reported a requirement SATISFIED on the strength of words appearing on Devpost's login page - an unsubmitted draft redirects anonymous visitors to sign-in, that page returns HTTP 200, the status check believed it had fetched the project and pattern-matched against a login form; 'A 200 is not the same as reaching the thing you asked for.' There is now a login-wall detector with a regression test pinning it. The page then adds the finding that matters most for how to read the rest of it: the eval harness was green the entire time defect 8 existed, so thirty passing assertions proved the logic was correct and proved nothing about whether the logic could run on real input."
+    },
+    "numbers_with_arithmetic":{
+     "provenance":"observed",
+     "value":[
+      {
+       "arithmetic":"reproduces: each published F1 equals 2PR/(P+R) to the decimal shown (73.49, 88.86, 84.31), and each recall times 29 gives an exact integer count of matched obligations (18.01, 27.00, 23.00), so recall is checkable against the stated key. Precision is not: the extraction counts its denominators would need are 20.01 for run 1 - an integer, so that run is coherent - but 31.76 and 25.55 for runs 2 and 3, which no integer number of extractions can produce, and the page never publishes how many requirements each run extracted. The honest reading is that recall and F1 are audited figures and precision is a summary number whose denominator was left out.",
+       "claim":"extraction scored three times against a 29-obligation key: 62.1/90.0 (F1 73.5), 93.1/85.0 (F1 88.9), 79.3/90.0 (F1 84.3)",
+       "denominator":"29 hand-written ground-truth obligations from the official rules",
+       "load_bearing":true,
+       "verifiable":true
+      },
+      {
+       "arithmetic":"not falsifiable from the page: neither plausible population yields an integer - 96% of the 23 matched obligations is 22.08 and of all 29 is 27.84; 91% is 20.93 and 26.39 - so the two agreements cannot be attributed to a count and no error budget is attached to the fields (severity, class) that decide whether the phone rings",
+       "claim":"96% severity agreement, 91% class agreement",
+       "denominator":"not stated",
+       "verifiable":false
+      },
+      {
+       "arithmetic":"contradicted by the page's own stated cadence: every thirty minutes is 48 ticks a day, not 96; 96 is what a fifteen-minute schedule would give. The guard's necessity is unaffected - one call per tick per open finding is still dozens a day - but this is the one figure on the page that its own inputs refute, and it is quoted here rather than smoothed over",
+       "claim":"a thirty-minute schedule without the idempotency guard 'phones you ninety six times a day about the same missing file'",
+       "denominator":"ticks per day at the stated schedule",
+       "reconciles":false,
+       "verifiable":true
+      },
+      {
+       "arithmetic":"not falsifiable from the page after the fix: it is a post-mortem count with no artifact to re-check, but it is internally coherent (12 requirements, slug-keyed routes, two surviving a rename) and it is the only quantification given for the failure mode that motivated routing on content",
+       "claim":"9 of 12 requirements silently lost their tool surface when IDs were unstable",
+       "denominator":"requirements in the routing table for that run",
+       "verifiable":false
+      },
+      {
+       "arithmetic":"structural: every input to the table is stated, so a reader can reproduce the behaviour from the description alone (and 48 evaluations a day at the stated cadence). Nothing about accuracy depends on it - the thresholds are a judgement about how much warning a deadline needs",
+       "claim":"escalation policy: Kill requirements call immediately, Major wait until seven days out, Minor never call; re-checks every thirty minutes",
+       "denominator":"policy thresholds as published",
+       "verifiable":true
+      },
+      {
+       "arithmetic":"structural: a coverage report, self-consistent as 5/10 with 5 named as unverifiable, but no run id or rulebook is attached, so it cannot be tied to any of the three scored extraction runs - and it is the only number on the page that describes the checker rather than the extractor",
+       "claim":"'Tower says it verified five of ten applicable requirements and names the five it could not'",
+       "denominator":"applicable requirements for the run being described",
+       "verifiable":true
+      }
+     ]
+    },
+    "prior_art":{
+     "note":"each entry resolves to a URL we opened this session or a corpus id",
+     "provenance":"editorial",
+     "value":[
+      {
+       "corpus_id":"complianceguardian-kcqs32",
+       "relation":"shares the load-bearing trick - every verdict carries the words of the rule it came from - but the surfaces are opposite: ComplianceGuardian scores an uploaded document and auto-approves routine cases, Tower watches live artifacts on a schedule and refuses to approve anything it cannot reach"
+      },
+      {
+       "corpus_id":"vms-ai-guard-fisheries-compliance-monitoring-alerts",
+       "relation":"closest structural sibling in the corpus: scheduled, unattended monitoring of live state against a named rulebook with escalation to a human. VMS AI Guard is held to the pool as thin for lack of any evaluation; Tower is the same shape with the evidence VMS lacks - a hand-written ground-truth key and a published precision/recall trajectory"
+      },
+      {
+       "corpus_id":"continuity-g7bty0",
+       "relation":"both exist because truth decays without anyone editing it, and both answer by re-checking against a live source and drafting the fix for a human; Continuity's unit is a wiki fact, Tower's is an obligation, and Continuity has no equivalent of Tower's retraction path"
+      },
+      {
+       "corpus_id":"kora-ai-back-office",
+       "relation":"same trust budget from the other side: Kora buys its autonomy by shrinking human attention to '10 minutes of approvals a week', Tower buys it by making the agent's own uncertainty and reversals part of what the human sees"
+      }
+     ]
+    },
+    "what_breaks_first":{
+     "provenance":"editorial",
+     "value":"The requirement-to-tool-surface mapping. Every requirement needs a real place to look, and the failure mode the author hit first is a silent one: 9 of 12 requirements lost their route and reported as unverifiable. Anything the agent cannot reach - a private repo, an unlisted video, a platform page behind a login wall, a URL that returns 200 on a sign-in form - becomes a permanent UNVERIFIED, which is the correct answer and the one that makes the product look useless to a user who wants a green tick. Second is the severity policy: 'Kill calls immediately, Major waits until seven days out, Minor never calls' is tuned to one rulebook's shape, and a second competition with different disqualification clauses needs the table re-cut, not re-used. Third is the measured weakness they name themselves - extraction is structurally biased toward 'what must the entrant DO' over standing eligibility and legal clauses, and dedup folds adjacent legal text away - so the requirements most likely to cost you the prize are the ones the classifier is worst at."
+    },
+    "what_it_does":{
+     "provenance":"observed",
+     "value":"Tower reads a competition rulebook once and turns it into a set of machine-checkable requirements, each carrying a severity and a specific place to look for evidence, then runs every thirty minutes for weeks, unattended, checking the live repository, public URLs and the video against that set. When something crosses the line it does not send an email: it calls the entrant's phone and says in one sentence what is about to disqualify them and how long they have. The part the author rates more highly is the reversal - when the problem is fixed, Tower calls back and stands its own alert down, and when it was wrong to call at all, it says so, because most verification agents only ever add findings. Three states carry that distinction and are explicitly not the same admission: RESOLVED (called, problem was real, fixed), RETRACTED (called, and the evidence was already in place - Tower was wrong), UNVERIFIED (could not actually check; 'Not satisfied. Not unmet. Unknown.'). The page names that third state as the spine of the system, with the reasoning that an agent which cannot distinguish 'everything is fine' from 'I could not see' is worse than no agent, because silence reads as an all clear."
+    },
+    "what_it_is":{
+     "provenance":"derived",
+     "value":"A watchstander for competition rules: it extracts every obligation from a rulebook verbatim, gives each one a severity and a named place to look for evidence, re-checks the live repository, URLs and video every thirty minutes for weeks, and keeps RESOLVED, RETRACTED and UNVERIFIED as three different answers so that 'I could not see' can never read as an all clear."
+    },
+    "what_to_steal":{
+     "provenance":"editorial",
+     "value":"Make 'could not check' a value that propagates, not a gap that defaults to a verdict: UNVERIFIED is distinct from UNMET, blank config is distinct from failure, and an unknown premise in a conditional defaults to false rather than being narrated into existence. Then steal the two honesty mechanics that fall out of it - retraction as a first-class action (call back and stand down your own alert, and if you were wrong say RETRACTED, with call history as an input to narration so you cannot apologise for a call you never made), and routing by extracted content instead of model-generated identifiers, because slugs change between extraction runs and content does not."
+    }
+   },
+   "hazard":null,
+   "id":"tower-dq18x2",
+   "likes":1,
+   "links":{
+    "demo":null,
+    "repo":null,
+    "video":"https://www.youtube.com/watch?v=gDaQpZghCN0"
+   },
+   "moves":[
+    "long-horizon-watcher",
+    "deterministic-guardrail",
+    "model-cost-routing"
+   ],
+   "name":"Tower",
+   "provenance":{
+    "checks":"derived",
+    "clone_cost":"derived",
+    "evidence":"observed",
+    "fields":"observed",
+    "verdict":"derived",
+    "worth":"editorial"
+   },
+   "publishable":true,
+   "repo":null,
+   "right_of_reply":"https://github.com/knarayanareddy/Ideasgalore/issues/new?labels=audit-recheck",
+   "rubric_coverage":0.64,
+   "soundness":"partial",
+   "soundness_score":0.6484,
+   "source_url":"https://devpost.com/software/tower-dq18x2",
+   "unknowns":[],
+   "verdict":"sound-with-caveats",
+   "verdict_reasons":[
+    "soundness 0.65 over 64% of the rubric; 0 named unknown(s) remain \u2192 publishable with caveats"
+   ],
+   "worth":"strong",
+   "worth_note":"The stealable part is not hackathon-rule-watching, it is the outcome model: three terminal states in which UNVERIFIED is neither satisfied nor unmet, an agent that retracts its own finding when the evidence turns out to have been there all along, and a coverage line reported out loud ('five of ten applicable, here are the five I could not check'). Every verification record in this corpus - ComplianceGuardian, VMS AI Guard, Continuity - has the monitoring loop and none of them has retraction, and the author's eighth defect (a 200 that was really a login wall, with the harness green the whole time it existed) is the argument for why a boolean is the wrong return type for a checker. Held back from 'breakthrough' on evidence, not on idea: there is no repository, no live deployment we can reach, one like, and the only number a reader can verify independently is the F1 arithmetic - recall reconciles exactly against the published 29-obligation key, precision's denominator never appears. The pattern is worth taking today; the build cannot be inspected."
+  },
   "adversarial-compliance-matrix":{
    "audit_version":1,
    "audited_at":"2026-09-19",

@@ -152,6 +152,9 @@ _CAPABILITY_RE = re.compile(r"(accuracy|latency|hallucinat|false (positive|negat
 # A sentence about compiling, pushing or surviving a night of coding describes the *build*,
 # not the product's limits. Only product-shaped sentences count toward limits_disclosed.
 # No "dashboard": in this corpus that word names a UI surface, not a measurement loop.
+# A sentence saying a *platform* supplies analytics is a stack line, not a measurement practice.
+_MEASURE_CAPABILITY_RE = re.compile(r"(provided by|features? provided|out of the box|built[- ]in|"
+                                    r"(?:firebase|google cloud|the platform)[^.]{0,26}provid)", re.I)
 _MEASURE_RE = re.compile(r"(posthog|analytics|funnel|instrumented|telemetry|logged|"
                          r"a/b test|experiment|user study|usability test)", re.I)
 _PROCESS_RE = re.compile(r"(compil|dependency|runner|push|commit|merge|deploy|phone|mobile|"
@@ -494,7 +497,7 @@ def run_checks(cap: Dict[str, Any], repo_name: Optional[str], repo: Optional[Dic
              "a harness is described (" + ", ".join(sorted(set(harness))[:3]) +
              ") but no result, run link or case count is published, so it cannot be checked",
              "page", cap.get("source_url", ""), when)
-    elif measurement_practice := _affirmative(_MEASURE_RE, testing_text + " " + (text or "").lower()):
+    elif measurement_practice := _measurement_claim(testing_text):
         # A loop that watches the product in use is not an accuracy eval, but it is real
         # evidence practice and far above "no tests visible" — the difference matters to a
         # builder deciding whether the team measured anything at all.
@@ -662,6 +665,54 @@ def derive_verdict(checks: Dict[str, Any], unknowns: List[Dict[str, Any]], field
     return "unsound", score, coverage, reasons
 
 
+# HAZARD_CLAIM_RE's first alternative is a list of words that are also ordinary English. These are the
+# bare ones, plus the object that has to share their sentence for them to state a regulated claim rather
+# than a metaphor. Records this reclassifies are named in the guard at `hazard_for`.
+_BARE_CLINICAL_RE = re.compile(r"\b(?:diagnos\w*|screen\w*|triage|medicat\w*|dosage|prescri\w*)\b", re.I)
+# Only words that can *only* be read as a clinical or regulated subject. "symptom", "condition" and
+# "diagnosis" are ordinary engineering metaphor — greenlight's own page says "users report symptoms, not
+# causes, and every user diagnosis was wrong" about debugging a pipeline, and tower's says "the diagnosis
+# is that nobody loses a competition because their idea was bad" — so an object that vague would let the
+# metaphor through and publish a clinical-validation warning about a non-clinical product.
+_CLINICAL_OBJECT_RE = re.compile(
+    r"\b(?:patients?|clinicians?|physicians?|doctors?|hospitals?|clinic\w*|medical|clinical|"
+    r"health(?:-| )?(?:care|records?|professional|provider)|prescription|medication|dosage|"
+    r"cancer|tumor|concussion|autis\w*|depress\w*|anxiet\w*|suicid\w*|adhd|diabet\w*|epilep\w*)\b", re.I)
+
+# The routes that carry their own object, so they never need the sentence-level guard.
+_STRONG_CLAIM_RE = re.compile(
+    r"\b(?:clear\w* to (?:return|play)|regulat\w*|approval|sign-?off|compliance)\b"
+    r"|\bdetect\w* (?:concussion|cancer|tumor|fraud)\b|\b(?:autis\w*|concussion|suicid\w*)\b"
+    r"|\b(?:DOT|SAE|ECE|ISO\s?\d+|GDPR|HIPAA|FDA|EPA|FCC|CE marking|EN\s?\d{4}|WCAG|SOC\s?2)\b"
+    r"|\b(?:threshold|standards?|directive|regulation|guideline)s?\b[^.]{0,30}"
+    r"\b(?:match\w*|comply|compliant|certif\w*|conform\w*|require\w*)\b"
+    r"|\b(?:match\w*|compliant with|conforms? to|certified by|accredited by)\b[^.]{0,30}"
+    r"\b(?:standard|threshold|directive|regulation|authority)\b", re.I)
+
+
+def _measurement_claim(testing_text: str):
+    """Sentences in which the team claims it watched the product in use, minus sentences that merely
+    list an analytics feature the platform provides.
+
+    attaindesk runs on Firebase analytics and says so in its architecture prose; it measured nothing.
+    Reading a stack bullet as a measurement loop would put a rung on the testing ladder for that page, and
+    a builder copying the signal would be copying a hosting plan. A sentence in the testing or limits
+    field that claims usage was watched ("funnels showed X", an A/B result, an instrumented rollout) still
+    counts.
+    """
+    keep = []
+    # Deliberately only the testing/limits prose. `testing_text` already falls back to the page when no
+    # testing field was filed, so widening it again would mean a stack bullet anywhere on the page can
+    # buy a testing rung - which is exactly what happened to attaindesk, whose `data_and_models` summary
+    # faithfully names the analytics it runs on.
+    for sent in re.split(r"(?<=[.;!?])\s+", testing_text or ""):
+            if _MEASURE_RE.search(sent) and not _MEASURE_CAPABILITY_RE.search(sent):
+                keep.append(sent)
+    if not keep:
+        return None
+    return _affirmative(_MEASURE_RE, " ".join(keep))
+
+
 def hazard_for(rec: Dict[str, Any], cap: Dict[str, Any], notes: Dict[str, Any]) -> Optional[Dict[str, Any]]:
     """A13: one stamp, one line, mandatory for agents."""
     dom = rec.get("domain")
@@ -671,6 +722,17 @@ def hazard_for(rec: Dict[str, Any], cap: Dict[str, Any], notes: Dict[str, Any]) 
     text = (_sections_text(cap) + " " + str(cap.get("one_line") or "")
             + " " + (rec.get("summary") or "")).lower()
     claim = bool(re.search(HAZARD_CLAIM_RE, text, re.I))
+    # A bare clinical word in ordinary English is not a regulated-outcome claim. This fired three
+    # false hazards before the guard: tower-dq18x2 because its author wrote "the diagnosis is that
+    # nobody loses a competition because their idea was bad", and both Greenlight records because a
+    # screenplay contains the substring "screen" - and each then published the generic note claiming
+    # no clinical validation, about a product with nothing clinical to validate. So the bare words
+    # only count when the same sentence carries a clinical or regulatory object. Every route that
+    # already names its object (a regulator, a threshold the product claims to meet, "clear to return
+    # to play", autism, concussion) is untouched, and so is the sector-plus-advice path below.
+    if claim and not _STRONG_CLAIM_RE.search(text):   # compiled already; `text` is lower-cased
+        claim = any(_BARE_CLINICAL_RE.search(sent) and _CLINICAL_OBJECT_RE.search(sent)
+                    for sent in re.split(r"(?<=[.;!?])\s+", text))
     # Telling a user what to take, do or follow inside a regulated domain is the exposure,
     # even when the page never uses the word diagnosis or approval. A mood chart that only
     # visualises stays unflagged; an advice loop does not.

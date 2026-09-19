@@ -463,11 +463,7 @@
      "value":"Ship claim-level structured data rather than page-level: NewsArticle to hasPart to an ItemList of Claim objects, each perspective with its own @id anchor and citation array, so a consuming agent can attribute a sentence to a lens instead of to a URL. Use disambiguatingDescription to mark non-factual voices inside the same structure, and publish llms.txt, llms-full.txt, ai-plugin.json, an OpenAPI document, IndexNow pings and an unauthenticated read endpoint - treat machine readers as an audience and the transparency pages become distribution. Then take the operational post-mortems, the most reusable content on the page: never return a 200 with a null payload (make it a real 502), bail after five consecutive nulls instead of polling an 'undefined' id fifty times, refuse to start on an empty or 'undefined' config value, treat silently ignored hosting config as untrustworthy and proxy it explicitly, dismiss splash screens in about 150ms and load auth and settings in the background, and remember that Admin SDK paths bypass security rules, so rule-only tests prove nothing about an admin UI. Last: keep synthesis human and say so on the page."
     }
    },
-   "hazard":{
-    "class":"compliance-signoff",
-    "note":"An AI publisher with a compliance-shaped surface and no compliance process. Every lens output is packaged as a machine-readable Claim with citations, which downstream agents will ingest as evidence rather than as one model's reading of one region's press; the page publishes no measurement of how often a lens asserts something its own cited source does not support, no policy for when a region's press is unreachable, and no recall figure per region - while its own stated lesson is that ungrounded multi-perspective output is stylistic ventriloquism. The defences are disclosure devices (methodology, editorial standards, corrections, a satire marker) plus an editor-curated synthesis, which is a real posture but not a sign-off, and nothing on the page says who reviews a lens before a story with legal or safety weight - an election, a conflict, an indictment - is published with citations attached. That combination is why this record carries a hazard: the schema machinery makes unverified content more portable, not less.",
-    "team_disclaimed":false
-   },
+   "hazard":null,
    "id":"newspectives-new-perspective-on-news",
    "likes":1,
    "links":{

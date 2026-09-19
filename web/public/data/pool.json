@@ -1,7 +1,7 @@
 {
  "audit_version":1,
  "generated_at":"2026-09-18",
- "count":154,
+ "count":153,
  "meaning":"Records held out of the catalog. `provenance` splits them in two: `unaudited` rows were never captured or checked; `audited-hold` rows were captured, scored and held for cause (thin, duplicate or hazard-capped) and carry the same audit columns the catalog does. Neither kind is a judgement of merit \u2014 read why_not_promoted and would_settle_it before quoting one (ADR-A1/A10).",
  "records":[
   {
@@ -27,6 +27,99 @@
     "artifact check via repo_verify.py"
    ],
    "audit":null
+  },
+  {
+   "id":"attaindesk",
+   "name":"attainDesk",
+   "url":"https://devpost.com/software/attaindesk",
+   "domain":"Creative Media, Story & Play",
+   "subsystem":"Generative Video & Audio",
+   "event":"Build with Gemini XPRIZE",
+   "coolness":0.4442,
+   "moves":[
+    "crew-of-specialists",
+    "constraint-is-the-feature",
+    "single-input-ux",
+    "narrow-domain-deep-model"
+   ],
+   "specificity":0.74,
+   "summary":"attainDesk turns AI into one-click business operations for SMBs. Create social media content, product videos, marketing assets, research and grow business without specialist teams or AI expertise.",
+   "provenance":"audited-hold",
+   "why_not_promoted":[
+    "verdict:thin",
+    "soundness 0.39 is too low to certify; stays in the pool"
+   ],
+   "would_settle_it":[
+    "artifact_exists: a repository, deployment or store listing we can resolve",
+    "stack_consistency: a repository to compare the declared stack against",
+    "build_is_real: a readable source tree (a repo link, then `python3 pipeline/repo_verify.py`)",
+    "numbers_add_up: a denominator and baseline for the headline figure, or the raw log behind it",
+    "limits_disclosed: a statement of what the system itself cannot do (accuracy, coverage, privacy, failure modes)"
+   ],
+   "audit":{
+    "verdict":"thin",
+    "worth":"niche",
+    "soundness":"weak",
+    "soundness_score":0.3906,
+    "rubric_coverage":0.64,
+    "audited_at":"2026-09-19",
+    "unknowns":0,
+    "duplicate_of":null,
+    "hazard":false,
+    "evidence":6,
+    "reasons":[
+     "soundness 0.39 is too low to certify; stays in the pool"
+    ]
+   },
+   "verdict":"thin",
+   "worth":"niche",
+   "soundness":"weak",
+   "soundness_score":0.3906,
+   "rubric_coverage":0.64,
+   "audited_at":"2026-09-19",
+   "unknowns":0,
+   "repo_url":null,
+   "detail":{
+    "what_it_is":"An AI-native operations workspace for small businesses, where each business outcome - virtual staging a listing, turning food photos into menu images, a product video, a logo, a headshot, a Daily Digest of local opportunities - is its own guided workflow over an asynchronous Firebase Cloud Functions and Cloud Tasks generation pipeline, on the stated premise that owners should not have to learn AI to put it to work.",
+    "what_it_does":"attainDesk turns common small-business needs into guided, business-specific AI workflows from one workspace: create social-media content; virtually stage real-estate listings; turn property images into video tours; create short promotional product videos; transform ordinary food photos into polished menu and marketing images; generate business logos; create professional headshots; generate branded meeting backgrounds; and a Daily Digest that surfaces relevant market developments, local business groups, events and opportunities. The named verticals are real estate, food, manufacturing, construction, education, clothing and professional services. The features differ and the goal is stated as one: help a small business understand its market, present itself professionally, reach customers and grow without needing a large specialist team.",
+    "how_they_tested":"Nothing is measured in the sense this catalog counts as measurement. There is no test suite, no eval, no accuracy, acceptance or rejection-rate figure, and no quality claim for any of the nine workflows - no statement, for instance, of how often a generated virtual-staged room or product video is acceptable to the business that asked for it. What the page offers instead is usage: 'early customer usage has been important in helping us make those decisions' between impressive-sounding and genuinely valuable features, which is product research rather than a test result, and 13 businesses as the population it was gathered from, unpublished per workflow. The one appearance of the word testing is in the description of how the code was written - Gemini-powered coding agents and Antigravity used for 'architecture brainstorming, coding, testing, debugging and iteration' - so the assertion is that testing happened, with no harness, count or result attached and no repository to read it from. The absence is load-bearing for a claim of this shape: the acceptance rate of a generated marketing image is the number a buyer of this product would need.",
+    "limits_they_disclosed":"Three, and all three are stated as product restraint rather than technical failure. The first is 'avoiding the temptation to simply put powerful AI models behind generic prompt boxes' - owners want an outcome, so the workflows are organised around what the business is trying to accomplish, with most prompting and model complexity abstracted behind the experience. The second is workload heterogeneity: text, image, video and research jobs differ by orders of magnitude in cost, some completing quickly while others are computationally intensive and asynchronous, and the Cloud Tasks plus Firebase layer is what keeps that invisible to the user. The third is described as a continual judgement call between features that are technically impressive and features that create genuine value, with early customer usage cited as the thing that decided it.",
+    "numbers_with_arithmetic":[
+     {
+      "arithmetic":"not falsifiable from the page: no per-workflow or per-vertical breakdown, no date the count was taken, no churn or session volume, and the count is deliberately separated from revenue by the page's own wording ('first subscription revenue' is reported next to it rather than inside it), so 13 could be 13 free accounts and one paying customer without contradicting anything written",
+      "claim":"13 real businesses using attainDesk",
+      "denominator":"not stated - 'using', not paying, not retained",
+      "load_bearing":true,
+      "verifiable":false
+     },
+     {
+      "arithmetic":"structural: a price is checkable by opening the product, and it is the only monetised figure on the page, but revenue is being claimed as an accomplishment while the multiplier is withheld, so a reader can compute nothing from it - at one paying customer it is $588 a year before taxes, at thirteen it is $7,644, and the page lets both stand",
+      "claim":"first subscription revenue on a $49/month (+taxes) plan",
+      "denominator":"paying accounts - not published",
+      "load_bearing":true,
+      "verifiable":true
+     },
+     {
+      "arithmetic":"not falsifiable from the page: a claim about an absence, unfalsifiable by a reader with no analytics access, and it is doing rhetorical work for the Daily Digest anecdote - the causal claim that the product's own research feature produced the first paying customer rests on it",
+      "claim":"$0 in paid marketing spend to reach those businesses",
+      "denominator":"outbound spend during the reported period",
+      "verifiable":false
+     },
+     {
+      "arithmetic":"not falsifiable from the page: no start or end date is published for the build, so 'during the hackathon period' has no bounds a reader could check. The only date visible is that the project was started 33 days before this read (update history), which bounds post-hackathon maintenance, not the build window itself",
+      "claim":"moved from an idea to a functioning SaaS business during the hackathon period",
+      "denominator":"the event's build window - not dated on the page",
+      "verifiable":false
+     },
+     {
+      "arithmetic":"structural and countable from the page: eight generation workflows (social content, virtual staging, image-to-video property tours, product promo video, food-photo transformation, logo, headshot, meeting background) plus the Digest. The gallery carries one screenshot per workflow, which is corroboration of existence and not of quality - and note that breadth of this kind is itself a claim about maintenance cost per workflow, which the page never addresses",
+      "claim":"nine guided workflows plus a Daily Digest from one workspace",
+      "denominator":"workflows shipped",
+      "verifiable":true
+     }
+    ],
+    "worth_note":"Correct, useful, and unusually real: one of a handful of records in this catalog with paying customers attached to it, and the self-acquisition anecdote - their own Daily Digest surfaced local business groups, they used it for outreach, it produced the first paying customer - is the best argument in the whole page because it is a test they ran on themselves rather than a feature claim. Held to 'niche' for two reasons. The category is crowded here and elsewhere: Reeloli, Small Business AI Growth Desk and VibeMarketer are in this corpus with the same 'SMBs, no prompting, we do the marketing' pitch, so the wedge is execution, not insight. And nothing about the nine workflows is measured - no acceptance rate, no per-generation cost, no quality claim, no repository - so the record can support 'this team shipped a business' but not 'this mechanism works'. Breadth is also unpriced: nine generation pipelines is a maintenance commitment the page never accounts for."
+   }
   },
   {
    "id":"ax4u-academy",
@@ -74,7 +167,14 @@
    "rubric_coverage":0.64,
    "audited_at":"2026-09-19",
    "unknowns":1,
-   "repo_url":null
+   "repo_url":null,
+   "detail":{
+    "what_it_is":"An AI education platform that sells outputs instead of lessons \u2014 automated workflows, a published book, a dashboard, a deployable system \u2014 pitched at people who hear about AI daily and have never used it, with no measurement of any kind on the page.",
+    "what_it_does":"Described as a practical AI execution platform for individuals, small businesses, educators and organisations, combining AI education, workflow automation, practical system building, AI-assisted content production and operational training. The focus areas it lists are AI workflow design, no-code and low-code automation, AI writing and publishing, productivity systems and agent utilisation; the promised learner outputs are automated workflows, published books, AI-generated media, operational dashboards and deployable business systems. What a session on the platform actually looks like \u2014 a course, a template library, a hosted workspace, a marketplace of workflows \u2014 is not distinguished anywhere on the page.",
+    "how_they_tested":"No evaluation of any kind is described: no learner outcomes, no completion or retention rate, no before/after time measurement, no pilot with a named organisation, and no test suite. The effectiveness claims and the 'save measurable time' principle would normally be where a training product puts its evidence, and neither is present.",
+    "limits_they_disclosed":"Two, both framed as design tensions rather than things the build resolved: simplifying AI for non-technical users who are overwhelmed by APIs, automation tools, coding environments, model selection and a changing ecosystem; and balancing accessibility, scalability and real technical depth, since too simple means no meaningful solutions and too technical means beginners stop. The stated remedy is that they continuously refined the curriculum and workflows to reduce friction while preserving capability, with no example of a decision made or a threshold chosen.",
+    "worth_note":"The genre is crowded and this entry is indistinguishable from it: practical application rather than theory, a list of output types, a stated tension between too simple and too technical. What would move it off this label is a single number from a real cohort, and the page itself names which number \u2014 people learn faster when they can automate something useful, publish a real result or save measurable time. The record is held for the absence of the measurement it argues for, not for the aim, which is a good one."
+   }
   },
   {
    "id":"ccss-laboratory-efficiency-tools",
@@ -258,7 +358,37 @@
    "rubric_coverage":0.64,
    "audited_at":"2026-09-19",
    "unknowns":0,
-   "repo_url":null
+   "repo_url":null,
+   "detail":{
+    "what_it_is":"Deterministic, crypto-verifiable substrate for recursive triad orchestration, claiming byte-identical reasoning across Node, browser and edge.",
+    "what_it_does":"Described as a framework rather than an app: NOVA-NEO encoder for deterministic context-to-tensor conversion, Stigmergy v5 for pheromone-style memory with cosine recall, Holographic Etch as an append-only confidence ledger; a Universal Adapter Protocol under OpenAI, Anthropic, Groq, Gemini, Ollama and xAI; a Next.js 15 showcase site with a Three.js visual layer.",
+    "how_they_tested":"Claims Jest 96.6% coverage, Cypress, CodeQL and SBOM generation, plus 'reproducible benchmark tooling from day one' \u2014 none of it reachable, because the page links no repository.",
+    "limits_they_disclosed":"Cross-runtime reproducibility is described as the hard part ('what works in Node silently diverges in the browser or a Python sidecar'); cryptographic provenance added latency until the chaining and tensor storage were optimised; licensing moved to BUSL-1.1 with a stated MIT conversion in 2030; the author calls the values-layer scoring question unresolved.",
+    "numbers_with_arithmetic":[
+     {
+      "arithmetic":null,
+      "claim":"96.6% test coverage with Jest and Cypress",
+      "denominator":"self-reported; no repository is linked so the coverage config cannot be inspected",
+      "note":"self-reported; nothing on the page lets an outsider run the check",
+      "verifiable":false
+     },
+     {
+      "arithmetic":"not falsifiable as presented",
+      "claim":"byte-identical reasoning across Node, browser and Python sidecar",
+      "denominator":"no published harness, corpus or reproduction command",
+      "note":"self-reported; nothing on the page lets an outsider run the check",
+      "verifiable":false
+     },
+     {
+      "arithmetic":null,
+      "claim":"4.4 milliseconds for a recursive triad orchestration pass",
+      "denominator":"hardware, input size and iteration count not stated",
+      "note":"self-reported; nothing on the page lets an outsider run the check",
+      "verifiable":false
+     }
+    ],
+    "worth_note":"'Replay every agent step byte-identically and hash it into a ledger' is a real want in production agent work, and the disclosed difficulty (float formatting and JSON serialisation differences across runtimes) is genuinely the reason nobody has it. What the page does not do is let anyone check a single claim."
+   }
   },
   {
    "id":"vms-ai-guard-fisheries-compliance-monitoring-alerts",
@@ -310,7 +440,28 @@
    "rubric_coverage":0.64,
    "audited_at":"2026-09-19",
    "unknowns":0,
-   "repo_url":null
+   "repo_url":null,
+   "detail":{
+    "what_it_is":"Three workflows over vessel VMS position data: score a vessel's compliance history for authorities, rate the VMS device and its provider from incident and investigation records, and alert on disconnections as they happen.",
+    "what_it_does":"Continuously monitors GPS/VMS position reporting and detects disconnections in real time, evaluates vessel compliance behaviour over time, analyses VMS provider quality from incident and investigation history, and emits alerts, a risk classification and automated reports. The three named workflows are: vessel owners assessing device quality and supporting provider complaints; authorities scoring vessels to pick high-risk ones for monitoring; authorities scoring providers on incident history and investigation outcomes.",
+    "how_they_tested":"No test suite, no evaluation, no precision or recall for the disconnection detector, and no validation of the risk classification against enforcement outcomes. The page also concedes the absence of ground truth for provider quality, which is the number the third workflow exists to produce.",
+    "limits_they_disclosed":"They list four: highly fragmented and inconsistent data across incidents, violations and investigations; difficulty separating the root cause of a disconnection (device failure, operational issue, or deliberate behaviour); lack of ground truth for judging provider quality; and balancing real-time alerting against long-term historical analysis. Each is stated as a condition of the domain rather than as something the build resolved, and no mitigation is described - most consequentially for the third, since a provider score with no ground truth is an opinion about a company.",
+    "numbers_with_arithmetic":[
+     {
+      "arithmetic":"not falsifiable from the page: no metric, threshold or evaluation set is published",
+      "claim":"Risk classification and provider quality scores",
+      "denominator":"unstated - no ground truth, per the page's own challenges list",
+      "verifiable":false
+     },
+     {
+      "arithmetic":"structural: claimed capability, nothing to recompute",
+      "claim":"Real-time disconnection detection",
+      "denominator":"no latency, window or recall figure given",
+      "verifiable":false
+     }
+    ],
+    "worth_note":"The idea worth keeping is the third workflow: scoring the monitoring *provider* from incident and investigation history turns a vendor relationship into something measurable, which is a genuinely useful reflex in any compliance stack. The submission itself is a bullet list of capabilities: no schema, no model, no data source, no metric, no link to code or demo, and no numbers a reader could recompute - so nothing here can be credited beyond the intention."
+   }
   },
   {
    "id":"autobom",
@@ -485,29 +636,6 @@
    "audit":null
   },
   {
-   "id":"tower-dq18x2",
-   "name":"Tower",
-   "url":"https://devpost.com/software/tower-dq18x2",
-   "domain":"Agentic Autonomy & Orchestration",
-   "subsystem":"Long-Horizon Autonomy",
-   "event":"All Things Agentic Hackathon",
-   "coolness":0.3963,
-   "moves":[
-    "long-horizon-watcher"
-   ],
-   "specificity":0.65,
-   "summary":"An air traffic controller for your deadlines. Tower reads the rulebook, watches your work unattended for weeks, and calls your phone before you lose on a technicality.",
-   "provenance":"unaudited",
-   "why_not_promoted":[
-    "not_audited"
-   ],
-   "would_settle_it":[
-    "project page capture (deep)",
-    "artifact check via repo_verify.py"
-   ],
-   "audit":null
-  },
-  {
    "id":"preopcare",
    "name":"PreOpCare",
    "url":"https://devpost.com/software/preopcare",
@@ -581,30 +709,6 @@
    "moves":[],
    "specificity":0.22,
    "summary":"Making routes faster and roads clearer for emergency response.",
-   "provenance":"unaudited",
-   "why_not_promoted":[
-    "not_audited"
-   ],
-   "would_settle_it":[
-    "project page capture (deep)",
-    "artifact check via repo_verify.py"
-   ],
-   "audit":null
-  },
-  {
-   "id":"attaindesk",
-   "name":"attainDesk",
-   "url":"https://devpost.com/software/attaindesk",
-   "domain":"Creative Media, Story & Play",
-   "subsystem":"Generative Video & Audio",
-   "event":"Build with Gemini XPRIZE",
-   "coolness":0.3905,
-   "moves":[
-    "crew-of-specialists",
-    "single-input-ux"
-   ],
-   "specificity":0.6,
-   "summary":"attainDesk turns AI into one-click business operations for SMBs. Create social media content, product videos, marketing assets, research and grow business without specialist teams or AI expertise.",
    "provenance":"unaudited",
    "why_not_promoted":[
     "not_audited"
@@ -904,7 +1008,14 @@
    "rubric_coverage":0.64,
    "audited_at":"2026-09-19",
    "unknowns":1,
-   "repo_url":null
+   "repo_url":null,
+   "detail":{
+    "what_it_is":"A medication assistant that removes reading from the loop: a nurse photographs the pill, and the patient's monitor stays silent until dose time, then shows that photo and speaks the instruction.",
+    "what_it_does":"Nurse portal: photograph the actual pill, set a daily or weekly schedule. Patient monitor: a no-reading interface that wakes only at dose time, shows the specific pill's photo and speaks the instruction. A voice loop repeats until the patient confirms the dose. Real-time sync keeps the patient's device current.",
+    "how_they_tested":"No tests, no evaluation with patients, no adherence measurement described - the confirmation loop is asserted to work in the demo video only.",
+    "limits_they_disclosed":"A 24-hour pivot: the original entry was disqualified on a technicality and MedVoice was designed and coded in two days. Firebase integration on a phone screen demanded precision.",
+    "worth_note":"Designed by someone who watches the failure happen: the interface deletes reading from the dose loop, the pill's own photo is the identifier, and nothing appears until the medicine is due. Those are three small decisions that a builder in any low-attention, low-literacy or hands-busy context can lift directly, and 8 likes on an entry built in two days on a phone suggests the wedge reads immediately."
+   }
   },
   {
    "id":"toyoboaz",
@@ -1241,7 +1352,22 @@
    "rubric_coverage":0.64,
    "audited_at":"2026-09-19",
    "unknowns":0,
-   "repo_url":null
+   "repo_url":null,
+   "detail":{
+    "what_it_is":"Concussion recovery tracking that scores short cognitive and camera-based physical tests against the patient's own baseline and flags unusual change.",
+    "what_it_does":"Short cognitive tests (reaction time, memory, attention) plus camera-based balance/movement assessment, a recovery dashboard, and alerts when performance moves away from the user's own baseline.",
+    "how_they_tested":"No test suite, evaluation set, or validation against clinical measures is described; the page presents the concept and a prototype update, not results.",
+    "limits_they_disclosed":"Assessments simple enough for anyone to use while still producing meaningful signal; individual differences; keeping the framing away from unsafe medical claims.",
+    "numbers_with_arithmetic":[
+     {
+      "arithmetic":"unfalsifiable as published - no sensitivity, false-alarm rate or session count is given",
+      "claim":"detects unusual changes versus a personal baseline",
+      "denominator":"each user's own prior sessions; count and window not stated",
+      "verifiable":false
+     }
+    ],
+    "worth_note":"The framing is right - measure the person against their own baseline instead of a population threshold - and that transferable piece survives even though nothing about this build is checkable: no dataset, no metric, no repo, and a browser webcam asked to judge balance in someone who is dizzy."
+   }
   },
   {
    "id":"exefast",
@@ -1335,7 +1461,28 @@
    "rubric_coverage":0.64,
    "audited_at":"2026-09-19",
    "unknowns":0,
-   "repo_url":null
+   "repo_url":null,
+   "detail":{
+    "what_it_is":"Signs an autonomous agent's execution claim with ed25519 so any mutation of the record collapses verification, behind an MIT verify() primitive.",
+    "what_it_does":"A claim layer: the agent's action is described in a schema-validated blueprint, signed deterministically, and any later reader can verify the bundle with a single verify() call; tampering invalidates it instantly.",
+    "how_they_tested":"The page asserts an instant INVALID result for any mutation. That is a property of the signature scheme rather than a measurement of their system, so it is not an evaluation; no repository, workflow run, test file or corpus of mutated bundles is linked from this page.",
+    "limits_they_disclosed":"The page frames the problem (unverified logs, rejected AI-safety claims) but does not describe an engineering obstacle, a rejected alternative, or what the approach costs.",
+    "numbers_with_arithmetic":[
+     {
+      "arithmetic":"unfalsifiable as a project-specific claim: it restates an ed25519 property, not a measured pass rate",
+      "claim":"any single-bit mutation collapses verification instantly",
+      "denominator":"no mutation corpus or test run published",
+      "verifiable":false
+     },
+     {
+      "arithmetic":"unfalsifiable as published - determinism across runtime and provider version is not shown",
+      "claim":"deterministic output at temperature 0.0 with a strict responseSchema",
+      "denominator":"one model version, no repeatability measurement published",
+      "verifiable":false
+     }
+    ],
+    "worth_note":"'Sign the claim, not the log' is a genuinely good idea: an agent's post-hoc action record becomes a schema-validated blueprint with a one-call verify() primitive, and the SDK being MIT keeps the trust story cheap. What stops it being a reference implementation is that no code, deployment or measurement is reachable - the strongest sentence on the page is a restatement of an ed25519 property rather than evidence about their system."
+   }
   },
   {
    "id":"nua-offline-on-device-lecture-translator",
@@ -1405,7 +1552,6 @@
     "soundness 0.77 over 64% of the rubric; 1 named unknown(s) remain \u2192 publishable with caveats",
     "resubmission of the same product \u2014 name match False, listing-title equality False, shared mechanism/text overlap 0.26, shared numeric fingerprints ['$0.02', '$20', '$238', '$4.50'] (0.60 jaccard); merged into the better-evidenced copy (A5)",
     "unknown: prior_art \u2014 no named competitor; a search pass would settle it",
-    "hazard: regulated-claim (no team disclaimer found)",
     "merged into greenlight-nine-agent-production-crew \u2014 same submission, richer twin published",
     "duplicate_of:greenlight-nine-agent-production-crew"
    ],
@@ -1421,7 +1567,7 @@
     "audited_at":"2026-09-19",
     "unknowns":1,
     "duplicate_of":"greenlight-nine-agent-production-crew",
-    "hazard":true,
+    "hazard":false,
     "evidence":6,
     "reasons":[
      "soundness 0.77 over 64% of the rubric; 1 named unknown(s) remain \u2192 publishable with caveats",
@@ -1435,7 +1581,43 @@
    "rubric_coverage":0.64,
    "audited_at":"2026-09-19",
    "unknowns":1,
-   "repo_url":null
+   "repo_url":null,
+   "detail":{
+    "what_it_is":"Same product, later write-up: a screenwriter drags a file, picks from candidates, and never types a prompt.",
+    "what_it_does":"She drags the file on; ninety seconds later she sees 37 scenes, 6 characters, and the sentence 'this chapter is 12 shots, it'll cost $4.50, about half will come out right first time'. She picks a style (the buttons carry the difficulty delta), casts from candidate portraits at $0.02 each, then presses one button and reviews each rendered shot with keep/again. Output is one file with subtitles burned in, in one of three languages. Casting is a hard gate: no shot generates until every character in it has an approved reference. A Gemini model watches each finished clip for observable facts (people in frame vs people called for, text creeping in) and the findings sit on the shot card; on 'again' the rejected take and its findings are written to the ledger first, and the retry prompt carries them. When a line trips the content filter they generate the shot anyway and move the line into the subtitle layer, so no word of her script changes. Every prompt exports as text, markdown or JSON.",
+    "how_they_tested":"A seeded \u00d70.92 bias in the ledger to prove the calibration view fires; per-shot outcome logging; no published test suite.",
+    "limits_they_disclosed":"During testing a deliberate \u00d70.92 bias was seeded into the ledger to check that the calibration view would catch it; the account of what the check was for is the most concrete engineering-culture signal on either page.",
+    "numbers_with_arithmetic":[
+     {
+      "arithmetic":"expected retry cost $1.86 \u2192 $1.17, so the gate pays for itself at $0.02 a candidate",
+      "claim":"29% \u2192 49% first-pass success once a character reference is locked",
+      "denominator":"same shots, only variable was the reference"
+     },
+     {
+      "arithmetic":"consistent with one Pro call over a 45-minute script rather than per-scene calls",
+      "claim":"37 scenes / 6 characters parsed in ~90 s",
+      "denominator":"their demo figure"
+     },
+     {
+      "arithmetic":"two cents a try to settle a look vs a dollar a try is a 50\u00d7 price ratio; that ratio is the design",
+      "claim":"$0.02 candidate, $1 shot, $20 segment",
+      "denominator":"published config"
+     },
+     {
+      "arithmetic":"matches the sibling record's quote to the cent",
+      "claim":"$4.50 for a 12-shot chapter",
+      "denominator":"their quoted estimate for the same footage",
+      "verifiable":true
+     },
+     {
+      "arithmetic":"same figure as the sibling record",
+      "claim":"full film \u2248 $238",
+      "denominator":"their own pricing",
+      "verifiable":true
+     }
+    ],
+    "worth_note":"Kept only as evidence of the duplicate: same product, later and slightly clearer write-up (the filter-bypass-into-subtitles trick and the seeded-bias test appear here and not on the other page)."
+   }
   },
   {
    "id":"docpulse-ihxu9r",

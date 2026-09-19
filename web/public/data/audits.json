@@ -48,7 +48,7 @@
    "unknowns":[],
    "evidence":6,
    "contradicted":0,
-   "hazard":true,
+   "hazard":false,
    "repo":null,
    "audited_at":"2026-09-19",
    "audit_version":1,
@@ -192,12 +192,60 @@
    "unknowns":[],
    "evidence":6,
    "contradicted":0,
-   "hazard":true,
+   "hazard":false,
    "repo":null,
    "audited_at":"2026-09-19",
    "audit_version":1,
    "url":"https://devpost.com/software/newspectives-new-perspective-on-news",
    "name":"Newspectives - new perspective on news"
+  },
+  "tower-dq18x2":{
+   "verdict":"sound-with-caveats",
+   "worth":"strong",
+   "soundness":"partial",
+   "soundness_score":0.6484,
+   "rubric_coverage":0.64,
+   "checks":{
+    "artifact_exists":"supported",
+    "build_is_real":"unverifiable",
+    "limits_disclosed":"confirmed",
+    "numbers_add_up":"partial",
+    "stack_consistency":"unverifiable",
+    "test_or_eval_evidence":"supported"
+   },
+   "unknowns":[],
+   "evidence":6,
+   "contradicted":0,
+   "hazard":false,
+   "repo":null,
+   "audited_at":"2026-09-19",
+   "audit_version":1,
+   "url":"https://devpost.com/software/tower-dq18x2",
+   "name":"Tower"
+  },
+  "adversarial-compliance-matrix":{
+   "verdict":"sound-with-caveats",
+   "worth":"niche",
+   "soundness":"partial",
+   "soundness_score":0.5188,
+   "rubric_coverage":0.64,
+   "checks":{
+    "artifact_exists":"supported",
+    "build_is_real":"unverifiable",
+    "limits_disclosed":"supported",
+    "numbers_add_up":"partial",
+    "stack_consistency":"unverifiable",
+    "test_or_eval_evidence":"partial"
+   },
+   "unknowns":[],
+   "evidence":6,
+   "contradicted":0,
+   "hazard":false,
+   "repo":null,
+   "audited_at":"2026-09-19",
+   "audit_version":1,
+   "url":"https://devpost.com/software/adversarial-compliance-matrix",
+   "name":"Gemini-Box"
   },
   "vitalis-bio":{
    "verdict":"sound-with-caveats",
@@ -246,30 +294,6 @@
    "audit_version":1,
    "url":"https://devpost.com/software/neuroguard-ai-adaptiveconcussionrecoveryintelligencesystem",
    "name":"NeuroGuard AI"
-  },
-  "adversarial-compliance-matrix":{
-   "verdict":"sound-with-caveats",
-   "worth":"niche",
-   "soundness":"partial",
-   "soundness_score":0.5188,
-   "rubric_coverage":0.64,
-   "checks":{
-    "artifact_exists":"supported",
-    "build_is_real":"unverifiable",
-    "limits_disclosed":"supported",
-    "numbers_add_up":"partial",
-    "stack_consistency":"unverifiable",
-    "test_or_eval_evidence":"partial"
-   },
-   "unknowns":[],
-   "evidence":6,
-   "contradicted":0,
-   "hazard":false,
-   "repo":null,
-   "audited_at":"2026-09-19",
-   "audit_version":1,
-   "url":"https://devpost.com/software/adversarial-compliance-matrix",
-   "name":"Gemini-Box"
   }
  }
 }

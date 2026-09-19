@@ -1,33 +1,9 @@
 {
  "audit_version": 1,
- "pool_size": 147,
+ "pool_size": 145,
  "queued": 12,
  "note": "Ranking of never-audited candidates by expected information gain (ADR-A7). Nothing here has been verified; the order is only 'what would teach us most'. `pool_size` counts records with no sheet at all \u2014 the full holding area, including audited-but-held records (thin, duplicate, hazard), is data/pool.json.",
  "candidates": [
-  {
-   "id": "tower-dq18x2",
-   "name": "Tower",
-   "domain": "Agentic Autonomy & Orchestration",
-   "coolness": 0.396,
-   "expected_gain": 0.5212,
-   "why": "mechanism-rich hook; depth likely to convert",
-   "would_settle_it": [
-    "project page capture",
-    "repo link check"
-   ]
-  },
-  {
-   "id": "attaindesk",
-   "name": "attainDesk",
-   "domain": "Creative Media, Story & Play",
-   "coolness": 0.391,
-   "expected_gain": 0.517,
-   "why": "sector Creative Media has 26 rows and no audit",
-   "would_settle_it": [
-    "project page capture",
-    "repo link check"
-   ]
-  },
   {
    "id": "finova-j9av5f",
    "name": "Finova",
@@ -143,6 +119,30 @@
    "coolness": 0.377,
    "expected_gain": 0.4984,
    "why": "sector Learning & Knowledge Systems has 14 rows and no audit",
+   "would_settle_it": [
+    "project page capture",
+    "repo link check"
+   ]
+  },
+  {
+   "id": "preopcare",
+   "name": "PreOpCare",
+   "domain": "Agentic Autonomy & Orchestration",
+   "coolness": 0.394,
+   "expected_gain": 0.4953,
+   "why": "mechanism-rich hook; depth likely to convert",
+   "would_settle_it": [
+    "project page capture",
+    "repo link check"
+   ]
+  },
+  {
+   "id": "agenticcinestars",
+   "name": "Continuity - Premiere Control Room Agents",
+   "domain": "Agentic Autonomy & Orchestration",
+   "coolness": 0.378,
+   "expected_gain": 0.4946,
+   "why": "mechanism-rich hook; depth likely to convert",
    "would_settle_it": [
     "project page capture",
     "repo link check"

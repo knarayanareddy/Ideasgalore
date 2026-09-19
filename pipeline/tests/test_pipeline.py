@@ -1368,6 +1368,80 @@ class TestHazardFollowsTheClaimNotTheShelf(unittest.TestCase):
         self.assertIsNone(A.hazard_for(self.REC, cap, {}))
 
 
+class TestSignalsAreNotWordCollisions(unittest.TestCase):
+    """Three published records carried a hazard because of a substring, and one nearly carried a testing
+    rung because of a hosting plan. `HAZARD_CLAIM_RE`'s clinical words are also ordinary English - a
+    "diagnosis" of why teams lose hackathons (tower-dq18x2), the "screen" inside "screenplay" (both
+    Greenlight records) and inside "splash screen" (newspectives) each stamped `regulated-claim` with a
+    note about missing clinical validation - and a stack bullet that Firebase supplies analytics was
+    read as a product measurement loop (attaindesk). Each fix is a rule about what the *sentence*
+    claims, so these tests pin the sentence, not the record."""
+
+    REC = {"domain": "Agentic Autonomy & Orchestration",
+           "summary": "a watcher that re-checks a rulebook against live artifacts"}
+
+    @staticmethod
+    def _cap(text, testing=""):
+        return {"id": "fixture", "name": "Fixture",
+                "source_url": "https://devpost.com/software/fixture",
+                "sections": {"what_it_does": text},
+                "testing": testing, "numbers": [], "built_with": ["python"],
+                "links": {"video": "https://youtu.be/x"}}
+
+    def test_a_metaphor_about_a_failure_mode_is_not_a_clinical_claim(self):
+        self.assertIsNone(A.hazard_for(self.REC, self._cap(
+            "Our diagnosis is that nobody loses a competition because the idea was bad; teams lose on"
+            " unmet requirements."), {}),
+            "diagnosing a failure mode is English, not an assertion about a regulated outcome")
+
+    def test_a_screenplay_is_not_clinical_screening(self):
+        self.assertIsNone(A.hazard_for(self.REC, self._cap(
+            "One model holds the whole screenplay in mind at once; the others read scenes."), {}))
+
+    def test_a_bare_word_still_stamps_when_it_has_a_clinical_object(self):
+        hz = A.hazard_for(self.REC, self._cap(
+            "The tool screens patients between plays and flags missed doses to a clinician."), {})
+        self.assertIsNotNone(hz, "the guard is about the missing object, not the missing word")
+        self.assertEqual(hz["class"], "regulated-claim")
+
+    def test_a_platform_capability_is_not_a_measurement_loop(self):
+        cap = self._cap("It runs on Google Cloud, with authentication, logging and analytics features "
+                        "provided by Firebase.",
+                        testing="No test suite, eval or measured result is described on the page.")
+        cap["sections"]["how_we_built_it"] = cap["sections"]["what_it_does"]
+        chk = A.run_checks(cap, None, None, {})[0]["test_or_eval_evidence"]
+        self.assertEqual(chk["pass"], 0.0, "a stack line must not buy a rung on the testing ladder: " + chk["why"])
+
+    def test_a_measurement_claim_in_the_testing_field_is_credited(self):
+        cap = self._cap("The digest ships weekly.",
+                        testing="We instrumented the send path and watch delivery funnels on the live "
+                                "product.")
+        chk = A.run_checks(cap, None, None, {})[0]["test_or_eval_evidence"]
+        self.assertEqual(chk["pass"], 0.5, chk["why"])
+
+
+class TestHeldRecordsKeepWhatWeLearned(unittest.TestCase):
+    """A held record has no file under `data/audits/` - sheets are emitted only for admitted rows - so
+    the pool surface used to show it as the marketing blurb plus a verdict. attaindesk sat there as
+    "turns AI into one-click business operations for SMBs" beside an audit that had established it has
+    paying customers and measures nothing, and a reader could see neither half. The audit row is the
+    same shape whether or not it publishes, so the pool row carries the parts that decide whether to
+    re-capture."""
+
+    def test_pool_rows_for_scored_records_carry_the_captured_detail(self):
+        with open(os.path.join(REPO, "web/public/data/pool.json"), encoding="utf-8") as fh:
+            pool = json.load(fh)
+        scored = [r for r in pool["records"] if r.get("provenance") == "audited-hold"]
+        self.assertTrue(scored)
+        for r in scored:
+            self.assertIn("detail", r, r["id"] + " was captured and audited; the pool must not "
+                          "publish it as a bare verdict")
+            self.assertIn("what_it_is", r["detail"])
+        for r in pool["records"]:
+            if r.get("provenance") == "unaudited":
+                self.assertNotIn("detail", r, "nothing was captured, so nothing may be asserted")
+
+
 class TestServedSurfacesAreSwept(unittest.TestCase):
     """A file under `web/public/` is an answer to someone's question, so it must be emitted by the
     build that serves it. Sector audit sheets are addressed by a guessable, API-advertised path

@@ -176,6 +176,24 @@ def _pool_record(r: Dict[str, Any], sheet: Optional[Dict[str, Any]]) -> Dict[str
             out[key] = sheet.get(key)
         out["unknowns"] = len(sheet.get("unknowns") or [])
         out["repo_url"] = sheet.get("repo")
+        # What we learned, not just what we rejected. A scored record has no file under
+        # `data/audits/` - sheets are published only for admitted rows - so without this the
+        # pool surface shows a held project as the Devpost marketing blurb and a verdict,
+        # discarding the honest identity, the tested numbers and the disclosure we already
+        # wrote for it. attaindesk sat there as "turns AI into one-click business operations
+        # for SMBs" (the page's own register) next to an audit that had established it has
+        # paying customers and measures nothing: a reader could not see either half.
+        fields = sheet.get("fields") or {}
+        detail = {}
+        for key in ("what_it_is", "what_it_does", "how_they_tested",
+                    "limits_they_disclosed", "numbers_with_arithmetic"):
+            got = (fields.get(key) or {}).get("value")
+            if got not in (None, "", [], {}):
+                detail[key] = got
+        if sheet.get("worth_note"):
+            detail["worth_note"] = sheet["worth_note"]
+        if detail:
+            out["detail"] = detail
     return out
 
 

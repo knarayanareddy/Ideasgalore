@@ -1,495 +1,563 @@
 {
- "adversarial-compliance-matrix": {
-  "clone_cost": {
-   "assumptions": [
-    "you use a published attack corpus rather than only your own fixtures",
-    "you link the repo and the CI run, or the number is decoration"
-   ],
-   "estimate": "2 days for a Rust validator with a fixture generator and a CI matrix",
-   "why": "the engine is small and the harness is standard cargo plus actions; the expensive part is sourcing real payloads, which this project did not do"
+  "adversarial-compliance-matrix": {
+    "clone_cost": {
+      "assumptions": [
+        "you use a published attack corpus rather than only your own fixtures",
+        "you link the repo and the CI run, or the number is decoration"
+      ],
+      "estimate": "2 days for a Rust validator with a fixture generator and a CI matrix",
+      "why": "the engine is small and the harness is standard cargo plus actions; the expensive part is sourcing real payloads, which this project did not do"
+    },
+    "hazard_note": "Security tooling that claims to catch drift. A missed vector is invisible by construction in a self-authored matrix, so publish coverage limits whenever you reuse this pattern.",
+    "prior_art": [
+      {
+        "corpus_id": "gemini-box",
+        "relation": "same author's same platform - this page is one component of it, which is why the records are merged"
+      },
+      {
+        "corpus_id": "agent-launchpad-self-healing-middleware-for-ai-agents",
+        "relation": "runtime guardrails plus auditability for agents, delivered as middleware instead of a validator"
+      },
+      {
+        "corpus_id": "dev1-i6ma2u",
+        "relation": "compliance fleet that leans on vendor guardrails - same 'policy as code' instinct, less proof"
+      }
+    ],
+    "what_breaks_first": "A suite whose cases and fixtures are both authored by the system measures agreement with itself, so '12 of 12' says nothing about the attack space it did not write; and the pass claim is not reachable at all here - no repository, workflow URL or run id is linked. The honest next step for a clone is an external corpus of real malicious samples with a published miss rate.",
+    "what_to_steal": "gen_fixtures.rs as a test *generator*: emit the clean and adversarial cases from the same spec the validator consumes, then let CI rebuild the whole matrix on every commit. It makes a regression impossible to hide and costs one file.",
+    "worth": "niche",
+    "worth_note": "The part worth keeping is the smallest credible security demo there is: a fixture generator plus a fixed scenario matrix wired into CI, so the artifact is a run rather than a slide. It is merged into the sibling submission because both pages describe one platform by one author, and the split version publishes twice the entries for half the evidence."
   },
-  "hazard_note": "Security tooling that claims to catch drift. A missed vector is invisible by construction in a self-authored matrix, so publish coverage limits whenever you reuse this pattern.",
-  "prior_art": [
-   {
-    "corpus_id": "gemini-box",
-    "relation": "same author's same platform - this page is one component of it, which is why the records are merged"
-   },
-   {
-    "corpus_id": "agent-launchpad-self-healing-middleware-for-ai-agents",
-    "relation": "runtime guardrails plus auditability for agents, delivered as middleware instead of a validator"
-   },
-   {
-    "corpus_id": "dev1-i6ma2u",
-    "relation": "compliance fleet that leans on vendor guardrails - same 'policy as code' instinct, less proof"
-   }
-  ],
-  "what_breaks_first": "A suite whose cases and fixtures are both authored by the system measures agreement with itself, so '12 of 12' says nothing about the attack space it did not write; and the pass claim is not reachable at all here - no repository, workflow URL or run id is linked. The honest next step for a clone is an external corpus of real malicious samples with a published miss rate.",
-  "what_to_steal": "gen_fixtures.rs as a test *generator*: emit the clean and adversarial cases from the same spec the validator consumes, then let CI rebuild the whole matrix on every commit. It makes a regression impossible to hide and costs one file.",
-  "worth": "niche",
-  "worth_note": "The part worth keeping is the smallest credible security demo there is: a fixture generator plus a fixed scenario matrix wired into CI, so the artifact is a run rather than a slide. It is merged into the sibling submission because both pages describe one platform by one author, and the split version publishes twice the entries for half the evidence."
- },
- "audionova": {
-  "clone_cost": {
-   "assumptions": [
-    "assumes access to a Snapdragon X machine, which is the real gate",
-    "no model training is implied by the capture"
-   ],
-   "estimate": "week",
-   "why": "Vall-E-X and Whisper are available through the vendor's hub; the work is the quantisation pass and the Windows shell"
+  "attaindesk": {
+    "clone_cost": {
+      "assumptions": [
+        "an acceptance standard per workflow, written down before shipping, because nothing in the capture defines what a good generated asset is and without one 'quality' is unfalsifiable",
+        "a cost model per generation (tokens, seconds of video, retries) priced against $49/month before adding any video-heavy workflow, since the page never publishes one",
+        "distribution assumed to be the hard part: the record's own growth was founder-led and organic, so a clone inherits the product and not the 13 customers",
+        "brand-context persistence (logos, headshots, style) needs a store and a review path if outputs are to be reusable rather than regenerated"
+      ],
+      "estimate": "3-4 weeks per workflow a business would actually pay for, and the ninth is not nine times cheaper than the first",
+      "why": "The generation plumbing is commodity: Gemini text and image endpoints, Veo for video, TTS for voiceover, Search grounding for the digest, all of it behind Cloud Functions and Cloud Tasks with Firestore for job state - a small team can stand up two or three of these in a month, and the page says its own build was substantially done with Gemini coding agents and Antigravity, which is a claim about speed of authoring, not about defensibility. What is not commodity is the per-vertical taste that makes each output acceptable - what a staged living room has to look like for a listing agent to send it, how a menu photo has to be lit - plus auth, billing, analytics and the trust required for a business to hand a workspace its brand. And the acquisition story the record actually claims as its accomplishment is founder-led outreach at $0 spend, which cannot be cloned at all: the moat named in the page is the team's ability to sell to SMBs, not the pipeline."
+    },
+    "prior_art": [
+      {
+        "corpus_id": "saral-9bn2lr",
+        "relation": "same buyer, same event, same subsystem, opposite shape: Reeloli goes deep on one channel (WhatsApp, 15 days of local-business marketing video, planned and produced by AI) where attainDesk goes broad across nine workflows in a web workspace - read the pair together for the depth-versus-breadth trade a horizontal SMB product has to answer"
+      },
+      {
+        "corpus_id": "small-business-ai-growth-desk",
+        "relation": "the same pitch stated as a category rather than a product - 'marketing, content, outreach and operational assets in minutes' - which is the generic prompt-box attainDesk's page explicitly argues against"
+      },
+      {
+        "corpus_id": "vibemarketer",
+        "relation": "attainDesk's missing half: VibeMarketer closes the loop with persistent brand context, approval before campaigns go out, and provider-confirmed publishing, where attainDesk generates and stops"
+      },
+      {
+        "corpus_id": "sketchwish",
+        "relation": "one workflow, priced honestly: photo to print-ready sketch for print-on-demand sellers, live in production - the same 'guided outcome, no prompting' bet at a tenth of the surface area, which is the argument for starting narrow"
+      }
+    ],
+    "what_breaks_first": "Unit economics on the expensive workflows, then the quality question nobody measured. A $49/month plan is priced against a catalogue that includes Veo-class video generation and image editing for every customer; one realtor rendering a dozen listings a week can out-earn the subscription in inference on its own, and the page publishes no per-generation cost, latency or failure rate - while simultaneously admitting that some operations are computationally intensive and asynchronous, i.e. it knows exactly where the exposure is. Second: nine workflows means nine vendor surfaces, each with its own silent quality drift, and there is no acceptance metric for any of them, so a model version bump changes what a customer receives with nothing in the loop to notice. Third: '13 businesses using it' has no denominator - not paying, not retained, not per-workflow - so the traction claim that carries the record cannot be turned into a rate by a reader at all.",
+    "what_to_steal": "Refuse the prompt box. The stated design principle - users describe a business outcome while model selection, prompting, context and iteration happen behind the scenes - is transferable to any vertical agent, and the async plumbing that makes it survivable is the second half: Cloud Functions plus Cloud Tasks so a two-second text job and a two-minute video job share one UI contract with Firestore holding job state. Then steal the honesty of the product framing itself: 'the best AI experience can sometimes feel like there is less AI, not more' is the line to put on a wall in any team shipping a model-backed workflow, and the Digest-that-found-the-first-customer loop is a template for pointing your own research surface at your own acquisition problem.",
+    "worth": "niche",
+    "worth_note": "Correct, useful, and unusually real: one of a handful of records in this catalog with paying customers attached to it, and the self-acquisition anecdote - their own Daily Digest surfaced local business groups, they used it for outreach, it produced the first paying customer - is the best argument in the whole page because it is a test they ran on themselves rather than a feature claim. Held to 'niche' for two reasons. The category is crowded here and elsewhere: Reeloli, Small Business AI Growth Desk and VibeMarketer are in this corpus with the same 'SMBs, no prompting, we do the marketing' pitch, so the wedge is execution, not insight. And nothing about the nine workflows is measured - no acceptance rate, no per-generation cost, no quality claim, no repository - so the record can support 'this team shipped a business' but not 'this mechanism works'. Breadth is also unpriced: nine generation pipelines is a maintenance commitment the page never accounts for."
   },
-  "prior_art": [
-   {
-    "corpus_id": "nua-offline-on-device-lecture-translator",
-    "relation": "same local-first bet on translation/dubbing; AudioNova optimises the silicon, Nua optimises the pipeline"
-   },
-   {
-    "corpus_id": "snapdragon-ai-multilingual-translator-…",
-    "relation": "same hardware target, different modality"
-   }
-  ],
-  "what_breaks_first": "Two things: cloning quality across accents and speakers, and the install base — Windows on Snapdragon X is a small denominator, so distribution breaks long before the models do. Voice cloning consent/retention is also unspecified in the page, which you must not inherit.",
-  "what_to_steal": "Make the hardware path the product, not the fallback: quantise and route to DSP/GPU deliberately, then publish the delta against your own unoptimised path (2x speed, ~35% power) as the headline number instead of a model name.",
-  "worth": "strong",
-  "worth_note": "547 likes and a staff feature on a Windows-on-Snapdragon app is not luck: it deletes the cloud bill, the latency and the privacy argument at once. Held back from 'breakthrough' because on-device TTS is a crowded field and the moat here is toolchain work (AI Hub quantisation), not a new capability."
- },
- "ax4u-academy": {
-  "clone_cost": {
-   "assumptions": [
-    "you have material worth packaging — exercises with answer keys, not an introduction to prompts",
-    "an audience that will pay for execution rather than information, which is the whole bet",
-    "a maintenance rhythm for tool guidance, since a stale curriculum is worse than none in this domain"
-   ],
-   "estimate": "days for the platform shell; the curriculum and the evidence are the months",
-   "why": "A content library, a template store and accounts are ordinary work, and nothing described needs FastAPI and Firestore and Streamlit and Node at once. What takes months is repeatable exercises that reliably leave a non-technical person with something deployed, and someone keeping the model and API guidance current as the ecosystem the page itself calls overwhelming turns over."
+  "audionova": {
+    "clone_cost": {
+      "assumptions": [
+        "assumes access to a Snapdragon X machine, which is the real gate",
+        "no model training is implied by the capture"
+      ],
+      "estimate": "week",
+      "why": "Vall-E-X and Whisper are available through the vendor's hub; the work is the quantisation pass and the Windows shell"
+    },
+    "prior_art": [
+      {
+        "corpus_id": "nua-offline-on-device-lecture-translator",
+        "relation": "same local-first bet on translation/dubbing; AudioNova optimises the silicon, Nua optimises the pipeline"
+      },
+      {
+        "corpus_id": "snapdragon-ai-multilingual-translator-\u2026",
+        "relation": "same hardware target, different modality"
+      }
+    ],
+    "what_breaks_first": "Two things: cloning quality across accents and speakers, and the install base \u2014 Windows on Snapdragon X is a small denominator, so distribution breaks long before the models do. Voice cloning consent/retention is also unspecified in the page, which you must not inherit.",
+    "what_to_steal": "Make the hardware path the product, not the fallback: quantise and route to DSP/GPU deliberately, then publish the delta against your own unoptimised path (2x speed, ~35% power) as the headline number instead of a model name.",
+    "worth": "strong",
+    "worth_note": "547 likes and a staff feature on a Windows-on-Snapdragon app is not luck: it deletes the cloud bill, the latency and the privacy argument at once. Held back from 'breakthrough' because on-device TTS is a crowded field and the moat here is toolchain work (AI Hub quantisation), not a new capability."
   },
-  "hazard_note": "No regulated-outcome claim: nothing here asserts credentials, employment results or exam outcomes, so no hazard flag is raised. The relevant caution is for whoever copies the framing — promising published books and deployable systems without measuring a single learner is a marketing surface, and the exposure sits with the buyer, not with a reader of this record.",
-  "prior_art": [
-   {
-    "corpus_id": "sketchwish",
-    "relation": "both serve a non-technical user who wants the finished artifact rather than the skill, and the contrast is about commitment: SketchWish names one output, discloses its caps and costs, and can be opened and tried; this promises five kinds of output and links nothing a reader can try."
-   },
-   {
-    "corpus_id": "greenlight-nine-agent-production-crew",
-    "relation": "both sell time saved; Greenlight states a measured before/after with a cost per run, which is the shape of claim this page's 'save measurable time' principle asks for and does not make."
-   }
-  ],
-  "what_breaks_first": "Every claim about effectiveness, immediately, because there is nothing to break gracefully — no cohort size, no completion rate, no hours saved, no named organisation that onboarded. Second: the product boundary. A course, a template library and a hosted automation workspace have different failure modes, different owners and different prices, and the page does not say which of the three it is; the eleven Built With tags span two backend frameworks, two hosting stacks, two storage engines and two front-end approaches, which reads as the tool list a student touches across a year rather than the stack one service runs on.",
-  "what_to_steal": "Segment a curriculum by the artifact the learner leaves with — a deployed workflow, a published book, a live dashboard — rather than by topic, because each module then has a one-question success test: did this produce a thing. And name the barrier concretely (API sprawl, coding environments, model selection, an ecosystem that changes monthly) instead of 'practical AI skills': that list is a usable brief for what a first session must hide.",
-  "worth": "tired",
-  "worth_note": "The genre is crowded and this entry is indistinguishable from it: practical application rather than theory, a list of output types, a stated tension between too simple and too technical. What would move it off this label is a single number from a real cohort, and the page itself names which number — people learn faster when they can automate something useful, publish a real result or save measurable time. The record is held for the absence of the measurement it argues for, not for the aim, which is a good one."
- },
- "carbender": {
-  "clone_cost": {
-   "assumptions": [
-    "a parts catalog with per-model-year coverage, or an accepted plan to answer 'not covered' honestly for the vehicles you cannot price",
-    "a price source with enough freshness to quote at auction time, and a stated tolerance for how stale is too stale",
-    "labour-cost assumptions per region, since the repair estimate and therefore the Total Loss verdict depend on them even though the page never names them",
-    "a review path for the regulatory vocabulary: cite the standards and thresholds you invoke, or drop the claims that read like compliance approval"
-   ],
-   "estimate": "5-7 weeks for a single-jurisdiction version a buyer would trust; a year of data work for the catalog that makes it worth using",
-   "why": "The application is ordinary: photo preprocessing with Sharp, a queue on Inngest, Prisma over Postgres, Next.js and Stripe, and a multimodal model call with search grounding for part numbers and live prices - two or three weeks for someone fluent in that stack. The time goes into the parts catalog and the pricing source, which are the only defensible parts of the product and are not built here at all: structuring OEM data per make, model and year, keeping prices from becoming stale, and deciding what to return when coverage is thin. Adding a second jurisdiction (ECE instead of DOT/SAE, EUR, per-country import and inspection rules) is a further multiplier rather than a config flag. A clone can reproduce the flow quickly; it cannot reproduce the asset."
+  "ax4u-academy": {
+    "clone_cost": {
+      "assumptions": [
+        "you have material worth packaging \u2014 exercises with answer keys, not an introduction to prompts",
+        "an audience that will pay for execution rather than information, which is the whole bet",
+        "a maintenance rhythm for tool guidance, since a stale curriculum is worse than none in this domain"
+      ],
+      "estimate": "days for the platform shell; the curriculum and the evidence are the months",
+      "why": "A content library, a template store and accounts are ordinary work, and nothing described needs FastAPI and Firestore and Streamlit and Node at once. What takes months is repeatable exercises that reliably leave a non-technical person with something deployed, and someone keeping the model and API guidance current as the ecosystem the page itself calls overwhelming turns over."
+    },
+    "hazard_note": "No regulated-outcome claim: nothing here asserts credentials, employment results or exam outcomes, so no hazard flag is raised. The relevant caution is for whoever copies the framing \u2014 promising published books and deployable systems without measuring a single learner is a marketing surface, and the exposure sits with the buyer, not with a reader of this record.",
+    "prior_art": [
+      {
+        "corpus_id": "sketchwish",
+        "relation": "both serve a non-technical user who wants the finished artifact rather than the skill, and the contrast is about commitment: SketchWish names one output, discloses its caps and costs, and can be opened and tried; this promises five kinds of output and links nothing a reader can try."
+      },
+      {
+        "corpus_id": "greenlight-nine-agent-production-crew",
+        "relation": "both sell time saved; Greenlight states a measured before/after with a cost per run, which is the shape of claim this page's 'save measurable time' principle asks for and does not make."
+      }
+    ],
+    "what_breaks_first": "Every claim about effectiveness, immediately, because there is nothing to break gracefully \u2014 no cohort size, no completion rate, no hours saved, no named organisation that onboarded. Second: the product boundary. A course, a template library and a hosted automation workspace have different failure modes, different owners and different prices, and the page does not say which of the three it is; the eleven Built With tags span two backend frameworks, two hosting stacks, two storage engines and two front-end approaches, which reads as the tool list a student touches across a year rather than the stack one service runs on.",
+    "what_to_steal": "Segment a curriculum by the artifact the learner leaves with \u2014 a deployed workflow, a published book, a live dashboard \u2014 rather than by topic, because each module then has a one-question success test: did this produce a thing. And name the barrier concretely (API sprawl, coding environments, model selection, an ecosystem that changes monthly) instead of 'practical AI skills': that list is a usable brief for what a first session must hide.",
+    "worth": "tired",
+    "worth_note": "The genre is crowded and this entry is indistinguishable from it: practical application rather than theory, a list of output types, a stated tension between too simple and too technical. What would move it off this label is a single number from a real cohort, and the page itself names which number \u2014 people learn faster when they can automate something useful, publish a real result or save measurable time. The record is held for the absence of the measurement it argues for, not for the aim, which is a good one."
   },
-  "hazard_note": "This is a money decision dressed in regulatory vocabulary. The product returns a Total Loss verdict and a repair estimate that a buyer may bid against, while invoking DOT, SAE and ECE standards, country-specific import, title, emissions and inspection requirements, and a Loss Ratio band policy described as 'matching EU & US salvage threshold standards' with no citation and no named issuing body for either threshold. Nothing on the page states who is liable when the estimate is wrong, no accuracy figure exists for either the part identification or the price, and the resale denominator comes from another estimate rather than a transaction record, so a High-band verdict near a boundary can flip on inputs that are both soft. The team's stated posture is the right instinct - a wrong OEM code shown with false confidence is worse than no result - but an interface banner is not a compliance sign-off, and a tool that names regulators should either cite them or stop invoking them. Held from promotion on that basis: publishable as a documented case, not as a usable figure.",
-  "prior_art": [
-   {
-    "corpus_id": "vms-ai-guard-fisheries-compliance-monitoring-alerts",
-    "relation": "both turn a stream of sensor evidence into a regulatory-flavoured verdict for a human to act on, and neither page publishes an accuracy figure - the fisheries tool goes further and states there is no ground truth for its risk classification, while Carbender's page implies its bands come from external standards without naming them. Read together, they are the two failure modes of the same design: admit the measurement problem, or borrow authority from a regulator."
-   },
-   {
-    "corpus_id": "continuity-g7bty0",
-    "relation": "both end in an artifact a person checks rather than an action the system takes - a repair plan PDF against a cited diff - and both leave the accuracy of the underlying judgement unmeasured. The difference is what they attach evidence to: Continuity grounds a claim against the live web and shows the citation next to the verdict, while Carbender grounds a part number against a proprietary catalog the reader cannot inspect, so its traceability stops at the vendor boundary."
-   },
-   {
-    "corpus_id": "sketchwish",
-    "relation": "both put a machine-readable judgement in front of a purchase decision and both monetise through the transaction surface rather than the model; the marketplace tool's advantage is that its output is checked by the market on the next listing, whereas a repair estimate is only checked when the parts arrive, so the feedback loop is months long."
-   }
-  ],
-  "what_breaks_first": "Catalog coverage, on both ends of the pipeline. The 700,000-row figure is spread over 60-plus makes and their model years, so the first user with a twelve-year-old European hatchback gets either no parts or a plausible wrong code - and the scarcity banner only helps if scarcity is detected against coverage the product actually measures rather than against a lookup that happens to miss. Second, the severity-to-cost link: the bands assume the repair estimate is close enough to divide by resale value, and near 40 and 70 percent a modest error in labour or parts changes 'repairable' into 'Total Loss' with no stated error model to tell the buyer which side of the line they are on. Third, spatial normalisation: the driver-side versus passenger-side disambiguation is the difference between quoting a mirror or a fender, and a cropped, low-light auction photo is precisely where a 3D-normalisation step degrades.",
-  "what_to_steal": "Publish the decision rule, not just the score: the Loss Ratio names both inputs, states the band edges, and returns a verdict - a reader can recompute it and argue with it, which is more than most 'AI estimate' products offer. Then steal the failure-surface design: scarcity detection wired to an advisory banner, with the explicit principle that admitting no coverage beats a confident wrong answer. Region should be an input, not a translation - standards family, currency and title/import/emissions/inspection rules change what the estimate means, so carry them through the model call and the UI together. Free adjacent utility as acquisition: a VIN-to-window-sticker generator that costs nothing to run and lands the same audience on the paid product. And three model tiers with automatic failover in a flow running against an auction clock.",
-  "worth": "niche",
-  "worth_note": "The audience is specific and it pays: people bidding on salvage lots, body shops and mechanics, for whom a photo-to-parts-list-with-prices replaces a guess made in a ten-minute walk-around. Within that audience the wedge is real and better than the obvious alternative, because the two things a human estimator cannot do at an auction - check a 700,000-row OEM catalog and price parts across a jurisdiction boundary - are exactly what the build automates, and the Loss Ratio turns a pile of numbers into the one decision the buyer came with. What keeps it niche rather than strong is that the mechanism does not outlive the project: vision plus grounded pricing plus a published decision ratio is a well-executed instance of a pattern that will be repeated, and the moat is the catalog, not the method. No accuracy figure anywhere means a buyer inherits the author's confidence rather than a measured one - which the page at least admits is the wrong thing to hand over, hence the scarcity banners."
- },
- "complianceguardian-kcqs32": {
-  "clone_cost": {
-   "assumptions": [
-    "you pick one jurisdiction and one industry first, because 16 rulesets is a company not a hackathon",
-    "you have a GCP project you can run Cloud Tasks, BigQuery and Workflows against, and IAM rights to deny yourself",
-    "a domain reviewer is available; without one the rulesets are your own guess about the law"
-   ],
-   "estimate": "2-3 weeks for the agent pair, gateway and append-only trail; months for defensible rulesets",
-   "why": "The infrastructure they describe is standard GCP work and their two structural tricks are small to implement once you know them. What cannot be hurried is authoring and maintaining rule text for the jurisdictions you serve, plus someone qualified to confirm each rule still matches the regulation."
+  "carbender": {
+    "clone_cost": {
+      "assumptions": [
+        "a parts catalog with per-model-year coverage, or an accepted plan to answer 'not covered' honestly for the vehicles you cannot price",
+        "a price source with enough freshness to quote at auction time, and a stated tolerance for how stale is too stale",
+        "labour-cost assumptions per region, since the repair estimate and therefore the Total Loss verdict depend on them even though the page never names them",
+        "a review path for the regulatory vocabulary: cite the standards and thresholds you invoke, or drop the claims that read like compliance approval"
+      ],
+      "estimate": "5-7 weeks for a single-jurisdiction version a buyer would trust; a year of data work for the catalog that makes it worth using",
+      "why": "The application is ordinary: photo preprocessing with Sharp, a queue on Inngest, Prisma over Postgres, Next.js and Stripe, and a multimodal model call with search grounding for part numbers and live prices - two or three weeks for someone fluent in that stack. The time goes into the parts catalog and the pricing source, which are the only defensible parts of the product and are not built here at all: structuring OEM data per make, model and year, keeping prices from becoming stale, and deciding what to return when coverage is thin. Adding a second jurisdiction (ECE instead of DOT/SAE, EUR, per-country import and inspection rules) is a further multiplier rather than a config flag. A clone can reproduce the flow quickly; it cannot reproduce the asset."
+    },
+    "hazard_note": "This is a money decision dressed in regulatory vocabulary. The product returns a Total Loss verdict and a repair estimate that a buyer may bid against, while invoking DOT, SAE and ECE standards, country-specific import, title, emissions and inspection requirements, and a Loss Ratio band policy described as 'matching EU & US salvage threshold standards' with no citation and no named issuing body for either threshold. Nothing on the page states who is liable when the estimate is wrong, no accuracy figure exists for either the part identification or the price, and the resale denominator comes from another estimate rather than a transaction record, so a High-band verdict near a boundary can flip on inputs that are both soft. The team's stated posture is the right instinct - a wrong OEM code shown with false confidence is worse than no result - but an interface banner is not a compliance sign-off, and a tool that names regulators should either cite them or stop invoking them. Held from promotion on that basis: publishable as a documented case, not as a usable figure.",
+    "prior_art": [
+      {
+        "corpus_id": "vms-ai-guard-fisheries-compliance-monitoring-alerts",
+        "relation": "both turn a stream of sensor evidence into a regulatory-flavoured verdict for a human to act on, and neither page publishes an accuracy figure - the fisheries tool goes further and states there is no ground truth for its risk classification, while Carbender's page implies its bands come from external standards without naming them. Read together, they are the two failure modes of the same design: admit the measurement problem, or borrow authority from a regulator."
+      },
+      {
+        "corpus_id": "continuity-g7bty0",
+        "relation": "both end in an artifact a person checks rather than an action the system takes - a repair plan PDF against a cited diff - and both leave the accuracy of the underlying judgement unmeasured. The difference is what they attach evidence to: Continuity grounds a claim against the live web and shows the citation next to the verdict, while Carbender grounds a part number against a proprietary catalog the reader cannot inspect, so its traceability stops at the vendor boundary."
+      },
+      {
+        "corpus_id": "sketchwish",
+        "relation": "both put a machine-readable judgement in front of a purchase decision and both monetise through the transaction surface rather than the model; the marketplace tool's advantage is that its output is checked by the market on the next listing, whereas a repair estimate is only checked when the parts arrive, so the feedback loop is months long."
+      }
+    ],
+    "what_breaks_first": "Catalog coverage, on both ends of the pipeline. The 700,000-row figure is spread over 60-plus makes and their model years, so the first user with a twelve-year-old European hatchback gets either no parts or a plausible wrong code - and the scarcity banner only helps if scarcity is detected against coverage the product actually measures rather than against a lookup that happens to miss. Second, the severity-to-cost link: the bands assume the repair estimate is close enough to divide by resale value, and near 40 and 70 percent a modest error in labour or parts changes 'repairable' into 'Total Loss' with no stated error model to tell the buyer which side of the line they are on. Third, spatial normalisation: the driver-side versus passenger-side disambiguation is the difference between quoting a mirror or a fender, and a cropped, low-light auction photo is precisely where a 3D-normalisation step degrades.",
+    "what_to_steal": "Publish the decision rule, not just the score: the Loss Ratio names both inputs, states the band edges, and returns a verdict - a reader can recompute it and argue with it, which is more than most 'AI estimate' products offer. Then steal the failure-surface design: scarcity detection wired to an advisory banner, with the explicit principle that admitting no coverage beats a confident wrong answer. Region should be an input, not a translation - standards family, currency and title/import/emissions/inspection rules change what the estimate means, so carry them through the model call and the UI together. Free adjacent utility as acquisition: a VIN-to-window-sticker generator that costs nothing to run and lands the same audience on the paid product. And three model tiers with automatic failover in a flow running against an auction clock.",
+    "worth": "niche",
+    "worth_note": "The audience is specific and it pays: people bidding on salvage lots, body shops and mechanics, for whom a photo-to-parts-list-with-prices replaces a guess made in a ten-minute walk-around. Within that audience the wedge is real and better than the obvious alternative, because the two things a human estimator cannot do at an auction - check a 700,000-row OEM catalog and price parts across a jurisdiction boundary - are exactly what the build automates, and the Loss Ratio turns a pile of numbers into the one decision the buyer came with. What keeps it niche rather than strong is that the mechanism does not outlive the project: vision plus grounded pricing plus a published decision ratio is a well-executed instance of a pattern that will be repeated, and the moat is the catalog, not the method. No accuracy figure anywhere means a buyer inherits the author's confidence rather than a measured one - which the page at least admits is the wrong thing to hand over, hence the scarcity banners."
   },
-  "hazard_note": "Compliance verdicts on NDIS, aged-care and privacy obligations, with routine documents auto-approved. The page argues its case for trustworthiness at length - citations, versioning, immutability - but does not state who is accountable when an auto-approved document later becomes an audit finding, nor whether the rulesets were reviewed by a practitioner.",
-  "prior_art": [
-   {
-    "corpus_id": "adversarial-compliance-matrix",
-    "relation": "same audience, opposite instrument: that project signs an execution claim so a verifier can reject a mutation, this one cites a rule so a human can reject a reading. Read together they cover both halves of machine-checkable compliance - provenance and interpretation."
-   },
-   {
-    "corpus_id": "greenlight-nine-agent-production-crew",
-    "relation": "same shape (an agent pipeline that hands edge cases to a human) with a different optimisation target: Greenlight spends less, ComplianceGuardian refuses to be wrong quietly. The escalation path is the shared skeleton worth copying from either."
-   }
-  ],
-  "what_breaks_first": "The rulesets. Eighty-eight hand-authored YAML rules against regulations that amend without notice, with their own roadmap conceding that change detection is not built yet - so the first failure mode is a document auto-approved against a superseded rule, reported with a citation that still resolves to a real but obsolete clause. Second: the escalation threshold, since auto-approve on 'routine' documents is only as safe as the classifier that calls a document routine.",
-  "what_to_steal": "Grant the writer identity the append permission and deny it the job-starting permission, so history cannot be rewritten by the application that writes it; derive tenant identity only from verified token claims so there is no request field to tamper with; record prompt and model version against every generated verdict so a decision can be reproduced months later; make environment variables required rather than defaulted, because a permissive default on a fresh checkout silently removed credentials.",
-  "worth": "strong",
-  "worth_note": "The product decision is the transferable one: refuse to let a model answer unless the answer names a rule from a versioned file, and escalate when it cannot. Pair that with an audit trail enforced at the permission layer and an entitlement model that spends counters inside a transaction, and you have three moves that apply to any agent product expected to produce evidence a third party will rely on. The incident write-up is unusually useful too - six failures behind each other, none of which crashed."
- },
- "continuity-g7bty0": {
-  "clone_cost": {
-   "assumptions": [
-    "a wiki or knowledge base with a review workflow you can post diffs into (MediaWiki pending changes, or a PR-style flow)",
-    "a per-claim research budget, since a pass costs a search plus several model calls for every claim on the page",
-    "a decision about contested facts: staff the disagreement bucket, or suppress that category rather than flood maintainers"
-   ],
-   "estimate": "2-3 weeks — the ledger is the project, the model calls are glue",
-   "why": "The walkthrough is ordinary orchestration over two APIs: extract, prioritise, research, judge, draft, cross-check, render a diff. What takes the time is the claim ledger — extracting claims reliably, keying them so a re-run recognises the same claim in a re-edited article, and the due-date and link graph on top — plus the fixture recorder that keeps iteration cheap. The dependency-free core design is what makes the second part cheap to get right."
+  "complianceguardian-kcqs32": {
+    "clone_cost": {
+      "assumptions": [
+        "you pick one jurisdiction and one industry first, because 16 rulesets is a company not a hackathon",
+        "you have a GCP project you can run Cloud Tasks, BigQuery and Workflows against, and IAM rights to deny yourself",
+        "a domain reviewer is available; without one the rulesets are your own guess about the law"
+      ],
+      "estimate": "2-3 weeks for the agent pair, gateway and append-only trail; months for defensible rulesets",
+      "why": "The infrastructure they describe is standard GCP work and their two structural tricks are small to implement once you know them. What cannot be hurried is authoring and maintaining rule text for the jurisdictions you serve, plus someone qualified to confirm each rule still matches the regulation."
+    },
+    "hazard_note": "Compliance verdicts on NDIS, aged-care and privacy obligations, with routine documents auto-approved. The page argues its case for trustworthiness at length - citations, versioning, immutability - but does not state who is accountable when an auto-approved document later becomes an audit finding, nor whether the rulesets were reviewed by a practitioner.",
+    "prior_art": [
+      {
+        "corpus_id": "adversarial-compliance-matrix",
+        "relation": "same audience, opposite instrument: that project signs an execution claim so a verifier can reject a mutation, this one cites a rule so a human can reject a reading. Read together they cover both halves of machine-checkable compliance - provenance and interpretation."
+      },
+      {
+        "corpus_id": "greenlight-nine-agent-production-crew",
+        "relation": "same shape (an agent pipeline that hands edge cases to a human) with a different optimisation target: Greenlight spends less, ComplianceGuardian refuses to be wrong quietly. The escalation path is the shared skeleton worth copying from either."
+      }
+    ],
+    "what_breaks_first": "The rulesets. Eighty-eight hand-authored YAML rules against regulations that amend without notice, with their own roadmap conceding that change detection is not built yet - so the first failure mode is a document auto-approved against a superseded rule, reported with a citation that still resolves to a real but obsolete clause. Second: the escalation threshold, since auto-approve on 'routine' documents is only as safe as the classifier that calls a document routine.",
+    "what_to_steal": "Grant the writer identity the append permission and deny it the job-starting permission, so history cannot be rewritten by the application that writes it; derive tenant identity only from verified token claims so there is no request field to tamper with; record prompt and model version against every generated verdict so a decision can be reproduced months later; make environment variables required rather than defaulted, because a permissive default on a fresh checkout silently removed credentials.",
+    "worth": "strong",
+    "worth_note": "The product decision is the transferable one: refuse to let a model answer unless the answer names a rule from a versioned file, and escalate when it cannot. Pair that with an audit trail enforced at the permission layer and an entitlement model that spends counters inside a transaction, and you have three moves that apply to any agent product expected to produce evidence a third party will rely on. The incident write-up is unusually useful too - six failures behind each other, none of which crashed."
   },
-  "hazard_note": "Wiki content is public-knowledge infrastructure, so an edit proposal has a public consequence even though the agent never publishes: the team disclaims authority explicitly (it 'never decides anything', 'nothing reaches the page until a person says so'), which is the review posture this catalog asks for. The two figures that should exist before running it on a busy article are the share of claims that land in sources-disagree and the false-negative rate — a stale fact the agent checked and passed is indistinguishable from one it never reached, and a maintainer cannot tell those apart from a clean report.",
-  "prior_art": [
-   {
-    "corpus_id": "vms-ai-guard-fisheries-compliance-monitoring-alerts",
-    "relation": "the same shape — a machine ranking facts for a human to act on, deliberately stopping short of acting — and the two pages differ almost entirely on whether the judgement is checkable: Continuity returns old text, new text, a citation and a confidence score per claim, while the fisheries tool returns a risk classification whose own page says there is no ground truth for it."
-   },
-   {
-    "corpus_id": "adversarial-compliance-matrix",
-    "relation": "both convert an unverifiable judgement into an artifact a person can check (a cited diff, a signed finding) and both keep the human as the writer of record; the difference is what they attach evidence to — one grounds a claim against the live web on a schedule, the other against a versioned rule set in CI."
-   },
-   {
-    "corpus_id": "greenlight-nine-agent-production-crew",
-    "relation": "both are staged agent pipelines that publish a dollar figure, and read together they move the number worth tracking: Greenlight quotes cost per run against a measured output, Continuity quotes total build cost and explains that fixtures made every later iteration free — so iteration cost, not run cost, is what decides whether a pipeline is developable."
-   }
-  ],
-  "what_breaks_first": "The fixed staleness window. 'Skip what was verified last week' is a single guess about decay rates applied uniformly, and it is wrong in both directions for the facts this targets: a film's release date almost never moves, while 'current holder of X' can move in a day — so the budget is spent re-checking stable facts while the volatile ones age out between passes. Second: the reviewer's queue. 'Sources disagree' is a terminal category with no triage described, and on a long contested article it can hold a large share of the claims; a maintainer handed forty cited diffs and thirty unresolved disagreements has been given a new job, not a lighter one.",
-  "what_to_steal": "Record fixtures on the first live run — write every search result and model response to disk once, and every later iteration is free; that single habit is what made the whole thing developable on a hackathon budget. Keep vendor SDKs at the edges around a dependency-free core so the interesting logic runs on a bare interpreter with no key. Schedule re-verification per claim with a last-checked and next-due time rather than per page, and keep a link graph between claims so an edit to one paragraph can be checked against its neighbours. And always hand back a diff with citations instead of writing to the system of record.",
-  "worth": "strong",
-  "worth_note": "The diagnosis is worth more than the demo: a fact that used to be true and quietly stopped being true looks exactly like every correct sentence around it, and nobody edited the page — the world moved on. Treating wiki rot as a decay problem with a per-claim due date instead of an error problem is the right shape, and keeping the human as writer of record (a cited diff, never a publish) is the right posture for public knowledge infrastructure. The write-up also documents its own development discipline in the same breath as the product, which lets a reader check the cost claim against the fixture claim."
- },
- "gemini-box": {
-  "clone_cost": {
-   "assumptions": [
-    "you keep a KMS or an explicit key file, and say so",
-    "you publish the canonicalisation rules, or signatures will not verify elsewhere",
-    "you do not market integrity as correctness"
-   ],
-   "estimate": "2 days for a signing envelope plus a verify() CLI",
-   "why": "ed25519 over a canonicalised JSON blueprint is a small amount of code; a CI job that regenerates and verifies the fixture set is most of the rest"
+  "continuity-g7bty0": {
+    "clone_cost": {
+      "assumptions": [
+        "a wiki or knowledge base with a review workflow you can post diffs into (MediaWiki pending changes, or a PR-style flow)",
+        "a per-claim research budget, since a pass costs a search plus several model calls for every claim on the page",
+        "a decision about contested facts: staff the disagreement bucket, or suppress that category rather than flood maintainers"
+      ],
+      "estimate": "2-3 weeks \u2014 the ledger is the project, the model calls are glue",
+      "why": "The walkthrough is ordinary orchestration over two APIs: extract, prioritise, research, judge, draft, cross-check, render a diff. What takes the time is the claim ledger \u2014 extracting claims reliably, keying them so a re-run recognises the same claim in a re-edited article, and the due-date and link graph on top \u2014 plus the fixture recorder that keeps iteration cheap. The dependency-free core design is what makes the second part cheap to get right."
+    },
+    "hazard_note": "Wiki content is public-knowledge infrastructure, so an edit proposal has a public consequence even though the agent never publishes: the team disclaims authority explicitly (it 'never decides anything', 'nothing reaches the page until a person says so'), which is the review posture this catalog asks for. The two figures that should exist before running it on a busy article are the share of claims that land in sources-disagree and the false-negative rate \u2014 a stale fact the agent checked and passed is indistinguishable from one it never reached, and a maintainer cannot tell those apart from a clean report.",
+    "prior_art": [
+      {
+        "corpus_id": "vms-ai-guard-fisheries-compliance-monitoring-alerts",
+        "relation": "the same shape \u2014 a machine ranking facts for a human to act on, deliberately stopping short of acting \u2014 and the two pages differ almost entirely on whether the judgement is checkable: Continuity returns old text, new text, a citation and a confidence score per claim, while the fisheries tool returns a risk classification whose own page says there is no ground truth for it."
+      },
+      {
+        "corpus_id": "adversarial-compliance-matrix",
+        "relation": "both convert an unverifiable judgement into an artifact a person can check (a cited diff, a signed finding) and both keep the human as the writer of record; the difference is what they attach evidence to \u2014 one grounds a claim against the live web on a schedule, the other against a versioned rule set in CI."
+      },
+      {
+        "corpus_id": "greenlight-nine-agent-production-crew",
+        "relation": "both are staged agent pipelines that publish a dollar figure, and read together they move the number worth tracking: Greenlight quotes cost per run against a measured output, Continuity quotes total build cost and explains that fixtures made every later iteration free \u2014 so iteration cost, not run cost, is what decides whether a pipeline is developable."
+      }
+    ],
+    "what_breaks_first": "The fixed staleness window. 'Skip what was verified last week' is a single guess about decay rates applied uniformly, and it is wrong in both directions for the facts this targets: a film's release date almost never moves, while 'current holder of X' can move in a day \u2014 so the budget is spent re-checking stable facts while the volatile ones age out between passes. Second: the reviewer's queue. 'Sources disagree' is a terminal category with no triage described, and on a long contested article it can hold a large share of the claims; a maintainer handed forty cited diffs and thirty unresolved disagreements has been given a new job, not a lighter one.",
+    "what_to_steal": "Record fixtures on the first live run \u2014 write every search result and model response to disk once, and every later iteration is free; that single habit is what made the whole thing developable on a hackathon budget. Keep vendor SDKs at the edges around a dependency-free core so the interesting logic runs on a bare interpreter with no key. Schedule re-verification per claim with a last-checked and next-due time rather than per page, and keep a link graph between claims so an edit to one paragraph can be checked against its neighbours. And always hand back a diff with citations instead of writing to the system of record.",
+    "worth": "strong",
+    "worth_note": "The diagnosis is worth more than the demo: a fact that used to be true and quietly stopped being true looks exactly like every correct sentence around it, and nobody edited the page \u2014 the world moved on. Treating wiki rot as a decay problem with a per-claim due date instead of an error problem is the right shape, and keeping the human as writer of record (a cited diff, never a publish) is the right posture for public knowledge infrastructure. The write-up also documents its own development discipline in the same breath as the product, which lets a reader check the cost claim against the fixture claim."
   },
-  "hazard_note": "Sold as a compliance capability. Nothing here is audited by anyone: an 'immutable audit trail' claim in front of a regulated buyer carries weight the capture does not support, so repeat only what is demonstrated.",
-  "prior_art": [
-   {
-    "corpus_id": "proofline-65a8t4",
-    "relation": "the closest sibling in the corpus - tamper-evident proof packets built before an external claim is made"
-   },
-   {
-    "corpus_id": "proofflow-agent",
-    "relation": "binding rules plus live evidence into a judge-ready ledger; same audience, different artifact"
-   },
-   {
-    "corpus_id": "dataaeternum-com",
-    "relation": "provenance-aware memory as the fix for unverified context - same diagnosis, different layer"
-   }
-  ],
-  "what_breaks_first": "Everything the pitch assumes away: key custody, rotation, revocation, what happens when the model version changes, and what a verifier does about a signature over a *wrong* claim. Signing proves integrity, never correctness, and an auditor will ask that question first. Also the submission itself: this page and its sibling describe one product across four names, so the trail of what was actually built is spread too thin to check.",
-  "what_to_steal": "Make verification a primitive with a name and a licence (verify(bundle) -> bool) instead of a dashboard feature, and pin generation determinism by combining temperature 0 with a strict response schema so the signed artifact is reproducible rather than merely plausible.",
-  "worth": "strong",
-  "worth_note": "'Sign the claim, not the log' is a genuinely good idea: an agent's post-hoc action record becomes a schema-validated blueprint with a one-call verify() primitive, and the SDK being MIT keeps the trust story cheap. What stops it being a reference implementation is that no code, deployment or measurement is reachable - the strongest sentence on the page is a restatement of an ed25519 property rather than evidence about their system."
- },
- "greenlight-nine-agent-production-crew": {
-  "clone_cost": {
-   "assumptions": [
-    "assume 1 engineer + 1 designer, 6 weeks, and real spend money for the generation ladder (their full film priced ~$238)",
-    "you can start smaller: one shot class, one priced gate, one table of verdicts — the calibration view is what takes the weeks",
-    "the character-reference locking is the part that needs image-model skill, not plumbing"
-   ],
-   "estimate": "multi-week",
-   "why": "the agent choreography is a weekend; the honest parts are the ledger, the calibration views, and the locked-identity image pipeline"
+  "gemini-box": {
+    "clone_cost": {
+      "assumptions": [
+        "you keep a KMS or an explicit key file, and say so",
+        "you publish the canonicalisation rules, or signatures will not verify elsewhere",
+        "you do not market integrity as correctness"
+      ],
+      "estimate": "2 days for a signing envelope plus a verify() CLI",
+      "why": "ed25519 over a canonicalised JSON blueprint is a small amount of code; a CI job that regenerates and verifies the fixture set is most of the rest"
+    },
+    "hazard_note": "Sold as a compliance capability. Nothing here is audited by anyone: an 'immutable audit trail' claim in front of a regulated buyer carries weight the capture does not support, so repeat only what is demonstrated.",
+    "prior_art": [
+      {
+        "corpus_id": "proofline-65a8t4",
+        "relation": "the closest sibling in the corpus - tamper-evident proof packets built before an external claim is made"
+      },
+      {
+        "corpus_id": "proofflow-agent",
+        "relation": "binding rules plus live evidence into a judge-ready ledger; same audience, different artifact"
+      },
+      {
+        "corpus_id": "dataaeternum-com",
+        "relation": "provenance-aware memory as the fix for unverified context - same diagnosis, different layer"
+      }
+    ],
+    "what_breaks_first": "Everything the pitch assumes away: key custody, rotation, revocation, what happens when the model version changes, and what a verifier does about a signature over a *wrong* claim. Signing proves integrity, never correctness, and an auditor will ask that question first. Also the submission itself: this page and its sibling describe one product across four names, so the trail of what was actually built is spread too thin to check.",
+    "what_to_steal": "Make verification a primitive with a name and a licence (verify(bundle) -> bool) instead of a dashboard feature, and pin generation determinism by combining temperature 0 with a strict response schema so the signed artifact is reproducible rather than merely plausible.",
+    "worth": "strong",
+    "worth_note": "'Sign the claim, not the log' is a genuinely good idea: an agent's post-hoc action record becomes a schema-validated blueprint with a one-call verify() primitive, and the SDK being MIT keeps the trust story cheap. What stops it being a reference implementation is that no code, deployment or measurement is reachable - the strongest sentence on the page is a restatement of an ed25519 property rather than evidence about their system."
   },
-  "hazard_note": null,
-  "prior_art": [
-   {
-    "corpus_id": "cineagent-py",
-    "relation": "also a multi-agent production crew, but it does not price the shot or learn from kept/rejected takes"
-   },
-   {
-    "corpus_id": "cinema-os",
-    "relation": "same orchestration shape, no cost model"
-   },
-   {
-    "corpus_id": "airlock-s2kidr",
-    "relation": "independent verification of a generated artifact; Greenlight does the weaker version (counts people in frame) and then feeds it into the retry"
-   }
-  ],
-  "what_breaks_first": "The success-rate estimate. Below a few hundred logged shots per shot class the displayed percentage is a prior wearing a lab coat, so build the calibration view (predicted vs observed) in week one or you are shipping confidence theatre. Second to break: prompt-injection-free subtitle burn-in on a fresh container, which is exactly the bug they documented (ffmpeg exits 0 with no fonts).",
-  "what_to_steal": "Two moves, and they compose: (1) quote the cost and the pass rate before the button, and push every hesitation down the price ladder (settle a character at $0.02, not $1); (2) log every verdict row into a store you can query, then let the estimate switch from your priors to the user's own measured numbers and label which one they are reading, with sample size. Also steal 'the money gate is a schema transition, not a prompt'.",
-  "worth": "strong",
-  "worth_note": "The wedge is not 'AI video' — it is pricing a generation step before you commit and then making your own logged outcomes the estimator. That transfers to anything with an expensive call (image gen, agent runs, transcription at volume). Not 'breakthrough' only because it ships as one team's v1 with no public code to adopt."
- },
- "greenlight-screenplay-to-film": {
-  "clone_cost": {
-   "assumptions": [
-    "see sibling record"
-   ],
-   "estimate": "multi-week",
-   "why": "identical product to the sibling record"
+  "greenlight-nine-agent-production-crew": {
+    "clone_cost": {
+      "assumptions": [
+        "assume 1 engineer + 1 designer, 6 weeks, and real spend money for the generation ladder (their full film priced ~$238)",
+        "you can start smaller: one shot class, one priced gate, one table of verdicts \u2014 the calibration view is what takes the weeks",
+        "the character-reference locking is the part that needs image-model skill, not plumbing"
+      ],
+      "estimate": "multi-week",
+      "why": "the agent choreography is a weekend; the honest parts are the ledger, the calibration views, and the locked-identity image pipeline"
+    },
+    "hazard_note": null,
+    "prior_art": [
+      {
+        "corpus_id": "cineagent-py",
+        "relation": "also a multi-agent production crew, but it does not price the shot or learn from kept/rejected takes"
+      },
+      {
+        "corpus_id": "cinema-os",
+        "relation": "same orchestration shape, no cost model"
+      },
+      {
+        "corpus_id": "airlock-s2kidr",
+        "relation": "independent verification of a generated artifact; Greenlight does the weaker version (counts people in frame) and then feeds it into the retry"
+      }
+    ],
+    "what_breaks_first": "The success-rate estimate. Below a few hundred logged shots per shot class the displayed percentage is a prior wearing a lab coat, so build the calibration view (predicted vs observed) in week one or you are shipping confidence theatre. Second to break: prompt-injection-free subtitle burn-in on a fresh container, which is exactly the bug they documented (ffmpeg exits 0 with no fonts).",
+    "what_to_steal": "Two moves, and they compose: (1) quote the cost and the pass rate before the button, and push every hesitation down the price ladder (settle a character at $0.02, not $1); (2) log every verdict row into a store you can query, then let the estimate switch from your priors to the user's own measured numbers and label which one they are reading, with sample size. Also steal 'the money gate is a schema transition, not a prompt'.",
+    "worth": "strong",
+    "worth_note": "The wedge is not 'AI video' \u2014 it is pricing a generation step before you commit and then making your own logged outcomes the estimator. That transfers to anything with an expensive call (image gen, agent runs, transcription at volume). Not 'breakthrough' only because it ships as one team's v1 with no public code to adopt."
   },
-  "prior_art": [],
-  "what_breaks_first": "Same as the sibling: the estimate without volume behind it. Also, a filter-bypass shortcut like the subtitle trick needs to be stated as a product decision with its own review, or it ages into a liability.",
-  "what_to_steal": "The two moves in the sibling record, plus this page's trick: when a safety filter trips on dialogue, keep the shot and move the line into the subtitle layer instead of asking the writer to self-censor.",
-  "worth": "strong",
-  "worth_note": "Kept only as evidence of the duplicate: same product, later and slightly clearer write-up (the filter-bypass-into-subtitles trick and the seeded-bias test appear here and not on the other page)."
- },
- "mcop": {
-  "clone_cost": {
-   "assumptions": [
-    "estimate assumes you keep the scope to one runtime pair (Node + browser) rather than three",
-    "we could not inspect any code, so this is an estimate from the description alone"
-   ],
-   "estimate": "multi-week",
-   "why": "reproducible cross-runtime hashing is a toolchain project, not a feature"
+  "greenlight-screenplay-to-film": {
+    "clone_cost": {
+      "assumptions": [
+        "see sibling record"
+      ],
+      "estimate": "multi-week",
+      "why": "identical product to the sibling record"
+    },
+    "prior_art": [],
+    "what_breaks_first": "Same as the sibling: the estimate without volume behind it. Also, a filter-bypass shortcut like the subtitle trick needs to be stated as a product decision with its own review, or it ages into a liability.",
+    "what_to_steal": "The two moves in the sibling record, plus this page's trick: when a safety filter trips on dialogue, keep the shot and move the line into the subtitle layer instead of asking the writer to self-censor.",
+    "worth": "strong",
+    "worth_note": "Kept only as evidence of the duplicate: same product, later and slightly clearer write-up (the filter-bypass-into-subtitles trick and the seeded-bias test appear here and not on the other page)."
   },
-  "prior_art": [
-   {
-    "corpus_id": "proofflow-agent",
-    "relation": "also turns claims into a signed, replayable trail — but publishes binding rules and evidence as the product surface"
-   },
-   {
-    "corpus_id": "complianceguardian-kcqs32",
-    "relation": "same 'every verdict cites its rule' instinct, applied to documents instead of agent steps"
-   }
-  ],
-  "what_breaks_first": "Everything measurable. There is no repository, deployment or video linked from the page, so 'byte-identical across Node, browser and Python' and '96.6% coverage' are unfalsifiable as published — and 4.4 ms without hardware, input size or iteration count is not a benchmark. If you want to verify, the first move is to ask for the repo, not to rebuild it.",
-  "what_to_steal": "The framing, not the artifact: pinning the toolchain is part of determinism, and provenance changes what 'correct' means for a team. Also steal the honesty of listing cross-runtime divergence as the hard problem.",
-  "worth": "niche",
-  "worth_note": "'Replay every agent step byte-identically and hash it into a ledger' is a real want in production agent work, and the disclosed difficulty (float formatting and JSON serialisation differences across runtimes) is genuinely the reason nobody has it. What the page does not do is let anyone check a single claim."
- },
- "medvoice-y87kei": {
-  "clone_cost": {
-   "assumptions": [
-    "a clinician owns the schedule and the escalation when a dose is unconfirmed",
-    "you treat reminders as reminders, not adherence measurement",
-    "you handle the closed-app delivery problem they deferred"
-   ],
-   "estimate": "a weekend for the nurse portal plus silent monitor",
-   "why": "one photo upload, one schedule document, one timed client, plus platform speech - Firestore does the rest"
+  "mcop": {
+    "clone_cost": {
+      "assumptions": [
+        "estimate assumes you keep the scope to one runtime pair (Node + browser) rather than three",
+        "we could not inspect any code, so this is an estimate from the description alone"
+      ],
+      "estimate": "multi-week",
+      "why": "reproducible cross-runtime hashing is a toolchain project, not a feature"
+    },
+    "prior_art": [
+      {
+        "corpus_id": "proofflow-agent",
+        "relation": "also turns claims into a signed, replayable trail \u2014 but publishes binding rules and evidence as the product surface"
+      },
+      {
+        "corpus_id": "complianceguardian-kcqs32",
+        "relation": "same 'every verdict cites its rule' instinct, applied to documents instead of agent steps"
+      }
+    ],
+    "what_breaks_first": "Everything measurable. There is no repository, deployment or video linked from the page, so 'byte-identical across Node, browser and Python' and '96.6% coverage' are unfalsifiable as published \u2014 and 4.4 ms without hardware, input size or iteration count is not a benchmark. If you want to verify, the first move is to ask for the repo, not to rebuild it.",
+    "what_to_steal": "The framing, not the artifact: pinning the toolchain is part of determinism, and provenance changes what 'correct' means for a team. Also steal the honesty of listing cross-runtime divergence as the hard problem.",
+    "worth": "niche",
+    "worth_note": "'Replay every agent step byte-identically and hash it into a ledger' is a real want in production agent work, and the disclosed difficulty (float formatting and JSON serialisation differences across runtimes) is genuinely the reason nobody has it. What the page does not do is let anyone check a single claim."
   },
-  "hazard_note": "Medication adherence for elderly and low-literacy patients, where a missed dose is a clinical event and a false confirmation is worse than none. The page does not disclaim the gap between 'confirmed' and 'taken', which is exactly where the risk lives.",
-  "prior_art": [
-   {
-    "corpus_id": "pulsecheck-granola-clinical-note-assistant",
-    "relation": "also built around compliance for complex medical regimens, via note capture instead of the patient's own device"
-   },
-   {
-    "corpus_id": "dentops",
-    "relation": "same economics - the lost appointment or missed dose is the product's real target"
-   },
-   {
-    "corpus_id": "lenis-zwxmea",
-    "relation": "same accessibility-first instinct: use an ambient channel the user already has open"
-   }
-  ],
-  "what_breaks_first": "The acknowledgement loop, because 'confirmed' is only a tap - it proves the patient was present, not that the dose was taken, and the design invites the failure it is meant to catch. Second, delivery: browser speech and timers die when the tab is backgrounded, which the team already knows (PWA and background push are still future work). Third, sync-down and device loss, which the page does not address.",
-  "what_to_steal": "Replace the label with the object: photograph the thing the user must act on and show that image at the moment of action, then require an explicit acknowledgement and repeat until it arrives. Silence is a feature - the alarm's absence is what makes the alert legible.",
-  "worth": "strong",
-  "worth_note": "Designed by someone who watches the failure happen: the interface deletes reading from the dose loop, the pill's own photo is the identifier, and nothing appears until the medicine is due. Those are three small decisions that a builder in any low-attention, low-literacy or hands-busy context can lift directly, and 8 likes on an entry built in two days on a phone suggests the wedge reads immediately."
- },
- "neuroguard-ai-0qb34c": {
-  "clone_cost": {
-   "assumptions": [
-    "you accept a camera balance test is a demo and not an instrument",
-    "you have a clinician to define what an alert obliges anyone to do",
-    "single-user pilot scale"
-   ],
-   "estimate": "3 weeks for the test battery plus baseline detector",
-   "why": "the tests are standard web tasks and the detector is a small scikit-learn job over a per-user series; no training is implied"
+  "medvoice-y87kei": {
+    "clone_cost": {
+      "assumptions": [
+        "a clinician owns the schedule and the escalation when a dose is unconfirmed",
+        "you treat reminders as reminders, not adherence measurement",
+        "you handle the closed-app delivery problem they deferred"
+      ],
+      "estimate": "a weekend for the nurse portal plus silent monitor",
+      "why": "one photo upload, one schedule document, one timed client, plus platform speech - Firestore does the rest"
+    },
+    "hazard_note": "Medication adherence for elderly and low-literacy patients, where a missed dose is a clinical event and a false confirmation is worse than none. The page does not disclaim the gap between 'confirmed' and 'taken', which is exactly where the risk lives.",
+    "prior_art": [
+      {
+        "corpus_id": "pulsecheck-granola-clinical-note-assistant",
+        "relation": "also built around compliance for complex medical regimens, via note capture instead of the patient's own device"
+      },
+      {
+        "corpus_id": "dentops",
+        "relation": "same economics - the lost appointment or missed dose is the product's real target"
+      },
+      {
+        "corpus_id": "lenis-zwxmea",
+        "relation": "same accessibility-first instinct: use an ambient channel the user already has open"
+      }
+    ],
+    "what_breaks_first": "The acknowledgement loop, because 'confirmed' is only a tap - it proves the patient was present, not that the dose was taken, and the design invites the failure it is meant to catch. Second, delivery: browser speech and timers die when the tab is backgrounded, which the team already knows (PWA and background push are still future work). Third, sync-down and device loss, which the page does not address.",
+    "what_to_steal": "Replace the label with the object: photograph the thing the user must act on and show that image at the moment of action, then require an explicit acknowledgement and repeat until it arrives. Silence is a feature - the alarm's absence is what makes the alert legible.",
+    "worth": "strong",
+    "worth_note": "Designed by someone who watches the failure happen: the interface deletes reading from the dose loop, the pill's own photo is the identifier, and nothing appears until the medicine is due. Those are three small decisions that a builder in any low-attention, low-literacy or hands-busy context can lift directly, and 8 likes on an entry built in two days on a phone suggests the wedge reads immediately."
   },
-  "hazard_note": "Head-injury monitoring with alerting. The page disclaims diagnosis and refuses unsafe claims, which is the right posture, but an alert that a patient reads as clearance is a clinical event; anything built from this needs an explicit escalation path and a review by a clinician.",
-  "prior_art": [
-   {
-    "corpus_id": "neuroguard-ai-adaptiveconcussionrecoveryintelligencesystem",
-    "relation": "same name and problem, different team and a far more specified architecture (deterministic extraction, retrieval, escalation precedence); treat it as the stronger record of the two"
-   },
-   {
-    "corpus_id": "neuropath-kbe2ys",
-    "relation": "concussion and ADHD recovery app that also triages symptoms; adds therapy automation the monitoring framing avoids"
-   },
-   {
-    "corpus_id": "acl-movemement-analytics-lab",
-    "relation": "same bet - video plus computer vision to turn movement into interpretable evidence - in a different injury domain"
-   }
-  ],
-  "what_breaks_first": "The physical test. MediaPipe pose through a laptop webcam degrades with lighting, framing and a person who has vertigo, so the anomaly detector starts flagging the camera rather than the recovery; second, distribution - a monitoring tool with no clinical pathway has nowhere to send a bad reading.",
-  "what_to_steal": "Baseline-relative anomaly detection as the product's whole claim: never assert a norm, assert deviation from the user's own series. It converts a small sample into a usable signal and it is honest about what it is.",
-  "worth": "niche",
-  "worth_note": "The framing is right - measure the person against their own baseline instead of a population threshold - and that transferable piece survives even though nothing about this build is checkable: no dataset, no metric, no repo, and a browser webcam asked to judge balance in someone who is dizzy."
- },
- "neuroguard-ai-adaptiveconcussionrecoveryintelligencesystem": {
-  "clone_cost": {
-   "assumptions": [
-    "you may legally embed the guideline text you retrieve from",
-    "a clinician reviews the escalation thresholds before anyone relies on them",
-    "no diagnosis or treatment claim is made in your copy"
-   ],
-   "estimate": "1 week for the check-in core, 3-4 weeks with history, handoff and a real eval",
-   "why": "FastAPI, SQLite, Pydantic and local retrieval are ordinary parts; the work is the guideline corpus, the rule set and the evaluation cases"
+  "neuroguard-ai-0qb34c": {
+    "clone_cost": {
+      "assumptions": [
+        "you accept a camera balance test is a demo and not an instrument",
+        "you have a clinician to define what an alert obliges anyone to do",
+        "single-user pilot scale"
+      ],
+      "estimate": "3 weeks for the test battery plus baseline detector",
+      "why": "the tests are standard web tasks and the detector is a small scikit-learn job over a per-user series; no training is implied"
+    },
+    "hazard_note": "Head-injury monitoring with alerting. The page disclaims diagnosis and refuses unsafe claims, which is the right posture, but an alert that a patient reads as clearance is a clinical event; anything built from this needs an explicit escalation path and a review by a clinician.",
+    "prior_art": [
+      {
+        "corpus_id": "neuroguard-ai-adaptiveconcussionrecoveryintelligencesystem",
+        "relation": "same name and problem, different team and a far more specified architecture (deterministic extraction, retrieval, escalation precedence); treat it as the stronger record of the two"
+      },
+      {
+        "corpus_id": "neuropath-kbe2ys",
+        "relation": "concussion and ADHD recovery app that also triages symptoms; adds therapy automation the monitoring framing avoids"
+      },
+      {
+        "corpus_id": "acl-movemement-analytics-lab",
+        "relation": "same bet - video plus computer vision to turn movement into interpretable evidence - in a different injury domain"
+      }
+    ],
+    "what_breaks_first": "The physical test. MediaPipe pose through a laptop webcam degrades with lighting, framing and a person who has vertigo, so the anomaly detector starts flagging the camera rather than the recovery; second, distribution - a monitoring tool with no clinical pathway has nowhere to send a bad reading.",
+    "what_to_steal": "Baseline-relative anomaly detection as the product's whole claim: never assert a norm, assert deviation from the user's own series. It converts a small sample into a usable signal and it is honest about what it is.",
+    "worth": "niche",
+    "worth_note": "The framing is right - measure the person against their own baseline instead of a population threshold - and that transferable piece survives even though nothing about this build is checkable: no dataset, no metric, no repo, and a browser webcam asked to judge balance in someone who is dizzy."
   },
-  "hazard_note": "Risk assessment on a medical condition. The team disclaims diagnosis, states the benchmarks are not clinical validation, and keeps recommendations conservative; that is better hygiene than most of the corpus, not permission to run it on real patients without oversight.",
-  "prior_art": [
-   {
-    "corpus_id": "neuroguard-ai-0qb34c",
-    "relation": "parallel invention at the same event under the same name: baseline-relative monitoring, no rules, no retrieval - keep both, and note this one is specified far more tightly"
-   },
-   {
-    "corpus_id": "wpf-reliability-agent",
-    "relation": "same containment pattern elsewhere: bounded evidence requests and one human-approved mutation step"
-   },
-   {
-    "corpus_id": "billright",
-    "relation": "same 'cite the rule the verdict came from' discipline applied to a different regulated document type"
-   }
-  ],
-  "what_breaks_first": "The self-graded benchmark: 100% across a case set nobody outside the team defined or counted measures their agreement with themselves, and the page is honest enough to say it is not clinical validation - so a clone inherits the need for a real evaluation with data and a clinician. Second, multi-day history with no persistence story (secure cross-session storage is still on the roadmap).",
-  "what_to_steal": "Escalation precedence: compute the red-flag rules first and *suppress* the normal path when they fire, rather than letting a friendly assistant narrate its way past a warning sign. Pair it with schema validation of every structured result before it renders, and hand the professional a summary artifact rather than a chat transcript.",
-  "worth": "strong",
-  "worth_note": "The architecture is the contribution: deterministic extraction, rule-based history-aware scoring, retrieval over a guideline corpus, and escalation that pre-empts advice - with the generative model kept out of the decision path. That is the correct shape for software that touches a regulated outcome, and it is rare to see it chosen deliberately at hackathon scale. Held below breakthrough because the pieces are standard practice in clinical decision support."
- },
- "newspectives-new-perspective-on-news": {
-  "clone_cost": {
-   "assumptions": [
-    "grounding you can pin per region: search access to each region's press, plus a stated fallback label for when a region returns nothing",
-    "a citation pipeline that canonicalises publisher URLs, since redirect-chained citations are the part agents will inherit broken",
-    "editorial capacity for the synthesis and the corrections page, which the product presents as human curation and cannot automate without contradicting itself",
-    "a QA pass on what a lens may assert beyond its sources, before anyone treats the Claim objects as evidence rather than as framing"
-   ],
-   "estimate": "6-9 weeks for the agent roster plus the schema surface; another quarter for the four media pipelines and the editorial tooling",
-   "why": "The core loop is a fan-out with grounding: one event, N lens prompts each pinned to a region's outlets through search grounding, rendered side by side with tone labels - a few weeks in React, Express and Firestore, and the SPA-plus-Cloud-Run shape is well trodden. The work that is not routine is the surface the page treats as the product: emitting valid Claim-partitioned structured data per perspective with citation arrays, resolving grounded URLs to canonical publisher addresses (its own open defect), and keeping a public llms.txt, OpenAPI document and no-auth endpoint honest as the schema evolves. The radio bulletin, song and portrait video are each a separate third-party integration that fails silently often enough that the author wrote it up. And the editorial layer - curating Common Ground, maintaining /corrections - is recurring human cost rather than build cost, which is why a clone of this is smaller than its feature list and bigger than its line count."
+  "neuroguard-ai-adaptiveconcussionrecoveryintelligencesystem": {
+    "clone_cost": {
+      "assumptions": [
+        "you may legally embed the guideline text you retrieve from",
+        "a clinician reviews the escalation thresholds before anyone relies on them",
+        "no diagnosis or treatment claim is made in your copy"
+      ],
+      "estimate": "1 week for the check-in core, 3-4 weeks with history, handoff and a real eval",
+      "why": "FastAPI, SQLite, Pydantic and local retrieval are ordinary parts; the work is the guideline corpus, the rule set and the evaluation cases"
+    },
+    "hazard_note": "Risk assessment on a medical condition. The team disclaims diagnosis, states the benchmarks are not clinical validation, and keeps recommendations conservative; that is better hygiene than most of the corpus, not permission to run it on real patients without oversight.",
+    "prior_art": [
+      {
+        "corpus_id": "neuroguard-ai-0qb34c",
+        "relation": "parallel invention at the same event under the same name: baseline-relative monitoring, no rules, no retrieval - keep both, and note this one is specified far more tightly"
+      },
+      {
+        "corpus_id": "wpf-reliability-agent",
+        "relation": "same containment pattern elsewhere: bounded evidence requests and one human-approved mutation step"
+      },
+      {
+        "corpus_id": "billright",
+        "relation": "same 'cite the rule the verdict came from' discipline applied to a different regulated document type"
+      }
+    ],
+    "what_breaks_first": "The self-graded benchmark: 100% across a case set nobody outside the team defined or counted measures their agreement with themselves, and the page is honest enough to say it is not clinical validation - so a clone inherits the need for a real evaluation with data and a clinician. Second, multi-day history with no persistence story (secure cross-session storage is still on the roadmap).",
+    "what_to_steal": "Escalation precedence: compute the red-flag rules first and *suppress* the normal path when they fire, rather than letting a friendly assistant narrate its way past a warning sign. Pair it with schema validation of every structured result before it renders, and hand the professional a summary artifact rather than a chat transcript.",
+    "worth": "strong",
+    "worth_note": "The architecture is the contribution: deterministic extraction, rule-based history-aware scoring, retrieval over a guideline corpus, and escalation that pre-empts advice - with the generative model kept out of the decision path. That is the correct shape for software that touches a regulated outcome, and it is rare to see it chosen deliberately at hackathon scale. Held below breakthrough because the pieces are standard practice in clinical decision support."
   },
-  "hazard_note": "An AI publisher with a compliance-shaped surface and no compliance process. Every lens output is packaged as a machine-readable Claim with citations, which downstream agents will ingest as evidence rather than as one model's reading of one region's press; the page publishes no measurement of how often a lens asserts something its own cited source does not support, no policy for when a region's press is unreachable, and no recall figure per region - while its own stated lesson is that ungrounded multi-perspective output is stylistic ventriloquism. The defences are disclosure devices (methodology, editorial standards, corrections, a satire marker) plus an editor-curated synthesis, which is a real posture but not a sign-off, and nothing on the page says who reviews a lens before a story with legal or safety weight - an election, a conflict, an indictment - is published with citations attached. That combination is why this record carries a hazard: the schema machinery makes unverified content more portable, not less.",
-  "prior_art": [
-   {
-    "corpus_id": "adversarial-compliance-matrix",
-    "relation": "both convert an unverifiable judgement into a machine-checkable artifact - a signed finding in a CI matrix against a Claim object with a citation array - and both leave the same gap: the artifact proves the format, not the accuracy of what is inside it. ACM measures its own detectors while Newspectives does not measure its lenses, which is the sharper omission given that the lens output is read as fact by other models."
-   },
-   {
-    "corpus_id": "continuity-g7bty0",
-    "relation": "both attach citations to language a model generated and both keep a human as the writer of record, but they differ on direction and schedule: Continuity re-checks existing claims over time and hands back a diff, Newspectives generates fresh accounts of one event across regions and hands back a comparison. Neither publishes a false-negative rate, and in both cases that rate is what the user is actually buying."
-   },
-   {
-    "corpus_id": "complianceguardian-kcqs32",
-    "relation": "both sit in the sector where the hazard question is sign-off and both answer it with transparency rather than authority - methodology, editorial-standards and corrections pages against an audit-ready rule set. The pair is the catalog's clearest illustration that disclosure and compliance are different objects: one tells a reader how the output was made, the other tells an auditor what was checked."
-   }
-  ],
-  "what_breaks_first": "The grounding fallback. When a region's outlets are unreachable - a paywall, a regional block, a story too new to have local coverage - the lens still produces fluent text, which is the exact failure the page names as ventriloquism, and there is no published policy for it and no rate for how often it happens. Second, citation integrity: about ninety redirect URLs per topic page still resolve through Vertex rather than to the publisher, so the citation array an agent inherits is a chain of third-party hops that can rot or 404 independently of the article. Third, the Jester: satire is marked with disambiguatingDescription, which most consumers ignore, so a joke line becomes a Claim in someone else's context window. Fourth, the Common Ground synthesis - labelled editorial curation on the site, but a downstream reader who takes the ItemList and drops the framing gets a machine-generated consensus view of a contested event, which is the one artifact this product's own principles say not to produce.",
-  "what_to_steal": "Ship claim-level structured data rather than page-level: NewsArticle to hasPart to an ItemList of Claim objects, each perspective with its own @id anchor and citation array, so a consuming agent can attribute a sentence to a lens instead of to a URL. Use disambiguatingDescription to mark non-factual voices inside the same structure, and publish llms.txt, llms-full.txt, ai-plugin.json, an OpenAPI document, IndexNow pings and an unauthenticated read endpoint - treat machine readers as an audience and the transparency pages become distribution. Then take the operational post-mortems, the most reusable content on the page: never return a 200 with a null payload (make it a real 502), bail after five consecutive nulls instead of polling an 'undefined' id fifty times, refuse to start on an empty or 'undefined' config value, treat silently ignored hosting config as untrustworthy and proxy it explicitly, dismiss splash screens in about 150ms and load auth and settings in the background, and remember that Admin SDK paths bypass security rules, so rule-only tests prove nothing about an admin UI. Last: keep synthesis human and say so on the page.",
-  "worth": "strong",
-  "worth_note": "The wedge is different in the way that matters for an agent-read catalog: it treats other models as first-class readers of a news product and builds for them - NewsArticle objects whose hasPart is an ItemList of Claim objects, one per perspective, each with its own anchor and citation array, a disambiguatingDescription marking the satirical lens so it is not quoted as fact, llms.txt, a 42,000-word llms-full.txt, ai-plugin.json, OpenAPI, IndexNow pings and an unauthenticated recent-topics endpoint. Almost nobody has taken that position, and for a product whose output will be summarized by machines it is the correct one: an agent should inherit the framing and the citations rather than a flattened paragraph. The editorial judgement is as sound as the plumbing - side by side rather than a merged balanced answer, Common Ground labelled as human curation, transparency pages at /methodology, /editorial-standards and /corrections. What holds it short of breakthrough is that the hard part is not built here: grounding quality, which the page itself names as the whole difference between perspective and ventriloquism, is unmeasured, and roughly ninety unresolved citation redirect URLs per topic page says the last mile of the citation layer is still open."
- },
- "satu": {
-  "clone_cost": {
-   "assumptions": [
-    "you have a catalog with attributes and ratings, since the question value term comes from attribute coverage",
-    "you accept a rule-based scored path; the moment a model enters it, the latency and cost claims no longer transfer",
-    "the benchmark is the organiser's, so porting it means building your own session harness"
-   ],
-   "estimate": "2-4 days to reproduce the architecture on a catalog you already have; weeks to earn the numbers",
-   "why": "The scored path is stdlib Python with no model, so the retrieval, ranking, slate shaping and question selection logic is legible in a day and the harness is in the repo. What does not come free is the evaluator and the catalog statistics it leans on - popularity priors, attribute lead lines and rare-phrase evidence are all derived from that specific 50,000-product dump."
+  "newspectives-new-perspective-on-news": {
+    "clone_cost": {
+      "assumptions": [
+        "grounding you can pin per region: search access to each region's press, plus a stated fallback label for when a region returns nothing",
+        "a citation pipeline that canonicalises publisher URLs, since redirect-chained citations are the part agents will inherit broken",
+        "editorial capacity for the synthesis and the corrections page, which the product presents as human curation and cannot automate without contradicting itself",
+        "a QA pass on what a lens may assert beyond its sources, before anyone treats the Claim objects as evidence rather than as framing"
+      ],
+      "estimate": "6-9 weeks for the agent roster plus the schema surface; another quarter for the four media pipelines and the editorial tooling",
+      "why": "The core loop is a fan-out with grounding: one event, N lens prompts each pinned to a region's outlets through search grounding, rendered side by side with tone labels - a few weeks in React, Express and Firestore, and the SPA-plus-Cloud-Run shape is well trodden. The work that is not routine is the surface the page treats as the product: emitting valid Claim-partitioned structured data per perspective with citation arrays, resolving grounded URLs to canonical publisher addresses (its own open defect), and keeping a public llms.txt, OpenAPI document and no-auth endpoint honest as the schema evolves. The radio bulletin, song and portrait video are each a separate third-party integration that fails silently often enough that the author wrote it up. And the editorial layer - curating Common Ground, maintaining /corrections - is recurring human cost rather than build cost, which is why a clone of this is smaller than its feature list and bigger than its line count."
+    },
+    "hazard_note": "An AI publisher with a compliance-shaped surface and no compliance process. Every lens output is packaged as a machine-readable Claim with citations, which downstream agents will ingest as evidence rather than as one model's reading of one region's press; the page publishes no measurement of how often a lens asserts something its own cited source does not support, no policy for when a region's press is unreachable, and no recall figure per region - while its own stated lesson is that ungrounded multi-perspective output is stylistic ventriloquism. The defences are disclosure devices (methodology, editorial standards, corrections, a satire marker) plus an editor-curated synthesis, which is a real posture but not a sign-off, and nothing on the page says who reviews a lens before a story with legal or safety weight - an election, a conflict, an indictment - is published with citations attached. That combination is why this record carries a hazard: the schema machinery makes unverified content more portable, not less.",
+    "prior_art": [
+      {
+        "corpus_id": "adversarial-compliance-matrix",
+        "relation": "both convert an unverifiable judgement into a machine-checkable artifact - a signed finding in a CI matrix against a Claim object with a citation array - and both leave the same gap: the artifact proves the format, not the accuracy of what is inside it. ACM measures its own detectors while Newspectives does not measure its lenses, which is the sharper omission given that the lens output is read as fact by other models."
+      },
+      {
+        "corpus_id": "continuity-g7bty0",
+        "relation": "both attach citations to language a model generated and both keep a human as the writer of record, but they differ on direction and schedule: Continuity re-checks existing claims over time and hands back a diff, Newspectives generates fresh accounts of one event across regions and hands back a comparison. Neither publishes a false-negative rate, and in both cases that rate is what the user is actually buying."
+      },
+      {
+        "corpus_id": "complianceguardian-kcqs32",
+        "relation": "both sit in the sector where the hazard question is sign-off and both answer it with transparency rather than authority - methodology, editorial-standards and corrections pages against an audit-ready rule set. The pair is the catalog's clearest illustration that disclosure and compliance are different objects: one tells a reader how the output was made, the other tells an auditor what was checked."
+      }
+    ],
+    "what_breaks_first": "The grounding fallback. When a region's outlets are unreachable - a paywall, a regional block, a story too new to have local coverage - the lens still produces fluent text, which is the exact failure the page names as ventriloquism, and there is no published policy for it and no rate for how often it happens. Second, citation integrity: about ninety redirect URLs per topic page still resolve through Vertex rather than to the publisher, so the citation array an agent inherits is a chain of third-party hops that can rot or 404 independently of the article. Third, the Jester: satire is marked with disambiguatingDescription, which most consumers ignore, so a joke line becomes a Claim in someone else's context window. Fourth, the Common Ground synthesis - labelled editorial curation on the site, but a downstream reader who takes the ItemList and drops the framing gets a machine-generated consensus view of a contested event, which is the one artifact this product's own principles say not to produce.",
+    "what_to_steal": "Ship claim-level structured data rather than page-level: NewsArticle to hasPart to an ItemList of Claim objects, each perspective with its own @id anchor and citation array, so a consuming agent can attribute a sentence to a lens instead of to a URL. Use disambiguatingDescription to mark non-factual voices inside the same structure, and publish llms.txt, llms-full.txt, ai-plugin.json, an OpenAPI document, IndexNow pings and an unauthenticated read endpoint - treat machine readers as an audience and the transparency pages become distribution. Then take the operational post-mortems, the most reusable content on the page: never return a 200 with a null payload (make it a real 502), bail after five consecutive nulls instead of polling an 'undefined' id fifty times, refuse to start on an empty or 'undefined' config value, treat silently ignored hosting config as untrustworthy and proxy it explicitly, dismiss splash screens in about 150ms and load auth and settings in the background, and remember that Admin SDK paths bypass security rules, so rule-only tests prove nothing about an admin UI. Last: keep synthesis human and say so on the page.",
+    "worth": "strong",
+    "worth_note": "The wedge is different in the way that matters for an agent-read catalog: it treats other models as first-class readers of a news product and builds for them - NewsArticle objects whose hasPart is an ItemList of Claim objects, one per perspective, each with its own anchor and citation array, a disambiguatingDescription marking the satirical lens so it is not quoted as fact, llms.txt, a 42,000-word llms-full.txt, ai-plugin.json, OpenAPI, IndexNow pings and an unauthenticated recent-topics endpoint. Almost nobody has taken that position, and for a product whose output will be summarized by machines it is the correct one: an agent should inherit the framing and the citations rather than a flattened paragraph. The editorial judgement is as sound as the plumbing - side by side rather than a merged balanced answer, Common Ground labelled as human curation, transparency pages at /methodology, /editorial-standards and /corrections. What holds it short of breakthrough is that the hard part is not built here: grounding quality, which the page itself names as the whole difference between perspective and ventriloquism, is unmeasured, and roughly ninety unresolved citation redirect URLs per topic page says the last mile of the citation layer is still open."
   },
-  "hazard_note": "No regulated-outcome claim: a shopping copilot measured against an organiser's evaluator. The one thing a builder should carry forward is that the metric is the product's opinion of itself - the page is unusually clear that conversion of the session, not shopper satisfaction, is what terminates the evaluation.",
-  "prior_art": [
-   {
-    "corpus_id": "greenlight-nine-agent-production-crew",
-    "relation": "same genre - an agent pipeline that reports a measured before/after with a cost figure - but the two sit at opposite ends of auditability: Greenlight's numbers are asserted with a stated cost ladder and no harness, SATU's can be recomputed from the formula on the page and its harness is in the linked repository."
-   },
-   {
-    "corpus_id": "sketchwish",
-    "relation": "both treat the free/default path as a design constraint to be engineered rather than a concession; SketchWish does it with sign-in gates and hard caps against abuse, SATU by keeping the scored path model-free at $0.00 per turn."
-   }
-  ],
-  "what_breaks_first": "The evaluator's proxy. Optimising 'the session ends when the target appears in the slate' rewards wide early slates and precise question-baiting, which is not the same thing as a shopper being helped; HitRate@10 of 1.000 with 2.27 turns says the target was surfaced, not that the other nine products were good or that the user trusted the answer. Second: state robustness - typed slots, refusals and an exhaustion path are all deterministic logic over a 50k catalog, and the page reports no adversarial or human sessions to show the behaviour selection recovering from a shopper who changes their mind.",
-  "what_to_steal": "Publish the objective function next to the results, including how failures are counted, so the number can be checked rather than trusted; make the expensive optional component visible at weight zero instead of deleting it, which documents a decision and its cost; use one shared preprocessing function for index and query; and treat 'how many items do I show now' and 'is another question worth a turn' as two explicit, stateful decisions rather than fixed constants.",
-  "worth": "breakthrough",
-  "worth_note": "Not for the score - for the discipline. A hackathon team published the objective, the metric definitions, the convention for misses, and a baseline row, then made every design decision answerable to it: slate width as a real variable because reciprocal rank is weighted, the dense asset kept in the architecture at weight zero and labelled rejected, one tokenizer shared by index and query so the two can never disagree. It is the rare submission where a reader can recompute the headline number from the page, and the arithmetic closes to four decimals."
- },
- "sketchwish": {
-  "clone_cost": {
-   "assumptions": [
-    "you have a Stripe account and a domain, since the product is the checkout",
-    "you accept a per-render cost and price the free tier against it",
-    "you define 'print-ready' as a test you can fail, or drop the claim"
-   ],
-   "estimate": "1 week for the render pipeline and payment loop, 3 weeks with caps, escapes and analytics wired",
-   "why": "the models are hosted, and auth, storage, quota and payments are all configuration of existing services"
+  "satu": {
+    "clone_cost": {
+      "assumptions": [
+        "you have a catalog with attributes and ratings, since the question value term comes from attribute coverage",
+        "you accept a rule-based scored path; the moment a model enters it, the latency and cost claims no longer transfer",
+        "the benchmark is the organiser's, so porting it means building your own session harness"
+      ],
+      "estimate": "2-4 days to reproduce the architecture on a catalog you already have; weeks to earn the numbers",
+      "why": "The scored path is stdlib Python with no model, so the retrieval, ranking, slate shaping and question selection logic is legible in a day and the harness is in the repo. What does not come free is the evaluator and the catalog statistics it leans on - popularity priors, attribute lead lines and rare-phrase evidence are all derived from that specific 50,000-product dump."
+    },
+    "hazard_note": "No regulated-outcome claim: a shopping copilot measured against an organiser's evaluator. The one thing a builder should carry forward is that the metric is the product's opinion of itself - the page is unusually clear that conversion of the session, not shopper satisfaction, is what terminates the evaluation.",
+    "prior_art": [
+      {
+        "corpus_id": "greenlight-nine-agent-production-crew",
+        "relation": "same genre - an agent pipeline that reports a measured before/after with a cost figure - but the two sit at opposite ends of auditability: Greenlight's numbers are asserted with a stated cost ladder and no harness, SATU's can be recomputed from the formula on the page and its harness is in the linked repository."
+      },
+      {
+        "corpus_id": "sketchwish",
+        "relation": "both treat the free/default path as a design constraint to be engineered rather than a concession; SketchWish does it with sign-in gates and hard caps against abuse, SATU by keeping the scored path model-free at $0.00 per turn."
+      }
+    ],
+    "what_breaks_first": "The evaluator's proxy. Optimising 'the session ends when the target appears in the slate' rewards wide early slates and precise question-baiting, which is not the same thing as a shopper being helped; HitRate@10 of 1.000 with 2.27 turns says the target was surfaced, not that the other nine products were good or that the user trusted the answer. Second: state robustness - typed slots, refusals and an exhaustion path are all deterministic logic over a 50k catalog, and the page reports no adversarial or human sessions to show the behaviour selection recovering from a shopper who changes their mind.",
+    "what_to_steal": "Publish the objective function next to the results, including how failures are counted, so the number can be checked rather than trusted; make the expensive optional component visible at weight zero instead of deleting it, which documents a decision and its cost; use one shared preprocessing function for index and query; and treat 'how many items do I show now' and 'is another question worth a turn' as two explicit, stateful decisions rather than fixed constants.",
+    "worth": "breakthrough",
+    "worth_note": "Not for the score - for the discipline. A hackathon team published the objective, the metric definitions, the convention for misses, and a baseline row, then made every design decision answerable to it: slate width as a real variable because reciprocal rank is weighted, the dense asset kept in the architecture at weight zero and labelled rejected, one tokenizer shared by index and query so the two can never disagree. It is the rare submission where a reader can recompute the headline number from the page, and the arithmetic closes to four decimals."
   },
-  "hazard_note": null,
-  "prior_art": [
-   {
-    "corpus_id": "ai-fitting-labs",
-    "relation": "same commerce logic in another modality: plug into someone else's store and cut a return-logistics cost rather than chase delight"
-   },
-   {
-    "corpus_id": "carbender",
-    "relation": "photo in, structured commercially actionable output out - same trust problem, resolved with an estimate instead of an artwork"
-   },
-   {
-    "corpus_id": "unleashed-simplicity-crew",
-    "relation": "also sells speed-to-artifact to solo sellers; this one owns the production concern the others skip"
-   }
-  ],
-  "what_breaks_first": "Taste. 'Print-ready' is a per-style judgement, and a paid print-on-demand seller returns goods that merely look like a filter - there is no fidelity metric anywhere in the capture, no style-level acceptance rate, and no human review loop. The single-provider dependency is the other one: they already survived one model retirement mid-build, and the pipeline still has one throat to choke.",
-  "what_to_steal": "Engineer the free tier as the abuse surface first: sign-in as the price of a render, a hard generation cap, and an explicit rate limiter as its own component. Then use the cheap model to read and the expensive model to render, so the cost curve, not the vendor's price list, decides how much you can give away.",
-  "worth": "strong",
-  "worth_note": "Not a photo filter but a small company assembled correctly: a cheap vision pass protecting fidelity, an image model doing the rendering, third-party auth, storage, quota and payments so the free tier stays solvent, plus two genuinely hard-won findings - that model deprecation mid-build is an operational risk to design for, and that in-app browsers break Google sign-in so the funnel needs an escape hatch. Most hackathon 'live product' claims are demos; this one names its own margin."
- },
- "vitalis-bio": {
-  "clone_cost": {
-   "assumptions": [
-    "you accept an existing clinical formula rather than fitting your own, so coefficients are copied from a paper",
-    "you have users willing to connect real blood panels, since without panels the score is wearable noise",
-    "no regulatory clearance is implied; a consumer dashboard, not a diagnostic device"
-   ],
-   "estimate": "about a week for the pipeline, longer for anything you would defend clinically",
-   "why": "Reading the published PhenoAge formula and applying nine lab values is a day's work; HealthKit and Health Connect auth plus a Gemini schema-constrained PDF pass is another few. The part that does not come free is a labelled corpus to know your parser is right, and any claim about reversing aging."
+  "sketchwish": {
+    "clone_cost": {
+      "assumptions": [
+        "you have a Stripe account and a domain, since the product is the checkout",
+        "you accept a per-render cost and price the free tier against it",
+        "you define 'print-ready' as a test you can fail, or drop the claim"
+      ],
+      "estimate": "1 week for the render pipeline and payment loop, 3 weeks with caps, escapes and analytics wired",
+      "why": "the models are hosted, and auth, storage, quota and payments are all configuration of existing services"
+    },
+    "hazard_note": null,
+    "prior_art": [
+      {
+        "corpus_id": "ai-fitting-labs",
+        "relation": "same commerce logic in another modality: plug into someone else's store and cut a return-logistics cost rather than chase delight"
+      },
+      {
+        "corpus_id": "carbender",
+        "relation": "photo in, structured commercially actionable output out - same trust problem, resolved with an estimate instead of an artwork"
+      },
+      {
+        "corpus_id": "unleashed-simplicity-crew",
+        "relation": "also sells speed-to-artifact to solo sellers; this one owns the production concern the others skip"
+      }
+    ],
+    "what_breaks_first": "Taste. 'Print-ready' is a per-style judgement, and a paid print-on-demand seller returns goods that merely look like a filter - there is no fidelity metric anywhere in the capture, no style-level acceptance rate, and no human review loop. The single-provider dependency is the other one: they already survived one model retirement mid-build, and the pipeline still has one throat to choke.",
+    "what_to_steal": "Engineer the free tier as the abuse surface first: sign-in as the price of a render, a hard generation cap, and an explicit rate limiter as its own component. Then use the cheap model to read and the expensive model to render, so the cost curve, not the vendor's price list, decides how much you can give away.",
+    "worth": "strong",
+    "worth_note": "Not a photo filter but a small company assembled correctly: a cheap vision pass protecting fidelity, an image model doing the rendering, third-party auth, storage, quota and payments so the free tier stays solvent, plus two genuinely hard-won findings - that model deprecation mid-build is an operational risk to design for, and that in-app browsers break Google sign-in so the funnel needs an escape hatch. Most hackathon 'live product' claims are demos; this one names its own margin."
   },
-  "hazard_note": "A biological-age score computed from a mortality model, presented to consumers with weekly supplement and protocol recommendations, and a roadmap that plans to predict how interventions shift the curve. Nothing on the page frames the output as non-medical, and no clinician review, cohort or validation is mentioned for the score its interface is built around.",
-  "prior_art": [
-   {
-    "corpus_id": "neuroguard-ai-adaptiveconcussionrecoveryintelligencesystem",
-    "relation": "same architecture of trust - a published clinical score presented through a calm UI with an escalation-style recommendation loop - and the same unmeasured gap between a computed index and validated guidance."
-   },
-   {
-    "corpus_id": "medvoice-y87kei",
-    "relation": "opposite end of the same problem: Medvoice closes a loop on an action the patient confirms, while this one opens a recommendation loop with no adherence signal at all. Comparing them shows what a verification step buys."
-   }
-  ],
-  "what_breaks_first": "Trust in the score, the moment it moves for a reason the user can see is unrelated to their behaviour. A PhenoAge output is dominated by blood chemistry that changes quarterly, while the weekly loop promises movement from sleep and steps, so the dashboard's cadence and the model's sensitivity disagree; the reported parsing accuracy cannot rescue it either, since a single misread unit becomes a wrong age.",
-  "what_to_steal": "Force the extraction model into a strict response schema per provider instead of writing per-provider parsers, and keep the raw values alongside the parsed ones; smooth noisy physiological inputs over a short and a long window so a derived score cannot jitter day to day; ship the derived score against a baseline the user already trusts (chronological age) rather than as a bare number.",
-  "worth": "niche",
-  "worth_note": "Two pieces are worth taking and one is worth doubting. Grammar-constrained decoding for provider-specific PDF layouts is a real technique for any document pipeline, and smoothing volatile wearable inputs with nested EMAs before feeding a scoring model is the unglamorous fix that makes a score stable enough to display. The product itself sits in a crowded longevity-dashboard category whose hardest part - whether the number means anything - is exactly where the page offers a percentage with no denominator."
- },
- "vms-ai-guard-fisheries-compliance-monitoring-alerts": {
-  "clone_cost": {
-   "assumptions": [
-    "you can obtain a VMS feed or an open equivalent (national fisheries authorities publish some)",
-    "an authority will stand behind a vendor ranking, or you keep the score internal",
-    "you have someone who can read the flag-state rules the alerts would be judged against"
-   ],
-   "estimate": "1-2 weeks for the pipeline skeleton; the data agreement is the project",
-   "why": "Time-series reconstruction, gap detection and a scoring rollup are ordinary work. What takes months is getting incident, violation and investigation records for a jurisdiction in a usable form, and being allowed to publish a score about a licensed provider."
+  "tower-dq18x2": {
+    "clone_cost": {
+      "assumptions": [
+        "a rulebook per competition small enough to enumerate as obligations - the eval key here is 29 items, and a hundred-page rulebook with nested exceptions changes the extraction problem, not just the prompt",
+        "reachable artifacts with stable identities: the whole design depends on mapping a requirement to a URL, file or video that can be re-fetched anonymously, so a private repo or an unlisted video is a checker you cannot write",
+        "a telephony channel with call-status callbacks if you want retraction to mean anything (Twilio-shaped, and it needs an opt-in consent path for the number)",
+        "somebody to read the UNVERIFIED list - the honest output of this design is a report that says 'I could not check these five', which is only an asset in an org that will act on it"
+      ],
+      "estimate": "3-4 weeks for the four-agent skeleton on one rulebook; add a week per artifact class you want checked honestly, and a day or two per new competition to hand-write the ground truth",
+      "why": "The control flow is the cheap part and the page says so: two model calls total, a pure function for the state machine, a policy table for escalation, FastAPI on Cloud Run with Firestore state and a scheduler - an engineer who has shipped a cron with a queue can build that in a week or two. The cost is everywhere else. Each requirement class needs a real checker against a real surface (GitHub contents API, HEAD requests that can distinguish a login wall from a page, YouTube oEmbed, the platform's own project page), each with its own auth and 200-lies-to-you edge cases; the phone path needs idempotency, call-history and stand-down semantics; the extraction needs a hand-written obligation key per rulebook before you can say anything at all about whether it worked; and 'unknown' has to be threaded through the data model from the start, which is a refactor in any codebase where a boolean is already doing the work. The escalation number they quote as the reason (48 evaluations a day, not the 96 the page says) is exactly the kind of detail that has to be re-derived per deployment rather than copied."
+    },
+    "prior_art": [
+      {
+        "corpus_id": "complianceguardian-kcqs32",
+        "relation": "shares the load-bearing trick - every verdict carries the words of the rule it came from - but the surfaces are opposite: ComplianceGuardian scores an uploaded document and auto-approves routine cases, Tower watches live artifacts on a schedule and refuses to approve anything it cannot reach"
+      },
+      {
+        "corpus_id": "vms-ai-guard-fisheries-compliance-monitoring-alerts",
+        "relation": "closest structural sibling in the corpus: scheduled, unattended monitoring of live state against a named rulebook with escalation to a human. VMS AI Guard is held to the pool as thin for lack of any evaluation; Tower is the same shape with the evidence VMS lacks - a hand-written ground-truth key and a published precision/recall trajectory"
+      },
+      {
+        "corpus_id": "continuity-g7bty0",
+        "relation": "both exist because truth decays without anyone editing it, and both answer by re-checking against a live source and drafting the fix for a human; Continuity's unit is a wiki fact, Tower's is an obligation, and Continuity has no equivalent of Tower's retraction path"
+      },
+      {
+        "corpus_id": "kora-ai-back-office",
+        "relation": "same trust budget from the other side: Kora buys its autonomy by shrinking human attention to '10 minutes of approvals a week', Tower buys it by making the agent's own uncertainty and reversals part of what the human sees"
+      }
+    ],
+    "what_breaks_first": "The requirement-to-tool-surface mapping. Every requirement needs a real place to look, and the failure mode the author hit first is a silent one: 9 of 12 requirements lost their route and reported as unverifiable. Anything the agent cannot reach - a private repo, an unlisted video, a platform page behind a login wall, a URL that returns 200 on a sign-in form - becomes a permanent UNVERIFIED, which is the correct answer and the one that makes the product look useless to a user who wants a green tick. Second is the severity policy: 'Kill calls immediately, Major waits until seven days out, Minor never calls' is tuned to one rulebook's shape, and a second competition with different disqualification clauses needs the table re-cut, not re-used. Third is the measured weakness they name themselves - extraction is structurally biased toward 'what must the entrant DO' over standing eligibility and legal clauses, and dedup folds adjacent legal text away - so the requirements most likely to cost you the prize are the ones the classifier is worst at.",
+    "what_to_steal": "Make 'could not check' a value that propagates, not a gap that defaults to a verdict: UNVERIFIED is distinct from UNMET, blank config is distinct from failure, and an unknown premise in a conditional defaults to false rather than being narrated into existence. Then steal the two honesty mechanics that fall out of it - retraction as a first-class action (call back and stand down your own alert, and if you were wrong say RETRACTED, with call history as an input to narration so you cannot apologise for a call you never made), and routing by extracted content instead of model-generated identifiers, because slugs change between extraction runs and content does not.",
+    "worth": "strong",
+    "worth_note": "The stealable part is not hackathon-rule-watching, it is the outcome model: three terminal states in which UNVERIFIED is neither satisfied nor unmet, an agent that retracts its own finding when the evidence turns out to have been there all along, and a coverage line reported out loud ('five of ten applicable, here are the five I could not check'). Every verification record in this corpus - ComplianceGuardian, VMS AI Guard, Continuity - has the monitoring loop and none of them has retraction, and the author's eighth defect (a 200 that was really a login wall, with the harness green the whole time it existed) is the argument for why a boolean is the wrong return type for a checker. Held back from 'breakthrough' on evidence, not on idea: there is no repository, no live deployment we can reach, one like, and the only number a reader can verify independently is the F1 arithmetic - recall reconciles exactly against the published 29-obligation key, precision's denominator never appears. The pattern is worth taking today; the build cannot be inspected."
   },
-  "hazard_note": "IUU fishing enforcement and a provider quality score: alerts that may trigger boardings or sanctions, and a ranking that could cost a licensed vendor business. The page acknowledges the absence of ground truth as a challenge and states no review step, appeal path or human gate before an alert reaches an authority.",
-  "prior_art": [
-   {
-    "corpus_id": "complianceguardian-kcqs32",
-    "relation": "both sell compliance judgement to a regulator, and the contrast is the whole lesson: one requires every verdict to cite a versioned rule and cannot rewrite its audit trail, the other produces a risk classification with no published basis, denominator or ground truth."
-   },
-   {
-    "corpus_id": "adversarial-compliance-matrix",
-    "relation": "same audience (evidence a machine can check), opposite coverage: that project argues its case with named files, a fixture generator and a CI matrix, this one with four bullet lists."
-   }
-  ],
-  "what_breaks_first": "The provider score, because the page states there is no ground truth for provider quality: a number that ranks vendors on incident history without a validated label is an accusation with an arithmetic flavour, and the incidents themselves come from the same fragmented sources the team lists as a challenge. Second: root-cause attribution, since distinguishing a dead device from a deliberate shutdown is the whole enforcement question and no method is described.",
-  "what_to_steal": "Split one data feed into per-stakeholder workflows (owner, regulator, vendor) instead of one dashboard for everyone, and make the disconnection *duration* the primary signal rather than the position - the compliance failure is the gap in reporting, not the coordinate.",
-  "worth": "niche",
-  "worth_note": "The idea worth keeping is the third workflow: scoring the monitoring *provider* from incident and investigation history turns a vendor relationship into something measurable, which is a genuinely useful reflex in any compliance stack. The submission itself is a bullet list of capabilities: no schema, no model, no data source, no metric, no link to code or demo, and no numbers a reader could recompute - so nothing here can be credited beyond the intention."
- }
+  "vitalis-bio": {
+    "clone_cost": {
+      "assumptions": [
+        "you accept an existing clinical formula rather than fitting your own, so coefficients are copied from a paper",
+        "you have users willing to connect real blood panels, since without panels the score is wearable noise",
+        "no regulatory clearance is implied; a consumer dashboard, not a diagnostic device"
+      ],
+      "estimate": "about a week for the pipeline, longer for anything you would defend clinically",
+      "why": "Reading the published PhenoAge formula and applying nine lab values is a day's work; HealthKit and Health Connect auth plus a Gemini schema-constrained PDF pass is another few. The part that does not come free is a labelled corpus to know your parser is right, and any claim about reversing aging."
+    },
+    "hazard_note": "A biological-age score computed from a mortality model, presented to consumers with weekly supplement and protocol recommendations, and a roadmap that plans to predict how interventions shift the curve. Nothing on the page frames the output as non-medical, and no clinician review, cohort or validation is mentioned for the score its interface is built around.",
+    "prior_art": [
+      {
+        "corpus_id": "neuroguard-ai-adaptiveconcussionrecoveryintelligencesystem",
+        "relation": "same architecture of trust - a published clinical score presented through a calm UI with an escalation-style recommendation loop - and the same unmeasured gap between a computed index and validated guidance."
+      },
+      {
+        "corpus_id": "medvoice-y87kei",
+        "relation": "opposite end of the same problem: Medvoice closes a loop on an action the patient confirms, while this one opens a recommendation loop with no adherence signal at all. Comparing them shows what a verification step buys."
+      }
+    ],
+    "what_breaks_first": "Trust in the score, the moment it moves for a reason the user can see is unrelated to their behaviour. A PhenoAge output is dominated by blood chemistry that changes quarterly, while the weekly loop promises movement from sleep and steps, so the dashboard's cadence and the model's sensitivity disagree; the reported parsing accuracy cannot rescue it either, since a single misread unit becomes a wrong age.",
+    "what_to_steal": "Force the extraction model into a strict response schema per provider instead of writing per-provider parsers, and keep the raw values alongside the parsed ones; smooth noisy physiological inputs over a short and a long window so a derived score cannot jitter day to day; ship the derived score against a baseline the user already trusts (chronological age) rather than as a bare number.",
+    "worth": "niche",
+    "worth_note": "Two pieces are worth taking and one is worth doubting. Grammar-constrained decoding for provider-specific PDF layouts is a real technique for any document pipeline, and smoothing volatile wearable inputs with nested EMAs before feeding a scoring model is the unglamorous fix that makes a score stable enough to display. The product itself sits in a crowded longevity-dashboard category whose hardest part - whether the number means anything - is exactly where the page offers a percentage with no denominator."
+  },
+  "vms-ai-guard-fisheries-compliance-monitoring-alerts": {
+    "clone_cost": {
+      "assumptions": [
+        "you can obtain a VMS feed or an open equivalent (national fisheries authorities publish some)",
+        "an authority will stand behind a vendor ranking, or you keep the score internal",
+        "you have someone who can read the flag-state rules the alerts would be judged against"
+      ],
+      "estimate": "1-2 weeks for the pipeline skeleton; the data agreement is the project",
+      "why": "Time-series reconstruction, gap detection and a scoring rollup are ordinary work. What takes months is getting incident, violation and investigation records for a jurisdiction in a usable form, and being allowed to publish a score about a licensed provider."
+    },
+    "hazard_note": "IUU fishing enforcement and a provider quality score: alerts that may trigger boardings or sanctions, and a ranking that could cost a licensed vendor business. The page acknowledges the absence of ground truth as a challenge and states no review step, appeal path or human gate before an alert reaches an authority.",
+    "prior_art": [
+      {
+        "corpus_id": "complianceguardian-kcqs32",
+        "relation": "both sell compliance judgement to a regulator, and the contrast is the whole lesson: one requires every verdict to cite a versioned rule and cannot rewrite its audit trail, the other produces a risk classification with no published basis, denominator or ground truth."
+      },
+      {
+        "corpus_id": "adversarial-compliance-matrix",
+        "relation": "same audience (evidence a machine can check), opposite coverage: that project argues its case with named files, a fixture generator and a CI matrix, this one with four bullet lists."
+      }
+    ],
+    "what_breaks_first": "The provider score, because the page states there is no ground truth for provider quality: a number that ranks vendors on incident history without a validated label is an accusation with an arithmetic flavour, and the incidents themselves come from the same fragmented sources the team lists as a challenge. Second: root-cause attribution, since distinguishing a dead device from a deliberate shutdown is the whole enforcement question and no method is described.",
+    "what_to_steal": "Split one data feed into per-stakeholder workflows (owner, regulator, vendor) instead of one dashboard for everyone, and make the disconnection *duration* the primary signal rather than the position - the compliance failure is the gap in reporting, not the coordinate.",
+    "worth": "niche",
+    "worth_note": "The idea worth keeping is the third workflow: scoring the monitoring *provider* from incident and investigation history turns a vendor relationship into something measurable, which is a genuinely useful reflex in any compliance stack. The submission itself is a bullet list of capabilities: no schema, no model, no data source, no metric, no link to code or demo, and no numbers a reader could recompute - so nothing here can be credited beyond the intention."
+  }
 }

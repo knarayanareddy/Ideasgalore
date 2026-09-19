@@ -1,0 +1,88 @@
+{
+  "award": null,
+  "built_with": [
+    "ai-agents",
+    "cloud-firestore",
+    "express.js",
+    "firebase",
+    "firebase-authentication",
+    "firebase-cloud-functions",
+    "firebase-hosting",
+    "gemini-api",
+    "gemini-tts",
+    "generative-ai",
+    "google-ai-studio",
+    "google-antigravity",
+    "google-cloud",
+    "google-cloud-secret-manager",
+    "google-cloud-tasks",
+    "google-gemini",
+    "google-search-grounding",
+    "google-stitch",
+    "image-generation",
+    "node.js",
+    "react",
+    "serverless",
+    "text-to-speech",
+    "veo",
+    "video-generation"
+  ],
+  "captured_at": "2026-09-19",
+  "data_and_models": "No model is trained and none is claimed to be. The system is an orchestration layer over vendor capabilities: Gemini APIs across text generation and analysis, image generation and editing, video, speech and Google Search-grounded intelligence, with Veo and gemini-tts named in the tag list as the specific generators. On the serving side it is Firebase Cloud Functions plus Cloud Tasks for asynchronous generation, Firestore and Cloud Storage for job state and produced assets, Secret Manager for credentials, Firebase hosting, auth, logging and analytics, with React and Node/Express at the edge. The authored content is notable for what it does not say: no model version is named for any of the five capability classes, no routing rule is given for which workflow calls which model, and no per-generation cost, latency or failure rate is published - which matters because the page itself explains that some operations are computationally intensive and asynchronous, so those three quantities are the product's real economic constraints.",
+  "gallery_images": 9,
+  "id": "attaindesk",
+  "likes": 3,
+  "links": {
+    "demo": null,
+    "repo": null,
+    "video": "https://www.youtube.com/watch?v=VGJBuZq8FtY"
+  },
+  "name": "attainDesk",
+  "numbers": [
+    {
+      "arithmetic": "not falsifiable from the page: no per-workflow or per-vertical breakdown, no date the count was taken, no churn or session volume, and the count is deliberately separated from revenue by the page's own wording ('first subscription revenue' is reported next to it rather than inside it), so 13 could be 13 free accounts and one paying customer without contradicting anything written",
+      "claim": "13 real businesses using attainDesk",
+      "denominator": "not stated - 'using', not paying, not retained",
+      "load_bearing": true,
+      "verifiable": false
+    },
+    {
+      "arithmetic": "structural: a price is checkable by opening the product, and it is the only monetised figure on the page, but revenue is being claimed as an accomplishment while the multiplier is withheld, so a reader can compute nothing from it - at one paying customer it is $588 a year before taxes, at thirteen it is $7,644, and the page lets both stand",
+      "claim": "first subscription revenue on a $49/month (+taxes) plan",
+      "denominator": "paying accounts - not published",
+      "load_bearing": true,
+      "verifiable": true
+    },
+    {
+      "arithmetic": "not falsifiable from the page: a claim about an absence, unfalsifiable by a reader with no analytics access, and it is doing rhetorical work for the Daily Digest anecdote - the causal claim that the product's own research feature produced the first paying customer rests on it",
+      "claim": "$0 in paid marketing spend to reach those businesses",
+      "denominator": "outbound spend during the reported period",
+      "verifiable": false
+    },
+    {
+      "arithmetic": "not falsifiable from the page: no start or end date is published for the build, so 'during the hackathon period' has no bounds a reader could check. The only date visible is that the project was started 33 days before this read (update history), which bounds post-hackathon maintenance, not the build window itself",
+      "claim": "moved from an idea to a functioning SaaS business during the hackathon period",
+      "denominator": "the event's build window - not dated on the page",
+      "verifiable": false
+    },
+    {
+      "arithmetic": "structural and countable from the page: eight generation workflows (social content, virtual staging, image-to-video property tours, product promo video, food-photo transformation, logo, headshot, meeting background) plus the Digest. The gallery carries one screenshot per workflow, which is corroboration of existence and not of quality - and note that breadth of this kind is itself a claim about maintenance cost per workflow, which the page never addresses",
+      "claim": "nine guided workflows plus a Daily Digest from one workspace",
+      "denominator": "workflows shipped",
+      "verifiable": true
+    }
+  ],
+  "one_line": "An AI-native operations workspace for small businesses, where each business outcome - virtual staging a listing, turning food photos into menu images, a product video, a logo, a headshot, a Daily Digest of local opportunities - is its own guided workflow over an asynchronous Firebase Cloud Functions and Cloud Tasks generation pipeline, on the stated premise that owners should not have to learn AI to put it to work.",
+  "sections": {
+    "accomplishments": "Four claims, in increasing order of how much they can be checked. The team states it moved from an idea to a functioning SaaS business during the hackathon period. It publishes a user count: 13 real businesses across real estate, food, manufacturing, construction, education and clothing are using attainDesk. It publishes an acquisition method: those businesses were reached with $0 in paid marketing spend, through founder-led outreach, organic reach and word of mouth. And it publishes its first revenue: a $49/month (+taxes) subscription plan with first revenue generated on it. The anecdote the page picks out as most meaningful is also its best product test - their own Daily Digest surfaced local business groups and events relevant to their target customers, they used those insights to focus outreach, and that effort led to the first paying customer, i.e. attainDesk was used to grow attainDesk.",
+    "challenges": "Three, and all three are stated as product restraint rather than technical failure. The first is 'avoiding the temptation to simply put powerful AI models behind generic prompt boxes' - owners want an outcome, so the workflows are organised around what the business is trying to accomplish, with most prompting and model complexity abstracted behind the experience. The second is workload heterogeneity: text, image, video and research jobs differ by orders of magnitude in cost, some completing quickly while others are computationally intensive and asynchronous, and the Cloud Tasks plus Firebase layer is what keeps that invisible to the user. The third is described as a continual judgement call between features that are technically impressive and features that create genuine value, with early customer usage cited as the thing that decided it.",
+    "how_we_built_it": "Built 'AI-native from day one', beginning as workflow prototypes in Google AI Studio. The page credits Gemini-powered coding agents and Google Antigravity for architecture brainstorming, coding, testing, debugging and iteration, and Google Stitch for the frontend design process. In production the shape is an asynchronous architecture for AI workloads: Firebase Cloud Functions and Cloud Tasks orchestrate generation jobs, while Firestore and Cloud Storage hold job state and generated assets, on top of the authentication, logging and analytics that Firebase and Google Cloud provide. Model use is spread across capability classes rather than one endpoint - Gemini APIs for text generation and analysis, image generation and editing, video, speech, and Google Search-grounded intelligence - with Node/Express and React at the edges and the twenty-five-item Built With list also naming Veo, gemini-tts, Secret Manager and serverless. AI is also used internally: market analysis, customer targeting, UX development, debugging and documentation.",
+    "inspiration": "The premise is that small-business owners are expected to do far more than run the business they are actually expert in: a realtor becomes a photographer and content creator, a restaurant owner a food photographer and marketer, a maker a designer and social-media manager, a contractor a researcher and a web publisher. The page is explicit that access to a powerful model does not solve that, because the owner still has to choose tools, understand prompting, supply context, iterate on outputs and connect several AI products together. The stated core belief is the whole design brief: 'small-business owners should not have to learn AI - they should be able to put AI to work.'",
+    "learned": "The headline learning is that access to AI is not the same as successful AI adoption: the opportunity is not to give small businesses more tools but to translate powerful models into workflows that match the jobs owners actually need done. The second is methodological - starting with a small group of real businesses instead of spending to acquire users, which bought the ability to watch how the product is actually used, see which workflows resonate and iterate before scaling distribution. The third is the design conclusion, and it cuts against the usual framing of an AI product: the best AI experience can sometimes feel like there is *less* AI, not more, because the user describes the outcome while model selection, prompting, context and complexity happen behind the scenes.",
+    "what_it_does": "attainDesk turns common small-business needs into guided, business-specific AI workflows from one workspace: create social-media content; virtually stage real-estate listings; turn property images into video tours; create short promotional product videos; transform ordinary food photos into polished menu and marketing images; generate business logos; create professional headshots; generate branded meeting backgrounds; and a Daily Digest that surfaces relevant market developments, local business groups, events and opportunities. The named verticals are real estate, food, manufacturing, construction, education, clothing and professional services. The features differ and the goal is stated as one: help a small business understand its market, present itself professionally, reach customers and grow without needing a large specialist team.",
+    "what_next": "The next phase is distribution plus deeper business intelligence: expand the customer base on a workflow set already validated by early users, and keep improving from real usage. The product direction is context - having attainDesk hold each business's market, customers, goals, brand and opportunities so an owner stops repeating that information and moves from intent to execution with less trial and error. The stated long-term shape is an objective-first workspace ('Help me market this property', 'Help me promote this product', 'Help me find opportunities to grow') with AI handling more of the work to get there, resting on a thesis the page puts in bold: small businesses may never have the resources of a large company, and with AI they may no longer need to."
+  },
+  "software_id": 1274081,
+  "source_url": "https://devpost.com/software/attaindesk",
+  "testing": "Nothing is measured in the sense this catalog counts as measurement. There is no test suite, no eval, no accuracy, acceptance or rejection-rate figure, and no quality claim for any of the nine workflows - no statement, for instance, of how often a generated virtual-staged room or product video is acceptable to the business that asked for it. What the page offers instead is usage: 'early customer usage has been important in helping us make those decisions' between impressive-sounding and genuinely valuable features, which is product research rather than a test result, and 13 businesses as the population it was gathered from, unpublished per workflow. The one appearance of the word testing is in the description of how the code was written - Gemini-powered coding agents and Antigravity used for 'architecture brainstorming, coding, testing, debugging and iteration' - so the assertion is that testing happened, with no harness, count or result attached and no repository to read it from. The absence is load-bearing for a claim of this shape: the acceptance rate of a generated marketing image is the number a buyer of this product would need."
+}

@@ -224,42 +224,6 @@
     "stars": 0
    }
   ],
-  "NeuroGuard AI": [
-   {
-    "description": "EEG based verification framework",
-    "full_name": "KN-Neuron/NeuroGuard-AI",
-    "language": "Jupyter Notebook",
-    "pushed_at": "2026-01-07",
-    "stars": 2
-   },
-   {
-    "description": "NeuroGuard AI is a real-time EEG-based detection system that analyzes brainwave patterns to identify neurological conditions such as *seizur",
-    "full_name": "fuzzu05/NeuroGuard-AI",
-    "language": "Python",
-    "pushed_at": "2026-03-29",
-    "stars": 2
-   },
-   {
-    "description": "AI-POWERED PREDICTIVE MAINTENANCE AGENT",
-    "full_name": "chinmayee5599/NEUROGUARD",
-    "language": "HTML",
-    "pushed_at": "2026-06-12",
-    "stars": 0
-   },
-   {
-    "description": "the ai codes for NeuroGuard",
-    "full_name": "sarahassanvam/NeuroGuard",
-    "language": "Python",
-    "pushed_at": "2026-04-19",
-    "stars": 0
-   },
-   {
-    "description": "Build a multi-modal emotional health prediction system using voice, text, and facial expression inputs. It will detect current emotional sta",
-    "full_name": "Suhani2305/NeuroGuard-AI-Powered-Emotional-Wellness-Forecaster",
-    "language": "PowerShell",
-    "pushed_at": "2025-07-06",
-    "stars": 2
-   }
-  ]
+  "attainDesk": []
  }
 }

@@ -491,3 +491,48 @@ the research itself surfaced:
   served sheet no build emits, and two tests pin it in both directions (ADR-P13/P14). The general form —
   every build step declaring the paths it owns — is recorded as an open item, since P5 would otherwise
   re-create the same failure one directory over.
+
+### 8.3 Batch 6 (2026-09-19) · Tower publishes, attainDesk is held, and three hazards turn out to be substrings
+
+One pair, as the serial loop prescribes: raising the batch size is unlocked by the panel's P1 capture-lint
+and P4 per-record notes (plan batch 6), not by working harder inside one turn
+([`docs/PARALLELISM_PANEL.md`](PARALLELISM_PANEL.md), ADR-P9).
+
+- **Tower** (`tower-dq18x2`) → **`sound-with-caveats`, 0.6484, `worth: strong`**, published. It is the
+  rare record whose own numbers refuse to reconcile and gets *credited* for having published them at all:
+  three runs of extraction F1 reproduce from their own precision/recall pairs, recall × 29 obligations
+  yields exact integers (so the key is checkable), and precision's denominator does not exist as an integer
+  in two of three runs — and a "thirty-minute schedule … ninety six times a day" is 48 ticks. The sheet
+  reports that contradiction as `numbers_add_up: partial` rather than averaging it away. Its two technical
+  checks are `unverifiable` (no repository was ever linked), so coverage sits at 0.64 with zero unknowns,
+  and `artifact_exists` reaches only `supported` on the demo video.
+- **attainDesk** (`attaindesk`) → **`thin`, 0.3906, `worth: niche`**, held with reasons. It is one of the
+  only records in this catalog with paying customers, and it is unprovable in every direction we can
+  check: no repo, no deployed URL, $0 marketing, "13 businesses using" with no denominator, and no test,
+  eval or accuracy figure anywhere on the page. Held is the correct outcome for the *evidence*, not a
+  judgement on the business, and `would_settle_it` names the five things that would change it.
+- **A hazard must have an object, not just a word.** Tower arrived stamped `regulated-claim` with the
+  engine's generic note about missing clinical validation, because `HAZARD_CLAIM_RE` read the author's
+  metaphor — "the diagnosis is that nobody loses a competition because their idea was bad" — as a
+  diagnostic claim. Tracing it found the same bug already **published** on three records: both Greenlight
+  rows, fired by "screen" inside *screenplay*, and Newspectives, fired by "splash screen" and "a blank
+  screen". The fix is the signal: the bare clinical words (`diagnos*`, `screen*`, `triage`, `medicat*`,
+  `dosage`, `prescri*`) now count only when the same sentence carries an object that can only be clinical
+  or regulated, while routes that name their own object (a regulator, a threshold the product claims to
+  meet, "clear to return to play") and the sector-plus-advice path are untouched. Four published hazard
+  notes went away; the six records whose pages really do give clinical or compliance advice kept theirs,
+  and the corpus-wide diff shows those three `hazard` fields and nothing else moved. `symptom`,
+  `condition` and `diagnosis` are deliberately *not* qualifying objects: "users report symptoms, not
+  causes" is how this corpus talks about debugging.
+- **A stack bullet is not a measurement loop.** attainDesk initially scored `test_or_eval_evidence 0.5`
+  from a page that measured nothing, because the fallback route scanned the whole capture and its
+  architecture prose says "authentication, logging and analytics features provided by Firebase". The
+  route now reads only the testing/limits prose and drops capability clauses; that single correction is
+  what moved attainDesk from publishable to held, which is exactly the kind of movement a rung should be
+  able to cause.
+- **The pool now says what we learned about a held record.** A scored record gets no file under
+  `data/audits/`, so pool.json was showing attainDesk as its own marketing blurb beside a verdict — the
+  honest identity, the disclosed limits and the checked numbers existed in the audit and were not
+  published. Rows for `audited-hold` records carry a `detail` block (`what_it_is`, `what_it_does`,
+  `how_they_tested`, `limits_they_disclosed`, `numbers_with_arithmetic`, `worth_note`); `unaudited` rows
+  invent nothing. `pool.csv` keeps its 34 columns.

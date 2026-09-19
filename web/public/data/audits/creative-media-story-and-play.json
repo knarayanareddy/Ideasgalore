@@ -431,11 +431,7 @@
      "value":"Two moves, and they compose: (1) quote the cost and the pass rate before the button, and push every hesitation down the price ladder (settle a character at $0.02, not $1); (2) log every verdict row into a store you can query, then let the estimate switch from your priors to the user's own measured numbers and label which one they are reading, with sample size. Also steal 'the money gate is a schema transition, not a prompt'."
     }
    },
-   "hazard":{
-    "class":"regulated-claim",
-    "note":"Regulated-outcome language (screening/diagnosis/compliance) with no evidence of clinical validation or disclaimers in the captured page.",
-    "team_disclaimed":false
-   },
+   "hazard":null,
    "id":"greenlight-nine-agent-production-crew",
    "likes":1,
    "links":{

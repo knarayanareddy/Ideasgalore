@@ -1,22 +1,22 @@
 {
- "total":11,
- "audited_published":11,
- "pool_records":154,
- "pool_audited_held":7,
- "pool_unaudited":147,
+ "total":12,
+ "audited_published":12,
+ "pool_records":153,
+ "pool_audited_held":8,
+ "pool_unaudited":145,
  "audit_version":1,
- "audit_index_kb":1.0,
- "audit_sheets_kb":44.7,
- "records_hazarded":6,
- "records_hazarded_held":4,
+ "audit_index_kb":1.1,
+ "audit_sheets_kb":51.3,
+ "records_hazarded":4,
+ "records_hazarded_held":3,
  "domains":6,
- "subsystems":8,
- "moves":11,
+ "subsystems":9,
+ "moves":12,
  "events":5,
- "deep_records":18,
- "tier1_gzip_kb":4.0,
+ "deep_records":20,
+ "tier1_gzip_kb":4.1,
  "tier1_budget_kb":1200.0,
- "sqlite_kb":5.9,
+ "sqlite_kb":6.1,
  "corpus_ingested":167,
  "held_back":{
   "placeholder_summary":2
@@ -40,12 +40,12 @@
  "generated_at":"2026-09-18",
  "shards":{
   "agentic-autonomy-and-orchestration":{
-   "records":1,
-   "kb":5.4
+   "records":2,
+   "kb":16.1
   },
   "creative-media-story-and-play":{
    "records":2,
-   "kb":11.7
+   "kb":11.5
   },
   "health-care-and-human-performance":{
    "records":2,
@@ -61,7 +61,7 @@
   },
   "public-trust-safety-and-compliance":{
    "records":2,
-   "kb":19.2
+   "kb":18.2
   }
  }
 }
