@@ -43,8 +43,19 @@ transferable design tricks (e.g. `price-before-generate`, `evidence-graph`,
 - By sector: `{base}/data/details/agentic-autonomy-and-orchestration.json`
 - Event bias check before you generalize: `{base}/data/hackathons.json`
 
+## Audit rules (these are the ones agents break)
+
+1. Publication requires an audit: if `audit` is null, say "unaudited" in the same breath.
+2. Report `unknowns` verbatim when you recommend a project — the gap is the useful part.
+3. Never convert `unverifiable` into "false". Absence of evidence is not a debunking.
+4. Quote `clone_cost.assumptions` next to the estimate; the number alone is misleading.
+5. Dedup before you recommend: two entries sharing cost/percentage fingerprints are one product.
+6. If you audit candidates yourself, follow `data/audit-rubric.json` and store citations,
+   not opinions.
+
 ## Failure modes
 
 404 on a domain shard → the sector slug is wrong; read keys from `catalog-stats.json`.
 Empty result → your move term is too narrow: retry with `jq` on `.stack` or `.summary`.
 Site unreachable → fall back to `data/ideas.csv` from a local checkout of the repo.
+`verdict_id` null → the row predates the audit layer; treat its claims as unaudited.

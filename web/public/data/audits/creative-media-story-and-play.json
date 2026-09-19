@@ -1,0 +1,467 @@
+{
+ "audit_version":1,
+ "generated_at":"2026-09-18",
+ "records":{
+  "audionova":{
+   "audit_version":1,
+   "audited_at":"2026-09-18",
+   "award":"Featured by Devpost Staff",
+   "built_with":[
+    "fastapi",
+    "python",
+    "react",
+    "qualcomm",
+    "qualcomm-ai-hub"
+   ],
+   "checks":{
+    "artifact_exists":{
+     "pass":0.5,
+     "status":"supported",
+     "why":"no source repo linked, but the page publishes a working artifact: https://www.youtube.com/watch?v=hLuvG3pIVWM"
+    },
+    "build_is_real":{
+     "pass":null,
+     "status":"unverifiable",
+     "why":"no repository published, so the build cannot be read"
+    },
+    "limits_disclosed":{
+     "pass":1.0,
+     "status":"confirmed",
+     "why":"the team wrote down what broke while building"
+    },
+    "numbers_add_up":{
+     "pass":0.25,
+     "status":"unverifiable",
+     "why":"2 figure(s) we could not test: up to 2x faster transcription; ~35% lower power draw \u2014 no published harness, baseline or reproduction command to check against"
+    },
+    "stack_consistency":{
+     "pass":null,
+     "status":"unverifiable",
+     "why":"no repo to cross-check the declared stack against"
+    },
+    "test_or_eval_evidence":{
+     "pass":0.75,
+     "status":"supported",
+     "why":"a measured evaluation with a stated denominator is described on the page (an A/B comparison or a logged-outcome harness counts; a bare 'we tested it' does not)"
+    }
+   },
+   "evidence":[
+    {
+     "checked_at":"2026-09-18",
+     "claim":"Is there an artifact at all \u2014 a repo, a deployed app, or a video of it running?",
+     "detail":"no source repo linked, but the page publishes a working artifact: https://www.youtube.com/watch?v=hLuvG3pIVWM",
+     "id":"audionova:artifact_exists",
+     "kind":"page",
+     "source":"https://devpost.com/software/audionova",
+     "status":"supported"
+    },
+    {
+     "checked_at":"2026-09-18",
+     "claim":"Does the repo's language/file mix match the stack they described?",
+     "detail":"no repo to cross-check the declared stack against",
+     "id":"audionova:stack_consistency",
+     "kind":"page",
+     "source":"https://devpost.com/software/audionova",
+     "status":"unverifiable"
+    },
+    {
+     "checked_at":"2026-09-18",
+     "claim":"Is the code a real build (source tree, setup steps, non-trivial size) rather than a stub or zip?",
+     "detail":"no repository published, so the build cannot be read",
+     "id":"audionova:build_is_real",
+     "kind":"page",
+     "source":"https://devpost.com/software/audionova",
+     "status":"unverifiable"
+    },
+    {
+     "checked_at":"2026-09-18",
+     "claim":"Do their metrics have a denominator, and is the arithmetic internally consistent?",
+     "detail":"2 figure(s) we could not test: up to 2x faster transcription; ~35% lower power draw \u2014 no published harness, baseline or reproduction command to check against",
+     "id":"audionova:numbers_add_up",
+     "kind":"page",
+     "source":"https://devpost.com/software/audionova",
+     "status":"unverifiable"
+    },
+    {
+     "checked_at":"2026-09-18",
+     "claim":"Did they state what does not work, or where it fails?",
+     "detail":"the team wrote down what broke while building",
+     "id":"audionova:limits_disclosed",
+     "kind":"page",
+     "source":"https://devpost.com/software/audionova",
+     "status":"confirmed"
+    },
+    {
+     "checked_at":"2026-09-18",
+     "claim":"Any test suite, eval harness, or measured benchmark we can see?",
+     "detail":"a measured evaluation with a stated denominator is described on the page (an A/B comparison or a logged-outcome harness counts; a bare 'we tested it' does not)",
+     "id":"audionova:test_or_eval_evidence",
+     "kind":"page",
+     "source":"https://devpost.com/software/audionova",
+     "status":"supported"
+    }
+   ],
+   "fields":{
+    "built_with_verified":{
+     "provenance":"observed",
+     "value":"fastapi, python, react, qualcomm, qualcomm-ai-hub"
+    },
+    "clone_cost":{
+     "note":"our estimate with assumptions visible; not a claim about the team",
+     "provenance":"derived",
+     "value":{
+      "assumptions":[
+       "assumes access to a Snapdragon X machine, which is the real gate",
+       "no model training is implied by the capture"
+      ],
+      "estimate":"week",
+      "why":"Vall-E-X and Whisper are available through the vendor's hub; the work is the quantisation pass and the Windows shell"
+     }
+    },
+    "data_and_models":{
+     "provenance":"observed",
+     "value":"No training of their own: on-device Whisper (ASR) and Vall-E-X (TTS + cloning), quantised/pruned via Qualcomm AI Hub to reach DSP and GPU paths. Nothing in the capture says how voice-clone consent or audio retention is handled."
+    },
+    "how_it_works":{
+     "provenance":"observed",
+     "value":"FastAPI pipeline around Qualcomm Whisper for ASR and Vall-E-X for TTS/voice cloning; Whisper weights optimised and quantised through Qualcomm AI Hub so the DSP/GPU paths are used; React frontend for Windows."
+    },
+    "how_they_tested":{
+     "provenance":"observed",
+     "value":"No test suite or eval harness is described; the numbers above are self-reported without a stated benchmark."
+    },
+    "limits_they_disclosed":{
+     "provenance":"observed",
+     "value":"Getting Whisper onto Snapdragon X's DSP and GPU required the AI Hub optimisation pipeline; quantisation and pruning had to be balanced against transcription accuracy; the UI had to stay usable while exposing voice cloning."
+    },
+    "numbers_with_arithmetic":{
+     "provenance":"observed",
+     "value":[
+      {
+       "arithmetic":null,
+       "claim":"up to 2x faster transcription",
+       "denominator":"versus the unoptimised path on the same device; test conditions not published"
+      },
+      {
+       "arithmetic":null,
+       "claim":"~35% lower power draw",
+       "denominator":"same comparison; measurement method not stated"
+      }
+     ]
+    },
+    "prior_art":{
+     "note":"each entry resolves to a URL we opened this session or a corpus id",
+     "provenance":"editorial",
+     "value":[
+      {
+       "corpus_id":"nua-offline-on-device-lecture-translator",
+       "relation":"same local-first bet on translation/dubbing; AudioNova optimises the silicon, Nua optimises the pipeline"
+      },
+      {
+       "corpus_id":"snapdragon-ai-multilingual-translator-\u2026",
+       "relation":"same hardware target, different modality"
+      }
+     ]
+    },
+    "what_breaks_first":{
+     "provenance":"editorial",
+     "value":"Two things: cloning quality across accents and speakers, and the install base \u2014 Windows on Snapdragon X is a small denominator, so distribution breaks long before the models do. Voice cloning consent/retention is also unspecified in the page, which you must not inherit."
+    },
+    "what_it_does":{
+     "provenance":"observed",
+     "value":"Windows app with two modes: generate speech from text using one of five built-in voices or a cloned voice, or re-voice any uploaded or recorded clip. Transcription and synthesis both run on the Snapdragon X device."
+    },
+    "what_it_is":{
+     "provenance":"observed",
+     "value":"Local A.I voice generation and transformation, powered by Qualcomm."
+    },
+    "what_to_steal":{
+     "provenance":"editorial",
+     "value":"Make the hardware path the product, not the fallback: quantise and route to DSP/GPU deliberately, then publish the delta against your own unoptimised path (2x speed, ~35% power) as the headline number instead of a model name."
+    }
+   },
+   "hazard":null,
+   "id":"audionova",
+   "likes":547,
+   "moves":[
+    "offline-first-fallback",
+    "make-the-invisible-measurable",
+    "privacy-as-architecture",
+    "constraint-is-the-feature"
+   ],
+   "name":"AudioNova",
+   "provenance":{
+    "checks":"derived",
+    "clone_cost":"derived",
+    "evidence":"observed",
+    "fields":"observed",
+    "verdict":"derived",
+    "worth":"editorial"
+   },
+   "publishable":true,
+   "repo":null,
+   "right_of_reply":"https://github.com/knarayanareddy/Ideasgalore/issues/new?labels=audit-recheck",
+   "rubric_coverage":0.64,
+   "soundness":"partial",
+   "soundness_score":0.5859,
+   "source_url":"https://devpost.com/software/audionova",
+   "unknowns":[],
+   "verdict":"sound-with-caveats",
+   "verdict_reasons":[
+    "soundness 0.59 over 64% of the rubric; 0 named unknown(s) remain \u2192 publishable with caveats"
+   ],
+   "worth":"strong",
+   "worth_note":"547 likes and a staff feature on a Windows-on-Snapdragon app is not luck: it deletes the cloud bill, the latency and the privacy argument at once. Held back from 'breakthrough' because on-device TTS is a crowded field and the moat here is toolchain work (AI Hub quantisation), not a new capability."
+  },
+  "greenlight-nine-agent-production-crew":{
+   "audit_version":1,
+   "audited_at":"2026-09-19",
+   "award":"Submitted / No Award",
+   "built_with":[
+    "clickhouse",
+    "cloud-run",
+    "cloud-storage",
+    "docker",
+    "fastapi",
+    "ffmpeg",
+    "firestore",
+    "gemini",
+    "gemini-flash",
+    "gemini-tts",
+    "google-adk",
+    "google-cloud",
+    "google-genai",
+    "model-context-protocol",
+    "pydantic",
+    "python",
+    "react",
+    "typescript",
+    "vertex-ai",
+    "vite"
+   ],
+   "checks":{
+    "artifact_exists":{
+     "pass":0.5,
+     "status":"supported",
+     "why":"no source repo linked, but the page publishes a working artifact: https://www.youtube.com/watch?v=sS_gIU9flCE"
+    },
+    "build_is_real":{
+     "pass":null,
+     "status":"unverifiable",
+     "why":"no repository published, so the build cannot be read"
+    },
+    "limits_disclosed":{
+     "pass":1.0,
+     "status":"confirmed",
+     "why":"the team wrote down what broke while building"
+    },
+    "numbers_add_up":{
+     "pass":1.0,
+     "status":"confirmed",
+     "why":"first-pass success 29% before casting \u2192 49% after (recomputed: 20 points of success for $0.02 of candidates; expected retry cost falls $1.86 \u2192 $1.17); cost ladder: $0.02 candidate / $1 shot / $20 segment (recomputed: a 12-shot chapter quoted at ~$4.50 is consistent with ~$0.375/shot at the tier used, i.e. the ladder is not the naive 12\u00d7$1)"
+    },
+    "stack_consistency":{
+     "pass":null,
+     "status":"unverifiable",
+     "why":"no repo to cross-check the declared stack against"
+    },
+    "test_or_eval_evidence":{
+     "pass":0.75,
+     "status":"supported",
+     "why":"a measured evaluation with a stated denominator is described on the page (an A/B comparison or a logged-outcome harness counts; a bare 'we tested it' does not)"
+    }
+   },
+   "evidence":[
+    {
+     "checked_at":"2026-09-19",
+     "claim":"Is there an artifact at all \u2014 a repo, a deployed app, or a video of it running?",
+     "detail":"no source repo linked, but the page publishes a working artifact: https://www.youtube.com/watch?v=sS_gIU9flCE",
+     "id":"greenlight-nine-agent-production-crew:artifact_exists",
+     "kind":"page",
+     "source":"https://devpost.com/software/greenlight-nine-agent-production-crew",
+     "status":"supported"
+    },
+    {
+     "checked_at":"2026-09-19",
+     "claim":"Does the repo's language/file mix match the stack they described?",
+     "detail":"no repo to cross-check the declared stack against",
+     "id":"greenlight-nine-agent-production-crew:stack_consistency",
+     "kind":"page",
+     "source":"https://devpost.com/software/greenlight-nine-agent-production-crew",
+     "status":"unverifiable"
+    },
+    {
+     "checked_at":"2026-09-19",
+     "claim":"Is the code a real build (source tree, setup steps, non-trivial size) rather than a stub or zip?",
+     "detail":"no repository published, so the build cannot be read",
+     "id":"greenlight-nine-agent-production-crew:build_is_real",
+     "kind":"page",
+     "source":"https://devpost.com/software/greenlight-nine-agent-production-crew",
+     "status":"unverifiable"
+    },
+    {
+     "checked_at":"2026-09-19",
+     "claim":"Do their metrics have a denominator, and is the arithmetic internally consistent?",
+     "detail":"first-pass success 29% before casting \u2192 49% after (recomputed: 20 points of success for $0.02 of candidates; expected retry cost falls $1.86 \u2192 $1.17); cost ladder: $0.02 candidate / $1 shot / $20 segment (recomputed: a 12-shot chapter quoted at ~$4.50 is consistent with ~$0.375/shot at the tier used, i.e. the ladder is not the naive 12\u00d7$1)",
+     "id":"greenlight-nine-agent-production-crew:numbers_add_up",
+     "kind":"page",
+     "source":"https://devpost.com/software/greenlight-nine-agent-production-crew",
+     "status":"confirmed"
+    },
+    {
+     "checked_at":"2026-09-19",
+     "claim":"Did they state what does not work, or where it fails?",
+     "detail":"the team wrote down what broke while building",
+     "id":"greenlight-nine-agent-production-crew:limits_disclosed",
+     "kind":"page",
+     "source":"https://devpost.com/software/greenlight-nine-agent-production-crew",
+     "status":"confirmed"
+    },
+    {
+     "checked_at":"2026-09-19",
+     "claim":"Any test suite, eval harness, or measured benchmark we can see?",
+     "detail":"a measured evaluation with a stated denominator is described on the page (an A/B comparison or a logged-outcome harness counts; a bare 'we tested it' does not)",
+     "id":"greenlight-nine-agent-production-crew:test_or_eval_evidence",
+     "kind":"page",
+     "source":"https://devpost.com/software/greenlight-nine-agent-production-crew",
+     "status":"supported"
+    }
+   ],
+   "fields":{
+    "built_with_verified":{
+     "provenance":"observed",
+     "value":"clickhouse, cloud-run, cloud-storage, docker, fastapi, ffmpeg, firestore, gemini, gemini-flash, gemini-tts, google-adk, google-cloud, google-genai, model-context-protocol, pydantic, python, react, typescript, vertex-ai, vite"
+    },
+    "clone_cost":{
+     "note":"our estimate with assumptions visible; not a claim about the team",
+     "provenance":"derived",
+     "value":{
+      "assumptions":[
+       "assume 1 engineer + 1 designer, 6 weeks, and real spend money for the generation ladder (their full film priced ~$238)",
+       "you can start smaller: one shot class, one priced gate, one table of verdicts \u2014 the calibration view is what takes the weeks",
+       "the character-reference locking is the part that needs image-model skill, not plumbing"
+      ],
+      "estimate":"multi-week",
+      "why":"the agent choreography is a weekend; the honest parts are the ledger, the calibration views, and the locked-identity image pipeline"
+     }
+    },
+    "data_and_models":{
+     "provenance":"observed",
+     "value":"Model choice is per task shape across the Gemini family on Vertex AI (Pro for whole-script reasoning, Flash for rule-bound generation, Flash-Lite for batch); data is the team's own generation ledger in ClickHouse (shot class, parameters, tier, attempt number, keep/again, cost, duration, model) feeding two materialised views for pass rates and prediction calibration; Firestore holds state, Cloud Storage holds media."
+    },
+    "how_it_works":{
+     "provenance":"observed",
+     "value":"One Cloud Run service shipping frontend and backend together; Gemini family on Vertex AI; Firestore for state; Cloud Storage for media; ClickHouse for the learning loop reached through the official mcp-clickhouse server. Model assignment is a cost decision by shape of work: Pro holds the whole screenplay in mind at once (37 scenes to chapters, resolving that 'Luna' and '\u6708\u97f3' are the same character), Flash does rule-bound work (prompt writing, subtitle translation, counting people in a finished clip), Flash-Lite does high-volume low-judgement batches. Screenplay parsing keeps the expensive model because it is the foundation: the premium is ~$0.11 on a 90-page script and an error there propagates invisibly. Money gates are schema state transitions, never prompt instructions, because a probabilistic component cannot guarantee a hard requirement."
+    },
+    "how_they_tested":{
+     "provenance":"observed",
+     "value":"No test suite is published; the evidence offered is an A/B measurement (29%\u219249% on the same shots), a seeded deliberate \u00d70.92 bias in the ledger to prove the calibration view catches optimism, and stated per-shot outcome logging."
+    },
+    "limits_they_disclosed":{
+     "provenance":"observed",
+     "value":"$150 of credits against $1 per ten seconds of footage meant no 'just generate it again'; the full film prices near $238 and is still unshot. In production debugging: a 200 response with a 30 MB file and no burned-in subtitles, because the container had no fonts and ffmpeg exits 0 regardless; a 300 s video timeout that never fired because requests measures the gap between reads, so the platform killed it at 900 s and the failure record was lost with it; a health endpoint that reported '12 fonts, 4 CJK' while fontconfig's config file was missing, i.e. a check that looked like verification and was not; two copies of the same learning-loop component drifting, one reading the wrong key and quietly showing 0 for three days. Adopted rules: degrading is fine, degrading silently is not; demo build and production build are one image, one commit, differing only by an env var."
+    },
+    "numbers_with_arithmetic":{
+     "provenance":"observed",
+     "value":[
+      {
+       "arithmetic":"20 points of success for $0.02 of candidates; expected retry cost falls $1.86 \u2192 $1.17",
+       "claim":"first-pass success 29% before casting \u2192 49% after",
+       "denominator":"same shots, only difference was whether a locked character reference existed"
+      },
+      {
+       "arithmetic":"a 12-shot chapter quoted at ~$4.50 is consistent with ~$0.375/shot at the tier used, i.e. the ladder is not the naive 12\u00d7$1",
+       "claim":"cost ladder: $0.02 candidate / $1 shot / $20 segment",
+       "denominator":"their published config prices"
+      },
+      {
+       "arithmetic":"internally consistent: it is why the product exists",
+       "claim":"full film \u2248 $238 against $150 of credits",
+       "denominator":"their own pricing of the remaining footage"
+      },
+      {
+       "arithmetic":"direction supports the \u221210/+12pt button labels; unverifiable without the ledger",
+       "claim":"photorealistic 35% vs animation 50% first-pass in their tests",
+       "denominator":"'in our tests', sample size not stated"
+      },
+      {
+       "arithmetic":"negligible against $238, so 'pay for the foundation' is a rational trade",
+       "claim":"model premium ~$0.11 to parse a 90-page screenplay with the top tier",
+       "denominator":"per-script price"
+      }
+     ]
+    },
+    "prior_art":{
+     "note":"each entry resolves to a URL we opened this session or a corpus id",
+     "provenance":"editorial",
+     "value":[
+      {
+       "corpus_id":"cineagent-py",
+       "relation":"also a multi-agent production crew, but it does not price the shot or learn from kept/rejected takes"
+      },
+      {
+       "corpus_id":"cinema-os",
+       "relation":"same orchestration shape, no cost model"
+      },
+      {
+       "corpus_id":"airlock-s2kidr",
+       "relation":"independent verification of a generated artifact; Greenlight does the weaker version (counts people in frame) and then feeds it into the retry"
+      }
+     ]
+    },
+    "what_breaks_first":{
+     "provenance":"editorial",
+     "value":"The success-rate estimate. Below a few hundred logged shots per shot class the displayed percentage is a prior wearing a lab coat, so build the calibration view (predicted vs observed) in week one or you are shipping confidence theatre. Second to break: prompt-injection-free subtitle burn-in on a fresh container, which is exactly the bug they documented (ffmpeg exits 0 with no fonts)."
+    },
+    "what_it_does":{
+     "provenance":"observed",
+     "value":"User drops a screenplay. The system reads it whole, splits it into chapters, breaks chapters into shots, casts characters, writes prompts, generates footage, then inspects what it made: if shot 3 contains a person who should not be there it notices and folds that into the retry instruction. The user presses keep or again. Before any spend it quotes odds: this chapter is 12 shots, ~$4.50, about half will pass first try. Casting is a hard gate; a character reference costs $0.02 while a shot costs $1 and a finished segment ~$20, so every decision is pushed down the cost ladder. Face is an input, look is an output: an uploaded photo is locked as identity while only the style re-renders, and wardrobe is per chapter. Style buttons carry their own success adjustment (photorealistic \u221210pt vs animation +12/+15pt). Every generation and every keep/again verdict is written to ClickHouse, so once enough similar shots exist the estimate switches from built-in priors to that user's own numbers and says which one you are looking at plus the sample size. After casting, every prompt is exportable."
+    },
+    "what_it_is":{
+     "provenance":"observed",
+     "value":"Drop a screenplay; nine agents read it, cast it, price it, shoot it, and watch what they made \u2014 with the quote shown before you press the button."
+    },
+    "what_to_steal":{
+     "provenance":"editorial",
+     "value":"Two moves, and they compose: (1) quote the cost and the pass rate before the button, and push every hesitation down the price ladder (settle a character at $0.02, not $1); (2) log every verdict row into a store you can query, then let the estimate switch from your priors to the user's own measured numbers and label which one they are reading, with sample size. Also steal 'the money gate is a schema transition, not a prompt'."
+    }
+   },
+   "hazard":{
+    "class":"regulated-claim",
+    "note":"Regulated-outcome language (screening/diagnosis/compliance) with no evidence of clinical validation or disclaimers in the captured page.",
+    "team_disclaimed":false
+   },
+   "id":"greenlight-nine-agent-production-crew",
+   "likes":1,
+   "moves":[
+    "make-the-invisible-measurable",
+    "crew-of-specialists",
+    "price-before-generate",
+    "model-cost-routing"
+   ],
+   "name":"Greenlight - Nine-Agent Production Crew",
+   "provenance":{
+    "checks":"derived",
+    "clone_cost":"derived",
+    "evidence":"observed",
+    "fields":"observed",
+    "verdict":"derived",
+    "worth":"editorial"
+   },
+   "publishable":true,
+   "repo":null,
+   "right_of_reply":"https://github.com/knarayanareddy/Ideasgalore/issues/new?labels=audit-recheck",
+   "rubric_coverage":0.64,
+   "soundness":"verified",
+   "soundness_score":0.7734,
+   "source_url":"https://devpost.com/software/greenlight-nine-agent-production-crew",
+   "unknowns":[],
+   "verdict":"sound-with-caveats",
+   "verdict_reasons":[
+    "reads strong, but only 64% of the rubric was checkable (no public artifact to read) \u2192 caveats, not strong"
+   ],
+   "worth":"strong",
+   "worth_note":"The wedge is not 'AI video' \u2014 it is pricing a generation step before you commit and then making your own logged outcomes the estimator. That transfers to anything with an expensive call (image gen, agent runs, transcription at volume). Not 'breakthrough' only because it ships as one team's v1 with no public code to adopt."
+  }
+ }
+}

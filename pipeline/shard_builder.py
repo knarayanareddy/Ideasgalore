@@ -42,7 +42,10 @@ from collections import Counter
 from typing import Any, Dict, List, Optional, Tuple
 
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
-from taxonomy_hacks import DOMAINS, MOVES, UNSHELVED  # noqa: E402
+from taxonomy_hacks import (  # noqa: E402
+    AUDIT_MANDATORY_FIELDS, AUDIT_PUBLISH_VERDICTS, AUDIT_STATUSES, AUDIT_VERSION,
+    BANNED_VERDICT_WORDS, CSV_COLUMNS, DOMAINS, MOVES, ROW_FORMAT, UNSHELVED, audit_rubric,
+)
 
 REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 CORPUS = os.path.join(REPO, "pipeline", "corpus.jsonl")
@@ -50,16 +53,16 @@ OUT_DEFAULT = os.path.join(REPO, "web", "public")
 
 TIER1_GZIP_BUDGET_KB = 1200.0        # ADR-5/P5: hard ceiling, enforced below
 SQLITE_BUDGET_KB = 4096.0            # dissent D1 concession: only commit while small
+AUDITS_IN = os.path.join(os.path.dirname(os.path.abspath(CORPUS)), "audit.jsonl")
+AUDIT_INDEX_BUDGET_KB = 40.0
+AUDIT_SHEETS_BUDGET_KB = 240.0
+
 HOOK_MAX = 140   # mechanism words live in the tail of a one-liner ("join-semilattice
                  # algebraic logic…"); 96 clipped them out of the Tier-1 index. 140
                  # costs ~4 KB across 165 rows and buys ~85x of the 1.2 MB budget back.
 
-CSV_COLUMNS = [
-    "id", "name", "url", "event", "event_org", "domain", "subsystem", "moves",
-    "stack", "coolness", "engagement", "validation", "event_prestige", "recency",
-    "specificity", "signal_richness", "redundancy", "likes", "award", "depth",
-    "has_deep", "event_date", "harvested_at",
-]
+# CSV_COLUMNS / ROW_FORMAT are imported from taxonomy_hacks (single source with
+# agents/schema.json + agents/openapi.json — A9, ADR-14).
 
 
 def slugify(text: str) -> str:
@@ -110,7 +113,58 @@ def load_corpus(path: str = CORPUS) -> List[Dict[str, Any]]:
 # ---------------------------------------------------------------------------
 # build
 # ---------------------------------------------------------------------------
-def build(records: List[Dict[str, Any]], out_dir: str, today: str) -> Dict[str, Any]:
+def load_audits(path: str = AUDITS_IN) -> Dict[str, Dict[str, Any]]:
+    """One sheet per audited project (docs/AUDIT_PANEL.md). A missing file is a legal
+    pre-audit build: it means nothing has been promoted yet, not that all is well."""
+    out: Dict[str, Dict[str, Any]] = {}
+    if not os.path.exists(path):
+        return out
+    with open(path, encoding="utf-8") as fh:
+        for line in fh:
+            if line.strip():
+                sheet = json.loads(line)
+                out[str(sheet["id"])] = sheet
+    return out
+
+
+def _pool_record(r: Dict[str, Any], sheet: Optional[Dict[str, Any]]) -> Dict[str, Any]:
+    """A1: nothing is deleted, and nothing unverified is presented as vetted."""
+    reasons: List[str] = []
+    settle: List[str] = []
+    if sheet is None:
+        reasons.append("not_audited")
+        settle += ["project page capture (deep)", "artifact check via repo_verify.py"]
+    else:
+        reasons.append("verdict:" + str(sheet.get("verdict")))
+        wnp = sheet.get("why_not_promoted") or []
+        reasons += [str(x) for x in ([wnp] if isinstance(wnp, str) else wnp)]
+        settle += [u.get("missing", "") for u in (sheet.get("unknowns") or [])][:4]
+        if sheet.get("duplicate_of"):
+            reasons.append("duplicate_of:" + str(sheet["duplicate_of"]))
+    return {
+        "id": str(r["id"]), "name": r.get("name"), "url": r.get("url"),
+        "domain": r.get("domain"), "subsystem": r.get("subsystem"),
+        "event": r.get("event_title"), "coolness": round(r.get("coolness", 0), 4),
+        "moves": r.get("moves") or [], "specificity": r.get("specificity"),
+        "summary": " ".join((r.get("summary") or "").split())[:280],
+        "provenance": "unaudited",
+        "why_not_promoted": reasons,
+        "would_settle_it": [x for x in dict.fromkeys(settle) if x][:4] or [
+            "a fetched project page and an artifact check"],
+        "audit": None if sheet is None else {
+            "verdict": sheet.get("verdict"), "soundness_score": sheet.get("soundness_score"),
+            "rubric_coverage": sheet.get("rubric_coverage"), "audited_at": sheet.get("audited_at"),
+            "unknowns": len(sheet.get("unknowns") or []), "duplicate_of": sheet.get("duplicate_of"),
+            "reasons": sheet.get("verdict_reasons") or []},
+    }
+
+
+def build(records: List[Dict[str, Any]], out_dir: str, today: str,
+          audits: Optional[Dict[str, Dict[str, Any]]] = None) -> Dict[str, Any]:
+    # An empty audit set is meaningful, not a hole to fall back through: it publishes
+    # nothing. (main() loads pipeline/audit.jsonl explicitly; a fixture build that wants
+    # rows must say which of its records were vetted, or it silently reads real sheets.)
+    audits = audits or {}
     os.makedirs(f"{out_dir}/data/details", exist_ok=True)
 
     dom_enc, sub_enc, stack_enc, move_enc, award_enc, ev_enc = (
@@ -120,6 +174,7 @@ def build(records: List[Dict[str, Any]], out_dir: str, today: str) -> Dict[str, 
     details: Dict[str, Dict[str, Any]] = {}
     move_postings: Dict[str, List[str]] = {m: [] for m in MOVES}
     events: Dict[str, Dict[str, Any]] = {}
+    verdict_enc, worth_enc = DictEncoder(), DictEncoder()
     csv_rows: List[List[Any]] = []
     ndjson_rows: List[Dict[str, Any]] = []
     sql_projects: List[Tuple] = []
@@ -127,11 +182,21 @@ def build(records: List[Dict[str, Any]], out_dir: str, today: str) -> Dict[str, 
     sql_events: Dict[str, Tuple] = {}
     admitted = 0
 
+    pool: List[Dict[str, Any]] = []
+    audit_sheets: Dict[str, Dict[str, Any]] = {}
     for r in records:
         if not r.get("admitted", True):
             continue
-        admitted += 1
         rid = str(r["id"])
+        sheet = audits.get(rid)
+        if sheet is None or not sheet.get("publishable"):
+            pool.append(_pool_record(r, sheet))          # A1: catalog is audited-only
+            continue
+        admitted += 1
+        verdict_id = verdict_enc.id(sheet.get("verdict") or "thin")
+        worth_id = worth_enc.id(sheet.get("worth") or "unrated")
+        dslug = slugify(r.get("domain"))
+        audit_sheets.setdefault(dslug, {})[rid] = sheet
         parts = r.get("coolness_parts") or {}
         hook = " ".join((r.get("summary") or "").split())[:HOOK_MAX]
         ev_key = r.get("event_slug") or r.get("event_title") or "unattributed"
@@ -151,9 +216,10 @@ def build(records: List[Dict[str, Any]], out_dir: str, today: str) -> Dict[str, 
             1 if r.get("thumbnail") else 0,
             award_enc.id(r.get("award") or "Unknown"),
             _days_ago(r.get("event_date"), dt.date.fromisoformat(today)),
+            verdict_id, worth_id,
         ])
 
-        details.setdefault(slugify(r.get("domain")), {})[rid] = _detail_record(r)
+        details.setdefault(dslug, {})[rid] = _detail_record(r, sheet)
 
         for m in (r.get("moves") or []):
             if m in move_postings:
@@ -185,8 +251,12 @@ def build(records: List[Dict[str, Any]], out_dir: str, today: str) -> Dict[str, 
             r.get("award") or "Unknown", r.get("depth") or "listing",
             1 if r.get("depth") == "deep" else 0,
             r.get("event_date") or "", r.get("harvested_at") or "",
+            sheet.get("verdict") or "", sheet.get("worth") or "unrated",
+            sheet.get("soundness") or "", sheet.get("rubric_coverage"),
+            sheet.get("audited_at") or "", len(sheet.get("unknowns") or []),
+            (sheet.get("repo") or {}).get("url") or "",
         ])
-        ndjson_rows.append(_ndjson_record(r))
+        ndjson_rows.append(_ndjson_record(r, sheet))
         sql_projects.append((
             rid, r.get("name"), r.get("url"), str(ev_key), r.get("domain"), r.get("subsystem"),
             r.get("coolness"), parts.get("engagement"), parts.get("validation"),
@@ -213,13 +283,18 @@ def build(records: List[Dict[str, Any]], out_dir: str, today: str) -> Dict[str, 
         top = max(modal.get(key, {}), key=modal.get(key, {}).get) if modal.get(key) else ""
         meta["hue"] = DOMAINS.get(top, {}).get("hue", "#8a7c5e")
 
+    # The positional contract is public API: widening a row without updating
+    # ROW_FORMAT would make every consumer misread every column. Fail at build time.
+    if rows and any(len(x) != len(ROW_FORMAT) for x in rows):
+        bad = max(rows, key=lambda x: len(x))
+        raise SystemExit(f"row width {len(bad)} != len(ROW_FORMAT) {len(ROW_FORMAT)} — "
+                         f"the Tier-1 positional contract drifted (row {bad[0]!r})")
+
     packed = {
         "schema_version": 1,
         "scoring_version": records[0].get("scoring_version", 1) if records else 1,
         "generated_at": today,
-        "row_format": ["id", "name", "hook", "event_id", "likes", "coolness_x1000",
-                       "domain_id", "subsystem_id", "move_ids[]", "stack_ids[]",
-                       "is_deep", "has_thumbnail", "award_id", "event_age_days"],
+        "row_format": ROW_FORMAT,
         "domains": dom_enc.inverted(),
         "subsystems": sub_enc.inverted(),
         "stacks": stack_enc.inverted(),
@@ -232,6 +307,11 @@ def build(records: List[Dict[str, Any]], out_dir: str, today: str) -> Dict[str, 
                               events[slug].get("prize_usd") or 0,
                               events[slug].get("hue") or "#8a7c5e"]
                    for slug, eid in ev_enc.map.items()},
+        "verdicts": verdict_enc.inverted(),
+        "worth": worth_enc.inverted(),
+        "audit": {"audit_version": AUDIT_VERSION, "published_verdicts": AUDIT_PUBLISH_VERDICTS,
+                  "index": "data/audits.json", "sheets": "data/audits/<sector>.json",
+                  "pool": "data/pool.json", "rubric": "data/audit-rubric.json"},
         "sectors": {
             **{d: {"hue": v["hue"], "blurb": v["blurb"], "subsystems": list(v["subsystems"])}
                for d, v in DOMAINS.items()},
@@ -286,8 +366,55 @@ def build(records: List[Dict[str, Any]], out_dir: str, today: str) -> Dict[str, 
     sqlite_kb = _write_sqlite(f"{out_dir}/data/ideasgalore.sqlite.gz", sql_events,
                              sql_projects, sql_moves)
 
+    os.makedirs(f"{out_dir}/data/audits", exist_ok=True)
+    audit_index = {rid: {
+        "verdict": sh["verdict"], "worth": sh.get("worth"), "soundness": sh["soundness"],
+        "soundness_score": sh["soundness_score"], "rubric_coverage": sh.get("rubric_coverage"),
+        "checks": {k: v.get("status") for k, v in sh["checks"].items()},
+        "unknowns": [u["field"] for u in sh.get("unknowns") or []],
+        "evidence": len(sh.get("evidence") or []),
+        "contradicted": sum(1 for e in (sh.get("evidence") or []) if e["status"] == "contradicted"),
+        "hazard": bool(sh.get("hazard")), "repo": (sh.get("repo") or {}).get("url"),
+        "audited_at": sh.get("audited_at"), "audit_version": sh.get("audit_version"),
+        "url": sh.get("source_url"), "name": sh.get("name")}
+        for slug in audit_sheets for rid, sh in audit_sheets[slug].items()}
+    with open(f"{out_dir}/data/audits.json", "w", encoding="utf-8") as f:
+        json.dump({"audit_version": AUDIT_VERSION, "generated_at": today,
+                   "publishes": AUDIT_PUBLISH_VERDICTS,
+                   "note": "Verdicts are derived from an evidence ledger over artifacts we could "
+                           "actually reach. `unverifiable` is not `unsound` — see "
+                           "docs/AUDIT_PROTOCOL.md.",
+                   "records": audit_index}, f, separators=(",", ":"), indent=1)
+    sheets_kb = 0.0
+    for slug, bucket in audit_sheets.items():
+        blob = json.dumps({"audit_version": AUDIT_VERSION, "generated_at": today, "records": bucket},
+                          separators=(",", ":"), indent=1)
+        with open(f"{out_dir}/data/audits/{slug}.json", "w", encoding="utf-8") as f:
+            f.write(blob)
+        sheets_kb += len(gzip.compress(blob.encode("utf-8"), compresslevel=9, mtime=0)) / 1024
+    with open(f"{out_dir}/data/audit-rubric.json", "w", encoding="utf-8") as f:
+        json.dump(audit_rubric(), f, indent=1, sort_keys=True)
+    pool.sort(key=lambda x: -(x.get("coolness") or 0))
+    with open(f"{out_dir}/data/pool.json", "w", encoding="utf-8") as f:
+        json.dump({"audit_version": AUDIT_VERSION, "generated_at": today, "count": len(pool),
+                   "meaning": "Unaudited candidates. Nothing here has been checked against an "
+                              "artifact; do not present a pool row or its coolness as a judgement "
+                              "of merit (ADR-A1/A10).",
+                   "records": pool}, f, separators=(",", ":"), indent=1)
+    _write_csv(f"{out_dir}/data/pool.csv",
+               [[p["id"], p.get("name"), p.get("url"), p.get("domain") or "", p.get("event") or "",
+                 f"{(p.get('coolness') or 0):.4f}", "|".join(p.get("moves") or []),
+                 "|".join(p.get("why_not_promoted") or [])] for p in pool])
+    index_kb = len(gzip.compress(open(f"{out_dir}/data/audits.json", "rb").read(),
+                                compresslevel=9, mtime=0)) / 1024
     stats = {
         "total": admitted,
+        "audited_published": admitted,
+        "pool_records": len(pool),
+        "audit_version": AUDIT_VERSION,
+        "audit_index_kb": round(index_kb, 1),
+        "audit_sheets_kb": round(sheets_kb, 1),
+        "records_hazarded": sum(1 for sh in audit_index.values() if sh["hazard"]),
         "domains": len(dom_enc.map),
         "subsystems": len(sub_enc.map),
         "moves": sum(1 for m in move_postings.values() if m),
@@ -309,8 +436,13 @@ def build(records: List[Dict[str, Any]], out_dir: str, today: str) -> Dict[str, 
     return stats
 
 
-def _detail_record(r: Dict[str, Any]) -> Dict[str, Any]:
-    """Tier 2: the deep sheet payload, including the only place prose is stored."""
+def _detail_record(r: Dict[str, Any], sheet: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
+    """Tier 2: the deep sheet payload, including the only place prose is stored.
+
+    The audit rides along, minus the per-check prose (that lives in the sheet), so a
+    reader of a detail record learns how strongly each claim is backed without a
+    second request (A6, A9).
+    """
     return {
         "id": str(r["id"]),
         "name": r.get("name"),
@@ -343,6 +475,28 @@ def _detail_record(r: Dict[str, Any]) -> Dict[str, Any]:
         "harvested_at": r.get("harvested_at"),
         "taxonomy_version": r.get("taxonomy_version"),
         "scoring_version": r.get("scoring_version"),
+        "audit": None if sheet is None else {
+            "verdict": sheet.get("verdict"),
+            "worth": sheet.get("worth"),
+            "worth_note": sheet.get("worth_note"),
+            "soundness": sheet.get("soundness"),
+            "soundness_score": sheet.get("soundness_score"),
+            "rubric_coverage": sheet.get("rubric_coverage"),
+            "checks": {k: {"status": v.get("status"), "pass": v.get("pass"),
+                           "weight": v.get("weight"), "why": v.get("why")}
+                       for k, v in (sheet.get("checks") or {}).items()},
+            "unknowns": sheet.get("unknowns") or [],
+            "clone_cost": (sheet.get("fields") or {}).get("clone_cost", {}).get("value"),
+            "what_to_steal": (sheet.get("fields") or {}).get("what_to_steal", {}).get("value"),
+            "what_breaks_first": (sheet.get("fields") or {}).get("what_breaks_first", {}).get("value"),
+            "prior_art": (sheet.get("fields") or {}).get("prior_art", {}).get("value") or [],
+            "hazard": sheet.get("hazard"),
+            "why_not_promoted": sheet.get("why_not_promoted") or [],
+            "duplicate_of": sheet.get("duplicate_of"),
+            "audited_at": sheet.get("audited_at"),
+            "audit_version": sheet.get("audit_version"),
+            "sheet": f"data/audits/{slugify(r.get('domain'))}.json#{r['id']}",
+        },
     }
 
 
@@ -360,9 +514,10 @@ def _condensed_quote(r: Dict[str, Any]) -> Optional[str]:
     return (src[:217] + "…") if len(src) > 220 else src
 
 
-def _ndjson_record(r: Dict[str, Any]) -> Dict[str, Any]:
-    """Agent streaming record: full metadata, no mirrored prose (ADR-12)."""
-    return {
+def _ndjson_record(r: Dict[str, Any], sheet: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
+    """Agent streaming record: full metadata, no mirrored prose (ADR-12), plus the audit
+    verdict — so a consumer can tell vetted from unvetted without a second request."""
+    out = {
         "id": str(r["id"]), "name": r.get("name"), "url": r.get("url"),
         "summary": r.get("summary"), "event": r.get("event_title"),
         "event_org": r.get("event_org"), "event_date": r.get("event_date"),
@@ -373,10 +528,22 @@ def _ndjson_record(r: Dict[str, Any]) -> Dict[str, Any]:
         "depth": r.get("depth"), "has_deep": 1 if r.get("page") else 0,
         "repo_url": r.get("repo_url"), "demo_url": r.get("demo_url"),
         "provenance": r.get("provenance"), "harvested_at": r.get("harvested_at"),
+        "audit": None if sheet is None else {
+            "verdict": sheet.get("verdict"), "worth": sheet.get("worth"),
+            "soundness": sheet.get("soundness"), "soundness_score": sheet.get("soundness_score"),
+            "rubric_coverage": sheet.get("rubric_coverage"),
+            "checks": {k: v.get("status") for k, v in (sheet.get("checks") or {}).items()},
+            "unknowns": [u.get("field") for u in (sheet.get("unknowns") or [])],
+            "evidence": len(sheet.get("evidence") or []),
+            "hazard": sheet.get("hazard"), "repo": (sheet.get("repo") or {}).get("url"),
+            "audited_at": sheet.get("audited_at"), "audit_version": sheet.get("audit_version"),
+            "sheet": f"data/audits/{slugify(r.get('domain'))}.json#{r['id']}",
+        },
     }
+    return out
 
 
-def _write_csv(path: str, rows: List[List[Any]]) -> None:
+def _write_csv(path: str, rows: List[List[Any]], header: Optional[List[str]] = None) -> None:
     def esc(v: Any) -> str:
         s = "" if v is None else str(v)
         return '"' + s.replace('"', '""') + '"' if any(c in s for c in [",", '"', "\n"]) else s
@@ -433,8 +600,10 @@ def _write_sqlite(path: str, events: Dict[str, Tuple], projects: List[Tuple],
 # ---------------------------------------------------------------------------
 # gates (ADR-10)
 # ---------------------------------------------------------------------------
-def gate_checks(records: List[Dict[str, Any]], stats: Dict[str, Any], out_dir: str) -> List[str]:
+def gate_checks(records: List[Dict[str, Any]], stats: Dict[str, Any], out_dir: str,
+                audits: Optional[Dict[str, Dict[str, Any]]] = None) -> List[str]:
     problems: List[str] = []
+    problems += audit_gate_checks(records, stats, out_dir, audits or {})
     if stats["tier1_gzip_kb"] > TIER1_GZIP_BUDGET_KB:
         problems.append(f"Tier-1 gzip {stats['tier1_gzip_kb']} KB exceeds budget {TIER1_GZIP_BUDGET_KB} KB")
     required = ("id", "name", "summary", "url", "domain", "coolness")
@@ -444,13 +613,80 @@ def gate_checks(records: List[Dict[str, Any]], stats: Dict[str, Any], out_dir: s
                 problems.append(f"record {r.get('id')} missing required field '{k}'")
                 break
     # parity: every surface must describe the same population
-    counts = {"jsonl": len([r for r in records if r.get("admitted", True)])}
+    counts: Dict[str, int] = {}
     with open(f"{out_dir}/data/ideas.csv", encoding="utf-8") as f:
         counts["csv"] = max(0, sum(1 for _ in f) - 1)
     counts["ndjson"] = sum(1 for _ in open(f"{out_dir}/data/ideas.ndjson", encoding="utf-8"))
     counts["tier2"] = sum(v["records"] for v in stats["shards"].values())
+    counts["audits_index"] = len(json.load(open(f"{out_dir}/data/audits.json", encoding="utf-8"))["records"])
+    counts["catalog_rows"] = stats["total"]
     if len(set(counts.values())) != 1:
-        problems.append(f"surface count drift: {counts}")
+        problems.append(f"catalog surface drift — every read surface must describe the same "
+                        f"published population: {counts}")
+    # The audited catalog and the pool are a PARTITION of what the quality gate admitted:
+    # nothing admitted may vanish, nothing unaudited may sneak in (ADR-A1).
+    admitted = len([r for r in records if r.get("admitted", True)])
+    if stats["audited_published"] + stats["pool_records"] != admitted:
+        problems.append(f"catalog({stats['audited_published']}) + pool({stats['pool_records']}) != "
+                        f"admitted({admitted}) — the audit split must be a partition")
+    if json.load(open(f"{out_dir}/data/pool.json", encoding="utf-8"))["count"] != stats["pool_records"]:
+        problems.append("pool.json count disagrees with stats.pool_records")
+    return problems
+
+
+def audit_gate_checks(records, stats, out_dir, audits) -> List[str]:
+    """The gates that make the audit load-bearing rather than decorative (A1/A2/A6/A8/A10)."""
+    problems: List[str] = []
+    try:
+        with open(f"{out_dir}/catalog-packed.json", encoding="utf-8") as fh:
+            packed = json.load(fh)
+    except Exception as e:
+        return [f"unreadable Tier-1: {e}"]
+    ids = [row[0] for row in packed["rows"]]
+    published = [str(r["id"]) for r in records
+                 if r.get("admitted", True) and (audits.get(str(r["id"])) or {}).get("publishable")]
+    if sorted(ids) != sorted(published):
+        problems.append("Tier-1 rows are not exactly the audited-and-publishable set")
+    for rid in ids:
+        sh = audits.get(rid)
+        if not sh:
+            problems.append(f"published record {rid} has no audit sheet")
+            continue
+        if sh.get("verdict") not in AUDIT_PUBLISH_VERDICTS:
+            problems.append(f"{rid} published with non-publishable verdict {sh.get('verdict')!r}")
+        empty = [k for k in AUDIT_MANDATORY_FIELDS if k not in (sh.get("fields") or {})]
+        if empty:
+            problems.append(f"{rid} published with unfiled mandatory fields: {empty}")
+        for e in sh.get("evidence") or []:
+            if e.get("status") not in AUDIT_STATUSES:
+                problems.append(f"{rid}: evidence status {e.get('status')!r} is outside the rubric")
+            if not e.get("source"):
+                problems.append(f"{rid}: evidence {e.get('id')} has no source to check")
+        if sh.get("duplicate_of") and sh["duplicate_of"] in ids:
+            problems.append(f"{rid} is duplicate_of {sh['duplicate_of']} yet both are published")
+    with open(f"{out_dir}/data/pool.json", encoding="utf-8") as fh:
+        pool_ids = {p["id"] for p in json.load(fh)["records"]}
+    for rid in ids:
+        if rid in pool_ids:
+            problems.append(f"{rid} appears in both the catalog and the pool")
+    if stats.get("audit_index_kb", 0) > AUDIT_INDEX_BUDGET_KB:
+        problems.append(f"audits index {stats['audit_index_kb']} KB over the {AUDIT_INDEX_BUDGET_KB} KB ceiling")
+    if stats.get("audit_sheets_kb", 0) > AUDIT_SHEETS_BUDGET_KB:
+        problems.append(f"audit sheets {stats['audit_sheets_kb']} KB over the {AUDIT_SHEETS_BUDGET_KB} KB ceiling")
+    hits: List[str] = []
+    for name in sorted(os.listdir(f"{out_dir}/data/audits")) if os.path.isdir(f"{out_dir}/data/audits") else []:
+        if not name.endswith(".json"):
+            continue
+        with open(f"{out_dir}/data/audits/{name}", encoding="utf-8") as fh:
+            for rid, sh in json.load(fh)["records"].items():
+                blob = json.dumps(sh.get("fields") or {}, ensure_ascii=False).lower()
+                blob += " " + str(sh.get("worth_note") or "").lower()
+                # word-boundary + stem-tolerant: "implied" must not trip "lied"
+                for w in BANNED_VERDICT_WORDS:
+                    if re.search(r"\b" + w + r"\w*\b", blob):
+                        hits.append(f"{rid}:{w}")
+    if hits:
+        problems.append(f"published audit text uses banned verdict language (A10): {hits[:6]}")
     return problems
 
 
@@ -518,7 +754,12 @@ def main() -> int:
     today = corpus_as_of(records, args.today)
     print(f"📦 Packing {len(records)} hackathon projects into two-tier + tabular surfaces "
           f"(as-of {today})...")
-    stats = build(records, args.out, today)
+    audits = load_audits()
+    if audits:
+        pub = sum(1 for sh in audits.values() if sh.get("publishable"))
+        print(f"🔎 audit join: {len(audits)} sheet(s) · {pub} publishable → catalog · "
+              f"{len(audits) - pub} audited-but-held · {len(records) - len(audits)} unaudited → pool")
+    stats = build(records, args.out, today, audits)
     if stats["coverage"]:
         for slug, v in sorted(stats["coverage"]["events"].items()):
             print(f"   📏 coverage {slug}: {v['published']} published of {v['upstream_total']} "
@@ -532,8 +773,14 @@ def main() -> int:
         "corpus_sha256": corpus_sha,
         "corpus_records": len(records),
         "generated_at": dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds"),
+        "audit_version": AUDIT_VERSION,
+        "audited_published": stats["audited_published"],
+        "pool_records": stats["pool_records"],
         "surfaces": {
             "tier1": "catalog-packed.json",
+            "audit": ["data/audits.json", "data/audit-rubric.json",
+                      *[f"data/audits/{s}.json" for s in sorted(stats["shards"])]],
+            "pool": ["data/pool.json", "data/pool.csv", "data/promotion-queue.json"],
             "tier2": [f"data/details/{s}.json" for s in sorted(stats["shards"])],
             "dimensions": ["data/hackathons.json", "data/moves.json"],
             "tabular": ["data/ideas.csv", "data/ideas.ndjson"],
@@ -544,6 +791,8 @@ def main() -> int:
     with open(f"{args.out}/manifest.json", "w", encoding="utf-8") as f:
         json.dump(manifest, f, separators=(",", ":"), indent=1)
 
+    print(f"🔎 audited catalog: {stats['audited_published']} published · "
+          f"{stats['pool_records']} in the unaudited pool · sheets {stats['audit_sheets_kb']} KB gz")
     print(f"✅ Tier 1: catalog-packed.json — {stats['tier1_gzip_kb']} KB gzip "
           f"(budget {TIER1_GZIP_BUDGET_KB:.0f} KB)")
     for slug, v in sorted(stats["shards"].items(), key=lambda kv: -kv[1]["records"]):
@@ -552,10 +801,15 @@ def main() -> int:
     print(f"   🗄  data/ideas.csv + ideas.ndjson — {stats['total']} rows each"
           + (f", sqlite {stats['sqlite_kb']} KB gz" if stats["sqlite_kb"] else ""))
 
-    problems = gate_checks(records, stats, args.out)
+    try:
+        from audit_projects import queue as _queue     # A7: same emitter, one build
+        _queue(records, set(audits), 12, args.out)
+    except Exception as e:
+        print(f"   (promotion queue skipped: {e})")
+    problems = gate_checks(records, stats, args.out, audits)
     if args.check:
         with tempfile.TemporaryDirectory() as td:
-            build(records, td, today)
+            build(records, td, today, audits)   # same inputs, or the rebuild proves nothing
             checked = 0
             for root, _dirs, files in os.walk(td):
                 for name in sorted(files):

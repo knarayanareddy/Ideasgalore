@@ -1,0 +1,44 @@
+{
+ "award": "Featured by Devpost Staff",
+ "built_with": [
+  "fastapi",
+  "python",
+  "react",
+  "qualcomm",
+  "qualcomm-ai-hub"
+ ],
+ "captured_at": "2026-09-18",
+ "data_and_models": "No training of their own: on-device Whisper (ASR) and Vall-E-X (TTS + cloning), quantised/pruned via Qualcomm AI Hub to reach DSP and GPU paths. Nothing in the capture says how voice-clone consent or audio retention is handled.",
+ "gallery_images": 2,
+ "id": "audionova",
+ "likes": 547,
+ "links": {
+  "video": "https://www.youtube.com/watch?v=hLuvG3pIVWM"
+ },
+ "name": "AudioNova",
+ "numbers": [
+  {
+   "arithmetic": null,
+   "claim": "up to 2x faster transcription",
+   "denominator": "versus the unoptimised path on the same device; test conditions not published"
+  },
+  {
+   "arithmetic": null,
+   "claim": "~35% lower power draw",
+   "denominator": "same comparison; measurement method not stated"
+  }
+ ],
+ "one_line": "Local A.I voice generation and transformation, powered by Qualcomm.",
+ "sections": {
+  "accomplishments": "Reported up to 2x faster transcription and ~35% lower power draw on Snapdragon X versus the unoptimised path; modular design so new voices, languages and audio effects can be added without a rewrite.",
+  "challenges": "Getting Whisper onto Snapdragon X's DSP and GPU required the AI Hub optimisation pipeline; quantisation and pruning had to be balanced against transcription accuracy; the UI had to stay usable while exposing voice cloning.",
+  "how_we_built_it": "FastAPI pipeline around Qualcomm Whisper for ASR and Vall-E-X for TTS/voice cloning; Whisper weights optimised and quantised through Qualcomm AI Hub so the DSP/GPU paths are used; React frontend for Windows.",
+  "inspiration": "Cloud TTS forces a trade between privacy, latency and cost, and nobody teaches the on-device path. They targeted people who already have finished material and no interest in learning prompt tooling.",
+  "learned": "Quantisation plus hardware-specific kernels move on-device performance more than model choice does; local-first wins on latency, privacy and cost simultaneously.",
+  "what_it_does": "Windows app with two modes: generate speech from text using one of five built-in voices or a cloned voice, or re-voice any uploaded or recorded clip. Transcription and synthesis both run on the Snapdragon X device.",
+  "what_next": "Emotional intonation and prosody controls, ports to other Snapdragon devices, partnerships with assistive-technology and healthcare users."
+ },
+ "software_id": 880846,
+ "source_url": "https://devpost.com/software/audionova",
+ "testing": "No test suite or eval harness is described; the numbers above are self-reported without a stated benchmark."
+}

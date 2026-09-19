@@ -1,13 +1,19 @@
 {
- "total":165,
- "domains":11,
- "subsystems":36,
- "moves":18,
- "events":5,
+ "total":2,
+ "audited_published":2,
+ "pool_records":163,
+ "audit_version":1,
+ "audit_index_kb":0.6,
+ "audit_sheets_kb":6.4,
+ "records_hazarded":1,
+ "domains":1,
+ "subsystems":2,
+ "moves":7,
+ "events":2,
  "deep_records":2,
- "tier1_gzip_kb":16.1,
+ "tier1_gzip_kb":2.4,
  "tier1_budget_kb":1200.0,
- "sqlite_kb":22.4,
+ "sqlite_kb":4.4,
  "corpus_ingested":167,
  "held_back":{
   "placeholder_summary":2
@@ -30,49 +36,9 @@
  },
  "generated_at":"2026-09-18",
  "shards":{
-  "accessibility-and-assistive-tech":{
-   "records":5,
-   "kb":10.7
-  },
-  "agentic-autonomy-and-orchestration":{
-   "records":32,
-   "kb":67.5
-  },
-  "climate-energy-and-the-physical-world":{
-   "records":6,
-   "kb":12.3
-  },
   "creative-media-story-and-play":{
-   "records":28,
-   "kb":62.3
-  },
-  "data-retrieval-and-memory-infrastructure":{
-   "records":5,
-   "kb":10.3
-  },
-  "developer-tooling-and-code-intelligence":{
-   "records":6,
-   "kb":12.3
-  },
-  "emerging-and-cross-domain":{
-   "records":20,
-   "kb":38.5
-  },
-  "health-care-and-human-performance":{
-   "records":24,
-   "kb":50.2
-  },
-  "learning-and-knowledge-systems":{
-   "records":13,
-   "kb":25.8
-  },
-  "money-commerce-and-marketplaces":{
-   "records":10,
-   "kb":19.8
-  },
-  "public-trust-safety-and-compliance":{
-   "records":16,
-   "kb":34.8
+   "records":2,
+   "kb":15.0
   }
  }
 }

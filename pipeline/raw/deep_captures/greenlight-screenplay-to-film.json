@@ -1,0 +1,57 @@
+{
+ "award": "Submitted / No Award",
+ "built_with": [
+  "clickhouse",
+  "gemini",
+  "cloud-run",
+  "firestore",
+  "mcp-clickhouse"
+ ],
+ "captured_at": "2026-09-19",
+ "data_and_models": "Same as the sibling record: Gemini tiers assigned by task shape; the user's own generation ledger in ClickHouse with constraint and calibration views.",
+ "id": "greenlight-screenplay-to-film",
+ "likes": 0,
+ "links": {
+  "video": "https://www.youtube.com/watch?v=L3Xxat40fCc"
+ },
+ "name": "Greenlight — Screenplay to Film",
+ "numbers": [
+  {
+   "arithmetic": "expected retry cost $1.86 → $1.17, so the gate pays for itself at $0.02 a candidate",
+   "claim": "29% → 49% first-pass success once a character reference is locked",
+   "denominator": "same shots, only variable was the reference"
+  },
+  {
+   "arithmetic": "consistent with one Pro call over a 45-minute script rather than per-scene calls",
+   "claim": "37 scenes / 6 characters parsed in ~90 s",
+   "denominator": "their demo figure"
+  },
+  {
+   "arithmetic": "two cents a try to settle a look vs a dollar a try is a 50× price ratio; that ratio is the design",
+   "claim": "$0.02 candidate, $1 shot, $20 segment",
+   "denominator": "published config"
+  },
+  {
+   "arithmetic": "matches the sibling record's quote to the cent",
+   "claim": "$4.50 for a 12-shot chapter",
+   "denominator": "their quoted estimate for the same footage",
+   "verifiable": true
+  },
+  {
+   "arithmetic": "same figure as the sibling record",
+   "claim": "full film ≈ $238",
+   "denominator": "their own pricing",
+   "verifiable": true
+  }
+ ],
+ "one_line": "Same product, later write-up: a screenwriter drags a file, picks from candidates, and never types a prompt.",
+ "sections": {
+  "challenges": "During testing a deliberate ×0.92 bias was seeded into the ledger to check that the calibration view would catch it; the account of what the check was for is the most concrete engineering-culture signal on either page.",
+  "how_we_built_it": "ClickHouse is described as the honesty component: every generation writes one row (shot kind, parameters, quality tier, attempt index, keep/again, cost, duration, model) and two materialised views do the work — constraint_stats (observed pass rate per physical constraint) and calibration_stats (whether predictions are systematically optimistic). Predictions label themselves as prior-vs-observed with the sample size shown. Reached through the official mcp-clickhouse server. Style changes which physics are enforced: photoreal weights hand anatomy 1.3×, 2D animation 0.5×, because over-constraining a cel-shaded frame fights the art.",
+  "inspiration": "A screenwriter has a 45-minute script and has never written a prompt; that is not a gap she should have to close. Every tool that could film her story assumes she already speaks its language. The stated problem is translation, not technology, and the product is the layer that stands in between. Testable version: no text box anywhere except file upload; when input is missing the system generates candidates to choose from.",
+  "what_it_does": "She drags the file on; ninety seconds later she sees 37 scenes, 6 characters, and the sentence 'this chapter is 12 shots, it'll cost $4.50, about half will come out right first time'. She picks a style (the buttons carry the difficulty delta), casts from candidate portraits at $0.02 each, then presses one button and reviews each rendered shot with keep/again. Output is one file with subtitles burned in, in one of three languages. Casting is a hard gate: no shot generates until every character in it has an approved reference. A Gemini model watches each finished clip for observable facts (people in frame vs people called for, text creeping in) and the findings sit on the shot card; on 'again' the rejected take and its findings are written to the ledger first, and the retry prompt carries them. When a line trips the content filter they generate the shot anyway and move the line into the subtitle layer, so no word of her script changes. Every prompt exports as text, markdown or JSON.",
+  "what_next": "Finish shooting the film; keep pushing the displayed success rate down in cost for the user."
+ },
+ "source_url": "https://devpost.com/software/greenlight-screenplay-to-film",
+ "testing": "A seeded ×0.92 bias in the ledger to prove the calibration view fires; per-shot outcome logging; no published test suite."
+}

@@ -166,6 +166,120 @@ DOMAIN_ORDER = list(DOMAINS.keys())
 UNSHELVED = {"name": "Emerging & Cross-Domain", "hue": "#868e96",
              "blurb": "Submissions whose own description is too thin to place. "
                       "Browse them; do not trust the score."}
+
+# ---------------------------------------------------------------------------
+# AUDIT LAYER (docs/AUDIT_PANEL.md, ADR-A1..A15). These tables are the single
+# source of truth for the verdict vocabulary: shard_builder encodes them into
+# Tier 1, build_agent_api emits them as data/audit-rubric.json, and a test
+# fails if the published vocabulary drifts from them.
+# ---------------------------------------------------------------------------
+
+AUDIT_VERSION = 1
+
+# A2 — the only words this project uses about a stranger's work.
+AUDIT_STATUSES = [
+    "confirmed",        # we observed the artifact ourselves (repo/page/API response)
+    "supported",        # consistent with what we observed, not directly observed
+    "partial",          # true for part of the claim; the rest is unresolvable
+    "unverifiable",     # no public evidence either way (a finding, not a blank)
+    "contradicted",     # we observed something incompatible, with citation + date
+    "duplicate",        # same submission re-entered under another id
+]
+
+# A1/A3 — verdict is derived from the evidence ledger, never typed.
+AUDIT_VERDICTS = {
+    "strong": "All load-bearing claims check out against artifacts; detail is sufficient to build from.",
+    "sound-with-caveats": "Core mechanism verified; named gaps remain, listed as unknowns.",
+    "thin": "Not enough public evidence to certify either way — stays in the pool, never in the catalog.",
+    "unsound": "Load-bearing claim contradicted by evidence, or no artifact at all behind the pitch.",
+    "duplicate": "Merged into an equivalent record (same submission or same-team resubmission).",
+}
+AUDIT_PUBLISH_VERDICTS = ["strong", "sound-with-caveats"]   # A1: the catalog's whole admission rule
+
+# A4 — orthogonal to soundness and never averaged with it (dissent D3).
+AUDIT_WORTH = {
+    "breakthrough": "Reframes a category; the mechanism outlives the project.",
+    "strong": "Genuine wedge, clearly better than the obvious alternative.",
+    "niche": "Correct and useful for a specific, smaller audience.",
+    "tired": "Competently built; the world already has five of these.",
+}
+
+# A3 — six mechanical checks. Weights published; `pass` values are 0 / 0.5 / 1.
+AUDIT_CHECKS = {
+    "artifact_exists":       {"w": 0.22, "ask": "Is there an artifact at all — a repo, a deployed app, or a video of it running?"},
+    "stack_consistency":     {"w": 0.18, "ask": "Does the repo's language/file mix match the stack they described?"},
+    "build_is_real":         {"w": 0.18, "ask": "Is the code a real build (source tree, setup steps, non-trivial size) rather than a stub or zip?"},
+    "numbers_add_up":        {"w": 0.16, "ask": "Do their metrics have a denominator, and is the arithmetic internally consistent?"},
+    "limits_disclosed":      {"w": 0.12, "ask": "Did they state what does not work, or where it fails?"},
+    "test_or_eval_evidence": {"w": 0.14, "ask": "Any test suite, eval harness, or measured benchmark we can see?"},
+}
+AUDIT_HARD_FAIL = {"artifact_exists": "thin"}   # caps the verdict, per A3
+AUDIT_CONTRADICTED_CAP = 2                      # >=2 contradicted load-bearing claims => unsound
+
+# A6 — the "full picture" contract. A field we cannot fill produces an unknown, not a blank.
+AUDIT_MANDATORY_FIELDS = [
+    "what_it_is", "what_it_does", "how_it_works", "built_with_verified", "data_and_models",
+    "how_they_tested", "limits_they_disclosed", "numbers_with_arithmetic", "what_to_steal",
+    "what_breaks_first", "clone_cost", "prior_art",
+]
+AUDIT_LOAD_BEARING = ["what_it_does", "how_it_works", "numbers_with_arithmetic"]
+AUDIT_MAX_LOAD_BEARING_UNKNOWNS = 2   # more than this => verdict thin (A6)
+
+# A10 — tone policy, enforced by test on every published string.
+BANNED_VERDICT_WORDS = [
+    "fake", "vaporware", "scam", "slop", "lying", "lied", "misrepresent", "misrepresented",
+    "dishonest", "fraud", "plagiar", "hallucinating team", "not real",
+]
+
+# A13 — regulated-outcome hazards, derived from domain + claim language, editable in notes.
+HAZARD_DOMAINS = {
+    "Health, Care & Human Performance": "clinical",
+    "Accessibility & Assistive Tech": "assistive-safety",
+    "Public Trust, Safety & Compliance": "compliance-signoff",
+}
+HAZARD_CLAIM_RE = (
+    r"\b(diagnos\w*|screen\w*|triage|medicat\w*|dosage|prescri\w*|clear\w* to (return|play)|"
+    r"regulat\w*|approval|sign-?off|compliance|detect\w* (concussion|cancer|tumor|fraud)|"
+    r"autis\w*|concussion|suicid\w*)\b"
+)
+
+# A5 — similarity thresholds, pinned by fixtures (A15).
+DUP_TEXT_OVERLAP = 0.75      # same-team resubmission
+DUP_MECHANISM_OVERLAP = 0.60 # cross-team parallel invention (kept + cross-linked)
+
+
+def clamp01(x: float) -> float:
+    return max(0.0, min(1.0, x))
+
+
+def audit_rubric() -> dict:
+    """Machine-readable rubric, generated from the same tables the code uses, so a
+    downstream agent can recompute a verdict without reading prose (ADR-A2/A8)."""
+    return {
+        "audit_version": AUDIT_VERSION,
+        "statuses": AUDIT_STATUSES,
+        "verdicts": AUDIT_VERDICTS,
+        "published_verdicts": AUDIT_PUBLISH_VERDICTS,
+        "worth": AUDIT_WORTH,
+        "checks": {k: {kk: vv for kk, vv in v.items()} for k, v in AUDIT_CHECKS.items()},
+        "hard_fail_caps": AUDIT_HARD_FAIL,
+        "contradicted_cap": AUDIT_CONTRADICTED_CAP,
+        "mandatory_fields": AUDIT_MANDATORY_FIELDS,
+        "load_bearing_fields": AUDIT_LOAD_BEARING,
+        "max_load_bearing_unknowns": AUDIT_MAX_LOAD_BEARING_UNKNOWNS,
+        "banned_words_in_verdict_text": BANNED_VERDICT_WORDS,
+        "similarity": {
+            "duplicate_text_overlap": DUP_TEXT_OVERLAP,
+            "parallel_mechanism_overlap": DUP_MECHANISM_OVERLAP,
+        },
+        "policy": [
+            "soundness and worth are never combined into one score",
+            "a verdict is a function of the evidence ledger, never typed by hand",
+            "unverifiable means no public evidence either way; it is not an accusation",
+            "records that cannot be supported stay in the pool, they are not deleted",
+        ],
+    }
+
 HUES_LOCKED = (
     "Field Museum spectrum v1: brand vermilion (#c9421a) owns CHROME only; the 10 "
     "sector hues + museum grey are DATA ONLY (dots, chips, atlas nodes). No hue in "
@@ -739,3 +853,33 @@ def jaccard_kin(texts: Dict[str, str]) -> Dict[str, float]:
         if best > out[a]:
             out[a] = best
     return out
+
+
+# ---------------------------------------------------------------------------
+# AGENT CONTRACT — public row shapes (ADR-14 + audit A9). One definition, imported by
+# shard_builder (which emits the bytes) and build_agent_api (which documents them), so
+# the published contract can never describe a shape we stopped building. test_pipeline
+# asserts the emitted CSV header and packed row_format equal these lists — the drift
+# that used to be invisible is now a build failure.
+# ---------------------------------------------------------------------------
+
+# Tier-1 positional contract. Append-only: integers in `rows` are decoded by index, so
+# reordering these names would silently mislabel every column for every consumer.
+ROW_FORMAT = ["id", "name", "hook", "event_id", "likes", "coolness_x1000", "domain_id",
+              "subsystem_id", "move_ids[]", "stack_ids[]", "is_deep", "has_thumbnail",
+              "award_id", "event_age_days",
+              # audit layer: ids into packed["verdicts"] / packed["worth"], so a client can
+              # drop unvetted or low-worth rows without fetching a single audit sheet
+              "verdict_id", "worth_id"]
+
+# Audit columns lead the CSV, because they change how every column after them should be
+# read; the remaining order is the pre-audit shape, byte-for-byte, for existing consumers.
+AUDIT_CSV_COLUMNS = ["verdict", "worth", "soundness", "soundness_score", "rubric_coverage",
+                     "audited_at", "unknowns", "repo_url"]
+BASE_CSV_COLUMNS = [
+    "id", "name", "url", "event", "event_org", "domain", "subsystem", "moves",
+    "stack", "coolness", "engagement", "validation", "event_prestige", "recency",
+    "specificity", "signal_richness", "redundancy", "likes", "award", "depth",
+    "has_deep", "event_date", "harvested_at",
+]
+CSV_COLUMNS = AUDIT_CSV_COLUMNS + BASE_CSV_COLUMNS

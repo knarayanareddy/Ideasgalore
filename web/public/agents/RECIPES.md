@@ -45,6 +45,28 @@ curl -sL https://knarayanareddy.github.io/Ideasgalore/data/hackathons.json | jq 
 curl -sL https://knarayanareddy.github.io/Ideasgalore/data/remixes.json | jq '.recipes[0] | {title, the_wedge, first_48_hours, kill_criteria}'
 ```
 
+## Audited picks only, with the reasoning inline
+
+```bash
+# cheap filter (Tier-1 ids), then the sheet for the two survivors
+curl -sL https://knarayanareddy.github.io/Ideasgalore/catalog-packed.json | jq -r   '[.rows[] | select(.verdict_id != null)] | length'
+curl -sL https://knarayanareddy.github.io/Ideasgalore/data/audits.json | jq -r   '.records | to_entries[] | select(.value.rubric_coverage > 0.6) | .key'
+curl -sL https://knarayanareddy.github.io/Ideasgalore/data/audits/creative-media-story-and-play.json | jq -r   '.records | to_entries[0].value | {id, verdict, worth, what_to_steal: .fields.what_to_steal.value, unknowns: [.unknowns[].field]}'
+```
+
+## "What can I clone this weekend?" — filter on clone_cost assumptions, not the headline
+
+```bash
+curl -sL https://knarayanareddy.github.io/Ideasgalore/data/audits/creative-media-story-and-play.json | jq -r   '.records | to_entries[] | .value.fields.clone_cost.value
+   | select(.estimate != null) | "\(.estimate) — assumes: \(.assumptions | join("; "))"'
+```
+
+## Find leads the audit refused to publish (and why)
+
+```bash
+curl -sL https://knarayanareddy.github.io/Ideasgalore/data/pool.json | jq -r '.records[] | "\(.id) · \(.verdict) · \(.why_not_promoted // "never audited")"'
+```
+
 ## Verify what you loaded
 
 ```bash

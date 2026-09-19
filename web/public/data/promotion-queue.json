@@ -1,0 +1,152 @@
+{
+ "audit_version": 1,
+ "pool_size": 161,
+ "queued": 12,
+ "note": "Ranking of unaudited candidates by expected information gain (ADR-A7). Nothing here has been verified; the order is only 'what would teach us most'.",
+ "candidates": [
+  {
+   "id": "neuroguard-ai-0qb34c",
+   "name": "NeuroGuard AI (v2)",
+   "domain": "Health, Care & Human Performance",
+   "coolness": 0.323,
+   "expected_gain": 0.9472,
+   "why": "sector Health has 24 rows and no audit",
+   "would_settle_it": [
+    "project page capture",
+    "repo link check"
+   ]
+  },
+  {
+   "id": "neuroguard-ai-adaptiveconcussionrecoveryintelligencesystem",
+   "name": "NeuroGuard AI",
+   "domain": "Health, Care & Human Performance",
+   "coolness": 0.32,
+   "expected_gain": 0.9462,
+   "why": "sector Health has 24 rows and no audit",
+   "would_settle_it": [
+    "project page capture",
+    "repo link check"
+   ]
+  },
+  {
+   "id": "gemini-box",
+   "name": "Gemini-Box",
+   "domain": "Agentic Autonomy & Orchestration",
+   "coolness": 0.337,
+   "expected_gain": 0.9155,
+   "why": "mechanism-rich hook; depth likely to convert",
+   "would_settle_it": [
+    "project page capture",
+    "repo link check"
+   ]
+  },
+  {
+   "id": "medvoice-y87kei",
+   "name": "Medvoice",
+   "domain": "Health, Care & Human Performance",
+   "coolness": 0.297,
+   "expected_gain": 0.8831,
+   "why": "sector Health has 24 rows and no audit",
+   "would_settle_it": [
+    "project page capture",
+    "repo link check"
+   ]
+  },
+  {
+   "id": "adversarial-compliance-matrix",
+   "name": "Gemini-Box",
+   "domain": "Agentic Autonomy & Orchestration",
+   "coolness": 0.333,
+   "expected_gain": 0.7865,
+   "why": "mechanism-rich hook; depth likely to convert",
+   "would_settle_it": [
+    "project page capture",
+    "repo link check"
+   ]
+  },
+  {
+   "id": "sketchwish",
+   "name": "SketchWish",
+   "domain": "Money, Commerce & Marketplaces",
+   "coolness": 0.422,
+   "expected_gain": 0.6126,
+   "why": "sector Money has 10 rows and no audit",
+   "would_settle_it": [
+    "project page capture",
+    "repo link check"
+   ]
+  },
+  {
+   "id": "complianceguardian-kcqs32",
+   "name": "ComplianceGuardian",
+   "domain": "Public Trust, Safety & Compliance",
+   "coolness": 0.411,
+   "expected_gain": 0.5721,
+   "why": "sector Public Trust has 16 rows and no audit",
+   "would_settle_it": [
+    "project page capture",
+    "repo link check"
+   ]
+  },
+  {
+   "id": "vitalis-bio",
+   "name": "Vitalis Bio",
+   "domain": "Public Trust, Safety & Compliance",
+   "coolness": 0.404,
+   "expected_gain": 0.5697,
+   "why": "sector Public Trust has 16 rows and no audit",
+   "would_settle_it": [
+    "project page capture",
+    "repo link check"
+   ]
+  },
+  {
+   "id": "vms-ai-guard-fisheries-compliance-monitoring-alerts",
+   "name": "VMS AI Guard - Fisheries Compliance Monitoring & Alerts",
+   "domain": "Public Trust, Safety & Compliance",
+   "coolness": 0.408,
+   "expected_gain": 0.5562,
+   "why": "sector Public Trust has 16 rows and no audit",
+   "would_settle_it": [
+    "project page capture",
+    "repo link check"
+   ]
+  },
+  {
+   "id": "satu",
+   "name": "SATU: Shopping Assistant That Understands",
+   "domain": "Money, Commerce & Marketplaces",
+   "coolness": 0.429,
+   "expected_gain": 0.5527,
+   "why": "sector Money has 10 rows and no audit",
+   "would_settle_it": [
+    "project page capture",
+    "repo link check"
+   ]
+  },
+  {
+   "id": "ax4u-academy",
+   "name": "AX4U Academy",
+   "domain": "Learning & Knowledge Systems",
+   "coolness": 0.392,
+   "expected_gain": 0.5495,
+   "why": "sector Learning & Knowledge Systems has 13 rows and no audit",
+   "would_settle_it": [
+    "project page capture",
+    "repo link check"
+   ]
+  },
+  {
+   "id": "continuity-g7bty0",
+   "name": "Continuity",
+   "domain": "Learning & Knowledge Systems",
+   "coolness": 0.389,
+   "expected_gain": 0.5484,
+   "why": "sector Learning & Knowledge Systems has 13 rows and no audit",
+   "would_settle_it": [
+    "project page capture",
+    "repo link check"
+   ]
+  }
+ ]
+}

@@ -1,0 +1,72 @@
+{
+ "award": "Submitted / No Award",
+ "built_with": [
+  "clickhouse",
+  "cloud-run",
+  "cloud-storage",
+  "docker",
+  "fastapi",
+  "ffmpeg",
+  "firestore",
+  "gemini",
+  "gemini-flash",
+  "gemini-tts",
+  "google-adk",
+  "google-cloud",
+  "google-genai",
+  "model-context-protocol",
+  "pydantic",
+  "python",
+  "react",
+  "typescript",
+  "vertex-ai",
+  "vite"
+ ],
+ "captured_at": "2026-09-19",
+ "data_and_models": "Model choice is per task shape across the Gemini family on Vertex AI (Pro for whole-script reasoning, Flash for rule-bound generation, Flash-Lite for batch); data is the team's own generation ledger in ClickHouse (shot class, parameters, tier, attempt number, keep/again, cost, duration, model) feeding two materialised views for pass rates and prediction calibration; Firestore holds state, Cloud Storage holds media.",
+ "id": "greenlight-nine-agent-production-crew",
+ "likes": 1,
+ "links": {
+  "video": "https://www.youtube.com/watch?v=sS_gIU9flCE"
+ },
+ "name": "Greenlight — Nine-Agent Production Crew",
+ "numbers": [
+  {
+   "arithmetic": "20 points of success for $0.02 of candidates; expected retry cost falls $1.86 → $1.17",
+   "claim": "first-pass success 29% before casting → 49% after",
+   "denominator": "same shots, only difference was whether a locked character reference existed"
+  },
+  {
+   "arithmetic": "a 12-shot chapter quoted at ~$4.50 is consistent with ~$0.375/shot at the tier used, i.e. the ladder is not the naive 12×$1",
+   "claim": "cost ladder: $0.02 candidate / $1 shot / $20 segment",
+   "denominator": "their published config prices"
+  },
+  {
+   "arithmetic": "internally consistent: it is why the product exists",
+   "claim": "full film ≈ $238 against $150 of credits",
+   "denominator": "their own pricing of the remaining footage"
+  },
+  {
+   "arithmetic": "direction supports the −10/+12pt button labels; unverifiable without the ledger",
+   "claim": "photorealistic 35% vs animation 50% first-pass in their tests",
+   "denominator": "'in our tests', sample size not stated"
+  },
+  {
+   "arithmetic": "negligible against $238, so 'pay for the foundation' is a rational trade",
+   "claim": "model premium ~$0.11 to parse a 90-page screenplay with the top tier",
+   "denominator": "per-script price"
+  }
+ ],
+ "one_line": "Drop a screenplay; nine agents read it, cast it, price it, shoot it, and watch what they made — with the quote shown before you press the button.",
+ "sections": {
+  "challenges": "$150 of credits against $1 per ten seconds of footage meant no 'just generate it again'; the full film prices near $238 and is still unshot. In production debugging: a 200 response with a 30 MB file and no burned-in subtitles, because the container had no fonts and ffmpeg exits 0 regardless; a 300 s video timeout that never fired because requests measures the gap between reads, so the platform killed it at 900 s and the failure record was lost with it; a health endpoint that reported '12 fonts, 4 CJK' while fontconfig's config file was missing, i.e. a check that looked like verification and was not; two copies of the same learning-loop component drifting, one reading the wrong key and quietly showing 0 for three days. Adopted rules: degrading is fine, degrading silently is not; demo build and production build are one image, one commit, differing only by an env var.",
+  "how_we_built_it": "One Cloud Run service shipping frontend and backend together; Gemini family on Vertex AI; Firestore for state; Cloud Storage for media; ClickHouse for the learning loop reached through the official mcp-clickhouse server. Model assignment is a cost decision by shape of work: Pro holds the whole screenplay in mind at once (37 scenes to chapters, resolving that 'Luna' and '月音' are the same character), Flash does rule-bound work (prompt writing, subtitle translation, counting people in a finished clip), Flash-Lite does high-volume low-judgement batches. Screenplay parsing keeps the expensive model because it is the foundation: the premium is ~$0.11 on a 90-page script and an error there propagates invisibly. Money gates are schema state transitions, never prompt instructions, because a probabilistic component cannot guarantee a hard requirement.",
+  "inspiration": "The video models are good enough and take anyone's money, but they levy an unadvertised entry fee: you must already know which words the model listens to, which quality tier to pick, and what three minutes of footage costs before you press generate. Nobody teaches that, and a screenwriter with a finished script is not going to learn prompt engineering to see their own work move. So they built the layer in between instead of another text-to-video tool. Stated rule: if a text box appears anywhere except the file upload, they have broken the product — when something is missing the system offers two to four candidates to choose from.",
+  "learned": "Users report symptoms, not causes, and the symptom was always real while every user diagnosis was wrong.",
+  "what_it_does": "User drops a screenplay. The system reads it whole, splits it into chapters, breaks chapters into shots, casts characters, writes prompts, generates footage, then inspects what it made: if shot 3 contains a person who should not be there it notices and folds that into the retry instruction. The user presses keep or again. Before any spend it quotes odds: this chapter is 12 shots, ~$4.50, about half will pass first try. Casting is a hard gate; a character reference costs $0.02 while a shot costs $1 and a finished segment ~$20, so every decision is pushed down the cost ladder. Face is an input, look is an output: an uploaded photo is locked as identity while only the style re-renders, and wardrobe is per chapter. Style buttons carry their own success adjustment (photorealistic −10pt vs animation +12/+15pt). Every generation and every keep/again verdict is written to ClickHouse, so once enough similar shots exist the estimate switches from built-in priors to that user's own numbers and says which one you are looking at plus the sample size. After casting, every prompt is exportable.",
+  "what_next": "Shoot the rest of the film (budget, not time). Every iteration targets the displayed success rate, because lowering that barrier is described as the only job."
+ },
+ "software_id": 1373574,
+ "source_url": "https://devpost.com/software/greenlight-nine-agent-production-crew",
+ "testing": "No test suite is published; the evidence offered is an A/B measurement (29%→49% on the same shots), a seeded deliberate ×0.92 bias in the ledger to prove the calibration view catches optimism, and stated per-shot outcome logging."
+}

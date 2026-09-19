@@ -21,6 +21,7 @@ REPO = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)
 sys.path.insert(0, os.path.join(REPO, "pipeline"))
 sys.path.insert(0, os.path.join(REPO, "mcp"))
 
+import audit_projects as A  # noqa: E402
 import shard_builder  # noqa: E402
 import taxonomy_hacks as T  # noqa: E402
 
@@ -149,7 +150,11 @@ class TestSurfaces(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.tmp = tempfile.mkdtemp()
-        cls.stats = shard_builder.build(enrich_all(FIXTURE), cls.tmp, "2026-09-18")
+        cls.records = enrich_all(FIXTURE)
+        # The catalog is audited-only (A1), so a fixture that expects rows has to say
+        # which records the audit passed.
+        cls.audits = audit_sheets_for(cls.records)
+        cls.stats = shard_builder.build(cls.records, cls.tmp, "2026-09-18", cls.audits)
 
     def test_counts_match_across_every_surface(self):
         n = self.stats["total"]
@@ -207,8 +212,9 @@ class TestSurfaces(unittest.TestCase):
         broken = enrich_all(FIXTURE)
         broken[0]["name"] = ""
         with tempfile.TemporaryDirectory() as td:
-            stats = shard_builder.build(broken, td, "2026-09-18")
-            problems = shard_builder.gate_checks(broken, stats, td)
+            audits = audit_sheets_for(broken)
+            stats = shard_builder.build(broken, td, "2026-09-18", audits)
+            problems = shard_builder.gate_checks(broken, stats, td, audits)
         self.assertTrue(any("required field" in p for p in problems))
 
     def test_every_surface_is_byte_stable_across_rebuilds(self):
@@ -217,7 +223,7 @@ class TestSurfaces(unittest.TestCase):
         artifact whose bytes depend on wall clock makes every drift gate a coin flip,
         so the comparison walks every emitted file (ADR-10)."""
         with tempfile.TemporaryDirectory() as td:
-            shard_builder.build(enrich_all(FIXTURE), td, "2026-09-18")
+            shard_builder.build(self.records, td, "2026-09-18", self.audits)
             seen = []
             for root, _dirs, files in os.walk(td):
                 for name in sorted(files):
@@ -293,7 +299,10 @@ class TestCoverageAndHolds(unittest.TestCase):
         for v in cov["events"].values():
             self.assertLessEqual(v["published"], v["upstream_total"])
             self.assertGreater(v["published"], 0)
-        self.assertEqual(stats["total"], stats["corpus_ingested"] - sum(stats["held_back"].values()))
+        # Audited-only catalog: published + pool is the partition of what the quality
+        # gate admitted (pre-audit this was simply total == admitted).
+        self.assertEqual(stats["audited_published"] + stats["pool_records"],
+                         stats["corpus_ingested"] - sum(stats["held_back"].values()))
 
 
 class TestHarvestParsers(unittest.TestCase):
@@ -365,7 +374,10 @@ class TestAgentContract(unittest.TestCase):
         import ideasgalore_mcp as m
         m.DIR, m.BASE = os.path.join(REPO, "web/public"), None
         i = m.Index()
-        self.assertGreater(len(i.rows), 50)
+        # The audited catalog is deliberately small — it is a vetted subset, not the
+        # corpus. What must hold is that everything decoded is audited and publishable.
+        self.assertGreater(len(i.rows), 0)
+        self.assertTrue(set(i.packed.get("verdicts", {}).values()) <= set(T.AUDIT_PUBLISH_VERDICTS))
         for r in i.rows[:20]:
             self.assertTrue(r["url"].startswith("https://devpost.com/software/"))
             self.assertIsInstance(r["coolness"], float)
@@ -451,6 +463,230 @@ class TestCliEntrypoints(unittest.TestCase):
         r = subprocess.run([sys.executable, "pipeline/shard_builder.py", "--check"],
                            cwd=REPO, capture_output=True, text=True)
         self.assertEqual(r.returncode, 0, r.stdout[-800:] + r.stderr[-400:])
+
+
+class TestAuditGate(unittest.TestCase):
+    """The audit must be load-bearing: publication requires a publishable sheet, and
+    nothing unverified or duplicated reaches a published surface (docs/AUDIT_PANEL.md
+    A1/A2/A6/A10)."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.records = enrich_all(FIXTURE)
+
+    def _build(self, audits):
+        td = tempfile.mkdtemp()
+        stats = shard_builder.build(self.records, td, "2026-09-18", audits)
+        packed = json.load(open(f"{td}/catalog-packed.json", encoding="utf-8"))
+        pool = json.load(open(f"{td}/data/pool.json", encoding="utf-8"))
+        problems = shard_builder.gate_checks(self.records, stats, td, audits)
+        return td, stats, packed, pool, problems
+
+    def test_unaudited_build_publishes_nothing(self):
+        _td, stats, packed, pool, problems = self._build({})
+        self.assertEqual(packed["rows"], [], "no audit sheet means nothing may be published")
+        self.assertEqual(stats["audited_published"], 0)
+        self.assertEqual(stats["pool_records"], stats["corpus_ingested"] - sum(stats["held_back"].values()))
+        self.assertEqual(problems, [], "an empty-but-consistent build must pass the gates")
+
+    def test_catalog_and_pool_are_a_partition_of_admitted(self):
+        audits = audit_sheets_for(self.records[:2])
+        _td, stats, packed, pool, problems = self._build(audits)
+        published = {r[0] for r in packed["rows"]}
+        self.assertEqual(published, {"alpha-agent", "beta-clinic"})
+        self.assertEqual(stats["audited_published"] + stats["pool_records"],
+                         stats["corpus_ingested"] - sum(stats["held_back"].values()))
+        self.assertFalse(published & {p["id"] for p in pool["records"]}, "no id in both surfaces")
+        self.assertEqual(problems, [])
+
+    def test_thin_verdict_is_pooled_not_deleted(self):
+        audits = audit_sheets_for(self.records, over={
+            "alpha-agent": {"verdict": "thin", "publishable": False,
+                            "why_not_promoted": ["no checkable claim about performance"]}})
+        _td, _stats, packed, pool, problems = self._build(audits)
+        self.assertNotIn("alpha-agent", {r[0] for r in packed["rows"]})
+        row = [p for p in pool["records"] if p["id"] == "alpha-agent"][0]
+        self.assertEqual(row["audit"]["verdict"], "thin")
+        self.assertIn("verdict:thin", row["why_not_promoted"])
+        self.assertIn("checkable claim", row["why_not_promoted"][1])
+        self.assertTrue(row["would_settle_it"])
+        self.assertEqual(problems, [])
+
+    def test_gate_rejects_nonpublishable_verdict_and_unfiled_fields(self):
+        audits = audit_sheets_for(self.records)
+        rid = "alpha-agent"
+        audits[rid]["verdict"] = "thin"          # publishable flag left stale on purpose
+        del audits[rid]["fields"]["prior_art"]
+        _td, _stats, _packed, _pool, problems = self._build(audits)
+        joined = " | ".join(problems)
+        self.assertIn("non-publishable verdict", joined)
+        self.assertIn("unfiled mandatory fields", joined)
+
+    def test_gate_rejects_a_published_duplicate_pair(self):
+        audits = audit_sheets_for(self.records)
+        audits["alpha-agent"]["duplicate_of"] = "beta-clinic"
+        _td, _stats, _packed, _pool, problems = self._build(audits)
+        self.assertTrue(any("both are published" in p for p in problems), problems)
+
+    def test_gate_requires_evidence_to_be_checkable(self):
+        audits = audit_sheets_for(self.records)
+        audits["alpha-agent"]["evidence"][0]["source"] = None
+        audits["beta-clinic"]["evidence"][0]["status"] = "probably"
+        _td, _stats, _packed, _pool, problems = self._build(audits)
+        self.assertTrue(any("no source to check" in p for p in problems), problems)
+        self.assertTrue(any("outside the rubric" in p for p in problems), problems)
+
+    def test_banned_language_scan_is_word_bounded(self):
+        """A10 bans verdict adjectives in the auditor's prose — but 'implied' is not 'lied'."""
+        audits = audit_sheets_for(self.records)
+        audits["alpha-agent"]["fields"]["what_to_steal"]["value"] = (
+            "the cost ladder is implied by the pricing table")
+        audits["beta-clinic"]["worth_note"] = "the team lied about the benchmark"
+        _td, _stats, _packed, _pool, problems = self._build(audits)
+        banned = [p for p in problems if "banned verdict language" in p]
+        self.assertEqual(len(banned), 1, problems)
+        self.assertIn("beta-clinic:lied", banned[0])
+        self.assertNotIn("alpha-agent:lied", banned[0])
+
+    def test_public_row_shape_is_shared_with_the_agent_contract(self):
+        """The packed row_format and the CSV header are the same objects the docs publish
+        — the drift that used to be invisible is a build failure now (A9, ADR-14)."""
+        audits = audit_sheets_for(self.records)
+        _td, _stats, packed, _pool, _problems = self._build(audits)
+        self.assertEqual(packed["row_format"], T.ROW_FORMAT)
+        self.assertEqual(shard_builder.CSV_COLUMNS, T.CSV_COLUMNS)
+        self.assertEqual(shard_builder.ROW_FORMAT, T.ROW_FORMAT)
+        for row in packed["rows"]:
+            self.assertEqual(len(row), len(T.ROW_FORMAT))
+            self.assertIn(str(row[14]), packed["verdicts"])
+            self.assertIn(str(row[15]), packed["worth"])
+            self.assertIn(packed["verdicts"][str(row[14])], T.AUDIT_PUBLISH_VERDICTS)
+
+    def test_detail_and_ndjson_records_carry_the_verdict(self):
+        audits = audit_sheets_for(self.records)
+        _td, _stats, _packed, _pool, _problems = self._build(audits)
+        nd = [json.loads(l) for l in open(f"{_td}/data/ideas.ndjson", encoding="utf-8")]
+        self.assertTrue(all(r["audit"] and r["audit"]["verdict"] in T.AUDIT_PUBLISH_VERDICTS for r in nd))
+        self.assertTrue(all(r["audit"]["sheet"].startswith("data/audits/") for r in nd))
+        detail = {}
+        for name in os.listdir(f"{_td}/data/details"):
+            detail.update(json.load(open(f"{_td}/data/details/{name}", encoding="utf-8")))
+        rec = detail["alpha-agent"]
+        self.assertEqual(rec["audit"]["clone_cost"]["estimate"], "one weekend")
+        self.assertEqual(rec["audit"]["what_to_steal"], "the cost ladder")
+        self.assertIn("what_to_steal", json.dumps(rec["audit"]))
+
+    def test_audit_surfaces_are_self_consistent(self):
+        audits = audit_sheets_for(self.records)
+        td, stats, packed, pool, _problems = self._build(audits)
+        index = json.load(open(f"{td}/data/audits.json", encoding="utf-8"))
+        self.assertEqual(set(index["records"]), {r[0] for r in packed["rows"]})
+        self.assertEqual(index["audit_version"], T.AUDIT_VERSION)
+        sheets = {}
+        for name in os.listdir(f"{td}/data/audits"):
+            if name.endswith(".json"):
+                sheets.update(json.load(open(f"{td}/data/audits/{name}", encoding="utf-8"))["records"])
+        self.assertEqual(set(sheets), set(index["records"]), "index and sheets must agree")
+        for rid, sh in sheets.items():
+            self.assertEqual(set(sh["fields"]), set(T.AUDIT_MANDATORY_FIELDS))
+        rub = json.load(open(f"{td}/data/audit-rubric.json", encoding="utf-8"))
+        self.assertEqual(rub["audit_version"], T.AUDIT_VERSION)
+        self.assertEqual(rub["published_verdicts"], list(T.AUDIT_PUBLISH_VERDICTS))
+
+
+class TestAuditEngine(unittest.TestCase):
+    """The engine, run on the real captures. These four pin the mistakes the panel
+    argued about: trusting a page's own framing, ignoring a measured A/B table, and
+    letting a resubmission through as a second project."""
+
+    @classmethod
+    def setUpClass(cls):
+        with tempfile.TemporaryDirectory() as td:
+            out = os.path.join(td, "audit.jsonl")
+            sheets, actions = A.audit(A.CORPUS, out)
+            cls.sheets = {s["id"]: s for s in sheets}
+            cls.actions = actions
+        committed = [json.loads(l) for l in open(os.path.join(REPO, "pipeline", "audit.jsonl"), encoding="utf-8")]
+        cls.committed = {s["id"]: s for s in committed}
+
+    def test_audit_is_deterministic_and_matches_the_committed_sheets(self):
+        self.assertEqual(list(self.sheets), list(self.committed))
+        for rid, sh in self.sheets.items():
+            self.assertEqual(json.dumps(sh, sort_keys=True), json.dumps(self.committed[rid], sort_keys=True),
+                             f"{rid}: audit output must be reproducible from committed inputs")
+
+    def test_a_pages_own_disclaimer_cannot_count_as_confirmation(self):
+        sh = self.sheets["mcop"]
+        chk = sh["checks"]["numbers_add_up"]
+        self.assertEqual(chk["status"], "unverifiable", "an unfalsifiable claim has nothing to check")
+        self.assertLess(chk["pass"], 0.5)
+        self.assertIn("harness", chk["why"].lower())
+        self.assertFalse(sh["publishable"], "unverifiable numbers + no artifact must not publish")
+
+    def test_a_measured_ab_table_counts_as_confirmation(self):
+        sh = self.sheets["greenlight-nine-agent-production-crew"]
+        chk = sh["checks"]["numbers_add_up"]
+        self.assertEqual(chk["status"], "confirmed")
+        self.assertGreaterEqual(chk["pass"], 0.9)
+        self.assertIn("49", chk["why"] + json.dumps(chk.get("evidence", [])))
+        self.assertEqual(sh["verdict"], "sound-with-caveats")
+
+    def test_resubmission_merges_on_shared_numeric_fingerprints(self):
+        sh = self.sheets["greenlight-screenplay-to-film"]
+        self.assertEqual(sh["verdict"], "duplicate")
+        self.assertEqual(sh["duplicate_of"], "greenlight-nine-agent-production-crew")
+        self.assertFalse(sh["publishable"])
+        self.assertTrue(any("duplicate" in a for a in self.actions), self.actions)
+
+    def test_verdict_is_capped_when_rubric_coverage_is_thin(self):
+        for sh in self.sheets.values():
+            self.assertLessEqual(sh["rubric_coverage"], 1.0)
+            if sh["verdict"] == "strong":
+                self.assertGreaterEqual(sh["rubric_coverage"], 0.80,
+                                        "A15: 'strong' needs rubric coverage, not just high scores")
+
+    def test_nothing_publishable_is_banned_language_free(self):
+        for sh in self.sheets.values():
+            if not sh["publishable"]:
+                continue
+            blob = json.dumps(sh.get("fields"), ensure_ascii=False).lower()
+            for w in T.BANNED_VERDICT_WORDS:
+                self.assertIsNone(re.search(r"\b" + w + r"\w*\b", blob), f"{sh['id']} uses {w}")
+
+
+def audit_sheets_for(records, over=None):
+    """Publishable audit sheets for fixture records. The catalog is audited-only, so a
+    fixture build that expects rows has to declare the vetting (A1)."""
+    rub = T.audit_rubric()
+    sheets = {}
+    for r in records:
+        rid = str(r["id"])
+        ev = [{"id": "ev1", "kind": "video", "source": "devpost",
+               "locator": f"https://devpost.com/software/{rid}", "status": "supported",
+               "quote": "how we built it"}]
+        sheet = {
+            "id": rid, "audit_version": T.AUDIT_VERSION, "audited_at": "2026-09-18",
+            "name": r.get("name"), "sector": r.get("domain"), "url": r.get("url"),
+            "verdict": "sound-with-caveats", "worth": "strong",
+            "worth_note": "the cost-ladder gate is the transferable idea",
+            "soundness": "supported", "soundness_score": 0.9, "rubric_coverage": 1.0,
+            "publishable": True, "duplicate_of": None, "hazard": "ok",
+            "why_not_promoted": None, "evidence": ev,
+            "checks": {c: {"status": "supported", "pass": 1.0, "why": "fixture evidence",
+                           "evidence": ["ev1"]} for c in rub["checks"]},
+            "fields": {f: {"value": "fixture", "status": "filed", "confidence": "medium",
+                           "evidence": ["ev1"]} for f in rub["mandatory_fields"]},
+            "unknowns": [], "repo": {"url": r.get("repo_url")},
+        }
+        sheet["fields"]["what_to_steal"]["value"] = "the cost ladder"
+        sheet["fields"]["clone_cost"]["value"] = {"estimate": "one weekend",
+                                                 "why": "no training, one table",
+                                                 "assumptions": ["one reviewer", "no billing"]}
+        sheet["fields"]["prior_art"]["value"] = [{"title": "Runway", "url": "https://runway.com"}]
+        for k, v in (over or {}).get(rid, {}).items():
+            sheet[k] = v
+        sheets[rid] = sheet
+    return sheets
 
 
 if __name__ == "__main__":

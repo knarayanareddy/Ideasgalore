@@ -1,0 +1,103 @@
+{
+ "audit_version": 1,
+ "banned_words_in_verdict_text": [
+  "fake",
+  "vaporware",
+  "scam",
+  "slop",
+  "lying",
+  "lied",
+  "misrepresent",
+  "misrepresented",
+  "dishonest",
+  "fraud",
+  "plagiar",
+  "hallucinating team",
+  "not real"
+ ],
+ "checks": {
+  "artifact_exists": {
+   "ask": "Is there an artifact at all \u2014 a repo, a deployed app, or a video of it running?",
+   "w": 0.22
+  },
+  "build_is_real": {
+   "ask": "Is the code a real build (source tree, setup steps, non-trivial size) rather than a stub or zip?",
+   "w": 0.18
+  },
+  "limits_disclosed": {
+   "ask": "Did they state what does not work, or where it fails?",
+   "w": 0.12
+  },
+  "numbers_add_up": {
+   "ask": "Do their metrics have a denominator, and is the arithmetic internally consistent?",
+   "w": 0.16
+  },
+  "stack_consistency": {
+   "ask": "Does the repo's language/file mix match the stack they described?",
+   "w": 0.18
+  },
+  "test_or_eval_evidence": {
+   "ask": "Any test suite, eval harness, or measured benchmark we can see?",
+   "w": 0.14
+  }
+ },
+ "contradicted_cap": 2,
+ "hard_fail_caps": {
+  "artifact_exists": "thin"
+ },
+ "load_bearing_fields": [
+  "what_it_does",
+  "how_it_works",
+  "numbers_with_arithmetic"
+ ],
+ "mandatory_fields": [
+  "what_it_is",
+  "what_it_does",
+  "how_it_works",
+  "built_with_verified",
+  "data_and_models",
+  "how_they_tested",
+  "limits_they_disclosed",
+  "numbers_with_arithmetic",
+  "what_to_steal",
+  "what_breaks_first",
+  "clone_cost",
+  "prior_art"
+ ],
+ "max_load_bearing_unknowns": 2,
+ "policy": [
+  "soundness and worth are never combined into one score",
+  "a verdict is a function of the evidence ledger, never typed by hand",
+  "unverifiable means no public evidence either way; it is not an accusation",
+  "records that cannot be supported stay in the pool, they are not deleted"
+ ],
+ "published_verdicts": [
+  "strong",
+  "sound-with-caveats"
+ ],
+ "similarity": {
+  "duplicate_text_overlap": 0.75,
+  "parallel_mechanism_overlap": 0.6
+ },
+ "statuses": [
+  "confirmed",
+  "supported",
+  "partial",
+  "unverifiable",
+  "contradicted",
+  "duplicate"
+ ],
+ "verdicts": {
+  "duplicate": "Merged into an equivalent record (same submission or same-team resubmission).",
+  "sound-with-caveats": "Core mechanism verified; named gaps remain, listed as unknowns.",
+  "strong": "All load-bearing claims check out against artifacts; detail is sufficient to build from.",
+  "thin": "Not enough public evidence to certify either way \u2014 stays in the pool, never in the catalog.",
+  "unsound": "Load-bearing claim contradicted by evidence, or no artifact at all behind the pitch."
+ },
+ "worth": {
+  "breakthrough": "Reframes a category; the mechanism outlives the project.",
+  "niche": "Correct and useful for a specific, smaller audience.",
+  "strong": "Genuine wedge, clearly better than the obvious alternative.",
+  "tired": "Competently built; the world already has five of these."
+ }
+}

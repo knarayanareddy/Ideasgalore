@@ -2,7 +2,7 @@
 # `make build` regenerates every committed artifact from pipeline/raw/ + corpus.jsonl.
 PY := python3
 
-.PHONY: all seed harvest gallery deep remix api build verify test serve clean gates
+.PHONY: all seed audit harvest gallery deep remix api build verify test serve clean gates
 
 all: build
 
@@ -10,13 +10,18 @@ all: build
 seed:
 	$(PY) pipeline/ingest_seed.py
 
-## 2. surfaces: Tier-1 packed index + Tier-2 shards + CSV + NDJSON + SQLite + stats
-build: seed
+## 2. audit: evidence-gated per-project audit; only publishable verdicts reach the catalog
+audit: seed
+	$(PY) pipeline/audit_projects.py
+	$(PY) pipeline/audit_projects.py --report --queue 12
+
+## 3. surfaces: Tier-1 packed index + Tier-2 shards + CSV + NDJSON + SQLite + stats + pool
+build: seed audit
 	$(PY) pipeline/shard_builder.py
 	$(PY) pipeline/generate_remixes.py
 	$(PY) pipeline/build_agent_api.py
 
-## 3. gates: budget, required fields, cross-surface parity, determinism, then tests
+## 4. gates: budget, required fields, cross-surface parity, determinism, then tests
 verify: build
 	$(PY) pipeline/shard_builder.py --check
 	$(PY) pipeline/tests/test_pipeline.py

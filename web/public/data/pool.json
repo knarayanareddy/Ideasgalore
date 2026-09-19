@@ -1,0 +1,3618 @@
+{
+ "audit_version":1,
+ "generated_at":"2026-09-18",
+ "count":163,
+ "meaning":"Unaudited candidates. Nothing here has been checked against an artifact; do not present a pool row or its coolness as a judgement of merit (ADR-A1/A10).",
+ "records":[
+  {
+   "id":"ai-image-detector-9ayw71",
+   "name":"realityCheCk.TSX - AI Image Detector",
+   "url":"https://devpost.com/software/ai-image-detector-9ayw71",
+   "domain":"Public Trust, Safety & Compliance",
+   "subsystem":"Provenance & Anti-Deception",
+   "event":"Devpost Software Showcase \u2014 Staff Picks & Rails",
+   "coolness":0.4605,
+   "moves":[
+    "make-the-invisible-measurable",
+    "verification-first"
+   ],
+   "specificity":0.71,
+   "summary":"Detects AI-generated images and holds accuracy after real-world compression, blur, crop and rescale using a hybrid CLIP + FFT-forensics model. 0.996 AUC clean.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"ccss-laboratory-efficiency-tools",
+   "name":"AppCCSS - Laboratory Efficiency Tools",
+   "url":"https://devpost.com/software/ccss-laboratory-efficiency-tools",
+   "domain":"Health, Care & Human Performance",
+   "subsystem":"Care Navigation & Records",
+   "event":"Build with Gemini XPRIZE",
+   "coolness":0.4377,
+   "moves":[],
+   "specificity":0.86,
+   "summary":"AppCCSS transforms 6-hour manual lab report transcriptions into under 1 hour. Powered by AI, it accurately converts printed analyzer data into official Excel workbooks to save time for patient care.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"capo",
+   "name":"Capo",
+   "url":"https://devpost.com/software/capo",
+   "domain":"Creative Media, Story & Play",
+   "subsystem":"Production & Direction",
+   "event":"Build with Gemini XPRIZE",
+   "coolness":0.4307,
+   "moves":[
+    "crew-of-specialists"
+   ],
+   "specificity":0.86,
+   "summary":"$13T Industry. Built on paper and WhatsApp. Capo turns any quote into a full job plan, schedules the crew, and runs the build through chat. The AI co-pilot for every contractor on earth.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"satu",
+   "name":"SATU: Shopping Assistant That Understands",
+   "url":"https://devpost.com/software/satu",
+   "domain":"Money, Commerce & Marketplaces",
+   "subsystem":"Retail & Conversion",
+   "event":"Devpost Software Showcase \u2014 Staff Picks & Rails",
+   "coolness":0.4294,
+   "moves":[],
+   "specificity":0.52,
+   "summary":"A shopping copilot that treats every product it shows as a commitment rather than a list, and every question it asks as a turn it has to earn.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"kimocchi-voice-mood-tracker",
+   "name":"Kimocchi - Voice Mood Tracker",
+   "url":"https://devpost.com/software/kimocchi-voice-mood-tracker",
+   "domain":"Health, Care & Human Performance",
+   "subsystem":"Mental Health & Wellbeing",
+   "event":"Devpost Software Showcase \u2014 Staff Picks & Rails",
+   "coolness":0.4281,
+   "moves":[],
+   "specificity":0.52,
+   "summary":"Say how your day felt out loud - Kimocchi turns it into six feelings, a box of little characters, and a diary you can look back on.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"vex-edge-deterministic-boundary-autonomous-kernel",
+   "name":"VEX-Edge: Deterministic Boundary Autonomous Kernel",
+   "url":"https://devpost.com/software/vex-edge-deterministic-boundary-autonomous-kernel",
+   "domain":"Agentic Autonomy & Orchestration",
+   "subsystem":"Agent Guardrails & Gating",
+   "event":"Build with Gemini XPRIZE",
+   "coolness":0.4272,
+   "moves":[
+    "offline-first-fallback",
+    "deterministic-guardrail"
+   ],
+   "specificity":0.79,
+   "summary":"CAGE: 1ZMG9 / UEI: FQJUJKVKSAS3 dual-use VEX-GSR kernel. Replaces clock-sync with join-semilattice algebraic logic to stop edge node drift and AI hallucinations under EW jamming at O(1) constant cost",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"sketchwish",
+   "name":"SketchWish",
+   "url":"https://devpost.com/software/sketchwish",
+   "domain":"Money, Commerce & Marketplaces",
+   "subsystem":"Marketplace & Matching",
+   "event":"Build with Gemini XPRIZE",
+   "coolness":0.422,
+   "moves":[],
+   "specificity":0.77,
+   "summary":"Turn any photo into a print-ready sketch in seconds, powered by Google Gemini. Built for print-on-demand sellers and gift buyers, live in production today.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"anadita-your-ally-to-read-write-and-sell-more",
+   "name":"AnaDita - your ally to read, write, and sell more.",
+   "url":"https://devpost.com/software/anadita-your-ally-to-read-write-and-sell-more",
+   "domain":"Creative Media, Story & Play",
+   "subsystem":"Generative Video & Audio",
+   "event":"Build with Gemini XPRIZE",
+   "coolness":0.4217,
+   "moves":[
+    "make-the-invisible-measurable"
+   ],
+   "specificity":0.74,
+   "summary":"29% of Brazilian entrepreneurs are functionally illiterate. AnaDita is the voice AI on WhatsApp that helps them read, write and sell - just by speaking. No app, no keyboard, no barriers.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"finova-j9av5f",
+   "name":"Finova",
+   "url":"https://devpost.com/software/finova-j9av5f",
+   "domain":"Money, Commerce & Marketplaces",
+   "subsystem":"Fintech & Personal Finance",
+   "event":"Devpost Software Showcase \u2014 Staff Picks & Rails",
+   "coolness":0.4201,
+   "moves":[],
+   "specificity":0.43,
+   "summary":"Personal-finance fintech platform that incentivizes saving through gamification. Flutter mobile app with RESTful Laravel backend.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"autobom",
+   "name":"AutoBOM",
+   "url":"https://devpost.com/software/autobom",
+   "domain":"Developer Tooling & Code Intelligence",
+   "subsystem":"Build, CI & Release Plumbing",
+   "event":"Build with Gemini XPRIZE",
+   "coolness":0.4117,
+   "moves":[],
+   "specificity":0.66,
+   "summary":"AutoBOM: AI reads your construction drawing, calculates every brick and steel bar, and builds your cost sheet in 5 minute built for Tamil Nadu's contractors and farmers.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"rasa-intelligence-the-company-brain",
+   "name":"Tech Rasa Intelligence - AI Business Diagnostic",
+   "url":"https://devpost.com/software/rasa-intelligence-the-company-brain",
+   "domain":"Health, Care & Human Performance",
+   "subsystem":"Screening & Diagnostics",
+   "event":"Build with Gemini XPRIZE",
+   "coolness":0.4116,
+   "moves":[],
+   "specificity":0.66,
+   "summary":"Rasa Intelligence is an AI-native Company Brain that replaces the strategic analytical work of a BI analyst, strategy consultant, and risk manager simultaneously - in 90 seconds.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"mercury-bx4dun",
+   "name":"Mercury",
+   "url":"https://devpost.com/software/mercury-bx4dun",
+   "domain":"Money, Commerce & Marketplaces",
+   "subsystem":"Retail & Conversion",
+   "event":"Devpost Software Showcase \u2014 Staff Picks & Rails",
+   "coolness":0.4114,
+   "moves":[],
+   "specificity":0.38,
+   "summary":"Finds the correct product through conversation. Asks useful questions, remembers what matters and adapts when preferences change.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"complianceguardian-kcqs32",
+   "name":"ComplianceGuardian",
+   "url":"https://devpost.com/software/complianceguardian-kcqs32",
+   "domain":"Public Trust, Safety & Compliance",
+   "subsystem":"Regulatory & Audit Machinery",
+   "event":"Build with Gemini XPRIZE",
+   "coolness":0.4109,
+   "moves":[
+    "evidence-graph",
+    "deterministic-guardrail",
+    "make-the-invisible-measurable",
+    "offline-first-fallback"
+   ],
+   "specificity":0.7,
+   "summary":"Every verdict cites the rule it came from. Upload a document, get a Gemini risk score in seconds - routine cases auto-approve, edge cases reach a human, audit trail immutable.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"newspectives-new-perspective-on-news",
+   "name":"Newspectives - new perspective on news",
+   "url":"https://devpost.com/software/newspectives-new-perspective-on-news",
+   "domain":"Creative Media, Story & Play",
+   "subsystem":"Games & Interactive Fiction",
+   "event":"Build with Gemini XPRIZE",
+   "coolness":0.4085,
+   "moves":[],
+   "specificity":0.65,
+   "summary":"One news event. Every regional lens. Side-by-side. Newspectives uses Google Gemini and Search grounding to compare how USA, China, Russia, Arab World and more frame each story - daily.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"vms-ai-guard-fisheries-compliance-monitoring-alerts",
+   "name":"VMS AI Guard - Fisheries Compliance Monitoring & Alerts",
+   "url":"https://devpost.com/software/vms-ai-guard-fisheries-compliance-monitoring-alerts",
+   "domain":"Public Trust, Safety & Compliance",
+   "subsystem":"Regulatory & Audit Machinery",
+   "event":"Build with Gemini XPRIZE",
+   "coolness":0.4082,
+   "moves":[
+    "deterministic-guardrail",
+    "long-horizon-watcher",
+    "make-the-invisible-measurable"
+   ],
+   "specificity":0.64,
+   "summary":"VMS AI Guard is an AI system for the Directorate of Fisheries of Vietnam that monitors VMS disconnections, scores compliance, and evaluates provider quality using incident and investigation data.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"vitalis-bio",
+   "name":"Vitalis Bio",
+   "url":"https://devpost.com/software/vitalis-bio",
+   "domain":"Public Trust, Safety & Compliance",
+   "subsystem":"Regulatory & Audit Machinery",
+   "event":"Build with Gemini XPRIZE",
+   "coolness":0.4038,
+   "moves":[
+    "make-the-invisible-measurable"
+   ],
+   "specificity":0.7,
+   "summary":"Turn your wearable and lab data into a dynamic biological age score and reverse your aging curve. Upload any lab PDF, get a biological age you can audit,",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"browsegraph",
+   "name":"BrowseGraph",
+   "url":"https://devpost.com/software/browsegraph",
+   "domain":"Learning & Knowledge Systems",
+   "subsystem":"Search & Retrieval",
+   "event":"Devpost Software Showcase \u2014 Staff Picks & Rails",
+   "coolness":0.403,
+   "moves":[],
+   "specificity":0.31,
+   "summary":"The first in-browser GraphRAG. Everything you browse, fully connected and always accessible.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"real-time-object-detection-nxyikp",
+   "name":"Real Time Object Detection",
+   "url":"https://devpost.com/software/real-time-object-detection-nxyikp",
+   "domain":"Emerging & Cross-Domain",
+   "subsystem":"Unclassified",
+   "event":"Build with Gemini XPRIZE",
+   "coolness":0.4013,
+   "moves":[],
+   "specificity":0.6,
+   "summary":"Detect objects using neural networks. Instantly notify when someone uses the phone.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"calc-506yp2",
+   "name":"CALC",
+   "url":"https://devpost.com/software/calc-506yp2",
+   "domain":"Agentic Autonomy & Orchestration",
+   "subsystem":"General",
+   "event":"Build with Gemini XPRIZE",
+   "coolness":0.4001,
+   "moves":[
+    "crew-of-specialists"
+   ],
+   "specificity":0.6,
+   "summary":"A financial copilot for Latin America's informal economy, in the Spanish people actually speak. The model reads; the code calculates. Five agents run it daily, with nobody at a keyboard.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"asylonia-com",
+   "name":"Asylonia.com",
+   "url":"https://devpost.com/software/asylonia-com",
+   "domain":"Agentic Autonomy & Orchestration",
+   "subsystem":"General",
+   "event":"Build with Gemini XPRIZE",
+   "coolness":0.4,
+   "moves":[
+    "constraint-is-the-feature"
+   ],
+   "specificity":0.61,
+   "summary":"A 2.5D virtual city for creators and SMEs, powered by Gemini and Lyria to build an autonomous, high-trust digital economy with zero-tax free trade.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"mcop",
+   "name":"MCOP",
+   "url":"https://devpost.com/software/mcop",
+   "domain":"Agentic Autonomy & Orchestration",
+   "subsystem":"Multi-Agent Crews",
+   "event":"Build with Gemini XPRIZE",
+   "coolness":0.3992,
+   "moves":[
+    "institutional-grade-reliability",
+    "deterministic-guardrail",
+    "offline-first-fallback",
+    "crew-of-specialists"
+   ],
+   "specificity":0.59,
+   "summary":"MCOP is deterministic, crypto-verifiable substrate for recursive triad orchestration - delivering byte-identical reasoning reproducibility across Node, browser, and edge in 4.4 milliseconds.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "verdict:thin",
+    "artifact_exists failed \u2192 capped at 'thin' (A3)"
+   ],
+   "would_settle_it":[
+    "a fetched project page and an artifact check"
+   ],
+   "audit":{
+    "verdict":"thin",
+    "soundness_score":0.4141,
+    "rubric_coverage":0.64,
+    "audited_at":"2026-09-19",
+    "unknowns":0,
+    "duplicate_of":null,
+    "reasons":[
+     "artifact_exists failed \u2192 capped at 'thin' (A3)"
+    ]
+   }
+  },
+  {
+   "id":"neuthera-drug-discovery-platform",
+   "name":"Neuthera - Drug discovery toolkit",
+   "url":"https://devpost.com/software/neuthera-drug-discovery-platform",
+   "domain":"Health, Care & Human Performance",
+   "subsystem":"Screening & Diagnostics",
+   "event":"Devpost Software Showcase \u2014 Staff Picks & Rails",
+   "coolness":0.3973,
+   "moves":[],
+   "specificity":0.26,
+   "summary":"AI-driven drug discovery toolkit integrating multiple SOTA generative models for de novo molecular design. Graph-based retrieval with compound fingerprint embeddings.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"tower-dq18x2",
+   "name":"Tower",
+   "url":"https://devpost.com/software/tower-dq18x2",
+   "domain":"Agentic Autonomy & Orchestration",
+   "subsystem":"Long-Horizon Autonomy",
+   "event":"All Things Agentic Hackathon",
+   "coolness":0.3963,
+   "moves":[
+    "long-horizon-watcher"
+   ],
+   "specificity":0.65,
+   "summary":"An air traffic controller for your deadlines. Tower reads the rulebook, watches your work unattended for weeks, and calls your phone before you lose on a technicality.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"preopcare",
+   "name":"PreOpCare",
+   "url":"https://devpost.com/software/preopcare",
+   "domain":"Agentic Autonomy & Orchestration",
+   "subsystem":"General",
+   "event":"Build with Gemini XPRIZE",
+   "coolness":0.3936,
+   "moves":[],
+   "specificity":0.55,
+   "summary":"PreOpCare is an AI SaaS platform using Gemini to automate pre-surgery workflows. Autonomous agents guide patients through compliance, documents, and timelines, reducing last-minute cancellations.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"cota-xo9prl",
+   "name":"COTA",
+   "url":"https://devpost.com/software/cota-xo9prl",
+   "domain":"Agentic Autonomy & Orchestration",
+   "subsystem":"General",
+   "event":"Build with Gemini XPRIZE",
+   "coolness":0.3926,
+   "moves":[],
+   "specificity":0.52,
+   "summary":"COTA is a React/TS/Supabase PWA where tourists explore sites, verify GPS visits, earn points/NFTs, and book tours. It features custom dashboards for admins, guides, agents, and staff.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"kora-ai-back-office",
+   "name":"Kora-AI Back Office",
+   "url":"https://devpost.com/software/kora-ai-back-office",
+   "domain":"Agentic Autonomy & Orchestration",
+   "subsystem":"Agent Guardrails & Gating",
+   "event":"Build with Gemini XPRIZE",
+   "coolness":0.3923,
+   "moves":[],
+   "specificity":0.52,
+   "summary":"Kora is an autonomous back office for freelancers and business owners. Its AI agents handle your bookkeeping, contracts, invoicing, and cash flow. Leaving you with just 10 minutes of approvals a week.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"ax4u-academy",
+   "name":"AX4U Academy",
+   "url":"https://devpost.com/software/ax4u-academy",
+   "domain":"Learning & Knowledge Systems",
+   "subsystem":"Tutors & Adaptive Learning",
+   "event":"Build with Gemini XPRIZE",
+   "coolness":0.3921,
+   "moves":[],
+   "specificity":0.6,
+   "summary":"AI Skills. Real Results. Build with AI. Learn AI by Doing. AI for Real Work. Practical AI Academy. Turn AI Into Action. AI Automation Starts Here.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"fast-emergency-action-response-system",
+   "name":"Fast Emergency Action Response System",
+   "url":"https://devpost.com/software/fast-emergency-action-response-system",
+   "domain":"Climate, Energy & the Physical World",
+   "subsystem":"Logistics & Field Operations",
+   "event":"Devpost Software Showcase \u2014 Staff Picks & Rails",
+   "coolness":0.391,
+   "moves":[],
+   "specificity":0.22,
+   "summary":"Making routes faster and roads clearer for emergency response.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"attaindesk",
+   "name":"attainDesk",
+   "url":"https://devpost.com/software/attaindesk",
+   "domain":"Creative Media, Story & Play",
+   "subsystem":"Generative Video & Audio",
+   "event":"Build with Gemini XPRIZE",
+   "coolness":0.3905,
+   "moves":[
+    "crew-of-specialists",
+    "single-input-ux"
+   ],
+   "specificity":0.6,
+   "summary":"attainDesk turns AI into one-click business operations for SMBs. Create social media content, product videos, marketing assets, research and grow business without specialist teams or AI expertise.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"longevitygreenlight",
+   "name":"Agent sells sleep fix. Agent judges, buys sleep fix.",
+   "url":"https://devpost.com/software/longevitygreenlight",
+   "domain":"Money, Commerce & Marketplaces",
+   "subsystem":"Fintech & Personal Finance",
+   "event":"Build with Gemini XPRIZE",
+   "coolness":0.3896,
+   "moves":[],
+   "specificity":0.52,
+   "summary":"I spent plenty of money and time to sell a $0.88 sleep fix. Sold none. My agent sells to your agent within seconds, within budget, with exactly what you are looking for. Paid into a Circle wallet.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"scholesa-education",
+   "name":"Scholesa Education",
+   "url":"https://devpost.com/software/scholesa-education",
+   "domain":"Creative Media, Story & Play",
+   "subsystem":"Games & Interactive Fiction",
+   "event":"Build with Gemini XPRIZE",
+   "coolness":0.3896,
+   "moves":[],
+   "specificity":0.52,
+   "summary":"Kids don't need more coding. They need to ship real work in an AI world. Scholesa: scripted K-12 units, from Grade 1 inventions to Grade 12 venture pitches. Teacher-ready. Already built.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"continuity-g7bty0",
+   "name":"Continuity",
+   "url":"https://devpost.com/software/continuity-g7bty0",
+   "domain":"Learning & Knowledge Systems",
+   "subsystem":"Knowledge Curation",
+   "event":"Agentic Cinema: The Blockbuster Hackathon",
+   "coolness":0.3891,
+   "moves":[
+    "verification-first"
+   ],
+   "specificity":0.6,
+   "summary":"Wiki facts rot silently: nobody edited the page, the world just moved. Continuity re-checks each fact against the live web and drafts the fix for a maintainer to approve.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"civil-dialog",
+   "name":"Civil Dialog",
+   "url":"https://devpost.com/software/civil-dialog",
+   "domain":"Public Trust, Safety & Compliance",
+   "subsystem":"Civics & Discourse",
+   "event":"Devpost Software Showcase \u2014 Staff Picks & Rails",
+   "coolness":0.3886,
+   "moves":[],
+   "specificity":0.18,
+   "summary":"Providing a safe place to discuss anything, free of trolls and personal insults, so productive discourse can happen even in the face of controversy.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"billright",
+   "name":"Billright",
+   "url":"https://devpost.com/software/billright",
+   "domain":"Public Trust, Safety & Compliance",
+   "subsystem":"Regulatory & Audit Machinery",
+   "event":"Build with Gemini XPRIZE",
+   "coolness":0.3874,
+   "moves":[
+    "make-the-invisible-measurable"
+   ],
+   "specificity":0.52,
+   "summary":"Got a medical bill that doesn't add up? Upload it. Our AI audits every charge, files disputes, and negotiates with the hospital. You only pay 25% of what we save you.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"wp-on-device-ai-assistant",
+   "name":"WP On-Device AI Assistant",
+   "url":"https://devpost.com/software/wp-on-device-ai-assistant",
+   "domain":"Developer Tooling & Code Intelligence",
+   "subsystem":"IDE & Terminal Assistants",
+   "event":"Devpost Software Showcase \u2014 Staff Picks & Rails",
+   "coolness":0.3874,
+   "moves":[
+    "offline-first-fallback",
+    "wrap-the-legacy-surface"
+   ],
+   "specificity":0.18,
+   "summary":"WordPress plugin providing an on-device AI assistant: AI Assistant Block, Paragraph Rewriter, Title Generator.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"dentops",
+   "name":"DentOps",
+   "url":"https://devpost.com/software/dentops",
+   "domain":"Health, Care & Human Performance",
+   "subsystem":"Care Navigation & Records",
+   "event":"Build with Gemini XPRIZE",
+   "coolness":0.3863,
+   "moves":[],
+   "specificity":0.57,
+   "summary":"DentOps is an AI ops co-pilot for dental clinics that slashes no-shows, reactivates lapsed patients, and turns messy ops data into clear, revenue-driving insights.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"greenai-smart-tree-plantation-tracker-vlynce",
+   "name":"GreenAI - Smart Tree Plantation Tracker",
+   "url":"https://devpost.com/software/greenai-smart-tree-plantation-tracker-vlynce",
+   "domain":"Climate, Energy & the Physical World",
+   "subsystem":"Agriculture & Environment",
+   "event":"Devpost Software Showcase \u2014 Staff Picks & Rails",
+   "coolness":0.3854,
+   "moves":[
+    "artifacts-not-forms"
+   ],
+   "specificity":0.18,
+   "summary":"AI medicine scanner for Alexa plus tree plantation tracking - scan any medicine and Alexa tells uses, side effects, dosage instantly.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"insightify-6rh0sc",
+   "name":"Insightify",
+   "url":"https://devpost.com/software/insightify-6rh0sc",
+   "domain":"Accessibility & Assistive Tech",
+   "subsystem":"Language & Translation",
+   "event":"Devpost Software Showcase \u2014 Staff Picks & Rails",
+   "coolness":0.3854,
+   "moves":[],
+   "specificity":0.18,
+   "summary":"Helps international businesses analyze and manage customer reviews with AI: response generation, translation, insight summarization at low server cost.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"yandle-poq74e",
+   "name":"Yandle",
+   "url":"https://devpost.com/software/yandle-poq74e",
+   "domain":"Emerging & Cross-Domain",
+   "subsystem":"Unclassified",
+   "event":"Build with Gemini XPRIZE",
+   "coolness":0.3834,
+   "moves":[
+    "artifacts-not-forms"
+   ],
+   "specificity":0.54,
+   "summary":"Yandle: Your 24/7 AI-powered business phone that answers every call, captures every lead, and helps you turn conversations into sales.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"airlock-s2kidr",
+   "name":"Airlock",
+   "url":"https://devpost.com/software/airlock-s2kidr",
+   "domain":"Public Trust, Safety & Compliance",
+   "subsystem":"Regulatory & Audit Machinery",
+   "event":"Agentic Cinema: The Blockbuster Hackathon",
+   "coolness":0.3826,
+   "moves":[],
+   "specificity":0.52,
+   "summary":"Studios ship dozens of generated assets a week and nobody can prove which one was checked, by which rule, or whether the check itself was working.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"setsync",
+   "name":"SetSync",
+   "url":"https://devpost.com/software/setsync",
+   "domain":"Creative Media, Story & Play",
+   "subsystem":"Generative Video & Audio",
+   "event":"Build with Gemini XPRIZE",
+   "coolness":0.3826,
+   "moves":[],
+   "specificity":0.48,
+   "summary":"The first live coordination OS for film sets. Replaces walkie talkies and paper call sheets with one AI-powered app.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"carbender",
+   "name":"Carbender",
+   "url":"https://devpost.com/software/carbender",
+   "domain":"Climate, Energy & the Physical World",
+   "subsystem":"Sensing, Vision & Robotics",
+   "event":"Build with Gemini XPRIZE",
+   "coolness":0.3818,
+   "moves":[],
+   "specificity":0.48,
+   "summary":"A tool for identifying damaged car parts and estimating repair costs. Computer vision turns photos into organized OEM part lists with real-market price reports.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"toyoboaz",
+   "name":"Gospel Align",
+   "url":"https://devpost.com/software/toyoboaz",
+   "domain":"Climate, Energy & the Physical World",
+   "subsystem":"Energy & Mobility",
+   "event":"Build with Gemini XPRIZE",
+   "coolness":0.3812,
+   "moves":[],
+   "specificity":0.42,
+   "summary":"Gospel Align brings 2,000 years of synoptic gospels to life across a synchronized 2D grid, supercharged by Google Gemini Topological Visual RAG.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"agent-launchpad-self-healing-middleware-for-agent-runs",
+   "name":"Agent Launchpad",
+   "url":"https://devpost.com/software/agent-launchpad-self-healing-middleware-for-agent-runs",
+   "domain":"Agentic Autonomy & Orchestration",
+   "subsystem":"Agent Guardrails & Gating",
+   "event":"Devpost Software Showcase \u2014 Staff Picks & Rails",
+   "coolness":0.3805,
+   "moves":[
+    "deterministic-guardrail",
+    "institutional-grade-reliability"
+   ],
+   "specificity":0.18,
+   "summary":"Production-grade guardrails for AI agents: auditability, real-time safety, and self-healing recovery without changing how you build.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"duet-l0ks3b",
+   "name":"DUET",
+   "url":"https://devpost.com/software/duet-l0ks3b",
+   "domain":"Emerging & Cross-Domain",
+   "subsystem":"Unclassified",
+   "event":"Build with Gemini XPRIZE",
+   "coolness":0.3805,
+   "moves":[],
+   "specificity":0.45,
+   "summary":"DUET turns a spreadsheet and one successful demo into repeatable browser automation, helping office workers run web tasks without coding.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"snapdragon-ai-multilingual-translator",
+   "name":"Snapdragon AI: Multilingual Translator",
+   "url":"https://devpost.com/software/snapdragon-ai-multilingual-translator",
+   "domain":"Accessibility & Assistive Tech",
+   "subsystem":"Language & Translation",
+   "event":"Devpost Software Showcase \u2014 Staff Picks & Rails",
+   "coolness":0.3805,
+   "moves":[
+    "offline-first-fallback"
+   ],
+   "specificity":0.18,
+   "summary":"Real-time, on-device translation between English, Japanese, Korean, and Chinese - without internet dependency.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"greenlight-screenplay-to-film",
+   "name":"Greenlight - Screenplay to Film",
+   "url":"https://devpost.com/software/greenlight-screenplay-to-film",
+   "domain":"Creative Media, Story & Play",
+   "subsystem":"Production & Direction",
+   "event":"Agentic Cinema: The Blockbuster Hackathon",
+   "coolness":0.3802,
+   "moves":[
+    "data-flywheel"
+   ],
+   "specificity":0.7,
+   "summary":"Turn a screenplay into a film you can afford. Nine Gemini agents storyboard, cast, shoot and cut it, quoting cost and odds first. Learns from every take in ClickHouse.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "verdict:duplicate",
+    "soundness 0.68 over 64% of the rubric; 1 named unknown(s) remain \u2192 publishable with caveats",
+    "resubmission of the same product \u2014 name match False, shared mechanism/text overlap 0.25, shared numeric fingerprints ['$0.02', '$20', '$238', '$4.50'] (0.60 jaccard); merged into the better-evidenced copy (A5)",
+    "unknown: prior_art \u2014 no named competitor; a search pass would settle it",
+    "hazard: regulated-claim (no team disclaimer found)",
+    "merged into greenlight-nine-agent-production-crew \u2014 same submission, richer twin published",
+    "duplicate_of:greenlight-nine-agent-production-crew"
+   ],
+   "would_settle_it":[
+    "no named competitor; a search pass would settle it"
+   ],
+   "audit":{
+    "verdict":"duplicate",
+    "soundness_score":0.6797,
+    "rubric_coverage":0.64,
+    "audited_at":"2026-09-19",
+    "unknowns":1,
+    "duplicate_of":"greenlight-nine-agent-production-crew",
+    "reasons":[
+     "soundness 0.68 over 64% of the rubric; 1 named unknown(s) remain \u2192 publishable with caveats",
+     "resubmission of the same product \u2014 name match False, shared mechanism/text overlap 0.25, shared numeric fingerprints ['$0.02', '$20', '$238', '$4.50'] (0.60 jaccard); merged into the better-evidenced copy (A5)"
+    ]
+   }
+  },
+  {
+   "id":"fragmentos-del-crepusculo",
+   "name":"Fragmentos del crepusculo",
+   "url":"https://devpost.com/software/fragmentos-del-crepusculo",
+   "domain":"Agentic Autonomy & Orchestration",
+   "subsystem":"General",
+   "event":"Build with Gemini XPRIZE",
+   "coolness":0.38,
+   "moves":[],
+   "specificity":0.43,
+   "summary":"Ante la lentitud en crisis globales, creamos resiliencia autonoma con Gemini. Un ecosistema agentic que mapea necesidades y logistica para salvar vidas cuando el tejido social colapsa.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"interview-coach-oetb68",
+   "name":"Interview Coach",
+   "url":"https://devpost.com/software/interview-coach-oetb68",
+   "domain":"Creative Media, Story & Play",
+   "subsystem":"Generative Video & Audio",
+   "event":"Build with Gemini XPRIZE",
+   "coolness":0.3797,
+   "moves":[
+    "make-the-invisible-measurable"
+   ],
+   "specificity":0.48,
+   "summary":"Ace coding interviews with voice AI. Speak your thought process, code live, track session-over-session growth, and see exactly how top interviewers score you.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"kiraflo",
+   "name":"KiraFlo",
+   "url":"https://devpost.com/software/kiraflo",
+   "domain":"Agentic Autonomy & Orchestration",
+   "subsystem":"General",
+   "event":"Build with Gemini XPRIZE",
+   "coolness":0.3793,
+   "moves":[],
+   "specificity":0.52,
+   "summary":"KiraFlo.ai: An autonomous AI-agent platform that turns messy receipts into tax-ready financial intelligence for SMEs and individuals, closing the gap between raw data and growth.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"truthshield-ai",
+   "name":"TruthShield AI",
+   "url":"https://devpost.com/software/truthshield-ai",
+   "domain":"Emerging & Cross-Domain",
+   "subsystem":"Unclassified",
+   "event":"Build with Gemini XPRIZE",
+   "coolness":0.3781,
+   "moves":[],
+   "specificity":0.49,
+   "summary":"An AI-powered WhatsApp bot that protects everyday citizens from scams, phishing links, and fake news using Google Gemini 2.5 Flash.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"fpl-optimizer-the-ultimate-ai-edge",
+   "name":"FPL Optimizer: The Ultimate AI Edge",
+   "url":"https://devpost.com/software/fpl-optimizer-the-ultimate-ai-edge",
+   "domain":"Agentic Autonomy & Orchestration",
+   "subsystem":"General",
+   "event":"Build with Gemini XPRIZE",
+   "coolness":0.378,
+   "moves":[
+    "offline-first-fallback"
+   ],
+   "specificity":0.43,
+   "summary":"Dominate your Fantasy Premier League mini-leagues. Our Multi-Horizon Simulator, LP Solver, and Gemini AI Agent project the absolute mathematical optimum for your squad across future gameweeks.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"opentank-ai",
+   "name":"HIVEWAVE AI",
+   "url":"https://devpost.com/software/opentank-ai",
+   "domain":"Learning & Knowledge Systems",
+   "subsystem":"Tutors & Adaptive Learning",
+   "event":"Build with Gemini XPRIZE",
+   "coolness":0.378,
+   "moves":[
+    "data-flywheel"
+   ],
+   "specificity":0.44,
+   "summary":"Hivewave is an AI-native growth channel that finds small brands the B2B markets they didn't know existed, then runs outreach end to end and learns from every outcome for small businesses.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"agenticcinestars",
+   "name":"Continuity - Premiere Control Room Agents",
+   "url":"https://devpost.com/software/agenticcinestars",
+   "domain":"Agentic Autonomy & Orchestration",
+   "subsystem":"Multi-Agent Crews",
+   "event":"Agentic Cinema: The Blockbuster Hackathon",
+   "coolness":0.3775,
+   "moves":[
+    "human-holds-the-last-button",
+    "crew-of-specialists"
+   ],
+   "specificity":0.57,
+   "summary":"ADK agent crew that watches live premieres through Grafana, diagnoses outages in seconds, and asks a human before touching production.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"learnway-ai",
+   "name":"LearnWay AI",
+   "url":"https://devpost.com/software/learnway-ai",
+   "domain":"Learning & Knowledge Systems",
+   "subsystem":"Tutors & Adaptive Learning",
+   "event":"Build with Gemini XPRIZE",
+   "coolness":0.3771,
+   "moves":[],
+   "specificity":0.47,
+   "summary":"An AI-native learning platform powered by Gemini that personalizes learning, provides AI mentorship, assesses real-world projects and helps people build practical, career-ready skills.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"postveo",
+   "name":"PostVeo",
+   "url":"https://devpost.com/software/postveo",
+   "domain":"Learning & Knowledge Systems",
+   "subsystem":"Tutors & Adaptive Learning",
+   "event":"Build with Gemini XPRIZE",
+   "coolness":0.3766,
+   "moves":[],
+   "specificity":0.43,
+   "summary":"Connect. Design. Post. Postveo puts small-business social media on autopilot - Gemini-crafted posters, campaigns and scheduling in one studio that learns and adapts to your business.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"exefast",
+   "name":"ExeFast",
+   "url":"https://devpost.com/software/exefast",
+   "domain":"Agentic Autonomy & Orchestration",
+   "subsystem":"General",
+   "event":"Build with Gemini XPRIZE",
+   "coolness":0.3763,
+   "moves":[],
+   "specificity":0.43,
+   "summary":"An AI economy for everyone - a public benefit purpose, chartered in FL. AI tools for underserved people, to create and strive. Self-funded or sponsored. Built and run by AI agents on Google Cloud.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"bidpilot-ai-co-pilot-for-public-tenders",
+   "name":"BidPilot - AI Co-pilot for Public Tenders",
+   "url":"https://devpost.com/software/bidpilot-ai-co-pilot-for-public-tenders",
+   "domain":"Agentic Autonomy & Orchestration",
+   "subsystem":"General",
+   "event":"Build with Gemini XPRIZE",
+   "coolness":0.373,
+   "moves":[],
+   "specificity":0.38,
+   "summary":"Public tenders are locked behind hours of RFP reading. BidPilot's AI agents autonomously parse each RFP, verify your eligibility, build the submission checklist, and alert you only when you can win.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"nua-offline-on-device-lecture-translator",
+   "name":"Nua - Offline On-Device Lecture Translator",
+   "url":"https://devpost.com/software/nua-offline-on-device-lecture-translator",
+   "domain":"Accessibility & Assistive Tech",
+   "subsystem":"Language & Translation",
+   "event":"Build with Gemini XPRIZE",
+   "coolness":0.3726,
+   "moves":[
+    "offline-first-fallback",
+    "constraint-is-the-feature",
+    "make-the-invisible-measurable"
+   ],
+   "specificity":0.42,
+   "summary":"A free, 100% offline Android app that translates and dubs English lectures into natural Hinglish on-device, keeping technical terms intact.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"actingym",
+   "name":"ActinGym",
+   "url":"https://devpost.com/software/actingym",
+   "domain":"Public Trust, Safety & Compliance",
+   "subsystem":"Civics & Discourse",
+   "event":"Build with Gemini XPRIZE",
+   "coolness":0.3722,
+   "moves":[],
+   "specificity":0.38,
+   "summary":"Duolingo for performing arts, starting with acting. We use multimodal AI to analyze performances and deliver video-first coaching across public speaking, dance, singing and stand-up comedy.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"docpulse-ihxu9r",
+   "name":"ShareSight",
+   "url":"https://devpost.com/software/docpulse-ihxu9r",
+   "domain":"Learning & Knowledge Systems",
+   "subsystem":"Documents & Extraction",
+   "event":"Build with Gemini XPRIZE",
+   "coolness":0.3711,
+   "moves":[],
+   "specificity":0.45,
+   "summary":"Turn any PDF into a secure tracked link, then let Gemini turn real reading signals into the next best follow-up action.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"ava-ebqmj6",
+   "name":"AVA",
+   "url":"https://devpost.com/software/ava-ebqmj6",
+   "domain":"Creative Media, Story & Play",
+   "subsystem":"Design & Visual Tools",
+   "event":"Build with Gemini XPRIZE",
+   "coolness":0.3705,
+   "moves":[],
+   "specificity":0.38,
+   "summary":"AI-powered asset valuation platform digitizing full lifecycle. Automates data analysis, and risk detection while keeping valuers in control. Boosts accuracy, and efficiency for banks and insurers.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"ai-productivity-flow",
+   "name":"AI Productivity Flow",
+   "url":"https://devpost.com/software/ai-productivity-flow",
+   "domain":"Money, Commerce & Marketplaces",
+   "subsystem":"Retail & Conversion",
+   "event":"Build with Gemini XPRIZE",
+   "coolness":0.369,
+   "moves":[],
+   "specificity":0.4,
+   "summary":"Turns selected text into audio or visual explanations, and speech into text - directly from your workflow, without opening the app.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"antislop-vkjag3",
+   "name":"Antislop",
+   "url":"https://devpost.com/software/antislop-vkjag3",
+   "domain":"Learning & Knowledge Systems",
+   "subsystem":"Tutors & Adaptive Learning",
+   "event":"All Things Agentic Hackathon",
+   "coolness":0.3685,
+   "moves":[],
+   "specificity":0.48,
+   "summary":"Turns any learning goal into an adaptive study experience. AI builds your roadmap, finds resources, teaches, tests, and adapts.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"ceos",
+   "name":"CEOS",
+   "url":"https://devpost.com/software/ceos",
+   "domain":"Agentic Autonomy & Orchestration",
+   "subsystem":"Agent Guardrails & Gating",
+   "event":"All Things Agentic Hackathon",
+   "coolness":0.3667,
+   "moves":[],
+   "specificity":0.45,
+   "summary":"Helps people check whether an AI action should actually go ahead before it is executed, based on authority, risk, reversibility, and policy.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"viewer-s-cut",
+   "name":"Viewer's Cut",
+   "url":"https://devpost.com/software/viewer-s-cut",
+   "domain":"Creative Media, Story & Play",
+   "subsystem":"Production & Direction",
+   "event":"Agentic Cinema: The Blockbuster Hackathon",
+   "coolness":0.3662,
+   "moves":[],
+   "specificity":0.48,
+   "summary":"Audiences shape the story. AI turns trusted choices into creator-approved screenplays with continuity built in.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"pulsecheck-granola-clinical-note-assistant",
+   "name":"PulseCheck - Granola Clinical Note Assistant",
+   "url":"https://devpost.com/software/pulsecheck-granola-clinical-note-assistant",
+   "domain":"Health, Care & Human Performance",
+   "subsystem":"Screening & Diagnostics",
+   "event":"Build with Gemini XPRIZE",
+   "coolness":0.3661,
+   "moves":[],
+   "specificity":0.38,
+   "summary":"PulseCheck bridges the gap between complex medical syncs and patient compliance. A user speaks with their physician, Granola extracts the unstructured conversation into precise clinical entities.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"echovision-3d-0nk1l5",
+   "name":"EchoVision 3D",
+   "url":"https://devpost.com/software/echovision-3d-0nk1l5",
+   "domain":"Creative Media, Story & Play",
+   "subsystem":"Generative Video & Audio",
+   "event":"Hack for Humanity | Summer 2026",
+   "coolness":0.364,
+   "moves":[],
+   "specificity":0.66,
+   "summary":"Seeing through sounds: converts video signal into 3D binaural auditory signals and AI voice assistance so visually impaired people can navigate around hurdles.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"green-beacons-consulting",
+   "name":"Green Beacons Social Enterprise",
+   "url":"https://devpost.com/software/green-beacons-consulting",
+   "domain":"Public Trust, Safety & Compliance",
+   "subsystem":"General",
+   "event":"Build with Gemini XPRIZE",
+   "coolness":0.3634,
+   "moves":[],
+   "specificity":0.4,
+   "summary":"Green Beacons: the visibility platform that turns scattered effort into evidence - and evidence into recognition, support and funding.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"nutrisight-ysabil",
+   "name":"NutriSight",
+   "url":"https://devpost.com/software/nutrisight-ysabil",
+   "domain":"Data, Retrieval & Memory Infrastructure",
+   "subsystem":"Persistent Memory",
+   "event":"Build with Gemini XPRIZE",
+   "coolness":0.3628,
+   "moves":[],
+   "specificity":0.35,
+   "summary":"NutriSight helps people choose better food before they eat, using AI camera vision, personal goals, meal memory, and future AI glasses.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"saral-9bn2lr",
+   "name":"Reeloli",
+   "url":"https://devpost.com/software/saral-9bn2lr",
+   "domain":"Creative Media, Story & Play",
+   "subsystem":"Generative Video & Audio",
+   "event":"Build with Gemini XPRIZE",
+   "coolness":0.3625,
+   "moves":[],
+   "specificity":0.4,
+   "summary":"WhatsApp content studio for Indian SMBs. Plans and produces 15 days of local-business marketing videos. Fully operated by AI.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"wpf-reliability-agent",
+   "name":"WPF Reliability Agent",
+   "url":"https://devpost.com/software/wpf-reliability-agent",
+   "domain":"Health, Care & Human Performance",
+   "subsystem":"Screening & Diagnostics",
+   "event":"All Things Agentic Hackathon",
+   "coolness":0.3625,
+   "moves":[
+    "make-the-invisible-measurable",
+    "constraint-is-the-feature",
+    "model-cost-routing"
+   ],
+   "specificity":0.42,
+   "summary":"Gemini Flash on Vertex AI diagnoses broken WPF UIs, requests bounded evidence, runs one human-approved mitigation: frame p95 53.85 to 19.23 ms.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"aipilot-vn-autonomous-context-cache-telemetry-mitigation",
+   "name":"AIPILOT.VN - Autonomous Context Cache & Telemetry Mitigation",
+   "url":"https://devpost.com/software/aipilot-vn-autonomous-context-cache-telemetry-mitigation",
+   "domain":"Data, Retrieval & Memory Infrastructure",
+   "subsystem":"Storage & Ledgers",
+   "event":"Build with Gemini XPRIZE",
+   "coolness":0.3609,
+   "moves":[
+    "make-the-invisible-measurable"
+   ],
+   "specificity":0.32,
+   "summary":"A high-performance production proxy layer that reduces LLM API token consumption by up to 97% with live database persistence and financial hard-caps.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"velorn-vercel-app",
+   "name":"velorn.vercel.app",
+   "url":"https://devpost.com/software/velorn-vercel-app",
+   "domain":"Emerging & Cross-Domain",
+   "subsystem":"Unclassified",
+   "event":"Build with Gemini XPRIZE",
+   "coolness":0.3604,
+   "moves":[],
+   "specificity":0.28,
+   "summary":"Go from Curious to capable in just 6 months",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"astro-link",
+   "name":"Astro-Link",
+   "url":"https://devpost.com/software/astro-link",
+   "domain":"Creative Media, Story & Play",
+   "subsystem":"Generative Video & Audio",
+   "event":"Build with Gemini XPRIZE",
+   "coolness":0.3602,
+   "moves":[],
+   "specificity":0.32,
+   "summary":"Book live 1:1 video with verified astronauts and space experts for real career insights.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"day-three",
+   "name":"Day Three",
+   "url":"https://devpost.com/software/day-three",
+   "domain":"Agentic Autonomy & Orchestration",
+   "subsystem":"Long-Horizon Autonomy",
+   "event":"All Things Agentic Hackathon",
+   "coolness":0.3589,
+   "moves":[
+    "long-horizon-watcher"
+   ],
+   "specificity":0.38,
+   "summary":"Nobody remembers to come back on day three. This agent does. It sleeps for days, wakes when lab evidence is due, and drafts a pharmacist note with every claim quoted.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"unleashed-simplicity-crew",
+   "name":"undra",
+   "url":"https://devpost.com/software/unleashed-simplicity-crew",
+   "domain":"Creative Media, Story & Play",
+   "subsystem":"Games & Interactive Fiction",
+   "event":"Build with Gemini XPRIZE",
+   "coolness":0.3588,
+   "moves":[
+    "model-cost-routing"
+   ],
+   "specificity":0.3,
+   "summary":"A mobile-first assistant explaining everyday Swedish systems to newcomers in Lund - and refusing immigration, tax, legal and medical questions, routing each to the authority that decides.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"zeroday-ai-autonomous-vulnerability-patching-system",
+   "name":"ZeroDay AI",
+   "url":"https://devpost.com/software/zeroday-ai-autonomous-vulnerability-patching-system",
+   "domain":"Developer Tooling & Code Intelligence",
+   "subsystem":"Code Repair & Patching",
+   "event":"All Things Agentic Hackathon",
+   "coolness":0.3588,
+   "moves":[],
+   "specificity":0.4,
+   "summary":"Autonomous AI agent that detects code vulnerabilities, writes secure patches, and opens GitHub Pull Requests instantly without human intervention.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"proofflow-agent",
+   "name":"ProofFlow",
+   "url":"https://devpost.com/software/proofflow-agent",
+   "domain":"Data, Retrieval & Memory Infrastructure",
+   "subsystem":"Storage & Ledgers",
+   "event":"All Things Agentic Hackathon",
+   "coolness":0.3578,
+   "moves":[
+    "evidence-graph",
+    "offline-first-fallback"
+   ],
+   "specificity":0.4,
+   "summary":"Turns binding rules and live build evidence into a judge-ready, source-cited submission ledger.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"pulseos-ovm4xn",
+   "name":"PulseOS",
+   "url":"https://devpost.com/software/pulseos-ovm4xn",
+   "domain":"Emerging & Cross-Domain",
+   "subsystem":"Unclassified",
+   "event":"Build with Gemini XPRIZE",
+   "coolness":0.3578,
+   "moves":[],
+   "specificity":0.4,
+   "summary":"An AI-powered business control center that helps small business owners detect financial problems, employee issues, and operational risks before they become losses.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"vibemarketer",
+   "name":"VibeMarketer",
+   "url":"https://devpost.com/software/vibemarketer",
+   "domain":"Money, Commerce & Marketplaces",
+   "subsystem":"Retail & Conversion",
+   "event":"All Things Agentic Hackathon",
+   "coolness":0.3576,
+   "moves":[],
+   "specificity":0.4,
+   "summary":"Turn a product URL into persistent brand context, approved campaigns, and provider-confirmed publishing.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"sarthi-kalyan",
+   "name":"Sarthi Kalyan",
+   "url":"https://devpost.com/software/sarthi-kalyan",
+   "domain":"Public Trust, Safety & Compliance",
+   "subsystem":"Civics & Discourse",
+   "event":"Build with Gemini XPRIZE",
+   "coolness":0.3572,
+   "moves":[],
+   "specificity":0.3,
+   "summary":"Sarthi Kalyan finds government welfare schemes Indians qualify for but don't know exist - through a simple WhatsApp chat, in their own language, no app needed.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"livestockai-b3jz26",
+   "name":"LivestockAI",
+   "url":"https://devpost.com/software/livestockai-b3jz26",
+   "domain":"Money, Commerce & Marketplaces",
+   "subsystem":"Fintech & Personal Finance",
+   "event":"Build with Gemini XPRIZE",
+   "coolness":0.357,
+   "moves":[],
+   "specificity":0.26,
+   "summary":"The operating system for commercial poultry, aquaculture, and livestock. Manage operations, feed, finance, and risks in one calm view",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"syntra-ai-dgq5ej",
+   "name":"QuickAlert - Autonomous First Response",
+   "url":"https://devpost.com/software/syntra-ai-dgq5ej",
+   "domain":"Agentic Autonomy & Orchestration",
+   "subsystem":"General",
+   "event":"All Things Agentic Hackathon",
+   "coolness":0.3567,
+   "moves":[
+    "human-holds-the-last-button",
+    "offline-first-fallback"
+   ],
+   "specificity":0.4,
+   "summary":"Autonomous agent that classifies emergencies, finds the nearest responders, and escalates if no one acknowledges.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"greenlight-ai-script-to-schedule-agents",
+   "name":"CineGuard AI",
+   "url":"https://devpost.com/software/greenlight-ai-script-to-schedule-agents",
+   "domain":"Creative Media, Story & Play",
+   "subsystem":"Generative Video & Audio",
+   "event":"Agentic Cinema: The Blockbuster Hackathon",
+   "coolness":0.3552,
+   "moves":[
+    "deterministic-guardrail",
+    "verification-first"
+   ],
+   "specificity":0.4,
+   "summary":"Autonomous AI film continuity guardian that compares video takes, detects continuity errors, and explains the evidence before editing.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"focushabit",
+   "name":"FocusHabit",
+   "url":"https://devpost.com/software/focushabit",
+   "domain":"Emerging & Cross-Domain",
+   "subsystem":"Unclassified",
+   "event":"Build with Gemini XPRIZE",
+   "coolness":0.3545,
+   "moves":[],
+   "specificity":0.26,
+   "summary":"'Intentional Practice' Leads to Success Meaningful Immersion and Habit Execution! Experience Your Own Individualized Growth Results",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"deverywhere",
+   "name":"Docagram",
+   "url":"https://devpost.com/software/deverywhere",
+   "domain":"Emerging & Cross-Domain",
+   "subsystem":"Unclassified",
+   "event":"Devpost Software Showcase \u2014 Staff Picks & Rails",
+   "coolness":0.3541,
+   "moves":[],
+   "specificity":0.0,
+   "summary":"Visualize everything with Built-In AI.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"the-ai-concierge-bar",
+   "name":"The AI Concierge Bar",
+   "url":"https://devpost.com/software/the-ai-concierge-bar",
+   "domain":"Learning & Knowledge Systems",
+   "subsystem":"Search & Retrieval",
+   "event":"Build with Gemini XPRIZE",
+   "coolness":0.3529,
+   "moves":[],
+   "specificity":0.31,
+   "summary":"#e-commerce search #multi-modal concierge #powered by Gemini 2.5 Flash",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"jobpilot-ai",
+   "name":"JobPilot AI",
+   "url":"https://devpost.com/software/jobpilot-ai",
+   "domain":"Agentic Autonomy & Orchestration",
+   "subsystem":"General",
+   "event":"Build with Gemini XPRIZE",
+   "coolness":0.3528,
+   "moves":[],
+   "specificity":0.3,
+   "summary":"An autonomous, end-to-end AI career agent that handles the entire job search, CV optimization, and application process through a voice conversation.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"block_buster_hakathon",
+   "name":"BACKLOT",
+   "url":"https://devpost.com/software/block_buster_hakathon",
+   "domain":"Creative Media, Story & Play",
+   "subsystem":"Production & Direction",
+   "event":"Agentic Cinema: The Blockbuster Hackathon",
+   "coolness":0.3525,
+   "moves":[
+    "crew-of-specialists"
+   ],
+   "specificity":0.4,
+   "summary":"Agentic AI production crew that turns screenplays into grounded schedules, budgets, risk reports and production-ready packages.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"noji-map-find-your-perfect-wild-camping-spot",
+   "name":"Noji Map - Find Your Perfect Wild Camping Spot",
+   "url":"https://devpost.com/software/noji-map-find-your-perfect-wild-camping-spot",
+   "domain":"Creative Media, Story & Play",
+   "subsystem":"Generative Video & Audio",
+   "event":"Build with Gemini XPRIZE",
+   "coolness":0.3515,
+   "moves":[],
+   "specificity":0.23,
+   "summary":"Noji Map brings scattered wild camping info from YouTube, blogs, and Communities into one map - where users find spots, watch real footage, and share reviews.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"protolive-xyz",
+   "name":"ProtoLive.xyz",
+   "url":"https://devpost.com/software/protolive-xyz",
+   "domain":"Emerging & Cross-Domain",
+   "subsystem":"Unclassified",
+   "event":"Build with Gemini XPRIZE",
+   "coolness":0.351,
+   "moves":[],
+   "specificity":0.18,
+   "summary":"The all-in-one, 'Prototype to Profit,' creative founder application: no stone left unturned.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"the-fixlens-multimodal-repair-guide-multilingual-jqscid",
+   "name":"The FixLens: Multimodal Repair Guide",
+   "url":"https://devpost.com/software/the-fixlens-multimodal-repair-guide-multilingual-jqscid",
+   "domain":"Accessibility & Assistive Tech",
+   "subsystem":"Language & Translation",
+   "event":"Build with Gemini XPRIZE",
+   "coolness":0.3503,
+   "moves":[],
+   "specificity":0.23,
+   "summary":"Fixing appliances, cars, or electronics is hard because manuals are dense and do not see what you are doing. Multimodal repair guide, multilingual.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"vidyut-bcrn0l",
+   "name":"Vidyut",
+   "url":"https://devpost.com/software/vidyut-bcrn0l",
+   "domain":"Climate, Energy & the Physical World",
+   "subsystem":"Energy & Mobility",
+   "event":"All Things Agentic Hackathon",
+   "coolness":0.3501,
+   "moves":[
+    "model-cost-routing"
+   ],
+   "specificity":0.32,
+   "summary":"AI-powered P2P EV charging marketplace connecting EV owners, charging providers, and landowners with intelligent routing.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"healthia-one",
+   "name":"HealthIA ONE",
+   "url":"https://devpost.com/software/healthia-one",
+   "domain":"Health, Care & Human Performance",
+   "subsystem":"Care Navigation & Records",
+   "event":"All Things Agentic Hackathon",
+   "coolness":0.3499,
+   "moves":[
+    "privacy-as-architecture"
+   ],
+   "specificity":0.45,
+   "summary":"Patient-owned AI agent that turns evidence into durable, consent-aware missions and real-world action.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"atah",
+   "name":"BULWARK",
+   "url":"https://devpost.com/software/atah",
+   "domain":"Public Trust, Safety & Compliance",
+   "subsystem":"Regulatory & Audit Machinery",
+   "event":"All Things Agentic Hackathon",
+   "coolness":0.3498,
+   "moves":[
+    "evidence-graph",
+    "crew-of-specialists"
+   ],
+   "specificity":0.42,
+   "summary":"Closes the third-party risk blind window: a 12-agent Gemini fleet that continuously assesses vendors and answers security questionnaires from one shared, auditable evidence graph.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"dataaeternum-com",
+   "name":"LBrain.ai",
+   "url":"https://devpost.com/software/dataaeternum-com",
+   "domain":"Data, Retrieval & Memory Infrastructure",
+   "subsystem":"Persistent Memory",
+   "event":"Build with Gemini XPRIZE",
+   "coolness":0.3496,
+   "moves":[
+    "evidence-graph"
+   ],
+   "specificity":0.26,
+   "summary":"The model wasn't the problem. The record was. LBrain gives any AI persistent, provenance-aware memory that survives sessions, models, and time.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"aroppo",
+   "name":"Find your next opportunity",
+   "url":"https://devpost.com/software/aroppo",
+   "domain":"Developer Tooling & Code Intelligence",
+   "subsystem":"Build, CI & Release Plumbing",
+   "event":"Build with Gemini XPRIZE",
+   "coolness":0.3484,
+   "moves":[],
+   "specificity":0.23,
+   "summary":"Helps independent creators fund their work and build careers on their own terms.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"claimops",
+   "name":"ClaimOps",
+   "url":"https://devpost.com/software/claimops",
+   "domain":"Public Trust, Safety & Compliance",
+   "subsystem":"Provenance & Anti-Deception",
+   "event":"Build with Gemini XPRIZE",
+   "coolness":0.3469,
+   "moves":[
+    "evidence-graph"
+   ],
+   "specificity":0.18,
+   "summary":"AI claim-review desk for teams: verify facts, flag spin, and produce source-backed audit trails before publishing.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"easyfinder-to",
+   "name":"easyfinder-to",
+   "url":"https://devpost.com/software/easyfinder-to",
+   "domain":"Learning & Knowledge Systems",
+   "subsystem":"Search & Retrieval",
+   "event":"Build with Gemini XPRIZE",
+   "coolness":0.3462,
+   "moves":[],
+   "specificity":0.18,
+   "summary":"A robust searching platform targeting small, medium and large businesses to search qualified professionals, skilled workers, other businesses and clients near them.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"unified-earth-dynamics",
+   "name":"Unified Earth Dynamics",
+   "url":"https://devpost.com/software/unified-earth-dynamics",
+   "domain":"Emerging & Cross-Domain",
+   "subsystem":"Unclassified",
+   "event":"Build with Gemini XPRIZE",
+   "coolness":0.3462,
+   "moves":[
+    "constraint-is-the-feature"
+   ],
+   "specificity":0.18,
+   "summary":"Understanding puzzling Earth behavior without a supercomputer: oceans, atmosphere, and the mantle.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"rootlense",
+   "name":"RootLense",
+   "url":"https://devpost.com/software/rootlense",
+   "domain":"Developer Tooling & Code Intelligence",
+   "subsystem":"Incident & Reliability Ops",
+   "event":"Build with Gemini XPRIZE",
+   "coolness":0.3452,
+   "moves":[],
+   "specificity":0.27,
+   "summary":"Turn production incidents into actionable fixes in minutes.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"ai-fitting-labs",
+   "name":"AI FITTING LABS",
+   "url":"https://devpost.com/software/ai-fitting-labs",
+   "domain":"Money, Commerce & Marketplaces",
+   "subsystem":"Retail & Conversion",
+   "event":"Build with Gemini XPRIZE",
+   "coolness":0.3442,
+   "moves":[
+    "wrap-the-legacy-surface"
+   ],
+   "specificity":0.18,
+   "summary":"A plug-and-play, non-redirect Virtual Try-On widget that boosts retention and cuts return logistics costs for e-commerce brands.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"must-master-unified-system-theorem",
+   "name":"MUST: Master Unified System Theorem",
+   "url":"https://devpost.com/software/must-master-unified-system-theorem",
+   "domain":"Creative Media, Story & Play",
+   "subsystem":"Games & Interactive Fiction",
+   "event":"Build with Gemini XPRIZE",
+   "coolness":0.3438,
+   "moves":[],
+   "specificity":0.18,
+   "summary":"A functional, neuromorphic system architecture delivering sovereign, real-world data coordination and adaptive resilience.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"deshkaai",
+   "name":"DeshkaAI",
+   "url":"https://devpost.com/software/deshkaai",
+   "domain":"Agentic Autonomy & Orchestration",
+   "subsystem":"General",
+   "event":"Build with Gemini XPRIZE",
+   "coolness":0.343,
+   "moves":[
+    "verification-first"
+   ],
+   "specificity":0.23,
+   "summary":"DeshkaAI builds human-first AI safety layers that add micro-pause validation before irreversible autonomous decisions.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"proofline-65a8t4",
+   "name":"Proofline",
+   "url":"https://devpost.com/software/proofline-65a8t4",
+   "domain":"Public Trust, Safety & Compliance",
+   "subsystem":"Provenance & Anti-Deception",
+   "event":"All Things Agentic Hackathon",
+   "coolness":0.3429,
+   "moves":[
+    "evidence-graph",
+    "verification-first"
+   ],
+   "specificity":0.4,
+   "summary":"A verification-first AI agent that turns fresh evidence into tamper-evident proof packets before any external action.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"firstnotice-dispatch",
+   "name":"FirstNotice Dispatch",
+   "url":"https://devpost.com/software/firstnotice-dispatch",
+   "domain":"Public Trust, Safety & Compliance",
+   "subsystem":"Safety & Emergency Response",
+   "event":"All Things Agentic Hackathon",
+   "coolness":0.3427,
+   "moves":[
+    "human-holds-the-last-button",
+    "artifacts-not-forms"
+   ],
+   "specificity":0.31,
+   "summary":"Upload accident evidence, not forms. Gemini-powered agents build claims, catch bad evidence, coordinate next steps, and escalate to humans.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"backpocket-help",
+   "name":"Backpocket.help",
+   "url":"https://devpost.com/software/backpocket-help",
+   "domain":"Emerging & Cross-Domain",
+   "subsystem":"Unclassified",
+   "event":"Build with Gemini XPRIZE",
+   "coolness":0.3425,
+   "moves":[],
+   "specificity":0.18,
+   "summary":"Our AI finds the safest next move, then, when advice isn't enough, sends a prepared local Rescuer to finish the job.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"aetherforge-ai-agents-invent-a-3d-city-then-flood-test-it",
+   "name":"Aetherforge",
+   "url":"https://devpost.com/software/aetherforge-ai-agents-invent-a-3d-city-then-flood-test-it",
+   "domain":"Climate, Energy & the Physical World",
+   "subsystem":"Agriculture & Environment",
+   "event":"Agentic Cinema: The Blockbuster Hackathon",
+   "coolness":0.3415,
+   "moves":[],
+   "specificity":0.26,
+   "summary":"What if you summoned a city into existence by typing? AI agents design it live, then flood-test it - judged by survival metrics, not slides.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"dev1-i6ma2u",
+   "name":"FortifiedReg Fleet",
+   "url":"https://devpost.com/software/dev1-i6ma2u",
+   "domain":"Agentic Autonomy & Orchestration",
+   "subsystem":"Multi-Agent Crews",
+   "event":"All Things Agentic Hackathon",
+   "coolness":0.3399,
+   "moves":[
+    "institutional-grade-reliability"
+   ],
+   "specificity":0.28,
+   "summary":"Autonomous Multi-Agent Enterprise Regulatory Compliance Fleet with Google Model Armor, EU SCCS Toxicology Engine, and Cryptographic HitL Verification on Cloud Run.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"hireprep-ai-qn9h3w",
+   "name":"HIREPREP-AI",
+   "url":"https://devpost.com/software/hireprep-ai-qn9h3w",
+   "domain":"Learning & Knowledge Systems",
+   "subsystem":"Tutors & Adaptive Learning",
+   "event":"Build with Gemini XPRIZE",
+   "coolness":0.3377,
+   "moves":[],
+   "specificity":0.18,
+   "summary":"HirePrep AI: Your personal AI career coach for interactive mock interviews and tailored study roadmaps.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"gemini-box",
+   "name":"Gemini-Box",
+   "url":"https://devpost.com/software/gemini-box",
+   "domain":"Agentic Autonomy & Orchestration",
+   "subsystem":"General",
+   "event":"Build with Gemini XPRIZE",
+   "coolness":0.3372,
+   "moves":[
+    "institutional-grade-reliability"
+   ],
+   "specificity":0.31,
+   "summary":"Gemini-Box: Bounded cryptographic execution claims for autonomous Gemini agents. Any mutation collapses verification instantly.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"intent-compiler",
+   "name":"Kosmo",
+   "url":"https://devpost.com/software/intent-compiler",
+   "domain":"Emerging & Cross-Domain",
+   "subsystem":"Unclassified",
+   "event":"Build with Gemini XPRIZE",
+   "coolness":0.3366,
+   "moves":[],
+   "specificity":0.22,
+   "summary":"Turn your idea into a flawless AI prompt.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"neuropath-kbe2ys",
+   "name":"NeuroPath",
+   "url":"https://devpost.com/software/neuropath-kbe2ys",
+   "domain":"Health, Care & Human Performance",
+   "subsystem":"Screening & Diagnostics",
+   "event":"Hack for Humanity | Summer 2026",
+   "coolness":0.3362,
+   "moves":[
+    "single-input-ux"
+   ],
+   "specificity":0.53,
+   "summary":"AI clinical recovery app for concussions and ADHD. Gemini triages symptoms to automate acoustic therapy and vestibular training in a zero-decision UI.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"companion-healt-pro",
+   "name":"Companion Healt Pro",
+   "url":"https://devpost.com/software/companion-healt-pro",
+   "domain":"Emerging & Cross-Domain",
+   "subsystem":"Unclassified",
+   "event":"Build with Gemini XPRIZE",
+   "coolness":0.336,
+   "moves":[],
+   "specificity":0.18,
+   "summary":"Companion Health Pro is an AI copilot that transforms complex medical histories into clear insights, empowering users to understand and take control of their health",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"checkzhao",
+   "name":"checkzhao",
+   "url":"https://devpost.com/software/checkzhao",
+   "domain":"Health, Care & Human Performance",
+   "subsystem":"Mental Health & Wellbeing",
+   "event":"Build with Gemini XPRIZE",
+   "coolness":0.3338,
+   "moves":[],
+   "specificity":0.22,
+   "summary":"Mental-health check-in tool for humans (contributing to psychological wellbeing).",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"lenis-zwxmea",
+   "name":"Lenis",
+   "url":"https://devpost.com/software/lenis-zwxmea",
+   "domain":"Health, Care & Human Performance",
+   "subsystem":"Screening & Diagnostics",
+   "event":"Hack for Humanity | Summer 2026",
+   "coolness":0.3335,
+   "moves":[],
+   "specificity":0.52,
+   "summary":"Lenis reads the sound of your voice to pace gentle EMDR-style eye movements that calm you down; the same eye-tracking engine doubles as symptom-titrated concussion recovery.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"adversarial-compliance-matrix",
+   "name":"Gemini-Box",
+   "url":"https://devpost.com/software/adversarial-compliance-matrix",
+   "domain":"Agentic Autonomy & Orchestration",
+   "subsystem":"General",
+   "event":"Build with Gemini XPRIZE",
+   "coolness":0.333,
+   "moves":[
+    "institutional-grade-reliability"
+   ],
+   "specificity":0.28,
+   "summary":"Gemini-Box: Immutable cryptographic claims for Gemini agents. Any bit flip -> instant INVALID.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"stageport-fieldshield",
+   "name":"AUTOGRAPHY",
+   "url":"https://devpost.com/software/stageport-fieldshield",
+   "domain":"Creative Media, Story & Play",
+   "subsystem":"Games & Interactive Fiction",
+   "event":"Agentic Cinema: The Blockbuster Hackathon",
+   "coolness":0.3323,
+   "moves":[],
+   "specificity":0.23,
+   "summary":"A live entertainment question becomes a performed Gemini micro-show - then anyone can open the cut and inspect where every line came from.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"studiotower-observable-production-control-for-film-prep",
+   "name":"StudioTower",
+   "url":"https://devpost.com/software/studiotower-observable-production-control-for-film-prep",
+   "domain":"Creative Media, Story & Play",
+   "subsystem":"Generative Video & Audio",
+   "event":"Agentic Cinema: The Blockbuster Hackathon",
+   "coolness":0.332,
+   "moves":[
+    "crew-of-specialists"
+   ],
+   "specificity":0.23,
+   "summary":"Observable, agentic control tower for film preparation and production coordination, bridging creative crew collaboration and industrial-grade reliability.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"artifact-sri4un",
+   "name":"Artifact",
+   "url":"https://devpost.com/software/artifact-sri4un",
+   "domain":"Creative Media, Story & Play",
+   "subsystem":"Generative Video & Audio",
+   "event":"Agentic Cinema: The Blockbuster Hackathon",
+   "coolness":0.3314,
+   "moves":[
+    "human-holds-the-last-button"
+   ],
+   "specificity":0.23,
+   "summary":"AI agent system that takes a film's hero prop from script to buildable design, with a human in the loop.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"farmlink-nigeria",
+   "name":"Farmlink Nigeria",
+   "url":"https://devpost.com/software/farmlink-nigeria",
+   "domain":"Emerging & Cross-Domain",
+   "subsystem":"Unclassified",
+   "event":"Build with Gemini XPRIZE",
+   "coolness":0.331,
+   "moves":[],
+   "specificity":0.08,
+   "summary":"Connecting Farms. Powering Markets. Agricultural market linkage platform.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"tidemark-hgom3q",
+   "name":"TIDEMARK",
+   "url":"https://devpost.com/software/tidemark-hgom3q",
+   "domain":"Agentic Autonomy & Orchestration",
+   "subsystem":"Agent Guardrails & Gating",
+   "event":"All Things Agentic Hackathon",
+   "coolness":0.3309,
+   "moves":[
+    "deterministic-guardrail"
+   ],
+   "specificity":0.18,
+   "summary":"Selection, not supply: a deterministic runtime boundary that prevents AI agents from supplying protected values to side-effecting tools.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"acl-movemement-analytics-lab",
+   "name":"ACL Movement Analytics Lab",
+   "url":"https://devpost.com/software/acl-movemement-analytics-lab",
+   "domain":"Public Trust, Safety & Compliance",
+   "subsystem":"General",
+   "event":"Hack for Humanity | Summer 2026",
+   "coolness":0.3304,
+   "moves":[],
+   "specificity":0.47,
+   "summary":"Turning ACL injury videos into interpretable biomechanical evidence through computer vision and AI - Responsible AI that explains what the movement suggests, not a black-box result.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"countersign-s4w1a8",
+   "name":"Countersign",
+   "url":"https://devpost.com/software/countersign-s4w1a8",
+   "domain":"Agentic Autonomy & Orchestration",
+   "subsystem":"Multi-Agent Crews",
+   "event":"All Things Agentic Hackathon",
+   "coolness":0.33,
+   "moves":[
+    "human-holds-the-last-button"
+   ],
+   "specificity":0.18,
+   "summary":"Governed AI agent fleet that investigates pharmaceutical deviations, executes approved follow-up actions, preserves the Qualified Person's final authority.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"echoroom-tigno3",
+   "name":"EchoRoom",
+   "url":"https://devpost.com/software/echoroom-tigno3",
+   "domain":"Emerging & Cross-Domain",
+   "subsystem":"Unclassified",
+   "event":"Hack for Humanity | Summer 2026",
+   "coolness":0.3288,
+   "moves":[],
+   "specificity":0.4,
+   "summary":"A quiet space to keep memories of loved ones alive and gently check in on those grieving or feeling alone.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"small-business-ai-growth-desk",
+   "name":"Small Business AI Growth Desk",
+   "url":"https://devpost.com/software/small-business-ai-growth-desk",
+   "domain":"Creative Media, Story & Play",
+   "subsystem":"Design & Visual Tools",
+   "event":"Build with Gemini XPRIZE",
+   "coolness":0.327,
+   "moves":[],
+   "specificity":0.18,
+   "summary":"AI-powered growth platform that helps small businesses create marketing, content, outreach, and operational assets in minutes.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"thetruth",
+   "name":"TheTruth",
+   "url":"https://devpost.com/software/thetruth",
+   "domain":"Emerging & Cross-Domain",
+   "subsystem":"Unclassified",
+   "event":"Build with Gemini XPRIZE",
+   "coolness":0.3258,
+   "moves":[],
+   "specificity":0.0,
+   "summary":"\u81f4\u529b\u4e8e\u7834\u89e3\u4fe1\u606f\u64cd\u7eb5\u4e0e\u903b\u8f91\u8c2c\u8bef\u7684\u79d1\u666e\u6838\u67e5\u5e73\u53f0 \u2014\u2014 \u5e2e\u52a9\u666e\u901a\u5927\u4f17\u8bc6\u7834\u81ea\u5a92\u4f53\u3001\u8425\u9500\u4e0e\u8bc4\u8bba\u4e2d\u7684\u5fc3\u7406\u9677\u9631,\u56de\u5f52\u72ec\u7acb\u601d\u8003\u4e0e\u5ba2\u89c2\u5224\u65ad\u3002",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"the-neon-hosizon",
+   "name":"NeoMovie",
+   "url":"https://devpost.com/software/the-neon-hosizon",
+   "domain":"Creative Media, Story & Play",
+   "subsystem":"Generative Video & Audio",
+   "event":"Agentic Cinema: The Blockbuster Hackathon",
+   "coolness":0.3254,
+   "moves":[
+    "crew-of-specialists"
+   ],
+   "specificity":0.18,
+   "summary":"Low-budget indie film OS stack: AI production hardware and software engines replacing crew day-rates and gear rental fees.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"brainbar",
+   "name":"BrainBar",
+   "url":"https://devpost.com/software/brainbar",
+   "domain":"Developer Tooling & Code Intelligence",
+   "subsystem":"Incident & Reliability Ops",
+   "event":"Agentic Cinema: The Blockbuster Hackathon",
+   "coolness":0.3246,
+   "moves":[
+    "verification-first",
+    "constraint-is-the-feature"
+   ],
+   "specificity":0.18,
+   "summary":"Five AI agents live inside Grafana: querying Mimir, Loki, and Tempo, writing incidents and annotations, catching a broken take before the reshoot.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"continuity-n4joe9",
+   "name":"CONTINUITY",
+   "url":"https://devpost.com/software/continuity-n4joe9",
+   "domain":"Emerging & Cross-Domain",
+   "subsystem":"Unclassified",
+   "event":"Agentic Cinema: The Blockbuster Hackathon",
+   "coolness":0.3244,
+   "moves":[],
+   "specificity":0.18,
+   "summary":"Finds the contradictions in a long script that no human can hold in their head, and shows you the sentence that proves each one.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"reel-crew",
+   "name":"Reel Crew",
+   "url":"https://devpost.com/software/reel-crew",
+   "domain":"Agentic Autonomy & Orchestration",
+   "subsystem":"Multi-Agent Crews",
+   "event":"Agentic Cinema: The Blockbuster Hackathon",
+   "coolness":0.3244,
+   "moves":[
+    "crew-of-specialists"
+   ],
+   "specificity":0.18,
+   "summary":"Unbox your creative archive: the production system that remembers, where the work became the show.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"neuroguard-ai-0qb34c",
+   "name":"NeuroGuard AI (v2)",
+   "url":"https://devpost.com/software/neuroguard-ai-0qb34c",
+   "domain":"Health, Care & Human Performance",
+   "subsystem":"Screening & Diagnostics",
+   "event":"Hack for Humanity | Summer 2026",
+   "coolness":0.3227,
+   "moves":[
+    "deterministic-guardrail"
+   ],
+   "specificity":0.4,
+   "summary":"Uses personalized cognitive and physical tests to track concussion recovery, detect unusual changes, and provide AI-powered recovery insights.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"cinepilot-ai-multi-agent-film-production-assistant",
+   "name":"CinePilot - Production Assistant",
+   "url":"https://devpost.com/software/cinepilot-ai-multi-agent-film-production-assistant",
+   "domain":"Creative Media, Story & Play",
+   "subsystem":"Generative Video & Audio",
+   "event":"Agentic Cinema: The Blockbuster Hackathon",
+   "coolness":0.3226,
+   "moves":[],
+   "specificity":0.18,
+   "summary":"Transforms film scripts into production plans: scene breakdowns, location scouting, scheduling, budgeting, weather insights, risk analysis.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"tracelayer",
+   "name":"TraceLayer",
+   "url":"https://devpost.com/software/tracelayer",
+   "domain":"Public Trust, Safety & Compliance",
+   "subsystem":"Regulatory & Audit Machinery",
+   "event":"All Things Agentic Hackathon",
+   "coolness":0.3222,
+   "moves":[
+    "deterministic-guardrail"
+   ],
+   "specificity":0.18,
+   "summary":"Autonomous multi-agent fraud investigation platform that traces suspicious transactions, gathers evidence, enforces compliance, delivers audit-ready cases.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"maintmentor-ai",
+   "name":"Maintmentor.ai",
+   "url":"https://devpost.com/software/maintmentor-ai",
+   "domain":"Emerging & Cross-Domain",
+   "subsystem":"Unclassified",
+   "event":"Build with Gemini XPRIZE",
+   "coolness":0.322,
+   "moves":[],
+   "specificity":0.08,
+   "summary":"Maintmentor.AI teaches techs right on their phone - mobile maintenance coaching.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"openphr",
+   "name":"MetawatchPHR",
+   "url":"https://devpost.com/software/openphr",
+   "domain":"Health, Care & Human Performance",
+   "subsystem":"Screening & Diagnostics",
+   "event":"Build with Gemini XPRIZE",
+   "coolness":0.3204,
+   "moves":[],
+   "specificity":0.05,
+   "summary":"Refining Raw Medical Record Chaos into Personal Clinical Sovereignty",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"neuroguard-ai-adaptiveconcussionrecoveryintelligencesystem",
+   "name":"NeuroGuard AI",
+   "url":"https://devpost.com/software/neuroguard-ai-adaptiveconcussionrecoveryintelligencesystem",
+   "domain":"Health, Care & Human Performance",
+   "subsystem":"Screening & Diagnostics",
+   "event":"Hack for Humanity | Summer 2026",
+   "coolness":0.3197,
+   "moves":[
+    "human-holds-the-last-button",
+    "deterministic-guardrail"
+   ],
+   "specificity":0.4,
+   "summary":"Turns daily concussion symptoms into clear, evidence-grounded recovery guidance and timely safety escalation for patients, caregivers, and clinicians.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"growth-partner-ai",
+   "name":"Growth Partner AI",
+   "url":"https://devpost.com/software/growth-partner-ai",
+   "domain":"Money, Commerce & Marketplaces",
+   "subsystem":"General",
+   "event":"Build with Gemini XPRIZE",
+   "coolness":0.3178,
+   "moves":[],
+   "specificity":0.0,
+   "summary":"Sharper decisions. Faster revenue.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"attestor",
+   "name":"Attestor",
+   "url":"https://devpost.com/software/attestor",
+   "domain":"Agentic Autonomy & Orchestration",
+   "subsystem":"Multi-Agent Crews",
+   "event":"All Things Agentic Hackathon",
+   "coolness":0.3162,
+   "moves":[
+    "evidence-graph",
+    "deterministic-guardrail"
+   ],
+   "specificity":0.18,
+   "summary":"An enterprise agent fleet that answers vendor security questionnaires from your own documents, cites every claim, refuses what it cannot support.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"cineflow-43r9vh",
+   "name":"CineFlow AI",
+   "url":"https://devpost.com/software/cineflow-43r9vh",
+   "domain":"Creative Media, Story & Play",
+   "subsystem":"Production & Direction",
+   "event":"Agentic Cinema: The Blockbuster Hackathon",
+   "coolness":0.3143,
+   "moves":[],
+   "specificity":0.18,
+   "summary":"Multi-agent platform automating screenplay writing, planning, budgeting, storyboarding and production workflows from a single movie idea.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"before-i-tell",
+   "name":"Before I Tell",
+   "url":"https://devpost.com/software/before-i-tell",
+   "domain":"Health, Care & Human Performance",
+   "subsystem":"Mental Health & Wellbeing",
+   "event":"Hack for Humanity | Summer 2026",
+   "coolness":0.3123,
+   "moves":[
+    "make-the-invisible-measurable"
+   ],
+   "specificity":0.32,
+   "summary":"75% of teens with a mental-health problem never talk to anyone - because nobody knows what happens after you tell. Prepares you for the aftermath.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"school-pulse",
+   "name":"School Pulse",
+   "url":"https://devpost.com/software/school-pulse",
+   "domain":"Health, Care & Human Performance",
+   "subsystem":"Mental Health & Wellbeing",
+   "event":"Hack for Humanity | Summer 2026",
+   "coolness":0.3123,
+   "moves":[],
+   "specificity":0.4,
+   "summary":"Anonymous school mental health check-in tool that helps schools understand student stress and support students early.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"cine_agent-py",
+   "name":"CineAgent AI",
+   "url":"https://devpost.com/software/cine_agent-py",
+   "domain":"Agentic Autonomy & Orchestration",
+   "subsystem":"Multi-Agent Crews",
+   "event":"Agentic Cinema: The Blockbuster Hackathon",
+   "coolness":0.3119,
+   "moves":[
+    "crew-of-specialists"
+   ],
+   "specificity":0.22,
+   "summary":"Autonomous multi-agent orchestrator for blockbuster movie production.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"dermascan-ai-y1m9si",
+   "name":"DermaScan-AI",
+   "url":"https://devpost.com/software/dermascan-ai-y1m9si",
+   "domain":"Health, Care & Human Performance",
+   "subsystem":"Screening & Diagnostics",
+   "event":"Hack for Humanity | Summer 2026",
+   "coolness":0.3101,
+   "moves":[
+    "narrow-domain-deep-model",
+    "offline-first-fallback"
+   ],
+   "specificity":0.32,
+   "summary":"AI skin lesion screening classifying 7 diagnostic conditions with real-time Grad-CAM visual explainability and fast edge-ready inference.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"behaviorlab-2w3fev",
+   "name":"BehaviorLab",
+   "url":"https://devpost.com/software/behaviorlab-2w3fev",
+   "domain":"Agentic Autonomy & Orchestration",
+   "subsystem":"Agent Guardrails & Gating",
+   "event":"Hack for Humanity | Summer 2026",
+   "coolness":0.307,
+   "moves":[],
+   "specificity":0.26,
+   "summary":"Lets policy makers test psychological nudges on real issues. Pick one, instantly see the behavior change and the science behind it.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"lumina-study-buddy",
+   "name":"Lumina Study Buddy",
+   "url":"https://devpost.com/software/lumina-study-buddy",
+   "domain":"Learning & Knowledge Systems",
+   "subsystem":"Tutors & Adaptive Learning",
+   "event":"Agentic Cinema: The Blockbuster Hackathon",
+   "coolness":0.3068,
+   "moves":[
+    "deterministic-guardrail"
+   ],
+   "specificity":0.0,
+   "summary":"Learning companion for students who cannot afford commercial learning apps.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"beyond-the-plate-50ft3p",
+   "name":"Beyond the Plate",
+   "url":"https://devpost.com/software/beyond-the-plate-50ft3p",
+   "domain":"Emerging & Cross-Domain",
+   "subsystem":"Unclassified",
+   "event":"Hack for Humanity | Summer 2026",
+   "coolness":0.3045,
+   "moves":[],
+   "specificity":0.23,
+   "summary":"Challenges the stereotype that eating disorders are only visible in people who look thin and sick - showcases different ED experiences.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"pocket-rpmhd9",
+   "name":"Pocket Apps",
+   "url":"https://devpost.com/software/pocket-rpmhd9",
+   "domain":"Emerging & Cross-Domain",
+   "subsystem":"Unclassified",
+   "event":"All Things Agentic Hackathon",
+   "coolness":0.3007,
+   "moves":[],
+   "specificity":0.0,
+   "summary":"Native apps for everyday ideas, running right on your phone.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"cineflow-zb1rla",
+   "name":"CineFlow (logistics)",
+   "url":"https://devpost.com/software/cineflow-zb1rla",
+   "domain":"Creative Media, Story & Play",
+   "subsystem":"Generative Video & Audio",
+   "event":"Agentic Cinema: The Blockbuster Hackathon",
+   "coolness":0.2974,
+   "moves":[],
+   "specificity":0.0,
+   "summary":"Turning film scripts into set-ready logistics, automatically.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"medvoice-y87kei",
+   "name":"Medvoice",
+   "url":"https://devpost.com/software/medvoice-y87kei",
+   "domain":"Health, Care & Human Performance",
+   "subsystem":"Care Navigation & Records",
+   "event":"Hack for Humanity | Summer 2026",
+   "coolness":0.2966,
+   "moves":[],
+   "specificity":0.18,
+   "summary":"A voice-first, visual medication assistant designed by a nurse to help elderly and low-literacy patients take the right medicine at the right time.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"cinema-os",
+   "name":"Cinema OS",
+   "url":"https://devpost.com/software/cinema-os",
+   "domain":"Agentic Autonomy & Orchestration",
+   "subsystem":"General",
+   "event":"Agentic Cinema: The Blockbuster Hackathon",
+   "coolness":0.2959,
+   "moves":[],
+   "specificity":0.0,
+   "summary":"The autonomous AI production command center.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"here-with-you-local-wellbeing-companion",
+   "name":"Here With You",
+   "url":"https://devpost.com/software/here-with-you-local-wellbeing-companion",
+   "domain":"Agentic Autonomy & Orchestration",
+   "subsystem":"Agent Guardrails & Gating",
+   "event":"Hack for Humanity | Summer 2026",
+   "coolness":0.2937,
+   "moves":[
+    "deterministic-guardrail",
+    "offline-first-fallback"
+   ],
+   "specificity":0.18,
+   "summary":"Local-first wellbeing companion that remembers what matters, supports everyday and difficult moments, and keeps high-risk responses inside a tested deterministic safety boundary.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"beside-f9l6ca",
+   "name":"Jera",
+   "url":"https://devpost.com/software/beside-f9l6ca",
+   "domain":"Health, Care & Human Performance",
+   "subsystem":"Mental Health & Wellbeing",
+   "event":"Hack for Humanity | Summer 2026",
+   "coolness":0.2919,
+   "moves":[
+    "verification-first"
+   ],
+   "specificity":0.18,
+   "summary":"AI-powered early intervention platform for youth mental health - trusted voices bridge the distance and therapists validate what works.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"neuroecho",
+   "name":"NeuroEcho",
+   "url":"https://devpost.com/software/neuroecho",
+   "domain":"Accessibility & Assistive Tech",
+   "subsystem":"Motor & Cognitive Access",
+   "event":"Hack for Humanity | Summer 2026",
+   "coolness":0.2917,
+   "moves":[
+    "deterministic-guardrail"
+   ],
+   "specificity":0.18,
+   "summary":"When your brain says rest, NeuroEcho listens - rest enforcement for cognitive fatigue.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"neuropace-ai",
+   "name":"NEUROPACE-AI",
+   "url":"https://devpost.com/software/neuropace-ai",
+   "domain":"Health, Care & Human Performance",
+   "subsystem":"Screening & Diagnostics",
+   "event":"Hack for Humanity | Summer 2026",
+   "coolness":0.2917,
+   "moves":[],
+   "specificity":0.18,
+   "summary":"Clinically guided interventions for patients facing neuro-somatic conditions or cognitive fatigue.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"adaptfit",
+   "name":"AdaptFit",
+   "url":"https://devpost.com/software/adaptfit",
+   "domain":"Health, Care & Human Performance",
+   "subsystem":"Recovery & Rehabilitation",
+   "event":"Hack for Humanity | Summer 2026",
+   "coolness":0.2899,
+   "moves":[],
+   "specificity":0.18,
+   "summary":"AdaptFit builds workouts around your abilities, with adaptive exercises and real-time feedback.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"aevora-pm9ru8",
+   "name":"Aevora",
+   "url":"https://devpost.com/software/aevora-pm9ru8",
+   "domain":"Health, Care & Human Performance",
+   "subsystem":"Care Navigation & Records",
+   "event":"Hack for Humanity | Summer 2026",
+   "coolness":0.2878,
+   "moves":[],
+   "specificity":0.18,
+   "summary":"AI patient advocate that connects medical records, treatment events, estimates and bills into one evidence-backed view - what changed, why, and what to ask next.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"neuro-pulse-dtx",
+   "name":"NeuroPulse DTx - Clinical SaMD for Concussion Recovery",
+   "url":"https://devpost.com/software/neuro-pulse-dtx",
+   "domain":"Health, Care & Human Performance",
+   "subsystem":"Screening & Diagnostics",
+   "event":"Hack for Humanity | Summer 2026",
+   "coolness":0.2872,
+   "moves":[
+    "narrow-domain-deep-model"
+   ],
+   "specificity":0.18,
+   "summary":"Zero-photophobia bio-signal DTx platform: acoustic voice DSP, VOMS Kalman eye-tracking, BESS balance kinematics.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"accomplish",
+   "name":"ACComplish",
+   "url":"https://devpost.com/software/accomplish",
+   "domain":"Learning & Knowledge Systems",
+   "subsystem":"Tutors & Adaptive Learning",
+   "event":"Hack for Humanity | Summer 2026",
+   "coolness":0.284,
+   "moves":[],
+   "specificity":0.08,
+   "summary":"Study online. Stay on line. Accountability layer for self-paced courses.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"cinepilot-ai",
+   "name":"CinePilot AI",
+   "url":"https://devpost.com/software/cinepilot-ai",
+   "domain":"Agentic Autonomy & Orchestration",
+   "subsystem":"Multi-Agent Crews",
+   "event":"Agentic Cinema: The Blockbuster Hackathon",
+   "coolness":0.2811,
+   "moves":[],
+   "specificity":0.0,
+   "summary":"Autonomous multi-agent production assistant managing filmmaking from script to shoot.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"memory-atlas-encfmw",
+   "name":"Memory Atlas",
+   "url":"https://devpost.com/software/memory-atlas-encfmw",
+   "domain":"Data, Retrieval & Memory Infrastructure",
+   "subsystem":"Persistent Memory",
+   "event":"Hack for Humanity | Summer 2026",
+   "coolness":0.2665,
+   "moves":[],
+   "specificity":0.0,
+   "summary":"Preserving memories, one conversation at a time.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  },
+  {
+   "id":"oculupi",
+   "name":"Oculupi",
+   "url":"https://devpost.com/software/oculupi",
+   "domain":"Health, Care & Human Performance",
+   "subsystem":"Screening & Diagnostics",
+   "event":"Hack for Humanity | Summer 2026",
+   "coolness":0.2607,
+   "moves":[],
+   "specificity":0.0,
+   "summary":"AI-powered concussion screening and recovery tracking, right in your browser.",
+   "provenance":"unaudited",
+   "why_not_promoted":[
+    "not_audited"
+   ],
+   "would_settle_it":[
+    "project page capture (deep)",
+    "artifact check via repo_verify.py"
+   ],
+   "audit":null
+  }
+ ]
+}

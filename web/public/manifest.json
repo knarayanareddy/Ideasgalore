@@ -18,21 +18,24 @@
  "scoring_version":1,
  "corpus_sha256":"f7a7aa82d360b032",
  "corpus_records":167,
- "generated_at":"2026-09-19T13:36:58+00:00",
+ "generated_at":"2026-09-19T14:12:00+00:00",
+ "audit_version":1,
+ "audited_published":2,
+ "pool_records":163,
  "surfaces":{
   "tier1":"catalog-packed.json",
+  "audit":[
+   "data/audits.json",
+   "data/audit-rubric.json",
+   "data/audits/creative-media-story-and-play.json"
+  ],
+  "pool":[
+   "data/pool.json",
+   "data/pool.csv",
+   "data/promotion-queue.json"
+  ],
   "tier2":[
-   "data/details/accessibility-and-assistive-tech.json",
-   "data/details/agentic-autonomy-and-orchestration.json",
-   "data/details/climate-energy-and-the-physical-world.json",
-   "data/details/creative-media-story-and-play.json",
-   "data/details/data-retrieval-and-memory-infrastructure.json",
-   "data/details/developer-tooling-and-code-intelligence.json",
-   "data/details/emerging-and-cross-domain.json",
-   "data/details/health-care-and-human-performance.json",
-   "data/details/learning-and-knowledge-systems.json",
-   "data/details/money-commerce-and-marketplaces.json",
-   "data/details/public-trust-safety-and-compliance.json"
+   "data/details/creative-media-story-and-play.json"
   ],
   "dimensions":[
    "data/hackathons.json",
@@ -46,7 +49,7 @@
  },
  "budgets":{
   "tier1_gzip_kb":[
-   16.1,
+   2.4,
    1200.0
   ]
  }

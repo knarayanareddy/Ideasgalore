@@ -24,19 +24,17 @@ from typing import Any, Dict, List
 
 REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(os.path.join(REPO, "pipeline"))
-from taxonomy_hacks import DOMAINS, MOVES, SCORING_VERSION  # noqa: E402
+from taxonomy_hacks import (  # noqa: E402
+    AUDIT_PUBLISH_VERDICTS, CSV_COLUMNS, DOMAINS, MOVES, ROW_FORMAT, SCORING_VERSION,
+    audit_rubric,
+)
 
 PAGES = "https://knarayanareddy.github.io/Ideasgalore"
 OUT_DEFAULT = os.path.join(REPO, "web", "public", "agents")
 
-ROW_FORMAT = ["id", "name", "hook", "event_id", "likes", "coolness_x1000", "domain_id",
-              "subsystem_id", "move_ids[]", "stack_ids[]", "is_deep", "has_thumbnail",
-              "award_id", "event_age_days"]
-
-CSV_COLUMNS = ["id", "name", "url", "event", "event_org", "domain", "subsystem", "moves",
-               "stack", "coolness", "engagement", "validation", "event_prestige", "recency",
-               "specificity", "signal_richness", "redundancy", "likes", "award", "depth",
-               "has_deep", "event_date", "harvested_at"]
+# ROW_FORMAT / CSV_COLUMNS come from taxonomy_hacks — the same lists shard_builder emits.
+# They used to be copies here, and they silently drifted when the audit columns landed.
+audit_rub = audit_rubric()
 
 
 def record_schema() -> Dict[str, Any]:
@@ -100,6 +98,51 @@ def record_schema() -> Dict[str, Any]:
             "quote": {"type": ["string", "null"], "maxLength": 220,
                       "description": "Short attributed quote from the team's own 'how we built it'. Bulk exports omit it by policy.",
                       "x-provenance": "observed"},
+            "audit": {"type": ["object", "null"], "description":
+                      ("Evidence-gated verdict for this project. Present on every PUBLISHED "
+                       "record, because publication requires an audit. null means the record "
+                       "came from a build without audit.jsonl — treat its claims as unaudited."),
+                      "x-provenance": "audited", "additionalProperties": True,
+                      "properties": {
+                          "verdict": {"enum": list(audit_rub["verdicts"]),
+                                      "description": "Publication decision. Only "
+                                                     + "/".join(audit_rub["published_verdicts"])
+                                                     + " are published. " + "; ".join(
+                                                          f"{k} = {v}" for k, v in audit_rub["verdicts"].items())},
+                          "worth": {"enum": list(audit_rub["worth"]) + ["unrated"],
+                                    "description": "Is it a good idea for a builder to copy, independent of "
+                                                   "soundness. " + "; ".join(f"{k} = {v}" for k, v in audit_rub["worth"].items())
+                                                   + ". `unrated` = the auditor filed no judgement."},
+                          "soundness": {"enum": ["verified", "partial", "weak", "unverified"],
+                                        "description": "Band of the derived score — never hand-entered."},
+                          "soundness_score": {"type": "number", "description": "Mean of scored checks, renormalized by evidence coverage."},
+                          "rubric_coverage": {"type": "number", "description": "Fraction of rubric fields filed with an evidence status."},
+                          "checks": {"type": "object", "description":
+                                     ("check -> {status, score, why}. `confirmed` requires an "
+                                      "independently reproducible artifact; `unverifiable` means "
+                                      "the page made no checkable claim, which is not a failure."),
+                                     "additionalProperties": {"type": "object"}},
+                          "unknowns": {"type": "array", "items": {"type": "object"},
+                                       "description": "Mandatory fields that could not be filled, with why and how to resolve. Never guess these."},
+                          "clone_cost": {"type": ["object", "null"], "description":
+                                         "{estimate, why, assumptions[]} — assumptions are the "
+                                         "load-bearing part; read them before quoting the number."},
+                          "what_to_steal": {"type": ["string", "null"], "description": "The transferable mechanism, not the product."},
+                          "what_breaks_first": {"type": ["string", "null"], "description": "Where a rebuild dies first."},
+                          "prior_art": {"type": "array", "description": "Named, linked existing systems — empty means 'searched, nothing found'."},
+                          "hazard": {"type": ["object", "null"], "description":
+                                     ("Regulated-outcome exposure: {class, team_disclaimed, note}. "
+                                      "null = no regulated-claim language in the capture. A `class` "
+                                      "with team_disclaimed=false is a warning to the reader, not a "
+                                      "verdict on the team."),
+                                     "additionalProperties": True},
+                          "why_not_promoted": {"type": "array", "items": {"type": "string"},
+                                               "description": "Only on held-back records: the derivation "
+                                                              "trace (verdict reasons, named unknowns, hazard, "
+                                                              "duplicate merge). Read this before re-auditing."},
+                          "duplicate_of": {"type": ["string", "null"], "description": "id of the better-sourced sibling this row was merged into."},
+                          "sheet": {"type": "string", "description": "Pointer into data/audits/<sector>.json#<id> for the full ledger."},
+                      }},
             "provenance": {"type": "object", "description": "Field -> observed|derived|editorial|unavailable.", "additionalProperties": {"type": "string"}},
             "harvested_at": {"type": "string"},
             "scoring_version": {"type": "integer"},
@@ -148,6 +191,21 @@ def openapi() -> Dict[str, Any]:
                 "parameters": [{"name": "domain", "in": "path", "required": True,
                                 "schema": {"type": "string", "enum": [_re.sub(r"[^a-z0-9]+", "-", d.lower().replace("&", "and")).strip("-") for d in DOMAINS]}}],
                 "responses": {"200": {"description": "map of id -> deep record (schema.json)"}}}},
+            "/data/audits.json": {"get": {"summary": "Audit index: verdict + score for every audited record",
+                "operationId": "getAuditIndex",
+                "responses": {"200": {"description": "records{id: {verdict, worth, soundness, score, coverage, checks(status only), unknowns, sheet}}"}}}},
+            "/data/audits/{sector}.json": {"get": {"summary": "Full audit sheets for one sector: evidence ledger, per-check reasons, all mandatory fields",
+                "operationId": "getAuditSheets",
+                "parameters": [{"name": "sector", "in": "path", "required": True,
+                                "schema": {"type": "string", "enum": [_re.sub(r"[^a-z0-9]+", "-", d.lower().replace("&", "and")).strip("-") for d in DOMAINS]}}],
+                "responses": {"200": {"description": "records{id: sheet} — sheet.fields[f] = {value, evidence, confidence, status, why?}"}}}},
+            "/data/pool.json": {"get": {"summary": "Unaudited / rejected records — NOT inspiration-grade; why_not_promoted is per-record",
+                "operationId": "getPool",
+                "responses": {"200": {"description": "thin/duplicate/unsound/hazard-blocked + never-audited rows. Never present one as vetted."}}}},
+            "/data/audit-rubric.json": {"get": {"summary": "The rubric itself: mandatory fields, checks, weights, verdict ladder, dedup + hazard rules",
+                "operationId": "getAuditRubric",
+                "responses": {"200": {"description": "what a sheet must contain to publish — machine-checkable",
+                    "content": {"application/json": {"schema": {"type": "object", "example": audit_rub}}}}}}},
             "/data/remixes.json": {"get": {"summary": "Generated idea collisions with build briefs", "operationId": "getRemixes",
                 "responses": {"200": {"description": "curated + mined pair recipes, each with first_48_hours and kill_criteria"}}}},
         },
@@ -172,8 +230,9 @@ def llms_txt(stats: Dict[str, Any]) -> str:
 > Devpost public showcase, organized so a builder (human or agent) can answer
 > "what should I steal next?" — not "what exists?".
 > Static files only: no auth, no keys, no rate limit. CORS-open. Last build:
-> {stats.get('generated_at')} · {stats.get('total')} admitted projects ·
-> {stats.get('events')} hackathons · {stats.get('moves')} transferable moves.
+> {stats.get('generated_at')} · {stats.get('total')} audited, publishable projects ·
+> {stats.get('events')} hackathons · {stats.get('moves')} transferable moves ·
+> {stats.get('pool_records', '?')} more projects held out of the catalog pending audit.
 
 ## Read this before you use the data
 {cov_line}
@@ -198,10 +257,36 @@ def llms_txt(stats: Dict[str, Any]) -> str:
   condensed authored sections and quotes live). Lazy-load one, not all.
 - `data/remixes.json` — pre-computed idea collisions with build briefs
   (`first_48_hours`, `kill_criteria`).
+- `data/audits.json` — verdict + score + per-check status for every published record
+  (~150 B each). The cheap answer to "is this vetted, and how?".
+- `data/audits/<sector>.json` — full audit sheets for that sector: the evidence ledger,
+  per-check reasoning, and all 12 mandatory fields (`what_to_steal`, `clone_cost` with
+  assumptions, `unknowns`, `prior_art`, `hazard`). Detail shard, not default.
+- `data/audit-rubric.json` — the rubric itself (mandatory fields, checks, weights, verdict
+  ladder, dedup and hazard rules) so you can audit new candidates yourself the same way.
+- `data/pool.json` — records held *out* of the catalog (unaudited, thin, duplicate, hazard).
+  Queryable for lead-mining; never present one as vetted.
 - `catalog-stats.json` / `manifest.json` — corpus counts + build provenance (sha256).
 
-## Sectors
+## The audit (read this before you trust a record)
 
+Every published project passed an evidence-gated audit: 12 mandatory fields, 6 technical
+checks whose score is derived from an evidence ledger (`kind` + `locator` — a citation, not
+an assertion), then a verdict. A dedicated auditor may only supply editorial judgement and
+citations; every status is recomputed mechanically.
+
+- Verdicts published: {", ".join(AUDIT_PUBLISH_VERDICTS)}. `thin` / `duplicate` / `unsound`
+  / hazard-blocked live in `data/pool.json` instead.
+- `confirmed` means we reproduced it from something we could reach (repo, deployment, video,
+  benchmark table). `unverifiable` means the page made no checkable claim — it is NOT a
+  failure and must not be reported as a false claim.
+- `rubric_coverage` < 1 means the record is *silent* somewhere; `unknowns[]` says where and
+  how to resolve it. Quote the unknown, do not fill it in.
+- `duplicate_of` merges resubmissions of the same product (shared numeric fingerprints catch
+  what prose similarity cannot).
+- A missing `audit` block means the record predates the audit layer — treat it as unaudited.
+
+## Sectors
 {chr(10).join(f"- {d} — {v['blurb']}" for d, v in DOMAINS.items())}
 
 ## Moves (the axis that generates new projects)
@@ -304,6 +389,32 @@ curl -sL {PAGES}/data/hackathons.json | jq -r '.events[] | [.project_count, .tit
 curl -sL {PAGES}/data/remixes.json | jq '.recipes[0] | {{title, the_wedge, first_48_hours, kill_criteria}}'
 ```
 
+## Audited picks only, with the reasoning inline
+
+```bash
+# cheap filter (Tier-1 ids), then the sheet for the two survivors
+curl -sL {PAGES}/catalog-packed.json | jq -r \
+  '[.rows[] | select(.verdict_id != null)] | length'
+curl -sL {PAGES}/data/audits.json | jq -r \
+  '.records | to_entries[] | select(.value.rubric_coverage > 0.6) | .key'
+curl -sL {PAGES}/data/audits/creative-media-story-and-play.json | jq -r \
+  '.records | to_entries[0].value | {{id, verdict, worth, what_to_steal: .fields.what_to_steal.value, unknowns: [.unknowns[].field]}}'
+```
+
+## "What can I clone this weekend?" — filter on clone_cost assumptions, not the headline
+
+```bash
+curl -sL {PAGES}/data/audits/creative-media-story-and-play.json | jq -r \
+  '.records | to_entries[] | .value.fields.clone_cost.value
+   | select(.estimate != null) | "\(.estimate) — assumes: \(.assumptions | join("; "))"'
+```
+
+## Find leads the audit refused to publish (and why)
+
+```bash
+curl -sL {PAGES}/data/pool.json | jq -r '.records[] | "\(.id) · \(.verdict) · \(.why_not_promoted // "never audited")"'
+```
+
 ## Verify what you loaded
 
 ```bash
@@ -400,11 +511,22 @@ transferable design tricks (e.g. `price-before-generate`, `evidence-graph`,
 - By sector: `{{base}}/data/details/agentic-autonomy-and-orchestration.json`
 - Event bias check before you generalize: `{{base}}/data/hackathons.json`
 
+## Audit rules (these are the ones agents break)
+
+1. Publication requires an audit: if `audit` is null, say "unaudited" in the same breath.
+2. Report `unknowns` verbatim when you recommend a project — the gap is the useful part.
+3. Never convert `unverifiable` into "false". Absence of evidence is not a debunking.
+4. Quote `clone_cost.assumptions` next to the estimate; the number alone is misleading.
+5. Dedup before you recommend: two entries sharing cost/percentage fingerprints are one product.
+6. If you audit candidates yourself, follow `data/audit-rubric.json` and store citations,
+   not opinions.
+
 ## Failure modes
 
 404 on a domain shard → the sector slug is wrong; read keys from `catalog-stats.json`.
 Empty result → your move term is too narrow: retry with `jq` on `.stack` or `.summary`.
 Site unreachable → fall back to `data/ideas.csv` from a local checkout of the repo.
+`verdict_id` null → the row predates the audit layer; treat its claims as unaudited.
 """
 
 

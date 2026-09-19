@@ -4,15 +4,16 @@
 > Devpost public showcase, organized so a builder (human or agent) can answer
 > "what should I steal next?" — not "what exists?".
 > Static files only: no auth, no keys, no rate limit. CORS-open. Last build:
-> 2026-09-18 · 165 admitted projects ·
-> 5 hackathons · 18 transferable moves.
+> 2026-09-18 · 2 audited, publishable projects ·
+> 2 hackathons · 7 transferable moves ·
+> 163 more projects held out of the catalog pending audit.
 
 ## Read this before you use the data
 
 - **This index is a gated sample, not the platform.** The galleries we crawled report
   their own totals (xprize 83/1401); `catalog-stats.json` -> `coverage` repeats it in data.
   Never write "every hackathon project" about this corpus — the defensible phrasing is
-  "165 admitted projects from the pages captured".
+  "2 admitted projects from the pages captured".
 
 - `agents/schema.json` — record contract, with `x-provenance` on every field.
 - `agents/ethics.json` — usage policy we are ourselves bound by; honour it downstream.
@@ -25,7 +26,7 @@
 ## Endpoints (relative to the site root)
 
 - `catalog-packed.json` — Tier-1: every admitted row, dictionary-encoded. Best for
-  whole-corpus ranking/filtering in one request (~16.1 KB gzip).
+  whole-corpus ranking/filtering in one request (~2.4 KB gzip).
 - `data/ideas.csv` — the tabular database; stable column order, spreadsheet-safe.
 - `data/ideas.ndjson` — full metadata, one record per line, no bulk prose.
 - `data/hackathons.json` — event dimension: prize, registrations, themes, gallery URL.
@@ -35,10 +36,36 @@
   condensed authored sections and quotes live). Lazy-load one, not all.
 - `data/remixes.json` — pre-computed idea collisions with build briefs
   (`first_48_hours`, `kill_criteria`).
+- `data/audits.json` — verdict + score + per-check status for every published record
+  (~150 B each). The cheap answer to "is this vetted, and how?".
+- `data/audits/<sector>.json` — full audit sheets for that sector: the evidence ledger,
+  per-check reasoning, and all 12 mandatory fields (`what_to_steal`, `clone_cost` with
+  assumptions, `unknowns`, `prior_art`, `hazard`). Detail shard, not default.
+- `data/audit-rubric.json` — the rubric itself (mandatory fields, checks, weights, verdict
+  ladder, dedup and hazard rules) so you can audit new candidates yourself the same way.
+- `data/pool.json` — records held *out* of the catalog (unaudited, thin, duplicate, hazard).
+  Queryable for lead-mining; never present one as vetted.
 - `catalog-stats.json` / `manifest.json` — corpus counts + build provenance (sha256).
 
-## Sectors
+## The audit (read this before you trust a record)
 
+Every published project passed an evidence-gated audit: 12 mandatory fields, 6 technical
+checks whose score is derived from an evidence ledger (`kind` + `locator` — a citation, not
+an assertion), then a verdict. A dedicated auditor may only supply editorial judgement and
+citations; every status is recomputed mechanically.
+
+- Verdicts published: strong, sound-with-caveats. `thin` / `duplicate` / `unsound`
+  / hazard-blocked live in `data/pool.json` instead.
+- `confirmed` means we reproduced it from something we could reach (repo, deployment, video,
+  benchmark table). `unverifiable` means the page made no checkable claim — it is NOT a
+  failure and must not be reported as a false claim.
+- `rubric_coverage` < 1 means the record is *silent* somewhere; `unknowns[]` says where and
+  how to resolve it. Quote the unknown, do not fill it in.
+- `duplicate_of` merges resubmissions of the same product (shared numeric fingerprints catch
+  what prose similarity cannot).
+- A missing `audit` block means the record predates the audit layer — treat it as unaudited.
+
+## Sectors
 - Agentic Autonomy & Orchestration — Projects where software acts on your behalf: crews, watchers, gates, and the machinery that keeps autonomous behaviour governable.
 - Developer Tooling & Code Intelligence — Tools that change how software gets written, shipped, diagnosed, or repaired — including agents that edit real repositories.
 - Health, Care & Human Performance — Clinical, therapeutic, and bodily-self-tracking projects — where the cost of a wrong answer is paid by a human, not a server.
