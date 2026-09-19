@@ -1,60 +1,61 @@
 {
- "award": null,
- "built_with": [],
- "captured_at": "2026-09-19",
- "data_and_models": "No trained model in the scored path. Retrieval is BM25 over the supplied 50,000-product catalog with a shared regex tokenizer and 31-word stopword list, a popularity prior ln(1+rating_number), a rare-phrase evidence index, and an optional dense asset that the design documents as rejected at weight zero. Scoring is a fixed convex combination of HitRate@10, MRR and an efficiency term derived from mean turns to conversion.",
- "gallery_images": 0,
- "id": "satu",
- "likes": null,
- "links": {
-  "demo": null,
-  "repo": "https://github.com/justin-theodorus/techjam",
-  "video": "https://www.youtube.com/watch?v=mqsMewtdZdY"
- },
- "name": "SATU",
- "numbers": [
-  {
-   "arithmetic": "recomputed: 0.50*1.000 + 0.30*0.975 + 0.20*clip((11-2.27)/10,0,1) = 0.9671 for SATU, and 0.50*0.125 + 0.30*0.068 + 0.20*clip((11-9.81)/10,0,1) = 0.1067 for the baseline - both rows reproduce the printed figures",
-   "claim": "TechnicalScore 0.9672 (SATU) versus 0.1067 (BM25 baseline)",
-   "denominator": "per-session ranks and turns over the evaluation sessions",
-   "verifiable": true
+  "award": null,
+  "built_with": [],
+  "captured_at": "2026-09-19",
+  "data_and_models": "No trained model in the scored path. Retrieval is BM25 over the supplied 50,000-product catalog with a shared regex tokenizer and 31-word stopword list, a popularity prior ln(1+rating_number), a rare-phrase evidence index, and an optional dense asset that the design documents as rejected at weight zero. Scoring is a fixed convex combination of HitRate@10, MRR and an efficiency term derived from mean turns to conversion.",
+  "gallery_images": 0,
+  "id": "satu",
+  "likes": null,
+  "links": {
+    "demo": null,
+    "repo": "https://github.com/justin-theodorus/techjam",
+    "video": "https://www.youtube.com/watch?v=mqsMewtdZdY"
   },
-  {
-   "arithmetic": "internally consistent with the recomputed objective above; the per-session log was not needed to check the aggregate",
-   "claim": "HitRate@10 1.000, MRR 0.975, MTTC 2.27",
-   "denominator": "N evaluation sessions, misses assigned turn 11",
-   "verifiable": true
+  "name": "SATU",
+  "numbers": [
+    {
+      "arithmetic": "recomputed: 0.50*1.000 + 0.30*0.975 + 0.20*clip((11-2.27)/10,0,1) = 0.9671 for SATU, and 0.50*0.125 + 0.30*0.068 + 0.20*clip((11-9.81)/10,0,1) = 0.1067 for the baseline - both rows reproduce the printed figures",
+      "claim": "TechnicalScore 0.9672 (SATU) versus 0.1067 (BM25 baseline)",
+      "denominator": "per-session ranks and turns over the evaluation sessions",
+      "verifiable": true
+    },
+    {
+      "arithmetic": "internally consistent with the recomputed objective above; the per-session log was not needed to check the aggregate",
+      "claim": "HitRate@10 1.000, MRR 0.975, MTTC 2.27",
+      "denominator": "N evaluation sessions, misses assigned turn 11",
+      "verifiable": true
+    },
+    {
+      "arithmetic": "structural: a reader can rerun the harness in the linked repo, but the machine is not specified",
+      "claim": "Latency about 1 ms per turn (p50 0.96, p95 3.2)",
+      "denominator": "per-turn wall clock on their harness",
+      "verifiable": true
+    },
+    {
+      "arithmetic": "structural: measurable by running the shipped code",
+      "claim": "Startup about 5.6 s and about 280 MB peak",
+      "denominator": "one construction pass over 50,000 products",
+      "verifiable": true
+    },
+    {
+      "arithmetic": "structural: follows from the stdlib-only, in-memory design they describe",
+      "claim": "Runtime cost $0.00 per turn",
+      "denominator": "no external calls on the scored path",
+      "verifiable": true
+    }
+  ],
+  "one_line": "A deterministic stateful shopping agent for a 50,000-product catalog that treats recommendation as a sequential decision problem, choosing both slate width and whether to ask another question, and reports a recomputable score against a BM25 baseline.",
+  "schema": 2,
+  "sections": {
+    "accomplishments": "A metric table against a BM25 baseline: TechnicalScore 0.9672 versus 0.1067, HitRate@10 1.000 versus 0.125, MRR 0.975 versus 0.068, MTTC 2.27 versus 9.81, latency about 1 ms (p50 0.96 ms, p95 3.2 ms) versus 8.5 ms, and runtime cost $0.00 both. The scoring formula, the metric definitions and the missing-session convention (misses assigned turn 11) are all printed on the page, so a reader can recompute the headline from the components.",
+    "challenges": "The two decisions they defend are restraint ones. The tokenizer is deliberately not learned and not subword, because one shared function means an indexing choice can never disagree with a lookup choice. The dense retrieval asset is included in the architecture and given weight zero, documented as rejected rather than quietly dropped. The objective itself is the hardest part: the 0.30 reciprocal-rank term is what makes slate width a real decision, since exposing ten products immediately improves turns-to-conversion while hurting rank enough to lower the combined score.",
+    "how_we_built_it": "Python standard library only, all in memory, no external call on the scored path. At construction (about 5.6 s and 280 MB peak) it builds coarse category buckets for hard filtering, a BM25 index whose regex word tokenizer and 31-word stopword list are the identical function used for indexing and for queries, a popularity prior ln(1+rating_number), an attribute vocabulary with lead lines for question scoring, and a rare-phrase index for per-product evidence. A dense vector asset is built optionally and then rejected at weight zero. The turn path is parse, fold state, select behaviour, retrieve, rank, shape slate, choose or suppress question, recovery check, then response plus session trace. Files named on the page include submission/src/text.py, with evaluator/ and harness/ directories alongside.",
+    "inspiration": "The problem statement is a shopping copilot scored by an evaluator that ends a session the moment the hidden target appears in the returned slate, which makes the costs asymmetric: showing the right product converts, showing a wrong one proves it is not the target, hiding a plausible one keeps it for later reranking, and a question only pays if its answer can change a future slate. They therefore refuse to optimise HitRate alone and target coverage, reciprocal rank and turns-to-conversion jointly, with the explicit goal of something implementable in a real shopping product - low latency, no cost per turn, explainable, resilient to missing services, and able to justify both the products it shows and the questions it asks.",
+    "learned": "They write the document as a request moving through the system, putting each formula in the section for the stage that evaluates it, and they argue the slate-width decision from shopper behaviour first rather than from the weights - noting that the scoring weights and the product argument happen to point the same way. The engineering lesson on display is that a benchmark objective can be satisfied by bounded state and deterministic fallbacks, without a model in the scored path at all.",
+    "what_it_does": "Takes a shopper message per turn and returns a slate of products plus optionally one clarification question. Six behaviours are selected from state (discovery, precision, recovery, boundary, stagnation, coverage); retrieval narrows to an active category with hard filters, ranking orders the candidates, slate shaping decides how many products to expose now, question selection either offers the most informative attribute probe or suppresses the question, and a recovery check watches for a shopper who has been shown everything relevant. Each turn is ~1 ms and every number the page quotes is derived from a published harness.",
+    "what_next": "The remaining authored sections beyond the pipeline walkthrough (including Devpost's Built With sidebar and the like count) were not present in the slice captured for this record, so they are recorded as unavailable rather than paraphrased; the repository linked on the page is the place a reader should go for the rest."
   },
-  {
-   "arithmetic": "structural: a reader can rerun the harness in the linked repo, but the machine is not specified",
-   "claim": "Latency about 1 ms per turn (p50 0.96, p95 3.2)",
-   "denominator": "per-turn wall clock on their harness",
-   "verifiable": true
-  },
-  {
-   "arithmetic": "structural: measurable by running the shipped code",
-   "claim": "Startup about 5.6 s and about 280 MB peak",
-   "denominator": "one construction pass over 50,000 products",
-   "verifiable": true
-  },
-  {
-   "arithmetic": "structural: follows from the stdlib-only, in-memory design they describe",
-   "claim": "Runtime cost $0.00 per turn",
-   "denominator": "no external calls on the scored path",
-   "verifiable": true
-  }
- ],
- "one_line": "A deterministic stateful shopping agent for a 50,000-product catalog that treats recommendation as a sequential decision problem, choosing both slate width and whether to ask another question, and reports a recomputable score against a BM25 baseline.",
- "sections": {
-  "accomplishments": "A metric table against a BM25 baseline: TechnicalScore 0.9672 versus 0.1067, HitRate@10 1.000 versus 0.125, MRR 0.975 versus 0.068, MTTC 2.27 versus 9.81, latency about 1 ms (p50 0.96 ms, p95 3.2 ms) versus 8.5 ms, and runtime cost $0.00 both. The scoring formula, the metric definitions and the missing-session convention (misses assigned turn 11) are all printed on the page, so a reader can recompute the headline from the components.",
-  "challenges": "The two decisions they defend are restraint ones. The tokenizer is deliberately not learned and not subword, because one shared function means an indexing choice can never disagree with a lookup choice. The dense retrieval asset is included in the architecture and given weight zero, documented as rejected rather than quietly dropped. The objective itself is the hardest part: the 0.30 reciprocal-rank term is what makes slate width a real decision, since exposing ten products immediately improves turns-to-conversion while hurting rank enough to lower the combined score.",
-  "how_we_built_it": "Python standard library only, all in memory, no external call on the scored path. At construction (about 5.6 s and 280 MB peak) it builds coarse category buckets for hard filtering, a BM25 index whose regex word tokenizer and 31-word stopword list are the identical function used for indexing and for queries, a popularity prior ln(1+rating_number), an attribute vocabulary with lead lines for question scoring, and a rare-phrase index for per-product evidence. A dense vector asset is built optionally and then rejected at weight zero. The turn path is parse, fold state, select behaviour, retrieve, rank, shape slate, choose or suppress question, recovery check, then response plus session trace. Files named on the page include submission/src/text.py, with evaluator/ and harness/ directories alongside.",
-  "inspiration": "The problem statement is a shopping copilot scored by an evaluator that ends a session the moment the hidden target appears in the returned slate, which makes the costs asymmetric: showing the right product converts, showing a wrong one proves it is not the target, hiding a plausible one keeps it for later reranking, and a question only pays if its answer can change a future slate. They therefore refuse to optimise HitRate alone and target coverage, reciprocal rank and turns-to-conversion jointly, with the explicit goal of something implementable in a real shopping product - low latency, no cost per turn, explainable, resilient to missing services, and able to justify both the products it shows and the questions it asks.",
-  "learned": "They write the document as a request moving through the system, putting each formula in the section for the stage that evaluates it, and they argue the slate-width decision from shopper behaviour first rather than from the weights - noting that the scoring weights and the product argument happen to point the same way. The engineering lesson on display is that a benchmark objective can be satisfied by bounded state and deterministic fallbacks, without a model in the scored path at all.",
-  "what_it_does": "Takes a shopper message per turn and returns a slate of products plus optionally one clarification question. Six behaviours are selected from state (discovery, precision, recovery, boundary, stagnation, coverage); retrieval narrows to an active category with hard filters, ranking orders the candidates, slate shaping decides how many products to expose now, question selection either offers the most informative attribute probe or suppresses the question, and a recovery check watches for a shopper who has been shown everything relevant. Each turn is ~1 ms and every number the page quotes is derived from a published harness.",
-  "what_next": "The remaining authored sections beyond the pipeline walkthrough (including Devpost's Built With sidebar and the like count) were not present in the slice captured for this record, so they are recorded as unavailable rather than paraphrased; the repository linked on the page is the place a reader should go for the rest."
- },
- "software_id": null,
- "source_url": "https://devpost.com/software/satu",
- "testing": "A harness directory and tests are present in the linked repository (harness/tests/test_analysis.py and further test modules, verified via the GitHub API on 2026-09-19), and the page publishes the metric definitions, the session convention for misses, and both baseline rows - so the headline numbers can be recomputed from the page alone. No held-out set description, seed count or human-evaluation panel is given, and the benchmark is the organiser's evaluator, not an independent dataset."
+  "software_id": null,
+  "source_url": "https://devpost.com/software/satu",
+  "testing": "A harness directory and tests are present in the linked repository (harness/tests/test_analysis.py and further test modules, verified via the GitHub API on 2026-09-19), and the page publishes the metric definitions, the session convention for misses, and both baseline rows - so the headline numbers can be recomputed from the page alone. No held-out set description, seed count or human-evaluation panel is given, and the benchmark is the organiser's evaluator, not an independent dataset."
 }

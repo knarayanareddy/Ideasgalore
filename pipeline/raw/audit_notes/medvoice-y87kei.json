@@ -1,0 +1,30 @@
+{
+  "clone_cost": {
+    "assumptions": [
+      "a clinician owns the schedule and the escalation when a dose is unconfirmed",
+      "you treat reminders as reminders, not adherence measurement",
+      "you handle the closed-app delivery problem they deferred"
+    ],
+    "estimate": "a weekend for the nurse portal plus silent monitor",
+    "why": "one photo upload, one schedule document, one timed client, plus platform speech - Firestore does the rest"
+  },
+  "hazard_note": "Medication adherence for elderly and low-literacy patients, where a missed dose is a clinical event and a false confirmation is worse than none. The page does not disclaim the gap between 'confirmed' and 'taken', which is exactly where the risk lives.",
+  "prior_art": [
+    {
+      "corpus_id": "pulsecheck-granola-clinical-note-assistant",
+      "relation": "also built around compliance for complex medical regimens, via note capture instead of the patient's own device"
+    },
+    {
+      "corpus_id": "dentops",
+      "relation": "same economics - the lost appointment or missed dose is the product's real target"
+    },
+    {
+      "corpus_id": "lenis-zwxmea",
+      "relation": "same accessibility-first instinct: use an ambient channel the user already has open"
+    }
+  ],
+  "what_breaks_first": "The acknowledgement loop, because 'confirmed' is only a tap - it proves the patient was present, not that the dose was taken, and the design invites the failure it is meant to catch. Second, delivery: browser speech and timers die when the tab is backgrounded, which the team already knows (PWA and background push are still future work). Third, sync-down and device loss, which the page does not address.",
+  "what_to_steal": "Replace the label with the object: photograph the thing the user must act on and show that image at the moment of action, then require an explicit acknowledgement and repeat until it arrives. Silence is a feature - the alarm's absence is what makes the alert legible.",
+  "worth": "strong",
+  "worth_note": "Designed by someone who watches the failure happen: the interface deletes reading from the dose loop, the pill's own photo is the identifier, and nothing appears until the medicine is due. Those are three small decisions that a builder in any low-attention, low-literacy or hands-busy context can lift directly, and 8 likes on an entry built in two days on a phone suggests the wedge reads immediately."
+}

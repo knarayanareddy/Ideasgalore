@@ -13,7 +13,7 @@ rather than from anyone's opinion:
   pipeline/raw/repo_checks.json       what the GitHub API says about the artifact
                                       (produced by repo_verify.py; language mix, size,
                                       test paths, README setup, push date)
-  pipeline/raw/audit_notes.json       the panel's editorial judgement — worth, prior
+  pipeline/raw/audit_notes/{id}.json  the panel's editorial judgement — worth, prior
                                       art, what breaks first, clone cost. Labelled
                                       `editorial` everywhere, never implied to be fact.
 
@@ -50,6 +50,10 @@ CORPUS = os.path.join(HERE, "corpus.jsonl")
 CAPTURE_DIR = os.path.join(HERE, "raw", "deep_captures")
 REPO_CHECKS = os.path.join(HERE, "raw", "repo_checks.json")
 NOTES = os.path.join(HERE, "raw", "audit_notes.json")
+# ADR-P4: one note file per record, so a parallel worker can own an id without touching a shared file.
+# The legacy dict is merged first and this directory wins; the legacy file stays readable (emptied by
+# migration, never deleted) so an older checkout still builds.
+NOTES_DIR = os.path.join(HERE, "raw", "audit_notes")
 AUDIT_OUT = os.path.join(HERE, "audit.jsonl")
 
 _LANG_HINTS = {
@@ -76,11 +80,32 @@ def _load(path: str, default):
         return json.load(fh)
 
 
-def load_captures(dirpath: str = CAPTURE_DIR) -> Dict[str, Dict[str, Any]]:
+def lint_refusals() -> Dict[str, List[str]]:
+    """Ids `pipeline/capture_lint.py` refused (ADR-P1), read from its per-record ledger.
+
+    The audit skips them for the same reason ingest does: a capture the gate called incomplete is not
+    evidence, and scoring it anyway would publish a verdict about the *worker's* read while reading like
+    a judgement about the project. The record stays in the pool, labelled `incomplete capture`.
+    """
+    out: Dict[str, List[str]] = {}
+    dirpath = os.path.join(HERE, "raw", "lint_rejects")
+    if os.path.isdir(dirpath):
+        for fname in sorted(os.listdir(dirpath)):
+            if fname.endswith(".json"):
+                blob = _load(os.path.join(dirpath, fname), {}) or {}
+                out[fname[:-5]] = list(blob.get("rules") or [])
+    return out
+
+
+def load_captures(dirpath: str = CAPTURE_DIR,
+                  refusals: Optional[Dict[str, List[str]]] = None) -> Dict[str, Dict[str, Any]]:
+    refused = refusals if refusals is not None else lint_refusals()
     out: Dict[str, Dict[str, Any]] = {}
     for path in sorted(glob.glob(os.path.join(dirpath, "*.json"))):
         cap = _load(path, {})
         pid = cap.get("id") or os.path.basename(path)[:-5]
+        if pid in refused:
+            continue
         cap.setdefault("id", pid)
         cap["_file"] = os.path.basename(path)
         out[pid] = cap
@@ -516,6 +541,21 @@ def run_checks(cap: Dict[str, Any], repo_name: Optional[str], repo: Optional[Dic
     return checks, ev
 
 
+def load_notes(path: str = NOTES, notes_dir: str = NOTES_DIR) -> Dict[str, Any]:
+    """The notes registry, in whichever shape it is stored: per-record files merged over the legacy dict."""
+    out: Dict[str, Any] = {}
+    legacy = _load(path, {})
+    if isinstance(legacy, dict):
+        out.update({k: v for k, v in legacy.items() if isinstance(v, dict)})
+    if os.path.isdir(notes_dir):
+        for fname in sorted(os.listdir(notes_dir)):
+            if fname.endswith(".json"):
+                blob = _load(os.path.join(notes_dir, fname), None)
+                if isinstance(blob, dict):
+                    out[fname[:-5]] = blob
+    return out
+
+
 def build_fields(cap: Dict[str, Any], notes: Dict[str, Any], repo_name: Optional[str],
                  repo: Optional[Dict[str, Any]], checks: Dict[str, Any]) -> Tuple[Dict[str, Any], List[Dict[str, str]]]:
     """A6: fill the 12 mandatory fields from evidence; anything we cannot fill becomes a
@@ -588,9 +628,9 @@ def build_fields(cap: Dict[str, Any], notes: Dict[str, Any], repo_name: Optional
         nums or (cap.get("numbers_note") if isinstance(cap.get("numbers_note"), str) else None) or None,
         "observed", "no measurable outcome is asserted; a benchmark table would settle it")
     put("what_to_steal", notes.get("what_to_steal"), "editorial",
-        "panel has not yet written the transferable-move note (audit_notes.json)")
+        "panel has not yet written the transferable-move note (raw/audit_notes/{id}.json)")
     put("what_breaks_first", notes.get("what_breaks_first"), "editorial",
-        "panel has not yet written the first-failure note (audit_notes.json)")
+        "panel has not yet written the first-failure note (raw/audit_notes/{id}.json)")
     cc = notes.get("clone_cost")
     if isinstance(cc, dict) and cc.get("estimate"):
         fields["clone_cost"] = {"value": cc, "provenance": "derived",
@@ -860,7 +900,7 @@ def audit(corpus_path: str = CORPUS, out_path: str = AUDIT_OUT, report: bool = F
         recs[r["id"]] = r
     caps = load_captures()
     repos = _load(REPO_CHECKS, {})
-    notes_all = _load(NOTES, {})
+    notes_all = load_notes()
 
     sheets: List[Dict[str, Any]] = []
     for pid, cap in caps.items():

@@ -1,0 +1,26 @@
+{
+  "clone_cost": {
+    "assumptions": [
+      "you accept an existing clinical formula rather than fitting your own, so coefficients are copied from a paper",
+      "you have users willing to connect real blood panels, since without panels the score is wearable noise",
+      "no regulatory clearance is implied; a consumer dashboard, not a diagnostic device"
+    ],
+    "estimate": "about a week for the pipeline, longer for anything you would defend clinically",
+    "why": "Reading the published PhenoAge formula and applying nine lab values is a day's work; HealthKit and Health Connect auth plus a Gemini schema-constrained PDF pass is another few. The part that does not come free is a labelled corpus to know your parser is right, and any claim about reversing aging."
+  },
+  "hazard_note": "A biological-age score computed from a mortality model, presented to consumers with weekly supplement and protocol recommendations, and a roadmap that plans to predict how interventions shift the curve. Nothing on the page frames the output as non-medical, and no clinician review, cohort or validation is mentioned for the score its interface is built around.",
+  "prior_art": [
+    {
+      "corpus_id": "neuroguard-ai-adaptiveconcussionrecoveryintelligencesystem",
+      "relation": "same architecture of trust - a published clinical score presented through a calm UI with an escalation-style recommendation loop - and the same unmeasured gap between a computed index and validated guidance."
+    },
+    {
+      "corpus_id": "medvoice-y87kei",
+      "relation": "opposite end of the same problem: Medvoice closes a loop on an action the patient confirms, while this one opens a recommendation loop with no adherence signal at all. Comparing them shows what a verification step buys."
+    }
+  ],
+  "what_breaks_first": "Trust in the score, the moment it moves for a reason the user can see is unrelated to their behaviour. A PhenoAge output is dominated by blood chemistry that changes quarterly, while the weekly loop promises movement from sleep and steps, so the dashboard's cadence and the model's sensitivity disagree; the reported parsing accuracy cannot rescue it either, since a single misread unit becomes a wrong age.",
+  "what_to_steal": "Force the extraction model into a strict response schema per provider instead of writing per-provider parsers, and keep the raw values alongside the parsed ones; smooth noisy physiological inputs over a short and a long window so a derived score cannot jitter day to day; ship the derived score against a baseline the user already trusts (chronological age) rather than as a bare number.",
+  "worth": "niche",
+  "worth_note": "Two pieces are worth taking and one is worth doubting. Grammar-constrained decoding for provider-specific PDF layouts is a real technique for any document pipeline, and smoothing volatile wearable inputs with nested EMAs before feeding a scoring model is the unglamorous fix that makes a score stable enough to display. The product itself sits in a crowded longevity-dashboard category whose hardest part - whether the number means anything - is exactly where the page offers a percentage with no denominator."
+}

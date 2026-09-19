@@ -130,14 +130,21 @@ def load_audits(path: str = AUDITS_IN) -> Dict[str, Dict[str, Any]]:
     return out
 
 
-def _pool_record(r: Dict[str, Any], sheet: Optional[Dict[str, Any]]) -> Dict[str, Any]:
+def _pool_record(r: Dict[str, Any], sheet: Optional[Dict[str, Any]],
+                 refusal: Optional[List[str]] = None) -> Dict[str, Any]:
     """A1: nothing is deleted, and nothing unverified is presented as vetted."""
     reasons: List[str] = []
     settle: List[str] = []
     provenance = "unaudited"
     if sheet is None:
-        reasons.append("not_audited")
-        settle += ["project page capture (deep)", "artifact check via repo_verify.py"]
+        if refusal:
+            # ADR-P1's distinction, on the surface where it matters: a capture the contract gate refused
+            # means *our read* was incomplete, which is not the claim "this project is thin".
+            reasons.append("incomplete capture (lint: " + ", ".join(refusal) + ")")
+            settle = ["re-capture the seven sections and `numbers[]` that capture_lint named"]
+        else:
+            reasons.append("not_audited")
+            settle += ["project page capture (deep)", "artifact check via repo_verify.py"]
     else:
         # `audited-hold`, not `unaudited`: a scored thin/duplicate record HAS been checked, and
         # labelling it otherwise is how a pool row gets re-audited by someone who cannot tell.
@@ -198,7 +205,8 @@ def _pool_record(r: Dict[str, Any], sheet: Optional[Dict[str, Any]]) -> Dict[str
 
 
 def build(records: List[Dict[str, Any]], out_dir: str, today: str,
-          audits: Optional[Dict[str, Dict[str, Any]]] = None) -> Dict[str, Any]:
+          audits: Optional[Dict[str, Dict[str, Any]]] = None,
+          lint_rejects: Optional[Dict[str, List[str]]] = None) -> Dict[str, Any]:
     # An empty audit set is meaningful, not a hole to fall back through: it publishes
     # nothing. (main() loads pipeline/audit.jsonl explicitly; a fixture build that wants
     # rows must say which of its records were vetted, or it silently reads real sheets.)
@@ -229,7 +237,7 @@ def build(records: List[Dict[str, Any]], out_dir: str, today: str,
         rid = str(r["id"])
         sheet = audits.get(rid)
         if sheet is None or not sheet.get("publishable"):
-            pr = _pool_record(r, sheet)                   # A1: catalog is audited-only
+            pr = _pool_record(r, sheet, (lint_rejects or {}).get(rid))   # A1: catalog is audited-only
             pool.append(pr)
             # A pool row is the same table with three more columns, because a 31-name header
             # over 10-value rows is a trap for anyone parsing it positionally.
@@ -919,11 +927,21 @@ def main() -> int:
     print(f"📦 Packing {len(records)} hackathon projects into two-tier + tabular surfaces "
           f"(as-of {today})...")
     audits = load_audits()
+    lint_rejects = {}
+    rej_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "raw", "lint_rejects")
+    if os.path.isdir(rej_dir):
+        for fname in sorted(os.listdir(rej_dir)):
+            if fname.endswith(".json"):
+                try:
+                    with open(os.path.join(rej_dir, fname), encoding="utf-8") as fh:
+                        lint_rejects[fname[:-5]] = list((json.load(fh) or {}).get("rules") or [])
+                except (OSError, ValueError):
+                    continue
     if audits:
         pub = sum(1 for sh in audits.values() if sh.get("publishable"))
         print(f"🔎 audit join: {len(audits)} sheet(s) · {pub} publishable → catalog · "
               f"{len(audits) - pub} audited-but-held · {len(records) - len(audits)} unaudited → pool")
-    stats = build(records, args.out, today, audits)
+    stats = build(records, args.out, today, audits, lint_rejects)
     if stats["coverage"]:
         for slug, v in sorted(stats["coverage"]["events"].items()):
             print(f"   📏 coverage {slug}: {v['published']} published of {v['upstream_total']} "
@@ -975,7 +993,7 @@ def main() -> int:
     problems = gate_checks(records, stats, args.out, audits)
     if args.check:
         with tempfile.TemporaryDirectory() as td:
-            build(records, td, today, audits)   # same inputs, or the rebuild proves nothing
+            build(records, td, today, audits, lint_rejects)   # same inputs, or the rebuild proves nothing
             checked = 0
             for root, _dirs, files in os.walk(td):
                 for name in sorted(files):

@@ -1,50 +1,51 @@
 {
- "award": null,
- "built_with": [
-  "rust",
-  "ed25519",
-  "json-schema",
-  "github-actions",
-  "vercel",
-  "webassembly",
-  "evk"
- ],
- "captured_at": "2026-09-19",
- "data_and_models": "No dataset, no model training, no key-management story. The cryptographic claim rests on ed25519 and a temperature-0 schema-constrained generation path; nothing in the capture says how keys are held, rotated or revoked.",
- "gallery_images": 4,
- "id": "gemini-box",
- "likes": 2,
- "links": {
-  "demo": null,
-  "repo": null,
-  "video": "https://www.youtube.com/watch?v=rKyo8Wp-e_o"
- },
- "name": "Gemini-Box (Aegis Audit Protocol)",
- "numbers": [
-  {
-   "arithmetic": "unfalsifiable as a project-specific claim: it restates an ed25519 property, not a measured pass rate",
-   "claim": "any single-bit mutation collapses verification instantly",
-   "denominator": "no mutation corpus or test run published",
-   "verifiable": false
+  "award": null,
+  "built_with": [
+    "rust",
+    "ed25519",
+    "json-schema",
+    "github-actions",
+    "vercel",
+    "webassembly",
+    "evk"
+  ],
+  "captured_at": "2026-09-19",
+  "data_and_models": "No dataset, no model training, no key-management story. The cryptographic claim rests on ed25519 and a temperature-0 schema-constrained generation path; nothing in the capture says how keys are held, rotated or revoked.",
+  "gallery_images": 4,
+  "id": "gemini-box",
+  "likes": 2,
+  "links": {
+    "demo": null,
+    "repo": null,
+    "video": "https://www.youtube.com/watch?v=rKyo8Wp-e_o"
   },
-  {
-   "arithmetic": "unfalsifiable as published - determinism across runtime and provider version is not shown",
-   "claim": "deterministic output at temperature 0.0 with a strict responseSchema",
-   "denominator": "one model version, no repeatability measurement published",
-   "verifiable": false
-  }
- ],
- "one_line": "Signs an autonomous agent's execution claim with ed25519 so any mutation of the record collapses verification, behind an MIT verify() primitive.",
- "sections": {
-  "accomplishments": "A named architecture with four components and a published MIT licence for the SDK; the platform pitch extends into a broader runtime-security suite described in a post-submission update.",
-  "challenges": "The page frames the problem (unverified logs, rejected AI-safety claims) but does not describe an engineering obstacle, a rejected alternative, or what the approach costs.",
-  "how_we_built_it": "Gemini 1.5 Pro at temperature 0.0 with a strict responseSchema generates the blueprint; ed25519 signs it; an MIT-licensed SDK exposes the verification primitive; the sibling submission documents a Rust engine and a GitHub Actions pipeline that rebuilds and runs a 12-scenario matrix on every change.",
-  "inspiration": "Enterprise AI governance is log-based: auditors reject safety claims that lack mathematical proof, and there is no way to show what an autonomous system did, why, and that the record was not edited afterwards.",
-  "learned": "Nothing is stated about what they would do differently.",
-  "what_it_does": "A claim layer: the agent's action is described in a schema-validated blueprint, signed deterministically, and any later reader can verify the bundle with a single verify() call; tampering invalidates it instantly.",
-  "what_next": "The update describes folding the components into one platform with a dashboard; no roadmap milestones, benchmarks or adoption targets are given."
- },
- "software_id": 1275666,
- "source_url": "https://devpost.com/software/gemini-box",
- "testing": "The page asserts an instant INVALID result for any mutation. That is a property of the signature scheme rather than a measurement of their system, so it is not an evaluation; no repository, workflow run, test file or corpus of mutated bundles is linked from this page."
+  "name": "Gemini-Box (Aegis Audit Protocol)",
+  "numbers": [
+    {
+      "arithmetic": "unfalsifiable as a project-specific claim: it restates an ed25519 property, not a measured pass rate",
+      "claim": "any single-bit mutation collapses verification instantly",
+      "denominator": "no mutation corpus or test run published",
+      "verifiable": false
+    },
+    {
+      "arithmetic": "unfalsifiable as published - determinism across runtime and provider version is not shown",
+      "claim": "deterministic output at temperature 0.0 with a strict responseSchema",
+      "denominator": "one model version, no repeatability measurement published",
+      "verifiable": false
+    }
+  ],
+  "one_line": "Signs an autonomous agent's execution claim with ed25519 so any mutation of the record collapses verification, behind an MIT verify() primitive.",
+  "schema": 2,
+  "sections": {
+    "accomplishments": "A named architecture with four components and a published MIT licence for the SDK; the platform pitch extends into a broader runtime-security suite described in a post-submission update.",
+    "challenges": "The page frames the problem (unverified logs, rejected AI-safety claims) but does not describe an engineering obstacle, a rejected alternative, or what the approach costs.",
+    "how_we_built_it": "Gemini 1.5 Pro at temperature 0.0 with a strict responseSchema generates the blueprint; ed25519 signs it; an MIT-licensed SDK exposes the verification primitive; the sibling submission documents a Rust engine and a GitHub Actions pipeline that rebuilds and runs a 12-scenario matrix on every change.",
+    "inspiration": "Enterprise AI governance is log-based: auditors reject safety claims that lack mathematical proof, and there is no way to show what an autonomous system did, why, and that the record was not edited afterwards.",
+    "learned": "Nothing is stated about what they would do differently.",
+    "what_it_does": "A claim layer: the agent's action is described in a schema-validated blueprint, signed deterministically, and any later reader can verify the bundle with a single verify() call; tampering invalidates it instantly.",
+    "what_next": "The update describes folding the components into one platform with a dashboard; no roadmap milestones, benchmarks or adoption targets are given."
+  },
+  "software_id": 1275666,
+  "source_url": "https://devpost.com/software/gemini-box",
+  "testing": "The page asserts an instant INVALID result for any mutation. That is a property of the signature scheme rather than a measurement of their system, so it is not an evaluation; no repository, workflow run, test file or corpus of mutated bundles is linked from this page."
 }

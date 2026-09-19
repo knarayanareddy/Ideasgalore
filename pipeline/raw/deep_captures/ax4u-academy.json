@@ -1,41 +1,42 @@
 {
- "award": null,
- "built_with": [
-  "fastapi",
-  "firebase",
-  "gcp",
-  "geminiapi",
-  "github",
-  "html/css",
-  "javascript",
-  "node.js",
-  "python",
-  "sqlite",
-  "streamlit"
- ],
- "captured_at": "2026-09-19",
- "data_and_models": "No model, dataset or system is described. The page names a Gemini API tag among eleven Built With entries and otherwise speaks of curricula, templates and workflows; there is no schema, no corpus, no cost figure and no statement of what is computed versus what is taught.",
- "gallery_images": 0,
- "id": "ax4u-academy",
- "likes": null,
- "links": {
-  "demo": null,
-  "repo": null,
-  "video": null
- },
- "name": "AX4U Academy",
- "numbers": [],
- "one_line": "An AI education platform that sells outputs instead of lessons — automated workflows, a published book, a dashboard, a deployable system — pitched at people who hear about AI daily and have never used it, with no measurement of any kind on the page.",
- "sections": {
-  "accomplishments": "The page claims none in the measurable sense — no learner count, no completion rate, no time saved, no number of workflows shipped by participants, no organisations onboarded. What it offers instead is the emphasis on real outputs over concepts, and the observation that the most successful learners were not the most technical but the ones willing to experiment, iterate and apply AI consistently. That is a claim about which behaviour predicts success, stated without the cohort it was drawn from.",
-  "challenges": "Two, both framed as design tensions rather than things the build resolved: simplifying AI for non-technical users who are overwhelmed by APIs, automation tools, coding environments, model selection and a changing ecosystem; and balancing accessibility, scalability and real technical depth, since too simple means no meaningful solutions and too technical means beginners stop. The stated remedy is that they continuously refined the curriculum and workflows to reduce friction while preserving capability, with no example of a decision made or a threshold chosen.",
-  "how_we_built_it": "The page carries no architecture section: no component, no data flow, no deployment, no description of what runs where. The only technical content is the Built With list, which names fastapi, firebase, gcp, geminiapi, github, html/css, javascript, node.js, python, sqlite and streamlit — eleven tags spanning two backend frameworks, two hosting stacks, two storage engines and two front-end approaches, read more as the curriculum's tool inventory than as one deployed system. Nothing on the page says which of those the platform itself uses.",
-  "inspiration": "Three changes observed happening at once: AI tools became accessible to everyone, small organisations lacked technical implementation support, and traditional education systems moved slower than industry. From that the team concludes people do not need another lecture about AI but need automation, workflows, templates, systems and hands-on execution — which is the submission's whole premise, stated as an observation rather than as something they measured.",
-  "learned": "That AI education works when learners connect it immediately to their own work and daily problems, and that they learn faster when they can automate something useful, publish a real result or save measurable time; and that adoption is not only a technology problem but a workflow, mindset and execution problem.",
-  "what_it_does": "Described as a practical AI execution platform for individuals, small businesses, educators and organisations, combining AI education, workflow automation, practical system building, AI-assisted content production and operational training. The focus areas it lists are AI workflow design, no-code and low-code automation, AI writing and publishing, productivity systems and agent utilisation; the promised learner outputs are automated workflows, published books, AI-generated media, operational dashboards and deployable business systems. What a session on the platform actually looks like — a course, a template library, a hosted workspace, a marketplace of workflows — is not distinguished anywhere on the page.",
-  "what_next": "A long-term vision of practical AI transformation environments for educators, creators, small businesses, public organisations and local communities, on the stated belief that AI should not remain limited to large technology companies. No next build step, milestone or metric is named."
- },
- "software_id": 1279418,
- "source_url": "https://devpost.com/software/ax4u-academy",
- "testing": "No evaluation of any kind is described: no learner outcomes, no completion or retention rate, no before/after time measurement, no pilot with a named organisation, and no test suite. The effectiveness claims and the 'save measurable time' principle would normally be where a training product puts its evidence, and neither is present."
+  "award": null,
+  "built_with": [
+    "fastapi",
+    "firebase",
+    "gcp",
+    "geminiapi",
+    "github",
+    "html/css",
+    "javascript",
+    "node.js",
+    "python",
+    "sqlite",
+    "streamlit"
+  ],
+  "captured_at": "2026-09-19",
+  "data_and_models": "No model, dataset or system is described. The page names a Gemini API tag among eleven Built With entries and otherwise speaks of curricula, templates and workflows; there is no schema, no corpus, no cost figure and no statement of what is computed versus what is taught.",
+  "gallery_images": 0,
+  "id": "ax4u-academy",
+  "likes": null,
+  "links": {
+    "demo": null,
+    "repo": null,
+    "video": null
+  },
+  "name": "AX4U Academy",
+  "numbers": [],
+  "one_line": "An AI education platform that sells outputs instead of lessons \u2014 automated workflows, a published book, a dashboard, a deployable system \u2014 pitched at people who hear about AI daily and have never used it, with no measurement of any kind on the page.",
+  "schema": 2,
+  "sections": {
+    "accomplishments": "The page claims none in the measurable sense \u2014 no learner count, no completion rate, no time saved, no number of workflows shipped by participants, no organisations onboarded. What it offers instead is the emphasis on real outputs over concepts, and the observation that the most successful learners were not the most technical but the ones willing to experiment, iterate and apply AI consistently. That is a claim about which behaviour predicts success, stated without the cohort it was drawn from.",
+    "challenges": "Two, both framed as design tensions rather than things the build resolved: simplifying AI for non-technical users who are overwhelmed by APIs, automation tools, coding environments, model selection and a changing ecosystem; and balancing accessibility, scalability and real technical depth, since too simple means no meaningful solutions and too technical means beginners stop. The stated remedy is that they continuously refined the curriculum and workflows to reduce friction while preserving capability, with no example of a decision made or a threshold chosen.",
+    "how_we_built_it": "The page carries no architecture section: no component, no data flow, no deployment, no description of what runs where. The only technical content is the Built With list, which names fastapi, firebase, gcp, geminiapi, github, html/css, javascript, node.js, python, sqlite and streamlit \u2014 eleven tags spanning two backend frameworks, two hosting stacks, two storage engines and two front-end approaches, read more as the curriculum's tool inventory than as one deployed system. Nothing on the page says which of those the platform itself uses.",
+    "inspiration": "Three changes observed happening at once: AI tools became accessible to everyone, small organisations lacked technical implementation support, and traditional education systems moved slower than industry. From that the team concludes people do not need another lecture about AI but need automation, workflows, templates, systems and hands-on execution \u2014 which is the submission's whole premise, stated as an observation rather than as something they measured.",
+    "learned": "That AI education works when learners connect it immediately to their own work and daily problems, and that they learn faster when they can automate something useful, publish a real result or save measurable time; and that adoption is not only a technology problem but a workflow, mindset and execution problem.",
+    "what_it_does": "Described as a practical AI execution platform for individuals, small businesses, educators and organisations, combining AI education, workflow automation, practical system building, AI-assisted content production and operational training. The focus areas it lists are AI workflow design, no-code and low-code automation, AI writing and publishing, productivity systems and agent utilisation; the promised learner outputs are automated workflows, published books, AI-generated media, operational dashboards and deployable business systems. What a session on the platform actually looks like \u2014 a course, a template library, a hosted workspace, a marketplace of workflows \u2014 is not distinguished anywhere on the page.",
+    "what_next": "A long-term vision of practical AI transformation environments for educators, creators, small businesses, public organisations and local communities, on the stated belief that AI should not remain limited to large technology companies. No next build step, milestone or metric is named."
+  },
+  "software_id": 1279418,
+  "source_url": "https://devpost.com/software/ax4u-academy",
+  "testing": "No evaluation of any kind is described: no learner outcomes, no completion or retention rate, no before/after time measurement, no pilot with a named organisation, and no test suite. The effectiveness claims and the 'save measurable time' principle would normally be where a training product puts its evidence, and neither is present."
 }

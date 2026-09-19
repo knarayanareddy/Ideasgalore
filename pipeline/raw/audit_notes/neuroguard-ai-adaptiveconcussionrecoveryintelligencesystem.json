@@ -1,0 +1,30 @@
+{
+  "clone_cost": {
+    "assumptions": [
+      "you may legally embed the guideline text you retrieve from",
+      "a clinician reviews the escalation thresholds before anyone relies on them",
+      "no diagnosis or treatment claim is made in your copy"
+    ],
+    "estimate": "1 week for the check-in core, 3-4 weeks with history, handoff and a real eval",
+    "why": "FastAPI, SQLite, Pydantic and local retrieval are ordinary parts; the work is the guideline corpus, the rule set and the evaluation cases"
+  },
+  "hazard_note": "Risk assessment on a medical condition. The team disclaims diagnosis, states the benchmarks are not clinical validation, and keeps recommendations conservative; that is better hygiene than most of the corpus, not permission to run it on real patients without oversight.",
+  "prior_art": [
+    {
+      "corpus_id": "neuroguard-ai-0qb34c",
+      "relation": "parallel invention at the same event under the same name: baseline-relative monitoring, no rules, no retrieval - keep both, and note this one is specified far more tightly"
+    },
+    {
+      "corpus_id": "wpf-reliability-agent",
+      "relation": "same containment pattern elsewhere: bounded evidence requests and one human-approved mutation step"
+    },
+    {
+      "corpus_id": "billright",
+      "relation": "same 'cite the rule the verdict came from' discipline applied to a different regulated document type"
+    }
+  ],
+  "what_breaks_first": "The self-graded benchmark: 100% across a case set nobody outside the team defined or counted measures their agreement with themselves, and the page is honest enough to say it is not clinical validation - so a clone inherits the need for a real evaluation with data and a clinician. Second, multi-day history with no persistence story (secure cross-session storage is still on the roadmap).",
+  "what_to_steal": "Escalation precedence: compute the red-flag rules first and *suppress* the normal path when they fire, rather than letting a friendly assistant narrate its way past a warning sign. Pair it with schema validation of every structured result before it renders, and hand the professional a summary artifact rather than a chat transcript.",
+  "worth": "strong",
+  "worth_note": "The architecture is the contribution: deterministic extraction, rule-based history-aware scoring, retrieval over a guideline corpus, and escalation that pre-empts advice - with the generative model kept out of the decision path. That is the correct shape for software that touches a regulated outcome, and it is rare to see it chosen deliberately at hackathon scale. Held below breakthrough because the pieces are standard practice in clinical decision support."
+}

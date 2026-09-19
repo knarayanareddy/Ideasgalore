@@ -1,0 +1,30 @@
+{
+  "clone_cost": {
+    "assumptions": [
+      "you keep a KMS or an explicit key file, and say so",
+      "you publish the canonicalisation rules, or signatures will not verify elsewhere",
+      "you do not market integrity as correctness"
+    ],
+    "estimate": "2 days for a signing envelope plus a verify() CLI",
+    "why": "ed25519 over a canonicalised JSON blueprint is a small amount of code; a CI job that regenerates and verifies the fixture set is most of the rest"
+  },
+  "hazard_note_absent": "Sold as a compliance capability. Nothing here is audited by anyone: an 'immutable audit trail' claim in front of a regulated buyer carries weight the capture does not support, so repeat only what is demonstrated.",
+  "prior_art": [
+    {
+      "corpus_id": "proofline-65a8t4",
+      "relation": "the closest sibling in the corpus - tamper-evident proof packets built before an external claim is made"
+    },
+    {
+      "corpus_id": "proofflow-agent",
+      "relation": "binding rules plus live evidence into a judge-ready ledger; same audience, different artifact"
+    },
+    {
+      "corpus_id": "dataaeternum-com",
+      "relation": "provenance-aware memory as the fix for unverified context - same diagnosis, different layer"
+    }
+  ],
+  "what_breaks_first": "Everything the pitch assumes away: key custody, rotation, revocation, what happens when the model version changes, and what a verifier does about a signature over a *wrong* claim. Signing proves integrity, never correctness, and an auditor will ask that question first. Also the submission itself: this page and its sibling describe one product across four names, so the trail of what was actually built is spread too thin to check.",
+  "what_to_steal": "Make verification a primitive with a name and a licence (verify(bundle) -> bool) instead of a dashboard feature, and pin generation determinism by combining temperature 0 with a strict response schema so the signed artifact is reproducible rather than merely plausible.",
+  "worth": "strong",
+  "worth_note": "'Sign the claim, not the log' is a genuinely good idea: an agent's post-hoc action record becomes a schema-validated blueprint with a one-call verify() primitive, and the SDK being MIT keeps the trust story cheap. What stops it being a reference implementation is that no code, deployment or measurement is reachable - the strongest sentence on the page is a restatement of an ed25519 property rather than evidence about their system."
+}

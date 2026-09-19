@@ -1,0 +1,26 @@
+{
+  "clone_cost": {
+    "assumptions": [
+      "you can obtain a VMS feed or an open equivalent (national fisheries authorities publish some)",
+      "an authority will stand behind a vendor ranking, or you keep the score internal",
+      "you have someone who can read the flag-state rules the alerts would be judged against"
+    ],
+    "estimate": "1-2 weeks for the pipeline skeleton; the data agreement is the project",
+    "why": "Time-series reconstruction, gap detection and a scoring rollup are ordinary work. What takes months is getting incident, violation and investigation records for a jurisdiction in a usable form, and being allowed to publish a score about a licensed provider."
+  },
+  "hazard_note": "IUU fishing enforcement and a provider quality score: alerts that may trigger boardings or sanctions, and a ranking that could cost a licensed vendor business. The page acknowledges the absence of ground truth as a challenge and states no review step, appeal path or human gate before an alert reaches an authority.",
+  "prior_art": [
+    {
+      "corpus_id": "complianceguardian-kcqs32",
+      "relation": "both sell compliance judgement to a regulator, and the contrast is the whole lesson: one requires every verdict to cite a versioned rule and cannot rewrite its audit trail, the other produces a risk classification with no published basis, denominator or ground truth."
+    },
+    {
+      "corpus_id": "adversarial-compliance-matrix",
+      "relation": "same audience (evidence a machine can check), opposite coverage: that project argues its case with named files, a fixture generator and a CI matrix, this one with four bullet lists."
+    }
+  ],
+  "what_breaks_first": "The provider score, because the page states there is no ground truth for provider quality: a number that ranks vendors on incident history without a validated label is an accusation with an arithmetic flavour, and the incidents themselves come from the same fragmented sources the team lists as a challenge. Second: root-cause attribution, since distinguishing a dead device from a deliberate shutdown is the whole enforcement question and no method is described.",
+  "what_to_steal": "Split one data feed into per-stakeholder workflows (owner, regulator, vendor) instead of one dashboard for everyone, and make the disconnection *duration* the primary signal rather than the position - the compliance failure is the gap in reporting, not the coordinate.",
+  "worth": "niche",
+  "worth_note": "The idea worth keeping is the third workflow: scoring the monitoring *provider* from incident and investigation history turns a vendor relationship into something measurable, which is a genuinely useful reflex in any compliance stack. The submission itself is a bullet list of capabilities: no schema, no model, no data source, no metric, no link to code or demo, and no numbers a reader could recompute - so nothing here can be credited beyond the intention."
+}

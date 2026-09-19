@@ -283,7 +283,7 @@ Ideasgalore/
 ├── mcp/ideasgalore_mcp.py              stdio MCP server, 11 tools (audit_report, promotion_queue, audit_rubric), stdlib only
 ├── pipeline/
 │   ├── raw/{seed_gallery.tsv,events.json,deep_records.json,overrides.json}
-│   ├── raw/deep_captures/*.json   audit page reads · raw/audit_notes.json   the panel's judgement
+│   ├── raw/deep_captures/*.json   audit page reads · raw/audit_notes/{id}.json   the panel's judgement · raw/lint_rejects/{id}.json   refused captures
 │   ├── taxonomy_hacks.py  harvest_devpost.py  ingest_seed.py
 │   ├── shard_builder.py   generate_remixes.py  build_agent_api.py
 │   ├── audit_projects.py  repo_verify.py   → audit.jsonl (12 sheets per record, 6 checks each)

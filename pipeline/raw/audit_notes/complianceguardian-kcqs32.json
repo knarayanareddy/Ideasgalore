@@ -1,0 +1,26 @@
+{
+  "clone_cost": {
+    "assumptions": [
+      "you pick one jurisdiction and one industry first, because 16 rulesets is a company not a hackathon",
+      "you have a GCP project you can run Cloud Tasks, BigQuery and Workflows against, and IAM rights to deny yourself",
+      "a domain reviewer is available; without one the rulesets are your own guess about the law"
+    ],
+    "estimate": "2-3 weeks for the agent pair, gateway and append-only trail; months for defensible rulesets",
+    "why": "The infrastructure they describe is standard GCP work and their two structural tricks are small to implement once you know them. What cannot be hurried is authoring and maintaining rule text for the jurisdictions you serve, plus someone qualified to confirm each rule still matches the regulation."
+  },
+  "hazard_note": "Compliance verdicts on NDIS, aged-care and privacy obligations, with routine documents auto-approved. The page argues its case for trustworthiness at length - citations, versioning, immutability - but does not state who is accountable when an auto-approved document later becomes an audit finding, nor whether the rulesets were reviewed by a practitioner.",
+  "prior_art": [
+    {
+      "corpus_id": "adversarial-compliance-matrix",
+      "relation": "same audience, opposite instrument: that project signs an execution claim so a verifier can reject a mutation, this one cites a rule so a human can reject a reading. Read together they cover both halves of machine-checkable compliance - provenance and interpretation."
+    },
+    {
+      "corpus_id": "greenlight-nine-agent-production-crew",
+      "relation": "same shape (an agent pipeline that hands edge cases to a human) with a different optimisation target: Greenlight spends less, ComplianceGuardian refuses to be wrong quietly. The escalation path is the shared skeleton worth copying from either."
+    }
+  ],
+  "what_breaks_first": "The rulesets. Eighty-eight hand-authored YAML rules against regulations that amend without notice, with their own roadmap conceding that change detection is not built yet - so the first failure mode is a document auto-approved against a superseded rule, reported with a citation that still resolves to a real but obsolete clause. Second: the escalation threshold, since auto-approve on 'routine' documents is only as safe as the classifier that calls a document routine.",
+  "what_to_steal": "Grant the writer identity the append permission and deny it the job-starting permission, so history cannot be rewritten by the application that writes it; derive tenant identity only from verified token claims so there is no request field to tamper with; record prompt and model version against every generated verdict so a decision can be reproduced months later; make environment variables required rather than defaulted, because a permissive default on a fresh checkout silently removed credentials.",
+  "worth": "strong",
+  "worth_note": "The product decision is the transferable one: refuse to let a model answer unless the answer names a rule from a versioned file, and escalate when it cannot. Pair that with an audit trail enforced at the permission layer and an entitlement model that spends counters inside a transaction, and you have three moves that apply to any agent product expected to produce evidence a third party will rely on. The incident write-up is unusually useful too - six failures behind each other, none of which crashed."
+}

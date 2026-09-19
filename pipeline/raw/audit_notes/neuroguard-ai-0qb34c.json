@@ -1,0 +1,30 @@
+{
+  "clone_cost": {
+    "assumptions": [
+      "you accept a camera balance test is a demo and not an instrument",
+      "you have a clinician to define what an alert obliges anyone to do",
+      "single-user pilot scale"
+    ],
+    "estimate": "3 weeks for the test battery plus baseline detector",
+    "why": "the tests are standard web tasks and the detector is a small scikit-learn job over a per-user series; no training is implied"
+  },
+  "hazard_note": "Head-injury monitoring with alerting. The page disclaims diagnosis and refuses unsafe claims, which is the right posture, but an alert that a patient reads as clearance is a clinical event; anything built from this needs an explicit escalation path and a review by a clinician.",
+  "prior_art": [
+    {
+      "corpus_id": "neuroguard-ai-adaptiveconcussionrecoveryintelligencesystem",
+      "relation": "same name and problem, different team and a far more specified architecture (deterministic extraction, retrieval, escalation precedence); treat it as the stronger record of the two"
+    },
+    {
+      "corpus_id": "neuropath-kbe2ys",
+      "relation": "concussion and ADHD recovery app that also triages symptoms; adds therapy automation the monitoring framing avoids"
+    },
+    {
+      "corpus_id": "acl-movemement-analytics-lab",
+      "relation": "same bet - video plus computer vision to turn movement into interpretable evidence - in a different injury domain"
+    }
+  ],
+  "what_breaks_first": "The physical test. MediaPipe pose through a laptop webcam degrades with lighting, framing and a person who has vertigo, so the anomaly detector starts flagging the camera rather than the recovery; second, distribution - a monitoring tool with no clinical pathway has nowhere to send a bad reading.",
+  "what_to_steal": "Baseline-relative anomaly detection as the product's whole claim: never assert a norm, assert deviation from the user's own series. It converts a small sample into a usable signal and it is honest about what it is.",
+  "worth": "niche",
+  "worth_note": "The framing is right - measure the person against their own baseline instead of a population threshold - and that transferable piece survives even though nothing about this build is checkable: no dataset, no metric, no repo, and a browser webcam asked to judge balance in someone who is dizzy."
+}

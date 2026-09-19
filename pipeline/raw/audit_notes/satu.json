@@ -1,0 +1,26 @@
+{
+  "clone_cost": {
+    "assumptions": [
+      "you have a catalog with attributes and ratings, since the question value term comes from attribute coverage",
+      "you accept a rule-based scored path; the moment a model enters it, the latency and cost claims no longer transfer",
+      "the benchmark is the organiser's, so porting it means building your own session harness"
+    ],
+    "estimate": "2-4 days to reproduce the architecture on a catalog you already have; weeks to earn the numbers",
+    "why": "The scored path is stdlib Python with no model, so the retrieval, ranking, slate shaping and question selection logic is legible in a day and the harness is in the repo. What does not come free is the evaluator and the catalog statistics it leans on - popularity priors, attribute lead lines and rare-phrase evidence are all derived from that specific 50,000-product dump."
+  },
+  "hazard_note_absent": "No regulated-outcome claim: a shopping copilot measured against an organiser's evaluator. The one thing a builder should carry forward is that the metric is the product's opinion of itself - the page is unusually clear that conversion of the session, not shopper satisfaction, is what terminates the evaluation.",
+  "prior_art": [
+    {
+      "corpus_id": "greenlight-nine-agent-production-crew",
+      "relation": "same genre - an agent pipeline that reports a measured before/after with a cost figure - but the two sit at opposite ends of auditability: Greenlight's numbers are asserted with a stated cost ladder and no harness, SATU's can be recomputed from the formula on the page and its harness is in the linked repository."
+    },
+    {
+      "corpus_id": "sketchwish",
+      "relation": "both treat the free/default path as a design constraint to be engineered rather than a concession; SketchWish does it with sign-in gates and hard caps against abuse, SATU by keeping the scored path model-free at $0.00 per turn."
+    }
+  ],
+  "what_breaks_first": "The evaluator's proxy. Optimising 'the session ends when the target appears in the slate' rewards wide early slates and precise question-baiting, which is not the same thing as a shopper being helped; HitRate@10 of 1.000 with 2.27 turns says the target was surfaced, not that the other nine products were good or that the user trusted the answer. Second: state robustness - typed slots, refusals and an exhaustion path are all deterministic logic over a 50k catalog, and the page reports no adversarial or human sessions to show the behaviour selection recovering from a shopper who changes their mind.",
+  "what_to_steal": "Publish the objective function next to the results, including how failures are counted, so the number can be checked rather than trusted; make the expensive optional component visible at weight zero instead of deleting it, which documents a decision and its cost; use one shared preprocessing function for index and query; and treat 'how many items do I show now' and 'is another question worth a turn' as two explicit, stateful decisions rather than fixed constants.",
+  "worth": "breakthrough",
+  "worth_note": "Not for the score - for the discipline. A hackathon team published the objective, the metric definitions, the convention for misses, and a baseline row, then made every design decision answerable to it: slate width as a real variable because reciprocal rank is weighted, the dense asset kept in the architecture at weight zero and labelled rejected, one tokenizer shared by index and query so the two can never disagree. It is the rare submission where a reader can recompute the headline number from the page, and the arithmetic closes to four decimals."
+}

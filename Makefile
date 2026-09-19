@@ -2,12 +2,19 @@
 # `make build` regenerates every committed artifact from pipeline/raw/ + corpus.jsonl.
 PY := python3
 
-.PHONY: all seed audit harvest gallery deep remix api build verify test serve clean gates
+.PHONY: all lint seed audit harvest gallery deep remix api build verify test serve clean gates
 
 all: build
 
+## 0. contract gate: refuse a half-read capture here, at the boundary, rather than letting a reviewer
+## find it in a published sheet three stages later. `--soft` because one unfinished record must not brick
+## the surfaces for the other nineteen: it records the refusal in raw/lint_rejects/ and moves on, and
+## `verify` is where a refusal actually fails the build.
+lint:
+	$(PY) pipeline/capture_lint.py --soft
+
 ## 1. corpus: rebuild the source of truth from committed raw captures (no network)
-seed:
+seed: lint
 	$(PY) pipeline/ingest_seed.py
 
 ## 2. audit: evidence-gated per-project audit; only publishable verdicts reach the catalog
@@ -27,6 +34,7 @@ build: seed audit
 ## a fresh clone (or a CI shard, or this sandbox — `node_modules` is not persisted between
 ## sessions) otherwise fails the gate with `vite: not found`, which reads like a broken build.
 verify: build deps
+	$(PY) pipeline/capture_lint.py --quiet
 	$(PY) pipeline/shard_builder.py --check
 	$(PY) pipeline/docsync.py --check
 	$(PY) pipeline/tests/test_pipeline.py

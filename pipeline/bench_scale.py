@@ -71,7 +71,11 @@ def grow(root: Path, target: int) -> int:
     evs = cap0["source_url"].split("/")[3]
     lines = (root / "pipeline/raw/seed_gallery.tsv").read_text(encoding="utf-8").rstrip("\n").split("\n")
     notes_p = root / "pipeline/raw/audit_notes.json"
-    notes = json.loads(notes_p.read_text(encoding="utf-8"))
+    # ADR-P4: the registry is a directory of per-record files with the legacy dict merged under it,
+    # so a synthetic tree has to read it the same way the audit does or the clones lose their notes.
+    notes = json.loads(notes_p.read_text(encoding="utf-8")) if notes_p.exists() else {}
+    for nf in sorted((root / "pipeline/raw/audit_notes").glob("*.json")):
+        notes[nf.stem] = json.loads(nf.read_text(encoding="utf-8"))
     rows, added, k = list(lines), 0, 0
     while len(rows) - len(lines) < (target - len(caps)) and k < 4000:
         base = caps[k % len(caps)]

@@ -184,6 +184,30 @@ def apply_override(rec: Dict[str, Any], ov: Dict[str, Any]) -> Dict[str, Any]:
     return rec
 
 
+def refused_ids() -> dict:
+    """The contract gate's verdict, as written by `pipeline/capture_lint.py` (ADR-P1).
+
+    One mechanism, not two: `make build` runs the lint (softly) before this step, the lint records each
+    failing capture in `raw/lint_rejects/{id}.json`, and every consumer that must not publish a
+    half-read record — ingest here, and `audit_projects.load_captures` — refuses those ids from the same
+    ledger. So a record cannot be audited while still being unmerged, and fixing the capture clears the
+    block by itself.
+    """
+    out = {}
+    dirpath = os.path.join(RAW, "lint_rejects")
+    if os.path.isdir(dirpath):
+        for fname in sorted(os.listdir(dirpath)):
+            if fname.endswith(".json"):
+                blob = {}
+                try:
+                    with open(os.path.join(dirpath, fname), encoding="utf-8") as fh:
+                        blob = json.load(fh)
+                except (OSError, ValueError):
+                    continue
+                out[fname[:-5]] = blob.get("rules") or []
+    return out
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description="Build corpus.jsonl from committed raw captures")
     ap.add_argument("--today", default=None,
@@ -215,6 +239,14 @@ def main() -> int:
     events = load_events(os.path.join(RAW, "events.json"))
     deep = load_deep(os.path.join(RAW, "deep_records.json"))
     caps = load_capture_projection(os.path.join(RAW, "deep_captures"))
+    refused = refused_ids()
+    if refused:
+        # Refused, not deleted: the record stays in the pool, marked `incomplete capture`, so a worker's
+        # unfinished read never becomes a judgement about the project (M12).
+        for rid, rules in sorted(refused.items()):
+            if rid in caps:
+                caps.pop(rid)
+                print(f"⛔ {rid}: not ingested — capture_lint rejected it ({', '.join(rules)})")
     overrides = load_overrides(os.path.join(RAW, "overrides.json"))
     rows = parse_tsv(os.path.join(RAW, "seed_gallery.tsv"))
     print(f"🌱 Seed ingest: {len(rows)} listing rows, {len(deep)} deep overrides, "

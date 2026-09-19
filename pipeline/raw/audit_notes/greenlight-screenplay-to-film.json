@@ -1,0 +1,19 @@
+{
+  "clone_cost": {
+    "assumptions": [
+      "see sibling record"
+    ],
+    "estimate": "multi-week",
+    "why": "identical product to the sibling record"
+  },
+  "prior_art": [
+    {
+      "corpus_id": "greenlight-nine-agent-production-crew",
+      "relation": "the same product under a second submission slug, and the fuller of the two pages \u2014 the nine-agent crew listing carries the mechanism, the cost figures and the model assignment, so this row exists to record that a second entrant saw the same idea and what it added (the screenplay-to-film framing) rather than to duplicate the audit"
+    }
+  ],
+  "what_breaks_first": "Same as the sibling: the estimate without volume behind it. Also, a filter-bypass shortcut like the subtitle trick needs to be stated as a product decision with its own review, or it ages into a liability.",
+  "what_to_steal": "The two moves in the sibling record, plus this page's trick: when a safety filter trips on dialogue, keep the shot and move the line into the subtitle layer instead of asking the writer to self-censor.",
+  "worth": "strong",
+  "worth_note": "Kept only as evidence of the duplicate: same product, later and slightly clearer write-up (the filter-bypass-into-subtitles trick and the seeded-bias test appear here and not on the other page)."
+}

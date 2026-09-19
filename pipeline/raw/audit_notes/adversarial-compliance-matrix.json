@@ -1,0 +1,29 @@
+{
+  "clone_cost": {
+    "assumptions": [
+      "you use a published attack corpus rather than only your own fixtures",
+      "you link the repo and the CI run, or the number is decoration"
+    ],
+    "estimate": "2 days for a Rust validator with a fixture generator and a CI matrix",
+    "why": "the engine is small and the harness is standard cargo plus actions; the expensive part is sourcing real payloads, which this project did not do"
+  },
+  "hazard_note_absent": "Security tooling that claims to catch drift. A missed vector is invisible by construction in a self-authored matrix, so publish coverage limits whenever you reuse this pattern.",
+  "prior_art": [
+    {
+      "corpus_id": "gemini-box",
+      "relation": "same author's same platform - this page is one component of it, which is why the records are merged"
+    },
+    {
+      "corpus_id": "agent-launchpad-self-healing-middleware-for-ai-agents",
+      "relation": "runtime guardrails plus auditability for agents, delivered as middleware instead of a validator"
+    },
+    {
+      "corpus_id": "dev1-i6ma2u",
+      "relation": "compliance fleet that leans on vendor guardrails - same 'policy as code' instinct, less proof"
+    }
+  ],
+  "what_breaks_first": "A suite whose cases and fixtures are both authored by the system measures agreement with itself, so '12 of 12' says nothing about the attack space it did not write; and the pass claim is not reachable at all here - no repository, workflow URL or run id is linked. The honest next step for a clone is an external corpus of real malicious samples with a published miss rate.",
+  "what_to_steal": "gen_fixtures.rs as a test *generator*: emit the clean and adversarial cases from the same spec the validator consumes, then let CI rebuild the whole matrix on every commit. It makes a regression impossible to hide and costs one file.",
+  "worth": "niche",
+  "worth_note": "The part worth keeping is the smallest credible security demo there is: a fixture generator plus a fixed scenario matrix wired into CI, so the artifact is a run rather than a slide. It is merged into the sibling submission because both pages describe one platform by one author, and the split version publishes twice the entries for half the evidence."
+}

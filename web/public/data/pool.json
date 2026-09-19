@@ -1549,9 +1549,8 @@
    "provenance":"audited-hold",
    "why_not_promoted":[
     "verdict:duplicate",
-    "soundness 0.77 over 64% of the rubric; 1 named unknown(s) remain \u2192 publishable with caveats",
+    "reads strong, but only 64% of the rubric was checkable (no public artifact to read) \u2192 caveats, not strong",
     "resubmission of the same product \u2014 name match False, listing-title equality False, shared mechanism/text overlap 0.26, shared numeric fingerprints ['$0.02', '$20', '$238', '$4.50'] (0.60 jaccard); merged into the better-evidenced copy (A5)",
-    "unknown: prior_art \u2014 no named competitor; a search pass would settle it",
     "merged into greenlight-nine-agent-production-crew \u2014 same submission, richer twin published",
     "duplicate_of:greenlight-nine-agent-production-crew"
    ],
@@ -1565,12 +1564,12 @@
     "soundness_score":0.7734,
     "rubric_coverage":0.64,
     "audited_at":"2026-09-19",
-    "unknowns":1,
+    "unknowns":0,
     "duplicate_of":"greenlight-nine-agent-production-crew",
     "hazard":false,
     "evidence":6,
     "reasons":[
-     "soundness 0.77 over 64% of the rubric; 1 named unknown(s) remain \u2192 publishable with caveats",
+     "reads strong, but only 64% of the rubric was checkable (no public artifact to read) \u2192 caveats, not strong",
      "resubmission of the same product \u2014 name match False, listing-title equality False, shared mechanism/text overlap 0.26, shared numeric fingerprints ['$0.02', '$20', '$238', '$4.50'] (0.60 jaccard); merged into the better-evidenced copy (A5)"
     ]
    },
@@ -1580,7 +1579,7 @@
    "soundness_score":0.7734,
    "rubric_coverage":0.64,
    "audited_at":"2026-09-19",
-   "unknowns":1,
+   "unknowns":0,
    "repo_url":null,
    "detail":{
     "what_it_is":"Same product, later write-up: a screenwriter drags a file, picks from candidates, and never types a prompt.",

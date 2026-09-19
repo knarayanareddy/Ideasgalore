@@ -1,67 +1,68 @@
 {
- "award": null,
- "built_with": [
-  "cloud-build",
-  "css",
-  "docker",
-  "fastapi",
-  "firestore",
-  "gemini",
-  "google-cloud-run",
-  "google-genai",
-  "html",
-  "javascript",
-  "mediawiki",
-  "parallel-search",
-  "pymongo",
-  "python",
-  "secret-manager",
-  "uvicorn"
- ],
- "captured_at": "2026-09-19",
- "data_and_models": "Two vendor APIs with explicit division of labour: Parallel for web research, Gemini for the judgement (still true / changed / sources disagree). Between them a dependency-free Python ledger tracking each claim, its last-checked time, its next due time and its links to other claims; vendor SDKs only at the edges. Stateless service on Cloud Run scaled to zero; the Built With list adds Firestore and pymongo for storage. No model is trained and no accuracy figure is given for either the judge or the researcher.",
- "gallery_images": 0,
- "id": "continuity-g7bty0",
- "likes": null,
- "links": {
-  "demo": null,
-  "repo": null,
-  "video": "https://www.youtube.com/watch?v=gzsIQCyKa9k"
- },
- "name": "Continuity",
- "numbers": [
-  {
-   "arithmetic": "not falsifiable from the page: the per-run cost shape is described (a search per claim plus several model calls) but the number of claims, runs and priced units is not published, so the figure cannot be bounded by a reader",
-   "claim": "$10 total build cost",
-   "denominator": "whole hackathon build: hosting, Firestore, real Gemini and Parallel calls for the demo",
-   "verifiable": false
+  "award": null,
+  "built_with": [
+    "cloud-build",
+    "css",
+    "docker",
+    "fastapi",
+    "firestore",
+    "gemini",
+    "google-cloud-run",
+    "google-genai",
+    "html",
+    "javascript",
+    "mediawiki",
+    "parallel-search",
+    "pymongo",
+    "python",
+    "secret-manager",
+    "uvicorn"
+  ],
+  "captured_at": "2026-09-19",
+  "data_and_models": "Two vendor APIs with explicit division of labour: Parallel for web research, Gemini for the judgement (still true / changed / sources disagree). Between them a dependency-free Python ledger tracking each claim, its last-checked time, its next due time and its links to other claims; vendor SDKs only at the edges. Stateless service on Cloud Run scaled to zero; the Built With list adds Firestore and pymongo for storage. No model is trained and no accuracy figure is given for either the judge or the researcher.",
+  "gallery_images": 0,
+  "id": "continuity-g7bty0",
+  "likes": null,
+  "links": {
+    "demo": null,
+    "repo": null,
+    "video": "https://www.youtube.com/watch?v=gzsIQCyKa9k"
   },
-  {
-   "arithmetic": "internally inconsistent as written: the user-visible walkthrough enumerates read, prioritise, research, judge, write edit, cross-check and hand back (seven), while the cost narrative says six stages — consistent only if the stage count is the implementation's and the steps are the narrative's, which the page never states",
-   "claim": "'run all six stages end to end' versus the seven numbered steps in the feature walkthrough",
-   "denominator": "the pipeline's own stage list",
-   "load_bearing": false,
-   "reconciles": false,
-   "verifiable": true
+  "name": "Continuity",
+  "numbers": [
+    {
+      "arithmetic": "not falsifiable from the page: the per-run cost shape is described (a search per claim plus several model calls) but the number of claims, runs and priced units is not published, so the figure cannot be bounded by a reader",
+      "claim": "$10 total build cost",
+      "denominator": "whole hackathon build: hosting, Firestore, real Gemini and Parallel calls for the demo",
+      "verifiable": false
+    },
+    {
+      "arithmetic": "internally inconsistent as written: the user-visible walkthrough enumerates read, prioritise, research, judge, write edit, cross-check and hand back (seven), while the cost narrative says six stages \u2014 consistent only if the stage count is the implementation's and the steps are the narrative's, which the page never states",
+      "claim": "'run all six stages end to end' versus the seven numbered steps in the feature walkthrough",
+      "denominator": "the pipeline's own stage list",
+      "load_bearing": false,
+      "reconciles": false,
+      "verifiable": true
+    },
+    {
+      "arithmetic": "structural: a policy constant, readable in code if a repository were linked; it fixes a decay assumption rather than measuring one",
+      "claim": "claims verified last week are skipped",
+      "denominator": "per-claim staleness window",
+      "verifiable": true
+    }
+  ],
+  "one_line": "A MediaWiki companion that re-reads a page fact by fact on a schedule, researches each claim against the live web, and hands the maintainer a cited diff for every fact that quietly stopped being true \u2014 never writing to the article itself.",
+  "schema": 2,
+  "sections": {
+    "accomplishments": "The whole thing cost about $10 to build, which the author attributes to recording fixtures early: credits went to hosting, Firestore and real Gemini and Parallel calls for the demo rather than being burned on debug runs of a stage still being rewritten, and that discipline is given as the reason there was budget left to deploy at all.",
+    "challenges": "Cost. One pass over a single page is a web search per claim plus several Gemini calls, which is fine once and not fine while tuning a prompt forty times in an afternoon. The answer was to record fixtures: the first live run wrote every search result and model response to disk, after which the whole pipeline could replay from them for free \u2014 so the classify stage could be rewritten and all stages run end to end at no cost. The same reasoning drove the local-first design: the ledger core has no dependencies at all, so most of the test suite runs on a bare Python interpreter with nothing installed, and the billing meter did not start until the day of deployment.",
+    "how_we_built_it": "Python backend, plain JavaScript frontend with no framework and no build step, one Cloud Run service that scales to zero. Parallel does the research, Gemini does the judging. The part the author spent the most time on is the ledger: a small dependency-free Python core that tracks every claim, when it was last checked, when it is due next and what else it is connected to. It never touches the network, so the interesting logic is testable without a cloud account or an API key, and the vendor SDKs live only at the edges. Built With additionally names FastAPI, uvicorn, Firestore, pymongo, Docker, Cloud Build and Secret Manager.",
+    "inspiration": "The author is a movie fan without a film background who lives on wikis, and noticed a specific failure: a fact that used to be true and quietly stopped being true, sitting there looking exactly like every correct sentence around it. No vandalism, no edit, nobody touched the page \u2014 the world moved on. The review posture comes from reading git diffs all day, which is still the clearest format known for 'here is what it said, here is what it should say', so the agent never decides: it places both versions side by side with its sources and the maintainer calls it.",
+    "learned": "Plan further ahead than feels necessary \u2014 most of the rewriting happened because building started before the idea was settled, not because something unknowable turned up.",
+    "what_it_does": "One button on an article page; no setup, config or schedule to configure. The agent reads the page, writes down every factual claim it makes one at a time, decides which are worth checking now (claims verified last week are skipped), researches each on the live web through Parallel, judges what came back with Gemini as still-true, changed or sources-disagree, drafts the edit with the citation attached, cross-checks that edit against the rest of the page so one fixed paragraph cannot contradict another, and hands it back as a diff with old text, new text, sources and a confidence score. Then it stops and waits: approve, rewrite or throw out \u2014 nothing reaches the page until a person says so.",
+    "what_next": "The page publishes no future-work section. The nearest thing to a stated trajectory is in the mechanism itself: the ledger already carries a next-due time per claim and a link graph between claims, which is the data structure a decay-rate-aware schedule would need, and the sources-disagree outcome already exists as a category with an unresolved verdict, which is where any queue of what a maintainer should look at first would come from."
   },
-  {
-   "arithmetic": "structural: a policy constant, readable in code if a repository were linked; it fixes a decay assumption rather than measuring one",
-   "claim": "claims verified last week are skipped",
-   "denominator": "per-claim staleness window",
-   "verifiable": true
-  }
- ],
- "one_line": "A MediaWiki companion that re-reads a page fact by fact on a schedule, researches each claim against the live web, and hands the maintainer a cited diff for every fact that quietly stopped being true — never writing to the article itself.",
- "sections": {
-  "accomplishments": "The whole thing cost about $10 to build, which the author attributes to recording fixtures early: credits went to hosting, Firestore and real Gemini and Parallel calls for the demo rather than being burned on debug runs of a stage still being rewritten, and that discipline is given as the reason there was budget left to deploy at all.",
-  "challenges": "Cost. One pass over a single page is a web search per claim plus several Gemini calls, which is fine once and not fine while tuning a prompt forty times in an afternoon. The answer was to record fixtures: the first live run wrote every search result and model response to disk, after which the whole pipeline could replay from them for free — so the classify stage could be rewritten and all stages run end to end at no cost. The same reasoning drove the local-first design: the ledger core has no dependencies at all, so most of the test suite runs on a bare Python interpreter with nothing installed, and the billing meter did not start until the day of deployment.",
-  "how_we_built_it": "Python backend, plain JavaScript frontend with no framework and no build step, one Cloud Run service that scales to zero. Parallel does the research, Gemini does the judging. The part the author spent the most time on is the ledger: a small dependency-free Python core that tracks every claim, when it was last checked, when it is due next and what else it is connected to. It never touches the network, so the interesting logic is testable without a cloud account or an API key, and the vendor SDKs live only at the edges. Built With additionally names FastAPI, uvicorn, Firestore, pymongo, Docker, Cloud Build and Secret Manager.",
-  "inspiration": "The author is a movie fan without a film background who lives on wikis, and noticed a specific failure: a fact that used to be true and quietly stopped being true, sitting there looking exactly like every correct sentence around it. No vandalism, no edit, nobody touched the page — the world moved on. The review posture comes from reading git diffs all day, which is still the clearest format known for 'here is what it said, here is what it should say', so the agent never decides: it places both versions side by side with its sources and the maintainer calls it.",
-  "learned": "Plan further ahead than feels necessary — most of the rewriting happened because building started before the idea was settled, not because something unknowable turned up.",
-  "what_it_does": "One button on an article page; no setup, config or schedule to configure. The agent reads the page, writes down every factual claim it makes one at a time, decides which are worth checking now (claims verified last week are skipped), researches each on the live web through Parallel, judges what came back with Gemini as still-true, changed or sources-disagree, drafts the edit with the citation attached, cross-checks that edit against the rest of the page so one fixed paragraph cannot contradict another, and hands it back as a diff with old text, new text, sources and a confidence score. Then it stops and waits: approve, rewrite or throw out — nothing reaches the page until a person says so.",
-  "what_next": "The page publishes no future-work section. The nearest thing to a stated trajectory is in the mechanism itself: the ledger already carries a next-due time per claim and a link graph between claims, which is the data structure a decay-rate-aware schedule would need, and the sources-disagree outcome already exists as a category with an unresolved verdict, which is where any queue of what a maintainer should look at first would come from."
- },
- "software_id": 1365085,
- "source_url": "https://devpost.com/software/continuity-g7bty0",
- "testing": "A real harness discipline is described rather than measured: the first live run recorded every search result and model response to disk so all later development replayed from fixtures at zero cost, and the ledger core has no dependencies, so most of the test suite runs on a bare Python interpreter with no database, emulator or cloud project. No case count, coverage figure or pass rate is published, there is no evaluation of the judge's accuracy against labelled facts, and no repository is linked, so none of it can be inspected."
+  "software_id": 1365085,
+  "source_url": "https://devpost.com/software/continuity-g7bty0",
+  "testing": "A real harness discipline is described rather than measured: the first live run recorded every search result and model response to disk so all later development replayed from fixtures at zero cost, and the ledger core has no dependencies, so most of the test suite runs on a bare Python interpreter with no database, emulator or cloud project. No case count, coverage figure or pass rate is published, there is no evaluation of the judge's accuracy against labelled facts, and no repository is linked, so none of it can be inspected."
 }

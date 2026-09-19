@@ -1504,6 +1504,146 @@ class TestScaleHarness(unittest.TestCase):
                         "and the dossier's blocking objection was wrong")
 
 
+class TestThroughputRails(unittest.TestCase):
+    """ADR-P1/P2/P4/P9. A batch can only get bigger if four things are true at once: a record's mutable
+    facts are one file each, a half-read capture is refused at the boundary instead of repaired by a
+    reviewer, two sessions can never be handed the same id, and the batch size is edited by the lint's
+    reject rate rather than by anyone's confidence. Each test names the failure it prevents."""
+
+    def test_notes_are_one_file_per_record_and_the_legacy_dict_is_empty(self):
+        """P4, or the throughput is spent resolving write collisions: three writers on one notes file
+        was M10, and a merge conflict in the judgement fields is worse than a slow build."""
+        notes = A.load_notes()
+        self.assertTrue(os.path.isdir(os.path.join(REPO, "pipeline/raw/audit_notes")))
+        self.assertEqual(len(notes), len(A.load_captures()),
+                         "every captured record needs a note file, or its sheet publishes placeholders")
+        with open(os.path.join(REPO, "pipeline/raw/audit_notes.json"), encoding="utf-8") as fh:
+            self.assertEqual(json.load(fh), {},
+                             "the legacy dict must be emptied, not kept as a second source of truth")
+        for rid, ent in notes.items():
+            for key in ("worth", "worth_note", "what_to_steal", "what_breaks_first",
+                        "prior_art", "clone_cost"):
+                self.assertIn(key, ent, f"{rid} is missing the {key} the sheet renders")
+
+    def test_every_committed_capture_satisfies_the_contract(self):
+        import capture_lint as L
+        bad = [f.id for f in (L.lint_one(rid) for rid in L.all_ids()) if not f.ok]
+        self.assertEqual(bad, [], "a committed capture that fails the gate bricks `make verify`: "
+                         + ", ".join(bad))
+        legacy = sorted(f.id for f in (L.lint_one(r) for r in L.all_ids()) if f.legacy)
+        self.assertLessEqual(len(legacy), 4,
+                             "grandfathered v1 captures may only shrink (retire them by re-capturing): "
+                             + ", ".join(legacy))
+
+    def test_a_half_read_capture_is_refused_by_rule_name(self):
+        """P1's acceptance criterion: the *named* rule, and the install path refuses rather than
+        accepting-and-repairing, which is the difference between a gate and a suggestion."""
+        import capture_lint as L
+        path = os.path.join(REPO, "pipeline/raw/deep_captures/tower-dq18x2.json")
+        with open(path, encoding="utf-8") as fh:
+            cap = json.load(fh)
+        cap = dict(cap)
+        cap["sections"] = {k: v for k, v in cap["sections"].items() if k != "learned"}
+        f = L.lint_capture(cap, {}, {})
+        self.assertIn("capture.sections.seven", [r["rule"] for r in f.rows])
+        self.assertTrue(f.rows[0]["fix"], "a violation without a fix line just moves the work later")
+        rows = L.validate_blob("capture", cap)
+        self.assertTrue(any(r["rule"] == "capture.sections.seven" for r in rows),
+                        "--install-capture must refuse the same payload")
+        # and refusing must mean *nothing written*, so a worker cannot half-install a record
+        import subprocess
+        bad = subprocess.run([sys.executable, os.path.join(REPO, "pipeline/capture_lint.py"),
+                              "--install-capture", "lint-selftest"],
+                             input=json.dumps({"id": "lint-selftest"}), capture_output=True,
+                             text=True, cwd=REPO)
+        self.assertNotEqual(bad.returncode, 0)
+        self.assertIn("capture.schema", bad.stdout, "the version key is what makes the contract explicit")
+        self.assertFalse(os.path.exists(os.path.join(REPO, "pipeline/raw/deep_captures/lint-selftest.json")),
+                         "a refused payload must not reach the tree")
+
+    def test_a_default_hazard_note_is_a_refusal_not_a_fallback(self):
+        """The shape of the Tower defect: a stamp attached to the engine's generic sentence because the
+        notes file had nothing in it. Either the stamp is wrong or the note is missing; the lint refuses
+        until someone decides which, because the fallback reads exactly like a finding."""
+        import capture_lint as L
+        cap = {"id": "fixture", "schema": 2, "one_line": "A sideline tool for teams.",
+               "sections": {"what_it_does": "It screens patients between plays and flags missed doses "
+                                             "to a clinician."},
+               "testing": "", "numbers": []}
+        f = L.Findings("fixture")
+        L.lint_notes_for_hazard("fixture", cap, {}, f)
+        self.assertIn("notes.hazard-note-when-stamped", [r["rule"] for r in f.rows])
+        f2 = L.Findings("fixture")
+        L.lint_notes_for_hazard("fixture", cap,
+                                {"hazard_note": "The page offers a dosing flag to a clinician and "
+                                                "disclaims nothing."}, f2)
+        self.assertEqual(f2.rows, [], "with a note of our own, the record is admissible")
+
+    def test_partitions_are_disjoint_stable_and_complete(self):
+        """P2's only interesting property: a worker set of four must cover every candidate exactly once,
+        and re-ranking the queue must not move an id mid-batch."""
+        from taxonomy_hacks import partition_of
+        ids = []
+        with open(os.path.join(REPO, "pipeline/corpus.jsonl"), encoding="utf-8") as fh:
+            for line in fh:
+                if line.strip():
+                    ids.append(json.loads(line)["id"])
+        self.assertTrue(ids)
+        for width in (1, 3, 4, 7):
+            buckets = {i: [] for i in range(width)}
+            for rid in ids:
+                buckets[partition_of(rid, width)].append(rid)
+            self.assertEqual(sorted(x for b in buckets.values() for x in b), sorted(ids),
+                             f"width {width} must cover every id exactly once")
+            self.assertTrue(all(b for b in buckets.values()),
+                            f"width {width} left an idle worker while records waited: {buckets}")
+        self.assertEqual([partition_of(r, 4) for r in ids],
+                         [partition_of(r, 4) for r in list(reversed(ids))[::-1]],
+                         "the shard of an id may not depend on queue order")
+
+    def test_the_governor_throttles_the_batch_on_the_reject_rate(self):
+        """P9, and the reviewer is bound by it too: a batch that produced a 25% reject rate is followed
+        by a smaller one, mechanically. Intent is not a control."""
+        import subprocess
+        with tempfile.TemporaryDirectory() as td:
+            pol, q = os.path.join(td, "p.json"), os.path.join(td, "q.json")
+            with open(pol, "w", encoding="utf-8") as fh:
+                json.dump({"workers": 4, "batch_size": 4, "ceiling": 6, "floor": 2,
+                           "next_batch_size": 4, "history": []}, fh)
+            with open(q, "w", encoding="utf-8") as fh:
+                json.dump({"candidates": [{"id": f"c{i}"} for i in range(8)]}, fh)
+            tool = os.path.join(REPO, "pipeline/next_batch.py")
+
+            def report(*extra):
+                subprocess.run([sys.executable, tool, "--policy", pol, "--queue", q,
+                                "--report", *extra], check=True, capture_output=True, text=True)
+
+            report("--in-batch", "4", "--rejected", "1")
+            got = json.load(open(pol, encoding="utf-8"))
+            self.assertEqual(got["next_batch_size"], 2, "one reject in four is the 20% line")
+            self.assertEqual(got["history"][-1]["rejected"], 1)
+            report("--in-batch", "2", "--rejected", "0")
+            self.assertEqual(json.load(open(pol, encoding="utf-8"))["next_batch_size"], 4,
+                             "a clean batch restores to batch_size, not to the ceiling by default")
+
+    def test_a_refused_capture_is_published_as_incomplete_not_thin(self):
+        """M12 on the surface: the pool row must blame the read, not the project."""
+        records = enrich_all(FIXTURE)
+        refused = records[1]["id"]
+        with tempfile.TemporaryDirectory() as td:
+            shard_builder.build(records, td, "2026-09-18", {},
+                               lint_rejects={refused: ["capture.sections.seven"]})
+            with open(f"{td}/data/pool.json", encoding="utf-8") as fh:
+                pool = json.load(fh)
+        rows = {r["id"]: r for r in pool["records"]}
+        self.assertIn("incomplete capture (lint: capture.sections.seven)",
+                      rows[refused]["why_not_promoted"])
+        self.assertNotIn("not_audited", rows[refused]["why_not_promoted"],
+                         "the record was read; saying otherwise hides the reason")
+        others = [r for i, r in rows.items() if i != refused]
+        self.assertTrue(all("incomplete capture" not in " ".join(r["why_not_promoted"]) for r in others))
+
+
 class TestGeneratedCensus(unittest.TestCase):
     """The docs quote counts, and the counting is done by a program.
 

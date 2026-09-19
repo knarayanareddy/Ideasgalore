@@ -1,0 +1,26 @@
+{
+  "clone_cost": {
+    "assumptions": [
+      "you have material worth packaging \u2014 exercises with answer keys, not an introduction to prompts",
+      "an audience that will pay for execution rather than information, which is the whole bet",
+      "a maintenance rhythm for tool guidance, since a stale curriculum is worse than none in this domain"
+    ],
+    "estimate": "days for the platform shell; the curriculum and the evidence are the months",
+    "why": "A content library, a template store and accounts are ordinary work, and nothing described needs FastAPI and Firestore and Streamlit and Node at once. What takes months is repeatable exercises that reliably leave a non-technical person with something deployed, and someone keeping the model and API guidance current as the ecosystem the page itself calls overwhelming turns over."
+  },
+  "hazard_note_absent": "No regulated-outcome claim: nothing here asserts credentials, employment results or exam outcomes, so no hazard flag is raised. The relevant caution is for whoever copies the framing \u2014 promising published books and deployable systems without measuring a single learner is a marketing surface, and the exposure sits with the buyer, not with a reader of this record.",
+  "prior_art": [
+    {
+      "corpus_id": "sketchwish",
+      "relation": "both serve a non-technical user who wants the finished artifact rather than the skill, and the contrast is about commitment: SketchWish names one output, discloses its caps and costs, and can be opened and tried; this promises five kinds of output and links nothing a reader can try."
+    },
+    {
+      "corpus_id": "greenlight-nine-agent-production-crew",
+      "relation": "both sell time saved; Greenlight states a measured before/after with a cost per run, which is the shape of claim this page's 'save measurable time' principle asks for and does not make."
+    }
+  ],
+  "what_breaks_first": "Every claim about effectiveness, immediately, because there is nothing to break gracefully \u2014 no cohort size, no completion rate, no hours saved, no named organisation that onboarded. Second: the product boundary. A course, a template library and a hosted automation workspace have different failure modes, different owners and different prices, and the page does not say which of the three it is; the eleven Built With tags span two backend frameworks, two hosting stacks, two storage engines and two front-end approaches, which reads as the tool list a student touches across a year rather than the stack one service runs on.",
+  "what_to_steal": "Segment a curriculum by the artifact the learner leaves with \u2014 a deployed workflow, a published book, a live dashboard \u2014 rather than by topic, because each module then has a one-question success test: did this produce a thing. And name the barrier concretely (API sprawl, coding environments, model selection, an ecosystem that changes monthly) instead of 'practical AI skills': that list is a usable brief for what a first session must hide.",
+  "worth": "tired",
+  "worth_note": "The genre is crowded and this entry is indistinguishable from it: practical application rather than theory, a list of output types, a stated tension between too simple and too technical. What would move it off this label is a single number from a real cohort, and the page itself names which number \u2014 people learn faster when they can automate something useful, publish a real result or save measurable time. The record is held for the absence of the measurement it argues for, not for the aim, which is a good one."
+}

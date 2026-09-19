@@ -956,3 +956,29 @@ CSV_COLUMNS = AUDIT_CSV_COLUMNS + BASE_CSV_COLUMNS
 # both files and a consumer never has to guess which column holds the id.
 POOL_CSV_EXTRA = ["provenance", "why_not_promoted", "would_settle_it"]
 POOL_CSV_COLUMNS = CSV_COLUMNS + POOL_CSV_EXTRA
+
+# ADR-P2 · The unit of parallel work is a disjoint slice of the queue, and the slice has to be a pure
+# function of the id: no leases, no shared counter, no "who claimed what" file that two sessions can both
+# write. fnv1a is 64-bit FNV-1a — cheap, stable across processes and languages, and deliberately not
+# Python's `hash()`, which is salted per interpreter run, so two workers would disagree about the split.
+_FNV_OFFSET_64 = 0xCBF29CE484222325
+_FNV_PRIME_64 = 0x100000001B3
+_MASK_64 = (1 << 64) - 1
+
+
+def fnv1a_64(text) -> int:
+    h = _FNV_OFFSET_64
+    for byte in str(text).encode("utf-8"):
+        h = ((h ^ byte) * _FNV_PRIME_64) & _MASK_64
+    return h
+
+
+def partition_of(project_id, workers) -> int:
+    """Which of `workers` disjoint queues owns this id.
+
+    Stable by construction: an id's shard changes only when `workers` changes, never when the queue is
+    re-ranked, so a merged batch cannot double-capture a record or drop one. That is also why the queue
+    order is left alone here — P3 re-ranks after the merge, and a shard function that depended on rank
+    would move ids between workers mid-batch.
+    """
+    return fnv1a_64(project_id) % max(1, int(workers))

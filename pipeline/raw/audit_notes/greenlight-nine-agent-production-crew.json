@@ -1,0 +1,30 @@
+{
+  "clone_cost": {
+    "assumptions": [
+      "assume 1 engineer + 1 designer, 6 weeks, and real spend money for the generation ladder (their full film priced ~$238)",
+      "you can start smaller: one shot class, one priced gate, one table of verdicts \u2014 the calibration view is what takes the weeks",
+      "the character-reference locking is the part that needs image-model skill, not plumbing"
+    ],
+    "estimate": "multi-week",
+    "why": "the agent choreography is a weekend; the honest parts are the ledger, the calibration views, and the locked-identity image pipeline"
+  },
+  "hazard_note": null,
+  "prior_art": [
+    {
+      "corpus_id": "cineagent-py",
+      "relation": "also a multi-agent production crew, but it does not price the shot or learn from kept/rejected takes"
+    },
+    {
+      "corpus_id": "cinema-os",
+      "relation": "same orchestration shape, no cost model"
+    },
+    {
+      "corpus_id": "airlock-s2kidr",
+      "relation": "independent verification of a generated artifact; Greenlight does the weaker version (counts people in frame) and then feeds it into the retry"
+    }
+  ],
+  "what_breaks_first": "The success-rate estimate. Below a few hundred logged shots per shot class the displayed percentage is a prior wearing a lab coat, so build the calibration view (predicted vs observed) in week one or you are shipping confidence theatre. Second to break: prompt-injection-free subtitle burn-in on a fresh container, which is exactly the bug they documented (ffmpeg exits 0 with no fonts).",
+  "what_to_steal": "Two moves, and they compose: (1) quote the cost and the pass rate before the button, and push every hesitation down the price ladder (settle a character at $0.02, not $1); (2) log every verdict row into a store you can query, then let the estimate switch from your priors to the user's own measured numbers and label which one they are reading, with sample size. Also steal 'the money gate is a schema transition, not a prompt'.",
+  "worth": "strong",
+  "worth_note": "The wedge is not 'AI video' \u2014 it is pricing a generation step before you commit and then making your own logged outcomes the estimator. That transfers to anything with an expensive call (image gen, agent runs, transcription at volume). Not 'breakthrough' only because it ships as one team's v1 with no public code to adopt."
+}

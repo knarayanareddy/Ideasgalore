@@ -1,0 +1,30 @@
+{
+  "clone_cost": {
+    "assumptions": [
+      "a wiki or knowledge base with a review workflow you can post diffs into (MediaWiki pending changes, or a PR-style flow)",
+      "a per-claim research budget, since a pass costs a search plus several model calls for every claim on the page",
+      "a decision about contested facts: staff the disagreement bucket, or suppress that category rather than flood maintainers"
+    ],
+    "estimate": "2-3 weeks \u2014 the ledger is the project, the model calls are glue",
+    "why": "The walkthrough is ordinary orchestration over two APIs: extract, prioritise, research, judge, draft, cross-check, render a diff. What takes the time is the claim ledger \u2014 extracting claims reliably, keying them so a re-run recognises the same claim in a re-edited article, and the due-date and link graph on top \u2014 plus the fixture recorder that keeps iteration cheap. The dependency-free core design is what makes the second part cheap to get right."
+  },
+  "hazard_note_absent": "Wiki content is public-knowledge infrastructure, so an edit proposal has a public consequence even though the agent never publishes: the team disclaims authority explicitly (it 'never decides anything', 'nothing reaches the page until a person says so'), which is the review posture this catalog asks for. The two figures that should exist before running it on a busy article are the share of claims that land in sources-disagree and the false-negative rate \u2014 a stale fact the agent checked and passed is indistinguishable from one it never reached, and a maintainer cannot tell those apart from a clean report.",
+  "prior_art": [
+    {
+      "corpus_id": "vms-ai-guard-fisheries-compliance-monitoring-alerts",
+      "relation": "the same shape \u2014 a machine ranking facts for a human to act on, deliberately stopping short of acting \u2014 and the two pages differ almost entirely on whether the judgement is checkable: Continuity returns old text, new text, a citation and a confidence score per claim, while the fisheries tool returns a risk classification whose own page says there is no ground truth for it."
+    },
+    {
+      "corpus_id": "adversarial-compliance-matrix",
+      "relation": "both convert an unverifiable judgement into an artifact a person can check (a cited diff, a signed finding) and both keep the human as the writer of record; the difference is what they attach evidence to \u2014 one grounds a claim against the live web on a schedule, the other against a versioned rule set in CI."
+    },
+    {
+      "corpus_id": "greenlight-nine-agent-production-crew",
+      "relation": "both are staged agent pipelines that publish a dollar figure, and read together they move the number worth tracking: Greenlight quotes cost per run against a measured output, Continuity quotes total build cost and explains that fixtures made every later iteration free \u2014 so iteration cost, not run cost, is what decides whether a pipeline is developable."
+    }
+  ],
+  "what_breaks_first": "The fixed staleness window. 'Skip what was verified last week' is a single guess about decay rates applied uniformly, and it is wrong in both directions for the facts this targets: a film's release date almost never moves, while 'current holder of X' can move in a day \u2014 so the budget is spent re-checking stable facts while the volatile ones age out between passes. Second: the reviewer's queue. 'Sources disagree' is a terminal category with no triage described, and on a long contested article it can hold a large share of the claims; a maintainer handed forty cited diffs and thirty unresolved disagreements has been given a new job, not a lighter one.",
+  "what_to_steal": "Record fixtures on the first live run \u2014 write every search result and model response to disk once, and every later iteration is free; that single habit is what made the whole thing developable on a hackathon budget. Keep vendor SDKs at the edges around a dependency-free core so the interesting logic runs on a bare interpreter with no key. Schedule re-verification per claim with a last-checked and next-due time rather than per page, and keep a link graph between claims so an edit to one paragraph can be checked against its neighbours. And always hand back a diff with citations instead of writing to the system of record.",
+  "worth": "strong",
+  "worth_note": "The diagnosis is worth more than the demo: a fact that used to be true and quietly stopped being true looks exactly like every correct sentence around it, and nobody edited the page \u2014 the world moved on. Treating wiki rot as a decay problem with a per-claim due date instead of an error problem is the right shape, and keeping the human as writer of record (a cited diff, never a publish) is the right posture for public knowledge infrastructure. The write-up also documents its own development discipline in the same breath as the product, which lets a reader check the cost claim against the fixture claim."
+}

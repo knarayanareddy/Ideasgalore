@@ -1,47 +1,48 @@
 {
- "award": null,
- "built_with": [
-  "ai",
-  "api",
-  "node.js",
-  "python"
- ],
- "captured_at": "2026-09-19",
- "data_and_models": "Nothing is said about which model or rule set performs the anomaly detection, what data was used to fit or tune it, or where the historical incidents come from - no dataset, sample size, schema or vendor is named. Built With lists ai, api, node.js and python only.",
- "gallery_images": 0,
- "id": "vms-ai-guard-fisheries-compliance-monitoring-alerts",
- "likes": 1,
- "links": {
-  "demo": null,
-  "repo": null,
-  "video": null
- },
- "name": "VMS AI Guard - Fisheries Compliance Monitoring & Alerts",
- "numbers": [
-  {
-   "arithmetic": "not falsifiable from the page: no metric, threshold or evaluation set is published",
-   "claim": "Risk classification and provider quality scores",
-   "denominator": "unstated - no ground truth, per the page's own challenges list",
-   "verifiable": false
+  "award": null,
+  "built_with": [
+    "ai",
+    "api",
+    "node.js",
+    "python"
+  ],
+  "captured_at": "2026-09-19",
+  "data_and_models": "Nothing is said about which model or rule set performs the anomaly detection, what data was used to fit or tune it, or where the historical incidents come from - no dataset, sample size, schema or vendor is named. Built With lists ai, api, node.js and python only.",
+  "gallery_images": 0,
+  "id": "vms-ai-guard-fisheries-compliance-monitoring-alerts",
+  "likes": 1,
+  "links": {
+    "demo": null,
+    "repo": null,
+    "video": null
   },
-  {
-   "arithmetic": "structural: claimed capability, nothing to recompute",
-   "claim": "Real-time disconnection detection",
-   "denominator": "no latency, window or recall figure given",
-   "verifiable": false
-  }
- ],
- "one_line": "Three workflows over vessel VMS position data: score a vessel's compliance history for authorities, rate the VMS device and its provider from incident and investigation records, and alert on disconnections as they happen.",
- "sections": {
-  "accomplishments": "Scattered operational data turned into a structured compliance intelligence system; a multi-stakeholder model spanning vessel owners, authorities and service providers; raw incidents converted into scoring and decision signals; and a shift from passive monitoring to active decision support. These are stated as capabilities, with no metric, dataset size, session count or example alert behind any of them.",
-  "challenges": "They list four: highly fragmented and inconsistent data across incidents, violations and investigations; difficulty separating the root cause of a disconnection (device failure, operational issue, or deliberate behaviour); lack of ground truth for judging provider quality; and balancing real-time alerting against long-term historical analysis. Each is stated as a condition of the domain rather than as something the build resolved, and no mitigation is described - most consequentially for the third, since a provider score with no ground truth is an opinion about a company.",
-  "how_we_built_it": "The page describes an ingestion of time-series disconnection events plus related compliance reports, violations and investigations, normalised into per-vessel time series, then anomaly detection on disconnection patterns and a scoring layer that turns the result into decision signals. The named stack is ai, api, node.js and python. No architecture diagram, component boundary, datastore, model name or data schema appears on the page.",
-  "inspiration": "Fishing vessels must keep reporting positions through a Vessel Monitoring System, and long disconnections are both the enforcement problem and the loophole; the team also wants a data-driven way to rank the service providers who are supposed to keep that feed alive, and frames the shift as moving from manual monitoring to AI-assisted decision-making in fisheries management and IUU enforcement.",
-  "learned": "That the value is in interpretation and accountability rather than tracking; that the most effective AI approach combines rule-based logic, anomaly detection and scoring; and that administrative data becomes intelligence when properly structured.",
-  "what_it_does": "Continuously monitors GPS/VMS position reporting and detects disconnections in real time, evaluates vessel compliance behaviour over time, analyses VMS provider quality from incident and investigation history, and emits alerts, a risk classification and automated reports. The three named workflows are: vessel owners assessing device quality and supporting provider complaints; authorities scoring vessels to pick high-risk ones for monitoring; authorities scoring providers on incident history and investigation outcomes.",
-  "what_next": "Predictive alerts for likely disconnections, explainable AI for root-cause analysis at vessel level, growth into a broader maritime compliance platform, and a policy recommendation engine built from observed compliance patterns."
- },
- "software_id": 1276603,
- "source_url": "https://devpost.com/software/vms-ai-guard-fisheries-compliance-monitoring-alerts",
- "testing": "No test suite, no evaluation, no precision or recall for the disconnection detector, and no validation of the risk classification against enforcement outcomes. The page also concedes the absence of ground truth for provider quality, which is the number the third workflow exists to produce."
+  "name": "VMS AI Guard - Fisheries Compliance Monitoring & Alerts",
+  "numbers": [
+    {
+      "arithmetic": "not falsifiable from the page: no metric, threshold or evaluation set is published",
+      "claim": "Risk classification and provider quality scores",
+      "denominator": "unstated - no ground truth, per the page's own challenges list",
+      "verifiable": false
+    },
+    {
+      "arithmetic": "structural: claimed capability, nothing to recompute",
+      "claim": "Real-time disconnection detection",
+      "denominator": "no latency, window or recall figure given",
+      "verifiable": false
+    }
+  ],
+  "one_line": "Three workflows over vessel VMS position data: score a vessel's compliance history for authorities, rate the VMS device and its provider from incident and investigation records, and alert on disconnections as they happen.",
+  "schema": 2,
+  "sections": {
+    "accomplishments": "Scattered operational data turned into a structured compliance intelligence system; a multi-stakeholder model spanning vessel owners, authorities and service providers; raw incidents converted into scoring and decision signals; and a shift from passive monitoring to active decision support. These are stated as capabilities, with no metric, dataset size, session count or example alert behind any of them.",
+    "challenges": "They list four: highly fragmented and inconsistent data across incidents, violations and investigations; difficulty separating the root cause of a disconnection (device failure, operational issue, or deliberate behaviour); lack of ground truth for judging provider quality; and balancing real-time alerting against long-term historical analysis. Each is stated as a condition of the domain rather than as something the build resolved, and no mitigation is described - most consequentially for the third, since a provider score with no ground truth is an opinion about a company.",
+    "how_we_built_it": "The page describes an ingestion of time-series disconnection events plus related compliance reports, violations and investigations, normalised into per-vessel time series, then anomaly detection on disconnection patterns and a scoring layer that turns the result into decision signals. The named stack is ai, api, node.js and python. No architecture diagram, component boundary, datastore, model name or data schema appears on the page.",
+    "inspiration": "Fishing vessels must keep reporting positions through a Vessel Monitoring System, and long disconnections are both the enforcement problem and the loophole; the team also wants a data-driven way to rank the service providers who are supposed to keep that feed alive, and frames the shift as moving from manual monitoring to AI-assisted decision-making in fisheries management and IUU enforcement.",
+    "learned": "That the value is in interpretation and accountability rather than tracking; that the most effective AI approach combines rule-based logic, anomaly detection and scoring; and that administrative data becomes intelligence when properly structured.",
+    "what_it_does": "Continuously monitors GPS/VMS position reporting and detects disconnections in real time, evaluates vessel compliance behaviour over time, analyses VMS provider quality from incident and investigation history, and emits alerts, a risk classification and automated reports. The three named workflows are: vessel owners assessing device quality and supporting provider complaints; authorities scoring vessels to pick high-risk ones for monitoring; authorities scoring providers on incident history and investigation outcomes.",
+    "what_next": "Predictive alerts for likely disconnections, explainable AI for root-cause analysis at vessel level, growth into a broader maritime compliance platform, and a policy recommendation engine built from observed compliance patterns."
+  },
+  "software_id": 1276603,
+  "source_url": "https://devpost.com/software/vms-ai-guard-fisheries-compliance-monitoring-alerts",
+  "testing": "No test suite, no evaluation, no precision or recall for the disconnection detector, and no validation of the risk classification against enforcement outcomes. The page also concedes the absence of ground truth for provider quality, which is the number the third workflow exists to produce."
 }

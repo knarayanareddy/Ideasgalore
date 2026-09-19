@@ -1,0 +1,24 @@
+{
+  "clone_cost": {
+    "assumptions": [
+      "assumes access to a Snapdragon X machine, which is the real gate",
+      "no model training is implied by the capture"
+    ],
+    "estimate": "week",
+    "why": "Vall-E-X and Whisper are available through the vendor's hub; the work is the quantisation pass and the Windows shell"
+  },
+  "prior_art": [
+    {
+      "corpus_id": "nua-offline-on-device-lecture-translator",
+      "relation": "same local-first bet on translation/dubbing; AudioNova optimises the silicon, Nua optimises the pipeline"
+    },
+    {
+      "corpus_id": "snapdragon-ai-multilingual-translator-\u2026",
+      "relation": "same hardware target, different modality"
+    }
+  ],
+  "what_breaks_first": "Two things: cloning quality across accents and speakers, and the install base \u2014 Windows on Snapdragon X is a small denominator, so distribution breaks long before the models do. Voice cloning consent/retention is also unspecified in the page, which you must not inherit.",
+  "what_to_steal": "Make the hardware path the product, not the fallback: quantise and route to DSP/GPU deliberately, then publish the delta against your own unoptimised path (2x speed, ~35% power) as the headline number instead of a model name.",
+  "worth": "strong",
+  "worth_note": "547 likes and a staff feature on a Windows-on-Snapdragon app is not luck: it deletes the cloud bill, the latency and the privacy argument at once. Held back from 'breakthrough' because on-device TTS is a crowded field and the moat here is toolchain work (AI Hub quantisation), not a new capability."
+}

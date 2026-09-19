@@ -1,46 +1,47 @@
 {
- "award": null,
- "built_with": [
-  "mediapipe",
-  "opencv",
-  "numpy",
-  "pandas",
-  "scikit-learn",
-  "streamlit",
-  "python",
-  "html/css",
-  "github"
- ],
- "captured_at": "2026-09-19",
- "data_and_models": "No trained model of their own named: off-the-shelf MediaPipe pose estimation and a scikit-learn anomaly detector over per-user session data. No dataset, sample size, threshold or metric appears on the page.",
- "gallery_images": 2,
- "id": "neuroguard-ai-0qb34c",
- "likes": 3,
- "links": {
-  "demo": null,
-  "repo": null,
-  "video": "https://www.youtube.com/watch?v=EX-kapJD55U"
- },
- "name": "NeuroGuard AI",
- "numbers": [
-  {
-   "arithmetic": "unfalsifiable as published - no sensitivity, false-alarm rate or session count is given",
-   "claim": "detects unusual changes versus a personal baseline",
-   "denominator": "each user's own prior sessions; count and window not stated",
-   "verifiable": false
-  }
- ],
- "one_line": "Concussion recovery tracking that scores short cognitive and camera-based physical tests against the patient's own baseline and flags unusual change.",
- "sections": {
-  "accomplishments": "One accessible platform combining cognitive testing, camera-based physical monitoring and baseline-relative trend alerts; positioned as recovery support, not a diagnostic replacement.",
-  "challenges": "Assessments simple enough for anyone to use while still producing meaningful signal; individual differences; keeping the framing away from unsafe medical claims.",
-  "how_we_built_it": "A Streamlit app: MediaPipe pose for the physical tests, numpy/pandas for the session series, a scikit-learn anomaly detector over the personal baseline, plus session-to-session data tracking.",
-  "inspiration": "Recovery is not linear and occasional clinic assessments miss most of it; they wanted continuous, self-administered tracking rather than a snapshot.",
-  "learned": "Personal baselines beat population thresholds for monitoring; safety, explainability and accessibility matter as much as model accuracy.",
-  "what_it_does": "Short cognitive tests (reaction time, memory, attention) plus camera-based balance/movement assessment, a recovery dashboard, and alerts when performance moves away from the user's own baseline.",
-  "what_next": "Larger and more diverse datasets, stronger camera pose analysis, clinically informed assessments, wearable integration."
- },
- "software_id": 1401117,
- "source_url": "https://devpost.com/software/neuroguard-ai-0qb34c",
- "testing": "No test suite, evaluation set, or validation against clinical measures is described; the page presents the concept and a prototype update, not results."
+  "award": null,
+  "built_with": [
+    "mediapipe",
+    "opencv",
+    "numpy",
+    "pandas",
+    "scikit-learn",
+    "streamlit",
+    "python",
+    "html/css",
+    "github"
+  ],
+  "captured_at": "2026-09-19",
+  "data_and_models": "No trained model of their own named: off-the-shelf MediaPipe pose estimation and a scikit-learn anomaly detector over per-user session data. No dataset, sample size, threshold or metric appears on the page.",
+  "gallery_images": 2,
+  "id": "neuroguard-ai-0qb34c",
+  "likes": 3,
+  "links": {
+    "demo": null,
+    "repo": null,
+    "video": "https://www.youtube.com/watch?v=EX-kapJD55U"
+  },
+  "name": "NeuroGuard AI",
+  "numbers": [
+    {
+      "arithmetic": "unfalsifiable as published - no sensitivity, false-alarm rate or session count is given",
+      "claim": "detects unusual changes versus a personal baseline",
+      "denominator": "each user's own prior sessions; count and window not stated",
+      "verifiable": false
+    }
+  ],
+  "one_line": "Concussion recovery tracking that scores short cognitive and camera-based physical tests against the patient's own baseline and flags unusual change.",
+  "schema": 2,
+  "sections": {
+    "accomplishments": "One accessible platform combining cognitive testing, camera-based physical monitoring and baseline-relative trend alerts; positioned as recovery support, not a diagnostic replacement.",
+    "challenges": "Assessments simple enough for anyone to use while still producing meaningful signal; individual differences; keeping the framing away from unsafe medical claims.",
+    "how_we_built_it": "A Streamlit app: MediaPipe pose for the physical tests, numpy/pandas for the session series, a scikit-learn anomaly detector over the personal baseline, plus session-to-session data tracking.",
+    "inspiration": "Recovery is not linear and occasional clinic assessments miss most of it; they wanted continuous, self-administered tracking rather than a snapshot.",
+    "learned": "Personal baselines beat population thresholds for monitoring; safety, explainability and accessibility matter as much as model accuracy.",
+    "what_it_does": "Short cognitive tests (reaction time, memory, attention) plus camera-based balance/movement assessment, a recovery dashboard, and alerts when performance moves away from the user's own baseline.",
+    "what_next": "Larger and more diverse datasets, stronger camera pose analysis, clinically informed assessments, wearable integration."
+  },
+  "software_id": 1401117,
+  "source_url": "https://devpost.com/software/neuroguard-ai-0qb34c",
+  "testing": "No test suite, evaluation set, or validation against clinical measures is described; the page presents the concept and a prototype update, not results."
 }

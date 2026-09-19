@@ -1,70 +1,70 @@
 {
- "award": "Submitted / No Award",
- "built_with": [
-  "typescript",
-  "next.js-15",
-  "pnpm",
-  "jest",
-  "cypress",
-  "codeql",
-  "cyclonedx-sbom",
-  "cuda",
-  "onnx",
-  "merkle-trees",
-  "sha-256",
-  "openai-api",
-  "anthropic-api",
-  "groq",
-  "ollama",
-  "together-ai",
-  "xai-grok-api",
-  "haystack",
-  "langchain-shims",
-  "llamaindex-shims",
-  "uuid-v4",
-  "iso8601",
-  "three.js",
-  "python"
- ],
- "captured_at": "2026-09-19",
- "id": "mcop",
- "likes": 2,
- "limits_admitted": "The author does disclose the difficulty (cross-runtime divergence, provenance overhead) and leaves the values-scoring question open, which is real signal — but no failure mode of the determinism claim is given.",
- "links": {},
- "name": "MCOP",
- "numbers": [
-  {
-   "arithmetic": null,
-   "claim": "96.6% test coverage with Jest and Cypress",
-   "denominator": "self-reported; no repository is linked so the coverage config cannot be inspected",
-   "note": "self-reported; nothing on the page lets an outsider run the check",
-   "verifiable": false
+  "award": "Submitted / No Award",
+  "built_with": [
+    "typescript",
+    "next.js-15",
+    "pnpm",
+    "jest",
+    "cypress",
+    "codeql",
+    "cyclonedx-sbom",
+    "cuda",
+    "onnx",
+    "merkle-trees",
+    "sha-256",
+    "openai-api",
+    "anthropic-api",
+    "groq",
+    "ollama",
+    "together-ai",
+    "xai-grok-api",
+    "haystack",
+    "langchain-shims",
+    "llamaindex-shims",
+    "uuid-v4",
+    "iso8601",
+    "three.js",
+    "python"
+  ],
+  "captured_at": "2026-09-19",
+  "id": "mcop",
+  "likes": 2,
+  "limits_admitted": "The author does disclose the difficulty (cross-runtime divergence, provenance overhead) and leaves the values-scoring question open, which is real signal \u2014 but no failure mode of the determinism claim is given.",
+  "links": {},
+  "name": "MCOP",
+  "numbers": [
+    {
+      "arithmetic": null,
+      "claim": "96.6% test coverage with Jest and Cypress",
+      "denominator": "self-reported; no repository is linked so the coverage config cannot be inspected",
+      "note": "self-reported; nothing on the page lets an outsider run the check",
+      "verifiable": false
+    },
+    {
+      "arithmetic": "not falsifiable as presented",
+      "claim": "byte-identical reasoning across Node, browser and Python sidecar",
+      "denominator": "no published harness, corpus or reproduction command",
+      "note": "self-reported; nothing on the page lets an outsider run the check",
+      "verifiable": false
+    },
+    {
+      "arithmetic": null,
+      "claim": "4.4 milliseconds for a recursive triad orchestration pass",
+      "denominator": "hardware, input size and iteration count not stated",
+      "note": "self-reported; nothing on the page lets an outsider run the check",
+      "verifiable": false
+    }
+  ],
+  "one_line": "Deterministic, crypto-verifiable substrate for recursive triad orchestration, claiming byte-identical reasoning across Node, browser and edge.",
+  "sections": {
+    "challenges": "Cross-runtime reproducibility is described as the hard part ('what works in Node silently diverges in the browser or a Python sidecar'); cryptographic provenance added latency until the chaining and tensor storage were optimised; licensing moved to BUSL-1.1 with a stated MIT conversion in 2030; the author calls the values-layer scoring question unresolved.",
+    "how_we_built_it": "TypeScript kernels in a pnpm monorepo, toolchain pinned (Node 22.22.2, pnpm 9.15.0) because cross-runtime byte identity dies on float formatting and JSON serialisation differences; rank-1 tensor storage to keep Merkle chaining affordable; a CUDA/ONNX acceleration layer via HTTP bridge with CPU fallbacks.",
+    "inspiration": "Discomfort that agent development 'relies on hope' \u2014 chained prompts plus retrieval plus\u7948\u7977 consistency. Proposes a substrate where every reasoning step replays byte-for-byte and is cryptographically audited, with stigmergy (ant-colony indirect coordination) as the memory model given Merkle-linked integrity.",
+    "learned": "Determinism across JavaScript, Python and edge runtimes is 'brutally difficult'; adding provenance changes development psychology from passing tests to building an immutable story of reasoning; eudaimonic scoring rewards trajectories that are high-alignment and high-utility.",
+    "what_it_does": "Described as a framework rather than an app: NOVA-NEO encoder for deterministic context-to-tensor conversion, Stigmergy v5 for pheromone-style memory with cosine recall, Holographic Etch as an append-only confidence ledger; a Universal Adapter Protocol under OpenAI, Anthropic, Groq, Gemini, Ollama and xAI; a Next.js 15 showcase site with a Three.js visual layer.",
+    "what_next": "Not stated as a product plan beyond continued adapter work."
   },
-  {
-   "arithmetic": "not falsifiable as presented",
-   "claim": "byte-identical reasoning across Node, browser and Python sidecar",
-   "denominator": "no published harness, corpus or reproduction command",
-   "note": "self-reported; nothing on the page lets an outsider run the check",
-   "verifiable": false
-  },
-  {
-   "arithmetic": null,
-   "claim": "4.4 milliseconds for a recursive triad orchestration pass",
-   "denominator": "hardware, input size and iteration count not stated",
-   "note": "self-reported; nothing on the page lets an outsider run the check",
-   "verifiable": false
-  }
- ],
- "one_line": "Deterministic, crypto-verifiable substrate for recursive triad orchestration, claiming byte-identical reasoning across Node, browser and edge.",
- "sections": {
-  "challenges": "Cross-runtime reproducibility is described as the hard part ('what works in Node silently diverges in the browser or a Python sidecar'); cryptographic provenance added latency until the chaining and tensor storage were optimised; licensing moved to BUSL-1.1 with a stated MIT conversion in 2030; the author calls the values-layer scoring question unresolved.",
-  "how_we_built_it": "TypeScript kernels in a pnpm monorepo, toolchain pinned (Node 22.22.2, pnpm 9.15.0) because cross-runtime byte identity dies on float formatting and JSON serialisation differences; rank-1 tensor storage to keep Merkle chaining affordable; a CUDA/ONNX acceleration layer via HTTP bridge with CPU fallbacks.",
-  "inspiration": "Discomfort that agent development 'relies on hope' — chained prompts plus retrieval plus祈祷 consistency. Proposes a substrate where every reasoning step replays byte-for-byte and is cryptographically audited, with stigmergy (ant-colony indirect coordination) as the memory model given Merkle-linked integrity.",
-  "learned": "Determinism across JavaScript, Python and edge runtimes is 'brutally difficult'; adding provenance changes development psychology from passing tests to building an immutable story of reasoning; eudaimonic scoring rewards trajectories that are high-alignment and high-utility.",
-  "what_it_does": "Described as a framework rather than an app: NOVA-NEO encoder for deterministic context-to-tensor conversion, Stigmergy v5 for pheromone-style memory with cosine recall, Holographic Etch as an append-only confidence ledger; a Universal Adapter Protocol under OpenAI, Anthropic, Groq, Gemini, Ollama and xAI; a Next.js 15 showcase site with a Three.js visual layer.",
-  "what_next": "Not stated as a product plan beyond continued adapter work."
- },
- "software_id": 1274447,
- "source_url": "https://devpost.com/software/mcop",
- "testing": "Claims Jest 96.6% coverage, Cypress, CodeQL and SBOM generation, plus 'reproducible benchmark tooling from day one' — none of it reachable, because the page links no repository."
+  "software_id": 1274447,
+  "source_url": "https://devpost.com/software/mcop",
+  "testing": "Claims Jest 96.6% coverage, Cypress, CodeQL and SBOM generation, plus 'reproducible benchmark tooling from day one' \u2014 none of it reachable, because the page links no repository."
 }

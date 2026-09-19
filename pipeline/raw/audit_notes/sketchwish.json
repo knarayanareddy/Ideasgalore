@@ -1,0 +1,30 @@
+{
+  "clone_cost": {
+    "assumptions": [
+      "you have a Stripe account and a domain, since the product is the checkout",
+      "you accept a per-render cost and price the free tier against it",
+      "you define 'print-ready' as a test you can fail, or drop the claim"
+    ],
+    "estimate": "1 week for the render pipeline and payment loop, 3 weeks with caps, escapes and analytics wired",
+    "why": "the models are hosted, and auth, storage, quota and payments are all configuration of existing services"
+  },
+  "hazard_note": null,
+  "prior_art": [
+    {
+      "corpus_id": "ai-fitting-labs",
+      "relation": "same commerce logic in another modality: plug into someone else's store and cut a return-logistics cost rather than chase delight"
+    },
+    {
+      "corpus_id": "carbender",
+      "relation": "photo in, structured commercially actionable output out - same trust problem, resolved with an estimate instead of an artwork"
+    },
+    {
+      "corpus_id": "unleashed-simplicity-crew",
+      "relation": "also sells speed-to-artifact to solo sellers; this one owns the production concern the others skip"
+    }
+  ],
+  "what_breaks_first": "Taste. 'Print-ready' is a per-style judgement, and a paid print-on-demand seller returns goods that merely look like a filter - there is no fidelity metric anywhere in the capture, no style-level acceptance rate, and no human review loop. The single-provider dependency is the other one: they already survived one model retirement mid-build, and the pipeline still has one throat to choke.",
+  "what_to_steal": "Engineer the free tier as the abuse surface first: sign-in as the price of a render, a hard generation cap, and an explicit rate limiter as its own component. Then use the cheap model to read and the expensive model to render, so the cost curve, not the vendor's price list, decides how much you can give away.",
+  "worth": "strong",
+  "worth_note": "Not a photo filter but a small company assembled correctly: a cheap vision pass protecting fidelity, an image model doing the rendering, third-party auth, storage, quota and payments so the free tier stays solvent, plus two genuinely hard-won findings - that model deprecation mid-build is an operational risk to design for, and that in-app browsers break Google sign-in so the funnel needs an escape hatch. Most hackathon 'live product' claims are demos; this one names its own margin."
+}
