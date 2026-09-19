@@ -116,7 +116,11 @@ Each project carries: identity + `url` + `event{org, prize, registrations, theme
 `inspiration_intel{the_wedge, naive_version_vs_this, how_they_built_it, hard_won_lesson,
 proof_points, next_moves, steal_this[], reuse_surface}` · `links{repo,demo,video}` ·
 **`provenance{}` per field** (`observed` / `derived` / `editorial` / `unavailable`) ·
-`harvested_at`, `taxonomy_version`, `scoring_version`.
+`harvested_at`, `taxonomy_version`, `scoring_version` ·
+**`audit{verdict, worth, soundness, soundness_score, rubric_coverage, checks{}, unknowns[],
+clone_cost, what_to_steal, what_breaks_first, prior_art[], hazard, sheet}`** — the record's
+own evidence ledger is one pointer away, and `unknowns[]` states what nobody could verify
+instead of leaving the reader to guess it ([`docs/AUDIT_PROTOCOL.md`](docs/AUDIT_PROTOCOL.md)).
 
 ```
 coolness = 0.30·engagement + 0.22·validation + 0.14·event_prestige + 0.10·recency
@@ -125,6 +129,9 @@ coolness = 0.30·engagement + 0.22·validation + 0.14·event_prestige + 0.10·re
 Admission gate `coolness ≥ 0.18` + placeholder-summary rejection. The `redundancy` term only
 reorders browse views; it never deletes a record — parallel invention is a *feature* of
 hackathons (two teams in one event both shipped "NeuroGuard AI"; we keep both and say so).
+What *is* merged is the same product resubmitted to a different hackathon: shared numeric
+fingerprints ($0.02 · $20 · $238 · 29% → 49%) set `duplicate_of` on the thinner record, which
+then sits in the pool pointing at its better-sourced twin.
 
 ---
 
@@ -138,14 +145,19 @@ Ideasgalore/
 │   ├── METHODOLOGY_BLUEPRINT.md        system spec: taxonomy, acquisition, ranking, schema
 │   ├── DESIGN.md                       "Field Museum of Ideas" — locked tokens
 │   ├── AGENT_ACCESS.md                 surfaces, contract, query cookbook, known limits
+│   ├── AUDIT_PANEL.md                  9 personas · evidence rules · 15 audit ADRs · dissents
+│   ├── AUDIT_PROTOCOL.md               the executable rubric: fields, checks, verdicts, gates
 │   └── DATA_ETHICS.md                  sourcing policy, what we refuse to store, takedowns
-├── mcp/ideasgalore_mcp.py              stdio MCP server (8 tools, stdlib only)
+├── mcp/ideasgalore_mcp.py              stdio MCP server (11 tools, stdlib only)
 ├── pipeline/
-│   ├── raw/{seed_gallery.tsv, events.json, deep_records.json, overrides.json}
+│   ├── raw/{seed_gallery.tsv, events.json, deep_records.json, overrides.json,
+│   │        audit_notes.json, deep_captures/*.json}
 │   ├── taxonomy_hacks.py               sectors · 18 moves · stack · specificity · coolness · intel
 │   ├── harvest_devpost.py              L1 discover · L2 gallery · L3 deep · ingest
 │   ├── ingest_seed.py                  offline corpus build from committed captures
-│   ├── shard_builder.py                all six surfaces + gates (budget, parity, determinism)
+│   ├── audit_projects.py               evidence → checks → verdict → promotion gate
+│   ├── repo_verify.py                  api.github.com facts for stack/build/test claims
+│   ├── shard_builder.py                every surface + gates (budget, parity, audit, determinism)
 │   ├── generate_remixes.py             curated + mined idea collisions → build briefs
 │   ├── build_agent_api.py              llms.txt · schema · OpenAPI · SKILL.md · ethics
 │   ├── corpus.jsonl                    ← single source of truth

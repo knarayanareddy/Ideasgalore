@@ -2,7 +2,7 @@
  "audit_version": 1,
  "pool_size": 161,
  "queued": 12,
- "note": "Ranking of unaudited candidates by expected information gain (ADR-A7). Nothing here has been verified; the order is only 'what would teach us most'.",
+ "note": "Ranking of never-audited candidates by expected information gain (ADR-A7). Nothing here has been verified; the order is only 'what would teach us most'. `pool_size` counts records with no sheet at all \u2014 the full holding area, including audited-but-held records (thin, duplicate, hazard), is data/pool.json.",
  "candidates": [
   {
    "id": "neuroguard-ai-0qb34c",

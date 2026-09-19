@@ -244,7 +244,7 @@ rebuild. Static hosting on GitHub Pages.
 Ideasgalore/
 ├── .github/workflows/deploy.yml        Pages build · weekly harvest · gate-checked
 ├── docs/{EXPERT_PANEL,METHODOLOGY_BLUEPRINT→this,DESIGN,DATA_ETHICS,AGENT_ACCESS}.md
-├── mcp/ideasgalore_mcp.py              stdio MCP server, 8 tools, stdlib only
+├── mcp/ideasgalore_mcp.py              stdio MCP server, 11 tools (audit_report, promotion_queue, audit_rubric), stdlib only
 ├── pipeline/
 │   ├── raw/{seed_gallery.tsv,events.json,deep_records.json,overrides.json}
 │   ├── taxonomy_hacks.py  harvest_devpost.py  ingest_seed.py

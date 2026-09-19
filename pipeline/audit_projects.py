@@ -631,8 +631,11 @@ def queue(pool: List[Dict[str, Any]], audited_ids: set, n: int, out_dir: str) ->
     path = os.path.join(out_dir, "data", "promotion-queue.json")
     with open(path, "w", encoding="utf-8") as fh:
         json.dump({"audit_version": AUDIT_VERSION, "pool_size": len(out), "queued": len(sel),
-                   "note": "Ranking of unaudited candidates by expected information gain (ADR-A7). "
-                           "Nothing here has been verified; the order is only 'what would teach us most'.",
+                   "note": "Ranking of never-audited candidates by expected information gain (ADR-A7). "
+                           "Nothing here has been verified; the order is only 'what would teach us most'. "
+                           f"`pool_size` counts records with no sheet at all — the full holding area, "
+                           "including audited-but-held records (thin, duplicate, hazard), is "
+                           "data/pool.json.",
                    "candidates": sel}, fh, indent=1)
     print(f"📋 promotion queue: top {len(sel)} of {len(out)} candidates -> {os.path.relpath(path, os.path.dirname(HERE))}")
     for c in sel:
