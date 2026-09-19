@@ -36,7 +36,7 @@ JSON + CSV + NDJSON + SQLite on GitHub Pages: **$0/month, no backend, no API key
 | **The Remix Bench** | build-time idea collisions: curated + mined pairs, each with `the_wedge`, `starter_stack`, `first_48_hours` and **`kill_criteria`** |
 | **Idea shelf** | star plates → export a markdown brief with links, provenance footer and all — paste it into your next project plan or hand it to an agent |
 | **Agent-native** | `llms.txt`, JSON Schema with **per-field provenance** (the `audit` block included), OpenAPI 3.1 with the audit surfaces, an agent `SKILL.md`, and a stdlib **MCP server** with 11 tools (`audit_report`, `promotion_queue`, `audit_rubric` included) |
-| **Reproducible & gated** | `make verify`: offline rebuild → byte-diff of **every** emitted surface → catalog/pool partition parity → budget ceiling → 58 tests → a node check that the browser decodes the same verdicts the gates validated. Scores are stamped as-of the corpus, not the clock, so a rebuild in January matches a build in September. CI fails on drift and refuses to publish a collapsed corpus |
+| **Reproducible & gated** | `make verify`: offline rebuild → byte-diff of **every** emitted surface → catalog/pool partition parity → budget ceiling → header/row alignment on both CSV surfaces → 67 tests → a node check that the browser decodes the same verdicts the gates validated. Scores are stamped as-of the corpus, not the clock, so a rebuild in January matches a build in September. CI fails on drift and refuses to publish a collapsed corpus |
 
 ---
 
