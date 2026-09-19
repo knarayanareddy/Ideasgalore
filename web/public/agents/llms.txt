@@ -4,16 +4,16 @@
 > Devpost public showcase, organized so a builder (human or agent) can answer
 > "what should I steal next?" — not "what exists?".
 > Static files only: no auth, no keys, no rate limit. CORS-open. Last build:
-> 2026-09-18 · 5 audited, publishable projects ·
-> 4 hackathons · 10 transferable moves ·
-> 160 more projects held out of the catalog pending audit.
+> 2026-09-18 · 7 audited, publishable projects ·
+> 4 hackathons · 11 transferable moves ·
+> 158 more projects held out of the catalog pending audit.
 
 ## Read this before you use the data
 
 - **This index is a gated sample, not the platform.** The galleries we crawled report
   their own totals (xprize 83/1401); `catalog-stats.json` -> `coverage` repeats it in data.
   Never write "every hackathon project" about this corpus — the defensible phrasing is
-  "5 admitted projects from the pages captured".
+  "7 admitted projects from the pages captured".
 
 - `agents/schema.json` — record contract, with `x-provenance` on every field.
 - `agents/ethics.json` — usage policy we are ourselves bound by; honour it downstream.
@@ -26,7 +26,7 @@
 ## Endpoints (relative to the site root)
 
 - `catalog-packed.json` — Tier-1: every admitted row, dictionary-encoded. Best for
-  whole-corpus ranking/filtering in one request (~2.9 KB gzip).
+  whole-corpus ranking/filtering in one request (~3.1 KB gzip).
 - `data/ideas.csv` — the tabular database; stable column order, spreadsheet-safe.
 - `data/pool.csv` — the same columns in the same order, plus `provenance`,
   `why_not_promoted`, `would_settle_it`. `verdict` blank means never audited; `provenance`

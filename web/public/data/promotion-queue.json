@@ -1,40 +1,16 @@
 {
  "audit_version": 1,
- "pool_size": 155,
+ "pool_size": 153,
  "queued": 12,
  "note": "Ranking of never-audited candidates by expected information gain (ADR-A7). Nothing here has been verified; the order is only 'what would teach us most'. `pool_size` counts records with no sheet at all \u2014 the full holding area, including audited-but-held records (thin, duplicate, hazard), is data/pool.json.",
  "candidates": [
-  {
-   "id": "complianceguardian-kcqs32",
-   "name": "ComplianceGuardian",
-   "domain": "Public Trust, Safety & Compliance",
-   "coolness": 0.411,
-   "expected_gain": 0.5721,
-   "why": "sector Public Trust has 16 rows and no audit",
-   "would_settle_it": [
-    "project page capture",
-    "repo link check"
-   ]
-  },
-  {
-   "id": "vitalis-bio",
-   "name": "Vitalis Bio",
-   "domain": "Public Trust, Safety & Compliance",
-   "coolness": 0.404,
-   "expected_gain": 0.5697,
-   "why": "sector Public Trust has 16 rows and no audit",
-   "would_settle_it": [
-    "project page capture",
-    "repo link check"
-   ]
-  },
   {
    "id": "vms-ai-guard-fisheries-compliance-monitoring-alerts",
    "name": "VMS AI Guard - Fisheries Compliance Monitoring & Alerts",
    "domain": "Public Trust, Safety & Compliance",
    "coolness": 0.408,
-   "expected_gain": 0.5562,
-   "why": "sector Public Trust has 16 rows and no audit",
+   "expected_gain": 0.562,
+   "why": "sector Public Trust has 14 rows and no audit",
    "would_settle_it": [
     "project page capture",
     "repo link check"
@@ -93,8 +69,8 @@
    "name": "Newspectives - new perspective on news",
    "domain": "Creative Media, Story & Play",
    "coolness": 0.408,
-   "expected_gain": 0.5321,
-   "why": "sector Creative Media has 28 rows and no audit",
+   "expected_gain": 0.5304,
+   "why": "sector Creative Media has 29 rows and no audit",
    "would_settle_it": [
     "project page capture",
     "repo link check"
@@ -125,12 +101,12 @@
    ]
   },
   {
-   "id": "airlock-s2kidr",
-   "name": "Airlock",
-   "domain": "Public Trust, Safety & Compliance",
-   "coolness": 0.383,
-   "expected_gain": 0.5172,
-   "why": "sector Public Trust has 16 rows and no audit",
+   "id": "zeroday-ai-autonomous-vulnerability-patching-system",
+   "name": "ZeroDay AI",
+   "domain": "Developer Tooling & Code Intelligence",
+   "coolness": 0.359,
+   "expected_gain": 0.514,
+   "why": "sector Developer Tooling & Code Intelligence has 6 rows and no audit",
    "would_settle_it": [
     "project page capture",
     "repo link check"
@@ -141,8 +117,32 @@
    "name": "Kimocchi - Voice Mood Tracker",
    "domain": "Health, Care & Human Performance",
    "coolness": 0.428,
-   "expected_gain": 0.5141,
-   "why": "sector Health has 24 rows and no audit",
+   "expected_gain": 0.5121,
+   "why": "sector Health has 25 rows and no audit",
+   "would_settle_it": [
+    "project page capture",
+    "repo link check"
+   ]
+  },
+  {
+   "id": "learnway-ai",
+   "name": "LearnWay AI",
+   "domain": "Learning & Knowledge Systems",
+   "coolness": 0.377,
+   "expected_gain": 0.5117,
+   "why": "sector Learning & Knowledge Systems has 13 rows and no audit",
+   "would_settle_it": [
+    "project page capture",
+    "repo link check"
+   ]
+  },
+  {
+   "id": "attaindesk",
+   "name": "attainDesk",
+   "domain": "Creative Media, Story & Play",
+   "coolness": 0.391,
+   "expected_gain": 0.5116,
+   "why": "sector Creative Media has 29 rows and no audit",
    "would_settle_it": [
     "project page capture",
     "repo link check"

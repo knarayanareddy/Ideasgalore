@@ -79,11 +79,35 @@
    "url":"https://devpost.com/software/sketchwish",
    "name":"SketchWish"
   },
-  "adversarial-compliance-matrix":{
+  "complianceguardian-kcqs32":{
+   "verdict":"sound-with-caveats",
+   "worth":"strong",
+   "soundness":"partial",
+   "soundness_score":0.5938,
+   "rubric_coverage":0.64,
+   "checks":{
+    "artifact_exists":"supported",
+    "build_is_real":"unverifiable",
+    "limits_disclosed":"confirmed",
+    "numbers_add_up":"partial",
+    "stack_consistency":"unverifiable",
+    "test_or_eval_evidence":"partial"
+   },
+   "unknowns":[],
+   "evidence":6,
+   "contradicted":0,
+   "hazard":true,
+   "repo":null,
+   "audited_at":"2026-09-19",
+   "audit_version":1,
+   "url":"https://devpost.com/software/complianceguardian-kcqs32",
+   "name":"ComplianceGuardian"
+  },
+  "vitalis-bio":{
    "verdict":"sound-with-caveats",
    "worth":"niche",
    "soundness":"partial",
-   "soundness_score":0.5188,
+   "soundness_score":0.5,
    "rubric_coverage":0.64,
    "checks":{
     "artifact_exists":"supported",
@@ -96,12 +120,12 @@
    "unknowns":[],
    "evidence":6,
    "contradicted":0,
-   "hazard":false,
+   "hazard":true,
    "repo":null,
    "audited_at":"2026-09-19",
    "audit_version":1,
-   "url":"https://devpost.com/software/adversarial-compliance-matrix",
-   "name":"Gemini-Box"
+   "url":"https://devpost.com/software/vitalis-bio",
+   "name":"Vitalis Bio"
   },
   "neuroguard-ai-adaptiveconcussionrecoveryintelligencesystem":{
    "verdict":"sound-with-caveats",
@@ -126,6 +150,30 @@
    "audit_version":1,
    "url":"https://devpost.com/software/neuroguard-ai-adaptiveconcussionrecoveryintelligencesystem",
    "name":"NeuroGuard AI"
+  },
+  "adversarial-compliance-matrix":{
+   "verdict":"sound-with-caveats",
+   "worth":"niche",
+   "soundness":"partial",
+   "soundness_score":0.5188,
+   "rubric_coverage":0.64,
+   "checks":{
+    "artifact_exists":"supported",
+    "build_is_real":"unverifiable",
+    "limits_disclosed":"supported",
+    "numbers_add_up":"partial",
+    "stack_consistency":"unverifiable",
+    "test_or_eval_evidence":"partial"
+   },
+   "unknowns":[],
+   "evidence":6,
+   "contradicted":0,
+   "hazard":false,
+   "repo":null,
+   "audited_at":"2026-09-19",
+   "audit_version":1,
+   "url":"https://devpost.com/software/adversarial-compliance-matrix",
+   "name":"Gemini-Box"
   }
  }
 }

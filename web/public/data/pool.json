@@ -1,7 +1,7 @@
 {
  "audit_version":1,
  "generated_at":"2026-09-18",
- "count":160,
+ "count":158,
  "meaning":"Records held out of the catalog. `provenance` splits them in two: `unaudited` rows were never captured or checked; `audited-hold` rows were captured, scored and held for cause (thin, duplicate or hazard-capped) and carry the same audit columns the catalog does. Neither kind is a judgement of merit \u2014 read why_not_promoted and would_settle_it before quoting one (ADR-A1/A10).",
  "records":[
   {
@@ -246,32 +246,6 @@
    "audit":null
   },
   {
-   "id":"complianceguardian-kcqs32",
-   "name":"ComplianceGuardian",
-   "url":"https://devpost.com/software/complianceguardian-kcqs32",
-   "domain":"Public Trust, Safety & Compliance",
-   "subsystem":"Regulatory & Audit Machinery",
-   "event":"Build with Gemini XPRIZE",
-   "coolness":0.4109,
-   "moves":[
-    "evidence-graph",
-    "deterministic-guardrail",
-    "make-the-invisible-measurable",
-    "offline-first-fallback"
-   ],
-   "specificity":0.7,
-   "summary":"Every verdict cites the rule it came from. Upload a document, get a Gemini risk score in seconds - routine cases auto-approve, edge cases reach a human, audit trail immutable.",
-   "provenance":"unaudited",
-   "why_not_promoted":[
-    "not_audited"
-   ],
-   "would_settle_it":[
-    "project page capture (deep)",
-    "artifact check via repo_verify.py"
-   ],
-   "audit":null
-  },
-  {
    "id":"newspectives-new-perspective-on-news",
    "name":"Newspectives - new perspective on news",
    "url":"https://devpost.com/software/newspectives-new-perspective-on-news",
@@ -307,29 +281,6 @@
    ],
    "specificity":0.64,
    "summary":"VMS AI Guard is an AI system for the Directorate of Fisheries of Vietnam that monitors VMS disconnections, scores compliance, and evaluates provider quality using incident and investigation data.",
-   "provenance":"unaudited",
-   "why_not_promoted":[
-    "not_audited"
-   ],
-   "would_settle_it":[
-    "project page capture (deep)",
-    "artifact check via repo_verify.py"
-   ],
-   "audit":null
-  },
-  {
-   "id":"vitalis-bio",
-   "name":"Vitalis Bio",
-   "url":"https://devpost.com/software/vitalis-bio",
-   "domain":"Public Trust, Safety & Compliance",
-   "subsystem":"Regulatory & Audit Machinery",
-   "event":"Build with Gemini XPRIZE",
-   "coolness":0.4038,
-   "moves":[
-    "make-the-invisible-measurable"
-   ],
-   "specificity":0.7,
-   "summary":"Turn your wearable and lab data into a dynamic biological age score and reverse your aging curve. Upload any lab PDF, get a biological age you can audit,",
    "provenance":"unaudited",
    "why_not_promoted":[
     "not_audited"
@@ -743,7 +694,7 @@
    "name":"Billright",
    "url":"https://devpost.com/software/billright",
    "domain":"Public Trust, Safety & Compliance",
-   "subsystem":"Regulatory & Audit Machinery",
+   "subsystem":"General",
    "event":"Build with Gemini XPRIZE",
    "coolness":0.3874,
    "moves":[
@@ -877,8 +828,8 @@
    "id":"airlock-s2kidr",
    "name":"Airlock",
    "url":"https://devpost.com/software/airlock-s2kidr",
-   "domain":"Public Trust, Safety & Compliance",
-   "subsystem":"Regulatory & Audit Machinery",
+   "domain":"Creative Media, Story & Play",
+   "subsystem":"Design & Visual Tools",
    "event":"Agentic Cinema: The Blockbuster Hackathon",
    "coolness":0.3826,
    "moves":[],

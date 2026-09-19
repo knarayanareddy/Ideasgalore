@@ -2,6 +2,252 @@
  "audit_version":1,
  "generated_at":"2026-09-18",
  "records":{
+  "vitalis-bio":{
+   "audit_version":1,
+   "audited_at":"2026-09-19",
+   "award":null,
+   "built_with":[
+    "ai-agents",
+    "apple-healthkit",
+    "bioinformatics",
+    "biometrics",
+    "digital-health",
+    "fastapi",
+    "firestore",
+    "gemini-api",
+    "google-cloud",
+    "google-cloud-run",
+    "google-health-connect",
+    "healthkit",
+    "healthtech",
+    "llm",
+    "longevity",
+    "multimodal",
+    "node.js",
+    "pdf-parser",
+    "python",
+    "react-native",
+    "stripe",
+    "tailwind-css",
+    "typescript",
+    "wearables"
+   ],
+   "checks":{
+    "artifact_exists":{
+     "pass":0.5,
+     "status":"supported",
+     "why":"no source repo linked, but the page publishes a working artifact: https://www.youtube.com/watch?v=sYupP9m-aqE"
+    },
+    "build_is_real":{
+     "pass":null,
+     "status":"unverifiable",
+     "why":"no repository published, so the build cannot be read"
+    },
+    "limits_disclosed":{
+     "pass":0.5,
+     "status":"supported",
+     "why":"no limitations section, but 'what's next' implies the open edges"
+    },
+    "numbers_add_up":{
+     "pass":0.5,
+     "status":"partial",
+     "why":"3 figure(s) a reader can check against the product (nine biomarkers in the PhenoAge clock; two-tap onboarding to a baseline clock), but 1 headline figure(s) carry no testable denominator: over 95% accuracy parsing lab PDFs"
+    },
+    "stack_consistency":{
+     "pass":null,
+     "status":"unverifiable",
+     "why":"no repo to cross-check the declared stack against"
+    },
+    "test_or_eval_evidence":{
+     "pass":0.5,
+     "status":"partial",
+     "why":"a figure with a stated denominator is quoted, but the capture records no harness, held-out set or method behind it"
+    }
+   },
+   "evidence":[
+    {
+     "checked_at":"2026-09-19",
+     "claim":"Is there an artifact at all \u2014 a repo, a deployed app, or a video of it running?",
+     "detail":"no source repo linked, but the page publishes a working artifact: https://www.youtube.com/watch?v=sYupP9m-aqE",
+     "id":"vitalis-bio:artifact_exists",
+     "kind":"page",
+     "source":"https://devpost.com/software/vitalis-bio",
+     "status":"supported"
+    },
+    {
+     "checked_at":"2026-09-19",
+     "claim":"Does the repo's language/file mix match the stack they described?",
+     "detail":"no repo to cross-check the declared stack against",
+     "id":"vitalis-bio:stack_consistency",
+     "kind":"page",
+     "source":"https://devpost.com/software/vitalis-bio",
+     "status":"unverifiable"
+    },
+    {
+     "checked_at":"2026-09-19",
+     "claim":"Is the code a real build (source tree, setup steps, non-trivial size) rather than a stub or zip?",
+     "detail":"no repository published, so the build cannot be read",
+     "id":"vitalis-bio:build_is_real",
+     "kind":"page",
+     "source":"https://devpost.com/software/vitalis-bio",
+     "status":"unverifiable"
+    },
+    {
+     "checked_at":"2026-09-19",
+     "claim":"Do their metrics have a denominator, and is the arithmetic internally consistent?",
+     "detail":"3 figure(s) a reader can check against the product (nine biomarkers in the PhenoAge clock; two-tap onboarding to a baseline clock), but 1 headline figure(s) carry no testable denominator: over 95% accuracy parsing lab PDFs",
+     "id":"vitalis-bio:numbers_add_up",
+     "kind":"page",
+     "source":"https://devpost.com/software/vitalis-bio",
+     "status":"partial"
+    },
+    {
+     "checked_at":"2026-09-19",
+     "claim":"Did they state what does not work, or where it fails?",
+     "detail":"no limitations section, but 'what's next' implies the open edges",
+     "id":"vitalis-bio:limits_disclosed",
+     "kind":"page",
+     "source":"https://devpost.com/software/vitalis-bio",
+     "status":"supported"
+    },
+    {
+     "checked_at":"2026-09-19",
+     "claim":"Any test suite, eval harness, or measured benchmark we can see?",
+     "detail":"a figure with a stated denominator is quoted, but the capture records no harness, held-out set or method behind it",
+     "id":"vitalis-bio:test_or_eval_evidence",
+     "kind":"page",
+     "source":"https://devpost.com/software/vitalis-bio",
+     "status":"partial"
+    }
+   ],
+   "fields":{
+    "built_with_verified":{
+     "provenance":"observed",
+     "value":"declared by the authors (24): ai-agents, apple-healthkit, bioinformatics, biometrics, digital-health, fastapi, firestore, gemini-api \u00b7 no repository published, so these are the team's own claim and nothing corroborates them"
+    },
+    "clone_cost":{
+     "note":"our estimate with assumptions visible; not a claim about the team",
+     "provenance":"derived",
+     "value":{
+      "assumptions":[
+       "you accept an existing clinical formula rather than fitting your own, so coefficients are copied from a paper",
+       "you have users willing to connect real blood panels, since without panels the score is wearable noise",
+       "no regulatory clearance is implied; a consumer dashboard, not a diagnostic device"
+      ],
+      "estimate":"about a week for the pipeline, longer for anything you would defend clinically",
+      "why":"Reading the published PhenoAge formula and applying nine lab values is a day's work; HealthKit and Health Connect auth plus a Gemini schema-constrained PDF pass is another few. The part that does not come free is a labelled corpus to know your parser is right, and any claim about reversing aging."
+     }
+    },
+    "data_and_models":{
+     "provenance":"observed",
+     "value":"No training of their own: Gemini 1.5 Flash does document parsing under schema constraints, and the clinical model is the published Levine PhenoAge parameterisation over nine biomarkers. Nothing states how the PhenoAge coefficients were sourced or checked, and no validation cohort, sample size or error bar is described for the biological-age output."
+    },
+    "how_it_works":{
+     "provenance":"observed",
+     "value":"Marketed as a longevity dashboard: it claims to translate clinical biomarker algorithms into an actionable score, \u201cquantify, gamify, and actively reverse\u201d aging. Built as React Native with NativeWind and Tailwind for the client, interactive 30-day, 90-day and one-year trend graphs. Gemini 1.5 Flash via Google Cloud parses multi-page lab PDFs into validated JSON schemas. The core algorithm is the Levine PhenoAge model: nine biomarkers (albumin, creatinine, glucose, hs-CRP, lymphocyte percentage, mean corpuscular volume, red cell distribution width, alkaline phosphatase, white blood cell count) mapped to a mortality-risk score through a Gompertz distribution. Node.js services on Cloud Run with Firestore for documents and live sync."
+    },
+    "how_they_tested":{
+     "provenance":"observed",
+     "value":"The one quantified result - over 95% PDF parsing accuracy - has no denominator: no document count, no provider breakdown, no definition of what counts as correct extraction, and no held-out set. No test suite, repo, or eval harness is linked anywhere on the page, and no clinical or statistical validation is claimed for the age score itself."
+    },
+    "limits_they_disclosed":{
+     "provenance":"observed",
+     "value":"Lab PDFs differ by provider (Quest, LabCorp, local clinics) in units and layout, which they addressed with grammar-constrained decoding so the model must emit a strict schema. Wearable HRV and resting heart rate are volatile day to day, so 7-day and 30-day exponentially weighted moving averages smooth the inputs and stop the score from jumping. Recomputing the model while drawing trend graphs pushed them to move the maths into lightweight on-device utility modules."
+    },
+    "numbers_with_arithmetic":{
+     "provenance":"observed",
+     "value":[
+      {
+       "arithmetic":"not falsifiable from the page: no test set, denominator or method is published",
+       "claim":"over 95% accuracy parsing lab PDFs",
+       "denominator":"unstated - no document count or provider breakdown",
+       "verifiable":false
+      },
+      {
+       "arithmetic":"structural: the nine listed markers can be diffed against the PhenoAge table by any reader",
+       "claim":"nine biomarkers in the PhenoAge clock",
+       "denominator":"the published model's parameter set",
+       "verifiable":true
+      },
+      {
+       "arithmetic":"structural: checkable by opening the flow, which the page does not link",
+       "claim":"two-tap onboarding to a baseline clock",
+       "denominator":"onboarding steps",
+       "verifiable":true
+      },
+      {
+       "arithmetic":"structural: a method choice, not a measured outcome",
+       "claim":"7-day and 30-day EMA smoothing on wearable inputs",
+       "denominator":"the smoothing window",
+       "verifiable":true
+      }
+     ]
+    },
+    "prior_art":{
+     "note":"each entry resolves to a URL we opened this session or a corpus id",
+     "provenance":"editorial",
+     "value":[
+      {
+       "corpus_id":"neuroguard-ai-adaptiveconcussionrecoveryintelligencesystem",
+       "relation":"same architecture of trust - a published clinical score presented through a calm UI with an escalation-style recommendation loop - and the same unmeasured gap between a computed index and validated guidance."
+      },
+      {
+       "corpus_id":"medvoice-y87kei",
+       "relation":"opposite end of the same problem: Medvoice closes a loop on an action the patient confirms, while this one opens a recommendation loop with no adherence signal at all. Comparing them shows what a verification step buys."
+      }
+     ]
+    },
+    "what_breaks_first":{
+     "provenance":"editorial",
+     "value":"Trust in the score, the moment it moves for a reason the user can see is unrelated to their behaviour. A PhenoAge output is dominated by blood chemistry that changes quarterly, while the weekly loop promises movement from sleep and steps, so the dashboard's cadence and the model's sensitivity disagree; the reported parsing accuracy cannot rescue it either, since a single misread unit becomes a wrong age."
+    },
+    "what_it_does":{
+     "provenance":"observed",
+     "value":"Passive biometric sync pulls resting heart rate, HRV, VO2 max, sleep architecture and daily steps from HealthKit or Google Health Connect. A multimodal parser reads un-standardised lab PDFs and blood panels (HbA1c, hs-CRP, lipid profile, albumin, alkaline phosphatase) into structured biomarker values. A clock engine computes a biological age and compares it with the chronological baseline. A weekly Longevity Delta loop names the user's biometric bottleneck and returns three targeted lifestyle, protocol or supplement interventions. Monthly Wrapped-style proof cards are generated for sharing."
+    },
+    "what_it_is":{
+     "provenance":"observed",
+     "value":"A biological-age dashboard that parses lab PDFs with Gemini into validated schemas, runs the Levine PhenoAge clock over wearable streams, and returns a weekly three-item intervention list."
+    },
+    "what_to_steal":{
+     "provenance":"editorial",
+     "value":"Force the extraction model into a strict response schema per provider instead of writing per-provider parsers, and keep the raw values alongside the parsed ones; smooth noisy physiological inputs over a short and a long window so a derived score cannot jitter day to day; ship the derived score against a baseline the user already trusts (chronological age) rather than as a bare number."
+    }
+   },
+   "hazard":{
+    "class":"clinical",
+    "note":"A biological-age score computed from a mortality model, presented to consumers with weekly supplement and protocol recommendations, and a roadmap that plans to predict how interventions shift the curve. Nothing on the page frames the output as non-medical, and no clinician review, cohort or validation is mentioned for the score its interface is built around.",
+    "team_disclaimed":false
+   },
+   "id":"vitalis-bio",
+   "likes":0,
+   "moves":[
+    "make-the-invisible-measurable"
+   ],
+   "name":"Vitalis Bio",
+   "provenance":{
+    "checks":"derived",
+    "clone_cost":"derived",
+    "evidence":"observed",
+    "fields":"observed",
+    "verdict":"derived",
+    "worth":"editorial"
+   },
+   "publishable":true,
+   "repo":null,
+   "right_of_reply":"https://github.com/knarayanareddy/Ideasgalore/issues/new?labels=audit-recheck",
+   "rubric_coverage":0.64,
+   "soundness":"partial",
+   "soundness_score":0.5,
+   "source_url":"https://devpost.com/software/vitalis-bio",
+   "unknowns":[],
+   "verdict":"sound-with-caveats",
+   "verdict_reasons":[
+    "soundness 0.50 over 64% of the rubric; 0 named unknown(s) remain \u2192 publishable with caveats"
+   ],
+   "worth":"niche",
+   "worth_note":"Two pieces are worth taking and one is worth doubting. Grammar-constrained decoding for provider-specific PDF layouts is a real technique for any document pipeline, and smoothing volatile wearable inputs with nested EMAs before feeding a scoring model is the unglamorous fix that makes a score stable enough to display. The product itself sits in a crowded longevity-dashboard category whose hardest part - whether the number means anything - is exactly where the page offers a percentage with no denominator."
+  },
   "neuroguard-ai-adaptiveconcussionrecoveryintelligencesystem":{
    "audit_version":1,
    "audited_at":"2026-09-19",

@@ -1,0 +1,77 @@
+{
+ "award": null,
+ "built_with": [
+  "ai-agents",
+  "apple-healthkit",
+  "bioinformatics",
+  "biometrics",
+  "digital-health",
+  "fastapi",
+  "firestore",
+  "gemini-api",
+  "google-cloud",
+  "google-cloud-run",
+  "google-health-connect",
+  "healthkit",
+  "healthtech",
+  "llm",
+  "longevity",
+  "multimodal",
+  "node.js",
+  "pdf-parser",
+  "python",
+  "react-native",
+  "stripe",
+  "tailwind-css",
+  "typescript",
+  "wearables"
+ ],
+ "captured_at": "2026-09-19",
+ "data_and_models": "No training of their own: Gemini 1.5 Flash does document parsing under schema constraints, and the clinical model is the published Levine PhenoAge parameterisation over nine biomarkers. Nothing states how the PhenoAge coefficients were sourced or checked, and no validation cohort, sample size or error bar is described for the biological-age output.",
+ "gallery_images": 19,
+ "id": "vitalis-bio",
+ "likes": 0,
+ "links": {
+  "video": "https://www.youtube.com/watch?v=sYupP9m-aqE"
+ },
+ "name": "Vitalis Bio",
+ "numbers": [
+  {
+   "arithmetic": "not falsifiable from the page: no test set, denominator or method is published",
+   "claim": "over 95% accuracy parsing lab PDFs",
+   "denominator": "unstated - no document count or provider breakdown",
+   "verifiable": false
+  },
+  {
+   "arithmetic": "structural: the nine listed markers can be diffed against the PhenoAge table by any reader",
+   "claim": "nine biomarkers in the PhenoAge clock",
+   "denominator": "the published model's parameter set",
+   "verifiable": true
+  },
+  {
+   "arithmetic": "structural: checkable by opening the flow, which the page does not link",
+   "claim": "two-tap onboarding to a baseline clock",
+   "denominator": "onboarding steps",
+   "verifiable": true
+  },
+  {
+   "arithmetic": "structural: a method choice, not a measured outcome",
+   "claim": "7-day and 30-day EMA smoothing on wearable inputs",
+   "denominator": "the smoothing window",
+   "verifiable": true
+  }
+ ],
+ "one_line": "A biological-age dashboard that parses lab PDFs with Gemini into validated schemas, runs the Levine PhenoAge clock over wearable streams, and returns a weekly three-item intervention list.",
+ "sections": {
+  "accomplishments": "They report over 95% accuracy parsing un-standardised blood-panel PDFs into structured inputs without human intervention, a two-tap onboarding that connects the native feeds and immediately shows a chronological-versus-biological baseline, and a dashboard aesthetic borrowed from finance apps.",
+  "challenges": "Lab PDFs differ by provider (Quest, LabCorp, local clinics) in units and layout, which they addressed with grammar-constrained decoding so the model must emit a strict schema. Wearable HRV and resting heart rate are volatile day to day, so 7-day and 30-day exponentially weighted moving averages smooth the inputs and stop the score from jumping. Recomputing the model while drawing trend graphs pushed them to move the maths into lightweight on-device utility modules.",
+  "how_we_built_it": "Marketed as a longevity dashboard: it claims to translate clinical biomarker algorithms into an actionable score, “quantify, gamify, and actively reverse” aging. Built as React Native with NativeWind and Tailwind for the client, interactive 30-day, 90-day and one-year trend graphs. Gemini 1.5 Flash via Google Cloud parses multi-page lab PDFs into validated JSON schemas. The core algorithm is the Levine PhenoAge model: nine biomarkers (albumin, creatinine, glucose, hs-CRP, lymphocyte percentage, mean corpuscular volume, red cell distribution width, alkaline phosphatase, white blood cell count) mapped to a mortality-risk score through a Gompertz distribution. Node.js services on Cloud Run with Firestore for documents and live sync.",
+  "inspiration": "Chronological age counts Earth's rotations; biological age is meant to describe the functional state of physiology. Consumer health data arrives fragmented - HealthKit metrics, continuous glucose monitors, periodic blood panels - with no single number a person can act on. Their premise is that tracking healthspan should feel as legible as managing a portfolio, so clinical aging-clock maths becomes a dynamic score with a trend line. Their framing is explicit about the ambition: translate clinical biomarker algorithms into a score so a person can \"quantify, gamify, and actively reverse\" their biological aging curve.",
+  "learned": "Aging clocks respond more to systemic inflammatory markers such as hs-CRP than to raw daily activity, so combining a blood panel with passive streams yields a steadier model than either alone. Presenting a short prioritised intervention list drives adherence where raw medical data overwhelms users.",
+  "what_it_does": "Passive biometric sync pulls resting heart rate, HRV, VO2 max, sleep architecture and daily steps from HealthKit or Google Health Connect. A multimodal parser reads un-standardised lab PDFs and blood panels (HbA1c, hs-CRP, lipid profile, albumin, alkaline phosphatase) into structured biomarker values. A clock engine computes a biological age and compares it with the chronological baseline. A weekly Longevity Delta loop names the user's biometric bottleneck and returns three targeted lifestyle, protocol or supplement interventions. Monthly Wrapped-style proof cards are generated for sharing.",
+  "what_next": "Predictive intervention modelling - simulating how a 10% increase in deep sleep or a 15mg reduction in hs-CRP shifts the curve 90 days out - plus direct integrations with continuous glucose monitors and epigenetic testing providers."
+ },
+ "software_id": 1277541,
+ "source_url": "https://devpost.com/software/vitalis-bio",
+ "testing": "The one quantified result - over 95% PDF parsing accuracy - has no denominator: no document count, no provider breakdown, no definition of what counts as correct extraction, and no held-out set. No test suite, repo, or eval harness is linked anywhere on the page, and no clinical or statistical validation is claimed for the age score itself."
+}

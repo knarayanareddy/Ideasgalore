@@ -270,6 +270,18 @@ def run_checks(cap: Dict[str, Any], repo_name: Optional[str], repo: Optional[Dic
 
     # 4 · numbers_add_up
     with_denom = [n for n in numbers if (n.get("denominator") or n.get("baseline"))]
+    # A denominator that says "unstated" is a denial wearing the field's clothes. Only a
+    # figure with a real, non-negated denominator (or one we recomputed) can stand for
+    # "this was measured".
+    def _stated(n: Dict[str, Any]) -> bool:
+        for key in ("denominator", "baseline"):
+            v = str(n.get(key) or "").strip()
+            if v and not re.match(r"(un(stated|known|available)?|no[t]?|n/?a|unknown|missing|absent)",
+                                  v, re.I):
+                return True
+        return False
+
+    measured = [n for n in with_denom if n not in checkable and _stated(n)]
     if checkable and unfalsifiable:
         # Some of the arithmetic is checkable and the headline is not; that is a different
         # finding from "nothing here is testable", and merging the two would let a feature
@@ -375,11 +387,19 @@ def run_checks(cap: Dict[str, Any], repo_name: Optional[str], repo: Optional[Dic
         emit("test_or_eval_evidence", 1.0, "confirmed",
              f"test paths in repo: {', '.join(tests[:3])}", "api",
              f"https://api.github.com/repos/{repo_name}/git/trees", rwhen)
-    elif benchmark and (with_denom or ok):
+    elif benchmark and (measured or ok):
         emit("test_or_eval_evidence", 0.75, "supported",
              "a measured evaluation with a stated denominator is described on the page "
              "(an A/B comparison or a logged-outcome harness counts; a bare 'we tested it' does not)",
              "page",
+             cap.get("source_url", ""), when)
+    elif benchmark and with_denom:
+        # The figure exists and the method does not: a quoted percentage with a denominator
+        # but a stated absence of anything to reproduce it from. Crediting it as supported
+        # would reward the number while ignoring the confession next to it.
+        emit("test_or_eval_evidence", 0.5, "partial",
+             "a figure with a stated denominator is quoted, but the capture records no "
+             "harness, held-out set or method behind it", "page",
              cap.get("source_url", ""), when)
     elif benchmark:
         emit("test_or_eval_evidence", 0.4, "partial",
@@ -555,9 +575,13 @@ def hazard_for(rec: Dict[str, Any], cap: Dict[str, Any], notes: Dict[str, Any]) 
     # what we scan, alongside everything the team wrote about what the tool is *not*.
     text = (_sections_text(cap) + " " + str(cap.get("one_line") or "")
             + " " + (rec.get("summary") or "")).lower()
-    if not cls and not re.search(HAZARD_CLAIM_RE, text, re.I):
-        return None
-    if not re.search(HAZARD_CLAIM_RE, text, re.I):
+    claim = bool(re.search(HAZARD_CLAIM_RE, text, re.I))
+    # Telling a user what to take, do or follow inside a regulated domain is the exposure,
+    # even when the page never uses the word diagnosis or approval. A mood chart that only
+    # visualises stays unflagged; an advice loop does not.
+    advises = bool(re.search(r"(recommend\w*|advise\w*|supplement\w*|dosage|protocol|"
+                             r"intervention|action plan|coach\w*|guidance)", text, re.I))
+    if not claim and not (cls and advises):
         return None
     disclaimed = bool(re.search(HAZARD_DISCLAIM_RE, text))
     return {

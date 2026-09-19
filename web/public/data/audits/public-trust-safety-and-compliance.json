@@ -1,0 +1,256 @@
+{
+ "audit_version":1,
+ "generated_at":"2026-09-18",
+ "records":{
+  "complianceguardian-kcqs32":{
+   "audit_version":1,
+   "audited_at":"2026-09-19",
+   "award":null,
+   "built_with":[
+    "bigquery",
+    "cloud-build",
+    "cloud-run",
+    "cloud-scheduler",
+    "cloud-storage",
+    "cloud-tasks",
+    "cloud-workflows",
+    "docker",
+    "fastapi",
+    "firebase-auth",
+    "firebase-hosting",
+    "firestore",
+    "gemini",
+    "google-cloud",
+    "paypal",
+    "pydantic",
+    "pytest",
+    "python",
+    "razorpay",
+    "react",
+    "secret-manager",
+    "tailwindcss",
+    "terraform",
+    "typescript",
+    "vite"
+   ],
+   "checks":{
+    "artifact_exists":{
+     "pass":0.5,
+     "status":"supported",
+     "why":"no source repo linked, but the page publishes a working artifact: https://www.youtube.com/watch?v=eiWb3Vt31cQ"
+    },
+    "build_is_real":{
+     "pass":null,
+     "status":"unverifiable",
+     "why":"no repository published, so the build cannot be read"
+    },
+    "limits_disclosed":{
+     "pass":1.0,
+     "status":"confirmed",
+     "why":"the team named what the system itself cannot do (cannot, fail)"
+    },
+    "numbers_add_up":{
+     "pass":0.5,
+     "status":"partial",
+     "why":"2 figure(s) a reader can check against the product (16 rulesets, 88 rules, 12 jurisdiction profiles; six defects stacked behind one another in the report pipeline), but 2 headline figure(s) carry no testable denominator: 536 passing tests; Stripe's INR conversion fee turned a $50 audit into 4,948 versus 4,200 rupees"
+    },
+    "stack_consistency":{
+     "pass":null,
+     "status":"unverifiable",
+     "why":"no repo to cross-check the declared stack against"
+    },
+    "test_or_eval_evidence":{
+     "pass":0.5,
+     "status":"partial",
+     "why":"a harness is described (pytest) but no result, run link or case count is published, so it cannot be checked"
+    }
+   },
+   "evidence":[
+    {
+     "checked_at":"2026-09-19",
+     "claim":"Is there an artifact at all \u2014 a repo, a deployed app, or a video of it running?",
+     "detail":"no source repo linked, but the page publishes a working artifact: https://www.youtube.com/watch?v=eiWb3Vt31cQ",
+     "id":"complianceguardian-kcqs32:artifact_exists",
+     "kind":"page",
+     "source":"https://devpost.com/software/complianceguardian-kcqs32",
+     "status":"supported"
+    },
+    {
+     "checked_at":"2026-09-19",
+     "claim":"Does the repo's language/file mix match the stack they described?",
+     "detail":"no repo to cross-check the declared stack against",
+     "id":"complianceguardian-kcqs32:stack_consistency",
+     "kind":"page",
+     "source":"https://devpost.com/software/complianceguardian-kcqs32",
+     "status":"unverifiable"
+    },
+    {
+     "checked_at":"2026-09-19",
+     "claim":"Is the code a real build (source tree, setup steps, non-trivial size) rather than a stub or zip?",
+     "detail":"no repository published, so the build cannot be read",
+     "id":"complianceguardian-kcqs32:build_is_real",
+     "kind":"page",
+     "source":"https://devpost.com/software/complianceguardian-kcqs32",
+     "status":"unverifiable"
+    },
+    {
+     "checked_at":"2026-09-19",
+     "claim":"Do their metrics have a denominator, and is the arithmetic internally consistent?",
+     "detail":"2 figure(s) a reader can check against the product (16 rulesets, 88 rules, 12 jurisdiction profiles; six defects stacked behind one another in the report pipeline), but 2 headline figure(s) carry no testable denominator: 536 passing tests; Stripe's INR conversion fee turned a $50 audit into 4,948 versus 4,200 rupees",
+     "id":"complianceguardian-kcqs32:numbers_add_up",
+     "kind":"page",
+     "source":"https://devpost.com/software/complianceguardian-kcqs32",
+     "status":"partial"
+    },
+    {
+     "checked_at":"2026-09-19",
+     "claim":"Did they state what does not work, or where it fails?",
+     "detail":"the team named what the system itself cannot do (cannot, fail)",
+     "id":"complianceguardian-kcqs32:limits_disclosed",
+     "kind":"page",
+     "source":"https://devpost.com/software/complianceguardian-kcqs32",
+     "status":"confirmed"
+    },
+    {
+     "checked_at":"2026-09-19",
+     "claim":"Any test suite, eval harness, or measured benchmark we can see?",
+     "detail":"a harness is described (pytest) but no result, run link or case count is published, so it cannot be checked",
+     "id":"complianceguardian-kcqs32:test_or_eval_evidence",
+     "kind":"page",
+     "source":"https://devpost.com/software/complianceguardian-kcqs32",
+     "status":"partial"
+    }
+   ],
+   "fields":{
+    "built_with_verified":{
+     "provenance":"observed",
+     "value":"declared by the authors (25): bigquery, cloud-build, cloud-run, cloud-scheduler, cloud-storage, cloud-tasks, cloud-workflows, docker \u00b7 no repository published, so these are the team's own claim and nothing corroborates them"
+    },
+    "clone_cost":{
+     "note":"our estimate with assumptions visible; not a claim about the team",
+     "provenance":"derived",
+     "value":{
+      "assumptions":[
+       "you pick one jurisdiction and one industry first, because 16 rulesets is a company not a hackathon",
+       "you have a GCP project you can run Cloud Tasks, BigQuery and Workflows against, and IAM rights to deny yourself",
+       "a domain reviewer is available; without one the rulesets are your own guess about the law"
+      ],
+      "estimate":"2-3 weeks for the agent pair, gateway and append-only trail; months for defensible rulesets",
+      "why":"The infrastructure they describe is standard GCP work and their two structural tricks are small to implement once you know them. What cannot be hurried is authoring and maintaining rule text for the jurisdictions you serve, plus someone qualified to confirm each rule still matches the regulation."
+     }
+    },
+    "data_and_models":{
+     "provenance":"observed",
+     "value":"No model training. Two Gemini calls - fact extraction, then reasoning against hand-written versioned YAML rulesets - with citation mandatory in the output schema and prompt plus model version recorded per check. The regulated content is the rulesets themselves, authored by the team; nothing on the page says who reviewed them against the current text of the regulations they cite."
+    },
+    "how_it_works":{
+     "provenance":"observed",
+     "value":"Five containerised services on Cloud Run behind one FastAPI gateway, declared in Terraform, running in a real GCP project with no emulators. Ingestion and compliance agents are Cloud Tasks workers (OIDC between them); state lives in Firestore, the audit trail in append-only BigQuery, documents and reports in Cloud Storage; a Cloud Scheduler job triggers Cloud Workflows for the weekly report. React dashboard with Firebase Auth on the front. Two decisions carry the design: tenant identity is taken only from verified JWT claims, never from a body or query parameter, so no code path can read across tenants; and rewriting an audit row needs both bigquery.tables.updateData and bigquery.jobs.create, so the writer identity holds the first and is denied the second - UPDATE and DELETE are unavailable to their own application rather than merely unused by it."
+    },
+    "how_they_tested":{
+     "provenance":"observed",
+     "value":"Pytest is declared in Built With and 536 tests are reported, including a named concurrency case, but no repository, CI run or test output is linked, so the count and the coverage are the team's assertion. No accuracy figure is claimed for the compliance verdicts themselves - no eval set of documents with known-correct outcomes, no false-positive or missed-finding rate against an auditor's judgement."
+    },
+    "limits_they_disclosed":{
+     "provenance":"observed",
+     "value":"Prompting does not stop fabrication, so rules live in versioned YAML, a citation is mandatory in the output contract, prompt and model version are recorded against every check so a verdict can be reproduced, and when the model cannot ground a verdict it escalates instead of guessing. Their weekly report workflow existed, was scheduled and looked healthy in the console for three weeks without ever running: Cloud Scheduler was being refused with PERMISSION_DENIED into a log nobody read, and fixing it uncovered six defects behind each other (missing invoker role, doubled URL scheme, a request to a route the service does not serve, a hardcoded tenant list, a service account without Firestore access, a missing log-writer permission). They conclude the actual bug was that nothing was watching; there are now uptime checks and alerts on scheduler and workflow failures. Terraform silently dropped a hand-set environment variable because Cloud Run replaces its env list wholesale, which cost every platform admin console access at once; the same trap sat in payment flags where a default of false would have quietly removed PayPal credentials on a fresh checkout, so those variables are now required and a missing value stops the deploy. An unregistered domestic Razorpay account rejects international cards even in live mode, and Stripe's INR conversion fee turned a $50 audit into a much larger rupee figure at checkout, so they removed Stripe and use PayPal for international customers."
+    },
+    "numbers_with_arithmetic":{
+     "provenance":"observed",
+     "value":[
+      {
+       "arithmetic":"structural: the counts describe authored YAML files nobody outside the project can enumerate",
+       "claim":"16 rulesets, 88 rules, 12 jurisdiction profiles",
+       "denominator":"counted on their own ruleset files",
+       "verifiable":true
+      },
+      {
+       "arithmetic":"not reproducible from the page: no repository, CI run or test log is linked",
+       "claim":"536 passing tests",
+       "denominator":"the suite's own run output",
+       "verifiable":false
+      },
+      {
+       "arithmetic":"not verified against a published fee schedule; the 17.8% uplift is only internally consistent",
+       "claim":"Stripe's INR conversion fee turned a $50 audit into 4,948 versus 4,200 rupees",
+       "denominator":"the checkout figure they cite",
+       "verifiable":false
+      },
+      {
+       "arithmetic":"structural: narrated from their own debugging session, with no ticket or log linked",
+       "claim":"six defects stacked behind one another in the report pipeline",
+       "denominator":"the incident they describe",
+       "verifiable":true
+      }
+     ]
+    },
+    "prior_art":{
+     "note":"each entry resolves to a URL we opened this session or a corpus id",
+     "provenance":"editorial",
+     "value":[
+      {
+       "corpus_id":"adversarial-compliance-matrix",
+       "relation":"same audience, opposite instrument: that project signs an execution claim so a verifier can reject a mutation, this one cites a rule so a human can reject a reading. Read together they cover both halves of machine-checkable compliance - provenance and interpretation."
+      },
+      {
+       "corpus_id":"greenlight-nine-agent-production-crew",
+       "relation":"same shape (an agent pipeline that hands edge cases to a human) with a different optimisation target: Greenlight spends less, ComplianceGuardian refuses to be wrong quietly. The escalation path is the shared skeleton worth copying from either."
+      }
+     ]
+    },
+    "what_breaks_first":{
+     "provenance":"editorial",
+     "value":"The rulesets. Eighty-eight hand-authored YAML rules against regulations that amend without notice, with their own roadmap conceding that change detection is not built yet - so the first failure mode is a document auto-approved against a superseded rule, reported with a citation that still resolves to a real but obsolete clause. Second: the escalation threshold, since auto-approve on 'routine' documents is only as safe as the classifier that calls a document routine."
+    },
+    "what_it_does":{
+     "provenance":"observed",
+     "value":"Upload a document (PDF, text, CSV or image). An ingestion agent extracts the facts with Gemini; a compliance agent reasons over them against the ruleset for that industry and jurisdiction and returns a risk score where every verdict carries its citation. Routine documents auto-approve, edge cases escalate to a human reviewer with the reasoning attached, every decision is appended to an immutable audit trail, and a scheduled workflow produces weekly reports with a Gemini executive summary. Currently 16 rulesets, 88 rules, 12 jurisdiction profiles: NDIS and aged care in Australia, corporate compliance in India, and GDPR, CCPA, PIPEDA, LGPD, PDPA and POPIA."
+    },
+    "what_it_is":{
+     "provenance":"observed",
+     "value":"Document compliance checks where every verdict must cite a rule in a versioned ruleset, with an append-only audit trail the writing identity cannot rewrite."
+    },
+    "what_to_steal":{
+     "provenance":"editorial",
+     "value":"Grant the writer identity the append permission and deny it the job-starting permission, so history cannot be rewritten by the application that writes it; derive tenant identity only from verified token claims so there is no request field to tamper with; record prompt and model version against every generated verdict so a decision can be reproduced months later; make environment variables required rather than defaulted, because a permissive default on a fresh checkout silently removed credentials."
+    }
+   },
+   "hazard":{
+    "class":"compliance-signoff",
+    "note":"Compliance verdicts on NDIS, aged-care and privacy obligations, with routine documents auto-approved. The page argues its case for trustworthiness at length - citations, versioning, immutability - but does not state who is accountable when an auto-approved document later becomes an audit finding, nor whether the rulesets were reviewed by a practitioner.",
+    "team_disclaimed":false
+   },
+   "id":"complianceguardian-kcqs32",
+   "likes":2,
+   "moves":[
+    "evidence-graph",
+    "deterministic-guardrail",
+    "make-the-invisible-measurable",
+    "offline-first-fallback"
+   ],
+   "name":"ComplianceGuardian",
+   "provenance":{
+    "checks":"derived",
+    "clone_cost":"derived",
+    "evidence":"observed",
+    "fields":"observed",
+    "verdict":"derived",
+    "worth":"editorial"
+   },
+   "publishable":true,
+   "repo":null,
+   "right_of_reply":"https://github.com/knarayanareddy/Ideasgalore/issues/new?labels=audit-recheck",
+   "rubric_coverage":0.64,
+   "soundness":"partial",
+   "soundness_score":0.5938,
+   "source_url":"https://devpost.com/software/complianceguardian-kcqs32",
+   "unknowns":[],
+   "verdict":"sound-with-caveats",
+   "verdict_reasons":[
+    "soundness 0.59 over 64% of the rubric; 0 named unknown(s) remain \u2192 publishable with caveats"
+   ],
+   "worth":"strong",
+   "worth_note":"The product decision is the transferable one: refuse to let a model answer unless the answer names a rule from a versioned file, and escalate when it cannot. Pair that with an audit trail enforced at the permission layer and an entitlement model that spends counters inside a transaction, and you have three moves that apply to any agent product expected to produce evidence a third party will rely on. The incident write-up is unusually useful too - six failures behind each other, none of which crashed."
+  }
+ }
+}

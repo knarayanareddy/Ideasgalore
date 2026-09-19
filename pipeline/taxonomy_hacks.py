@@ -67,7 +67,8 @@ DOMAINS: Dict[str, Dict[str, Any]] = {
         "subsystems": {
             "Screening & Diagnostics": ["screen", "diagnos", "lesion", "concussion", "triage",
                                         "drug", "molecular", "protein", "biomarker", "clinical",
-                                        "oncology", "symptom"],
+                                        "oncology", "symptom", "biological age", "longevity",
+                                        "wearable", "hrv", "blood panel", "biometric"],
             "Recovery & Rehabilitation": ["recovery", "rehab", "physio", "acl", "exercise", "workout"],
             "Mental Health & Wellbeing": ["mental", "anxiet", "grief", "wellbeing", "mood", "therapy"],
             "Care Navigation & Records": ["records", "bill", "claim", "medication", "patient", "clinician"],
@@ -92,7 +93,9 @@ DOMAINS: Dict[str, Dict[str, Any]] = {
                  "of modern institutions rebuilt as machine-readable evidence.",
         "subsystems": {
             "Provenance & Anti-Deception": ["deepfake", "forensic", "verify", "authentic", "watermark", "tamper"],
-            "Regulatory & Audit Machinery": ["compliance", "audit", "regulat", "questionnaire", "verdict", "rule"],
+            "Regulatory & Audit Machinery": ["compliance", "audit trail", "audit-ready",
+                                       "audit finding", "auditor", "regulat",
+                                       "questionnaire", "sign-off"],
             "Safety & Emergency Response": ["emergency", "responder", "accident", "safety", "alert"],
             "Civics & Discourse": ["civic", "vote", "public", "discourse", "policy", "government"],
         },

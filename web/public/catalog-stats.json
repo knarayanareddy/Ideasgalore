@@ -1,21 +1,21 @@
 {
- "total":5,
- "audited_published":5,
- "pool_records":160,
+ "total":7,
+ "audited_published":7,
+ "pool_records":158,
  "pool_audited_held":5,
- "pool_unaudited":155,
+ "pool_unaudited":153,
  "audit_version":1,
- "audit_index_kb":0.7,
- "audit_sheets_kb":17.0,
- "records_hazarded":2,
- "domains":4,
- "subsystems":5,
- "moves":10,
+ "audit_index_kb":0.8,
+ "audit_sheets_kb":25.2,
+ "records_hazarded":4,
+ "domains":5,
+ "subsystems":6,
+ "moves":11,
  "events":4,
  "deep_records":2,
- "tier1_gzip_kb":2.9,
+ "tier1_gzip_kb":3.1,
  "tier1_budget_kb":1200.0,
- "sqlite_kb":5.0,
+ "sqlite_kb":5.4,
  "corpus_ingested":167,
  "held_back":{
   "placeholder_summary":2
@@ -47,12 +47,16 @@
    "kb":15.0
   },
   "health-care-and-human-performance":{
-   "records":1,
-   "kb":6.3
+   "records":2,
+   "kb":12.8
   },
   "money-commerce-and-marketplaces":{
    "records":1,
    "kb":5.6
+  },
+  "public-trust-safety-and-compliance":{
+   "records":1,
+   "kb":7.4
   }
  }
 }

@@ -1,0 +1,78 @@
+{
+ "award": null,
+ "built_with": [
+  "bigquery",
+  "cloud-build",
+  "cloud-run",
+  "cloud-scheduler",
+  "cloud-storage",
+  "cloud-tasks",
+  "cloud-workflows",
+  "docker",
+  "fastapi",
+  "firebase-auth",
+  "firebase-hosting",
+  "firestore",
+  "gemini",
+  "google-cloud",
+  "paypal",
+  "pydantic",
+  "pytest",
+  "python",
+  "razorpay",
+  "react",
+  "secret-manager",
+  "tailwindcss",
+  "terraform",
+  "typescript",
+  "vite"
+ ],
+ "captured_at": "2026-09-19",
+ "data_and_models": "No model training. Two Gemini calls - fact extraction, then reasoning against hand-written versioned YAML rulesets - with citation mandatory in the output schema and prompt plus model version recorded per check. The regulated content is the rulesets themselves, authored by the team; nothing on the page says who reviewed them against the current text of the regulations they cite.",
+ "gallery_images": 0,
+ "id": "complianceguardian-kcqs32",
+ "likes": 2,
+ "links": {
+  "video": "https://www.youtube.com/watch?v=eiWb3Vt31cQ"
+ },
+ "name": "ComplianceGuardian",
+ "numbers": [
+  {
+   "arithmetic": "structural: the counts describe authored YAML files nobody outside the project can enumerate",
+   "claim": "16 rulesets, 88 rules, 12 jurisdiction profiles",
+   "denominator": "counted on their own ruleset files",
+   "verifiable": true
+  },
+  {
+   "arithmetic": "not reproducible from the page: no repository, CI run or test log is linked",
+   "claim": "536 passing tests",
+   "denominator": "the suite's own run output",
+   "verifiable": false
+  },
+  {
+   "arithmetic": "not verified against a published fee schedule; the 17.8% uplift is only internally consistent",
+   "claim": "Stripe's INR conversion fee turned a $50 audit into 4,948 versus 4,200 rupees",
+   "denominator": "the checkout figure they cite",
+   "verifiable": false
+  },
+  {
+   "arithmetic": "structural: narrated from their own debugging session, with no ticket or log linked",
+   "claim": "six defects stacked behind one another in the report pipeline",
+   "denominator": "the incident they describe",
+   "verifiable": true
+  }
+ ],
+ "one_line": "Document compliance checks where every verdict must cite a rule in a versioned ruleset, with an append-only audit trail the writing identity cannot rewrite.",
+ "sections": {
+  "accomplishments": "It is deployed on real infrastructure with real Gemini, real auth and payments that can take money from twelve jurisdictions. They report 536 passing tests including the concurrency case where two simultaneous requests try to spend the same last report allowance, an audit trail their own code cannot alter, and graceful degradation: when Gemini credits ran dry mid-build, documents failed cleanly and reports fell back to a clearly labelled fixture rather than claiming work that had not happened. Eighty-eight cited rules across twelve jurisdiction profiles is also how they caught an early bug where a non-Australian customer was being assessed against Australian rules.",
+  "challenges": "Prompting does not stop fabrication, so rules live in versioned YAML, a citation is mandatory in the output contract, prompt and model version are recorded against every check so a verdict can be reproduced, and when the model cannot ground a verdict it escalates instead of guessing. Their weekly report workflow existed, was scheduled and looked healthy in the console for three weeks without ever running: Cloud Scheduler was being refused with PERMISSION_DENIED into a log nobody read, and fixing it uncovered six defects behind each other (missing invoker role, doubled URL scheme, a request to a route the service does not serve, a hardcoded tenant list, a service account without Firestore access, a missing log-writer permission). They conclude the actual bug was that nothing was watching; there are now uptime checks and alerts on scheduler and workflow failures. Terraform silently dropped a hand-set environment variable because Cloud Run replaces its env list wholesale, which cost every platform admin console access at once; the same trap sat in payment flags where a default of false would have quietly removed PayPal credentials on a fresh checkout, so those variables are now required and a missing value stops the deploy. An unregistered domestic Razorpay account rejects international cards even in live mode, and Stripe's INR conversion fee turned a $50 audit into a much larger rupee figure at checkout, so they removed Stripe and use PayPal for international customers.",
+  "how_we_built_it": "Five containerised services on Cloud Run behind one FastAPI gateway, declared in Terraform, running in a real GCP project with no emulators. Ingestion and compliance agents are Cloud Tasks workers (OIDC between them); state lives in Firestore, the audit trail in append-only BigQuery, documents and reports in Cloud Storage; a Cloud Scheduler job triggers Cloud Workflows for the weekly report. React dashboard with Firebase Auth on the front. Two decisions carry the design: tenant identity is taken only from verified JWT claims, never from a body or query parameter, so no code path can read across tenants; and rewriting an audit row needs both bigquery.tables.updateData and bigquery.jobs.create, so the writer identity holds the first and is denied the second - UPDATE and DELETE are unavailable to their own application rather than merely unused by it.",
+  "inspiration": "A small NDIS provider signs around forty documents a week - service records, invoices, incident reports, policy forms - and every one has to match rules that run to hundreds of pages and change without warning. They tried the obvious fix first, an LLM asked directly, and it failed by producing fluent answers with invented regulation numbers, which in this domain is worse than silence because the customer files the answer. One constraint was set before any code: every verdict cites a rule that exists, from a versioned ruleset they control.",
+  "learned": "Fluency is not accuracy, and in compliance the gap between them is the product. The engineering that mattered was not prompting but building a system where a confident wrong answer is structurally hard to produce and impossible to hide. The dangerous failures were the quiet ones: nothing crashed, the weekly report simply never ran, and report covers printed internal IDs with no exception raised - a system that fails loudly can be fixed, a system that fails silently accumulates.",
+  "what_it_does": "Upload a document (PDF, text, CSV or image). An ingestion agent extracts the facts with Gemini; a compliance agent reasons over them against the ruleset for that industry and jurisdiction and returns a risk score where every verdict carries its citation. Routine documents auto-approve, edge cases escalate to a human reviewer with the reasoning attached, every decision is appended to an immutable audit trail, and a scheduled workflow produces weekly reports with a Gemini executive summary. Currently 16 rulesets, 88 rules, 12 jurisdiction profiles: NDIS and aged care in Australia, corporate compliance in India, and GDPR, CCPA, PIPEDA, LGPD, PDPA and POPIA.",
+  "what_next": "True recurring subscriptions (Pro is granted per payment rather than auto-renewing), ruleset change detection so an amendment re-checks the documents that relied on it and tells the customer which ones moved, more jurisdictions prioritised by where signups actually come from, an auditor-ready evidence export bundling decisions, citations and the trail behind them, and narrowing the reviewer loop so an escalation arrives with a suggested remediation rather than only a flag."
+ },
+ "software_id": 1275121,
+ "source_url": "https://devpost.com/software/complianceguardian-kcqs32",
+ "testing": "Pytest is declared in Built With and 536 tests are reported, including a named concurrency case, but no repository, CI run or test output is linked, so the count and the coverage are the team's assertion. No accuracy figure is claimed for the compliance verdicts themselves - no eval set of documents with known-correct outcomes, no false-positive or missed-finding rate against an auditor's judgement."
+}

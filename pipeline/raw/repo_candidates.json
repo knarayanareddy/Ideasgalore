@@ -1,0 +1,257 @@
+{
+ "_note": "Search hits are CANDIDATES. Ownership is not asserted: the audit engine only verifies repos the project page itself links (A14).",
+ "results": {
+  "Adversarial Compliance Matrix": [
+   {
+    "description": "",
+    "full_name": "DeadLee702/adversarial-compliance-matrix",
+    "language": "Rust",
+    "pushed_at": "2026-08-03",
+    "stars": 2
+   },
+   {
+    "description": "An audit-focused AI fairness repository showing how fairness intuition, confusion-matrix metrics, and adversarial debiasing are used to dete",
+    "full_name": "rs-shukla/responsible-ai-fairness-lab",
+    "language": "Jupyter Notebook",
+    "pushed_at": "2026-01-08",
+    "stars": 0
+   }
+  ],
+  "AudioNova": [
+   {
+    "description": "AudioNova is a Windows-based text-to-speech and voice transformation application. ",
+    "full_name": "vvdotcom/Audionova",
+    "language": "Python",
+    "pushed_at": "2025-02-24",
+    "stars": 27
+   },
+   {
+    "description": "",
+    "full_name": "yogita0914/TEN-AudioNova",
+    "language": "Python",
+    "pushed_at": "2026-01-12",
+    "stars": 0
+   },
+   {
+    "description": "",
+    "full_name": "shraddhajadhav111/audionova12",
+    "language": null,
+    "pushed_at": "2022-03-31",
+    "stars": 0
+   },
+   {
+    "description": "",
+    "full_name": "shraddhajadhav111/audionova1",
+    "language": null,
+    "pushed_at": "2022-03-30",
+    "stars": 0
+   },
+   {
+    "description": "",
+    "full_name": "gaspoorf/audionova",
+    "language": "TypeScript",
+    "pushed_at": "2026-02-25",
+    "stars": 0
+   }
+  ],
+  "ComplianceGuardian": [
+   {
+    "description": "",
+    "full_name": "bevin-creator/ComplianceGuardian",
+    "language": "Java",
+    "pushed_at": "2026-05-05",
+    "stars": 0
+   },
+   {
+    "description": "",
+    "full_name": "qiao23333/ComplianceGuardian",
+    "language": "Python",
+    "pushed_at": "2026-09-16",
+    "stars": 1
+   },
+   {
+    "description": "\ud83e\udd88 Shark-approved project: \ud83d\ude80 ComplianceGuardian - The AI Sentinel for Maritime Financial Compliance",
+    "full_name": "ocean-studio-apps/complianceguardian-the-ai-sentinel-for-maritime-20250910",
+    "language": null,
+    "pushed_at": "2025-09-10",
+    "stars": 0
+   },
+   {
+    "description": "\ud83e\udd88 Shark-approved project: \ud83d\ude80 ComplianceGuardian - The AI Sentinel for Maritime Financial Compliance",
+    "full_name": "ocean-studio-apps/complianceguardian-the-ai-sentinel-for-maritime-20250915",
+    "language": null,
+    "pushed_at": "2025-09-15",
+    "stars": 0
+   }
+  ],
+  "Gemini-Box (Aegis Audit Protocol)": [],
+  "Greenlight \u2014 Nine-Agent Production Crew": [
+   {
+    "description": "Screenplay-to-film production crew: nine agents plan, cast, prompt, shoot, audit and assemble \u2014 with a cost ladder and a learning loop.",
+    "full_name": "rainingsnow0914tw-ship-it/greenlight",
+    "language": "Python",
+    "pushed_at": "2026-08-22",
+    "stars": 0
+   }
+  ],
+  "Greenlight \u2014 Screenplay to Film": [
+   {
+    "description": "Screenplay-to-film production crew: nine agents plan, cast, prompt, shoot, audit and assemble \u2014 with a cost ladder and a learning loop.",
+    "full_name": "rainingsnow0914tw-ship-it/greenlight",
+    "language": "Python",
+    "pushed_at": "2026-08-22",
+    "stars": 0
+   }
+  ],
+  "MCOP": [
+   {
+    "description": "A high perfromance op kernel lib running on metax HD platform ",
+    "full_name": "MetaX-MACA/mcoplib",
+    "language": "Cuda",
+    "pushed_at": "2026-08-18",
+    "stars": 14
+   },
+   {
+    "description": "\u4e00\u4e9b\u5c0f\u6750\u8d28\u5305\u3001\u5efa\u7b51\u5408\u96c6",
+    "full_name": "YSBBBB/Mcopper-textures-CC",
+    "language": "Java",
+    "pushed_at": "2026-04-12",
+    "stars": 45
+   },
+   {
+    "description": "Shadeable command library for Minecraft",
+    "full_name": "Ivorforce/MCOpts",
+    "language": "Java",
+    "pushed_at": "2022-11-05",
+    "stars": 6
+   },
+   {
+    "description": "McOpt is an algorithm that can efficiently solve multicommodity routing problems on networks",
+    "full_name": "aleable/McOpt",
+    "language": "Jupyter Notebook",
+    "pushed_at": "2023-05-18",
+    "stars": 15
+   },
+   {
+    "description": "Small-gauge film optical printer platform",
+    "full_name": "sixteenmillimeter/mcopy",
+    "language": "OpenSCAD",
+    "pushed_at": "2026-09-15",
+    "stars": 7
+   }
+  ],
+  "Medvoice": [
+   {
+    "description": "Transform VQA\u2011RAD into a multi\u2011modal, explainable medical\u2011QA mini\u2011corpus (speech \u271a bounding box \u271a reasoning).  (TAAI 2025)",
+    "full_name": "whats2000/MedVoiceQAReasonDataset",
+    "language": "Jupyter Notebook",
+    "pushed_at": "2025-12-04",
+    "stars": 6
+   },
+   {
+    "description": "MedVoice Application Core System",
+    "full_name": "medvoice-research/MedVoice-Core",
+    "language": "Python",
+    "pushed_at": "2025-08-21",
+    "stars": 4
+   },
+   {
+    "description": "",
+    "full_name": "StephaneBah/medvoice_ai",
+    "language": "Jupyter Notebook",
+    "pushed_at": "2026-06-04",
+    "stars": 5
+   },
+   {
+    "description": "MedVoice-JP LoRA60: \u65e5\u672c\u8a9e\u533b\u7642\u7279\u5316ASR (whisper-small + LoRA, 60\u8a71\u8005) \u3068\u56fd\u5185\u521d\u306e\u533b\u7642ASR\u30d9\u30f3\u30c1\u30de\u30fc\u30af (\u30d5\u30ebFT\u7248 FT60 \u3082\u53ce\u9332)",
+    "full_name": "NikoToRA/medvoice-jp-asr",
+    "language": "Python",
+    "pushed_at": "2026-06-27",
+    "stars": 5
+   },
+   {
+    "description": "MedVoice",
+    "full_name": "lukasasael/MedVoice",
+    "language": "HTML",
+    "pushed_at": "2026-05-04",
+    "stars": 0
+   }
+  ],
+  "NeuroGuard AI": [
+   {
+    "description": "EEG based verification framework",
+    "full_name": "KN-Neuron/NeuroGuard-AI",
+    "language": "Jupyter Notebook",
+    "pushed_at": "2026-01-07",
+    "stars": 2
+   },
+   {
+    "description": "NeuroGuard AI is a real-time EEG-based detection system that analyzes brainwave patterns to identify neurological conditions such as *seizur",
+    "full_name": "fuzzu05/NeuroGuard-AI",
+    "language": "Python",
+    "pushed_at": "2026-03-29",
+    "stars": 2
+   },
+   {
+    "description": "AI-POWERED PREDICTIVE MAINTENANCE AGENT",
+    "full_name": "chinmayee5599/NEUROGUARD",
+    "language": "HTML",
+    "pushed_at": "2026-06-12",
+    "stars": 0
+   },
+   {
+    "description": "the ai codes for NeuroGuard",
+    "full_name": "sarahassanvam/NeuroGuard",
+    "language": "Python",
+    "pushed_at": "2026-04-19",
+    "stars": 0
+   },
+   {
+    "description": "Build a multi-modal emotional health prediction system using voice, text, and facial expression inputs. It will detect current emotional sta",
+    "full_name": "Suhani2305/NeuroGuard-AI-Powered-Emotional-Wellness-Forecaster",
+    "language": "PowerShell",
+    "pushed_at": "2025-07-06",
+    "stars": 2
+   }
+  ],
+  "NeuroGuard AI - Adaptive Concussion Recovery Intelligence": [],
+  "SketchWish": [],
+  "Vitalis Bio": [
+   {
+    "description": "Solu\u00e7\u00e3o Fitness",
+    "full_name": "DavidSanchezBD/VitalisBio",
+    "language": "TypeScript",
+    "pushed_at": "2026-05-30",
+    "stars": 0
+   },
+   {
+    "description": "A space Bio knowledge engine",
+    "full_name": "ARTariqDev/Vitalis-gemini",
+    "language": "JavaScript",
+    "pushed_at": "2025-10-31",
+    "stars": 0
+   },
+   {
+    "description": "Our submisssion for the space bio knowledge engine prompt for nasa space apps",
+    "full_name": "ARTariqDev/Vitalis",
+    "language": "JavaScript",
+    "pushed_at": "2025-12-19",
+    "stars": 0
+   },
+   {
+    "description": "",
+    "full_name": "Utilyst-public/vitalis-bio",
+    "language": "JavaScript",
+    "pushed_at": "2026-08-15",
+    "stars": 0
+   },
+   {
+    "description": "",
+    "full_name": "IsaqueCodeX/DrVitalisBio",
+    "language": "Python",
+    "pushed_at": "2026-02-13",
+    "stars": 0
+   }
+  ]
+ }
+}

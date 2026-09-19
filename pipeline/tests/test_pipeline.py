@@ -77,6 +77,21 @@ def enrich_all(records, today="2026-09-18"):
     return out
 
 
+class TestShelving(unittest.TestCase):
+    """Sector assignment is read off the copy, and a verb in marketing prose is not a subsystem."""
+
+    def test_a_health_app_saying_you_can_audit_its_score_is_not_compliance_infrastructure(self):
+        recs = [json.loads(l) for l in open(os.path.join(REPO, "pipeline", "corpus.jsonl"),
+                                           encoding="utf-8")]
+        by = {str(r["id"]): r for r in recs}
+        dom, sub, _ = T.classify_record(by["vitalis-bio"])
+        self.assertEqual((dom, sub), ("Health, Care & Human Performance", "Screening & Diagnostics"),
+                         "biological-age copy must not be shelved under Regulatory & Audit Machinery")
+        dom, sub, _ = T.classify_record(by["complianceguardian-kcqs32"])
+        self.assertEqual((dom, sub), ("Public Trust, Safety & Compliance", "Regulatory & Audit Machinery"),
+                         "a ruleset-citation product belongs in the compliance sector")
+
+
 class TestTaxonomy(unittest.TestCase):
     def test_domain_is_lexical_not_literal(self):
         got = T.classify_record({"name": "realityCheCk - AI Image Detector",
@@ -887,6 +902,50 @@ class TestAuditEngine(unittest.TestCase):
         self.assertFalse(silent["hazard"]["team_disclaimed"],
                          "medvoice's capture contains no disclaimer of its own, so the stamp must say so")
         self.assertIn("hazard: clinical (no team disclaimer found)", silent["why_not_promoted"])
+
+    def test_a_denominator_that_denies_itself_is_not_a_measurement(self):
+        """"over 95% accuracy", denominator: "unstated" is a claim plus a confession.
+
+        The confession has to win: an audit that scores the number and shrugs at the gap is
+        how a page's marketing percentage becomes a certified result.
+        """
+        cap = {"id": "fixture", "name": "Fixture", "source_url": "https://devpost.com/software/fixture",
+               "sections": {"accomplishments": "We achieved over 95% accuracy parsing lab PDFs."},
+               "testing": ("The one quantified result - over 95% accuracy - has no denominator: "
+                           "no document count, no held-out set, no definition of correct."),
+               "numbers": [{"claim": "over 95% accuracy parsing lab PDFs",
+                            "denominator": "unstated - no document count or provider breakdown",
+                            "arithmetic": "not falsifiable from the page", "verifiable": False},
+                           {"claim": "nine biomarkers in the clock", "denominator": "the model's parameter set",
+                            "arithmetic": "structural: checkable against the published table", "verifiable": True}],
+               "built_with": [], "links": {"video": "https://youtu.be/x"}}
+        chk = A.run_checks(cap, None, None, {})[0]["test_or_eval_evidence"]
+        self.assertEqual(chk["status"], "partial", chk["why"])
+        self.assertLessEqual(chk["pass"], 0.5)
+        # a real denominator still earns the higher tier
+        cap["numbers"][0]["denominator"] = "412 lab PDFs from 3 providers, held-out 84"
+        cap["numbers"][0]["verifiable"] = True
+        cap["numbers"][0]["arithmetic"] = "recomputed: 392/412 = 95.1%"
+        better = A.run_checks(cap, None, None, {})[0]["test_or_eval_evidence"]
+        self.assertIn(better["status"], ("supported", "confirmed"), better["why"])
+
+    def test_an_advice_loop_in_a_regulated_domain_is_flagged_without_the_word_diagnosis(self):
+        """The exposure is telling a person what to take; "we do not diagnose" was never the risk."""
+        cap = {"id": "fixture", "name": "Fixture", "source_url": "https://devpost.com/software/fixture",
+               "sections": {"what_it_does": "A weekly engine returns the top three supplement "
+                            "and protocol interventions to move your score."},
+               "one_line": "A dashboard that recommends lifestyle protocols.", "testing": "",
+               "numbers": [], "built_with": [], "links": {}}
+        rec = {"domain": "Health, Care & Human Performance", "summary": "biological age dashboard"}
+        hz = A.hazard_for(rec, cap, {})
+        self.assertIsNotNone(hz, "advice inside a clinical domain is a hazard whether or not it says diagnose")
+        self.assertEqual(hz["class"], "clinical")
+        self.assertFalse(hz["team_disclaimed"])
+        chart = {"id": "fixture", "name": "Fixture", "source_url": "https://devpost.com/software/x",
+                 "sections": {"what_it_does": "Charts the resting heart rate you already track."},
+                 "one_line": "A chart of wearable data.", "testing": "", "numbers": [],
+                 "built_with": [], "links": {}}
+        self.assertIsNone(A.hazard_for(rec, chart, {}), "visualisation alone is not a regulated claim")
 
     def test_nothing_publishable_is_banned_language_free(self):
         for sh in self.sheets.values():

@@ -214,6 +214,15 @@ Two operational facts, learned the hard way in batch 1:
   a fetched page — `https://devpost.com/software/<slug>`, chunk 0 carries all eight authored
   sections, the `Built With` list and the `software_id`. `harvest_devpost.py deep` has no
   per-id selector, so targeted refetches mean authoring the capture file yourself.
+- **`repo_verify.py --search-missing` records leads, never findings.** For every captured page
+  that links no repository it name-searches GitHub and writes
+  `pipeline/raw/repo_candidates.json`, explicitly labelled CANDIDATES. It exists so the next
+  auditor knows what to ask a team for — a search hit is never evidence of authorship. The
+  corpus makes the difference concrete: `Adversarial Compliance Matrix` returns one exact-name
+  repo, while `ComplianceGuardian` returns three same-named repos from unrelated accounts, and
+  `NeuroGuard AI` returns four teams that have nothing to do with either submission. The engine
+  reads `links.repo` from the capture and nothing else, so a candidate cannot reach a verdict
+  even by accident (A14).
 - **Only `api.github.com` is reachable from the build box.** Live deployments were probed once:
   the TCP connect succeeded and the TLS handshake was closed. So `repo_verify.py` is the sole
   independent verification channel, `artifact_exists` for a page with a live URL but no repo

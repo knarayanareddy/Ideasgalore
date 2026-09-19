@@ -208,6 +208,29 @@ def search_candidates(client: Client, names: List[str]) -> Dict[str, Any]:
     return out
 
 
+def record_candidates(client: "Client") -> bool:
+    """Name-search every captured page that links no repository. Candidates only (§ A14):
+    a search hit is never treated as the project's code, and the audit engine reads only
+    `links.repo` from the capture itself."""
+    caps = []
+    for path in sorted(glob.glob(os.path.join(CAPTURE_DIR, "*.json"))):
+        cap = json.load(open(path, encoding="utf-8"))
+        if not (cap.get("links") or {}).get("repo"):
+            caps.append(cap.get("name") or cap.get("id"))
+    if not caps:
+        print("no captured page lacks a repo link")
+        return False
+    print(f"🔎 name-searching {len(caps)} project(s) with no linked repo (candidates only)")
+    found = search_candidates(client, caps[:12])
+    with open(CANDIDATES_OUT, "w", encoding="utf-8") as fh:
+        json.dump({"_note": "Search hits are CANDIDATES. Ownership is not asserted: the audit "
+                           "engine only verifies repos the project page itself links (A14).",
+                   "results": found}, fh, indent=1, sort_keys=True)
+        fh.write("\n")
+    print(f"✅ wrote {os.path.relpath(CANDIDATES_OUT, os.path.dirname(HERE))}")
+    return True
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description="Verify project artifacts via the GitHub API")
     ap.add_argument("--repos", nargs="*", default=[], help="explicit owner/name list")
@@ -232,9 +255,14 @@ def main() -> int:
     pairs: List[Tuple[str, Optional[str]]] = [(None, r.strip()) for r in args.repos if r.strip()]
     if args.from_captures:
         pairs += linked_repos()
+    searched = record_candidates(client) if (args.search_missing and not args.dry_run) else False
     if not pairs:
-        print("nothing to verify — pass --repos owner/name or capture pages with --from-captures")
-        return 1
+        # The candidate search above is the *only* thing an auditor with no linked repos can
+        # run, so it must not hide behind this guard — and it must not exit non-zero either,
+        # because "the pages link nothing" is a finding, not a failure of the tool.
+        print("nothing to verify — pass --repos owner/name or capture pages with --from-captures"
+              + (" · candidate search ran" if searched else ""))
+        return 0 if searched else 1
 
     checks = {}
     if os.path.exists(CHECKS_OUT):
@@ -267,21 +295,6 @@ def main() -> int:
             json.dump(cache, fh)
         print(f"✅ wrote {os.path.relpath(CHECKS_OUT, os.path.dirname(HERE))} ({client.used} requests used)")
 
-    if args.search_missing and not args.dry_run:
-        caps = []
-        for path in sorted(glob.glob(os.path.join(CAPTURE_DIR, "*.json"))):
-            cap = json.load(open(path, encoding="utf-8"))
-            if not (cap.get("links") or {}).get("repo"):
-                caps.append(cap.get("name") or cap.get("id"))
-        if caps:
-            print(f"🔎 name-searching {len(caps)} project(s) with no linked repo (candidates only)")
-            found = search_candidates(client, caps[:12])
-            with open(CANDIDATES_OUT, "w", encoding="utf-8") as fh:
-                json.dump({"_note": "Search hits are CANDIDATES. Ownership is not asserted: the audit "
-                                   "engine only verifies repos the project page itself links (A14).",
-                           "results": found}, fh, indent=1, sort_keys=True)
-                fh.write("\n")
-            print(f"✅ wrote {os.path.relpath(CANDIDATES_OUT, os.path.dirname(HERE))}")
     return 0
 
 
