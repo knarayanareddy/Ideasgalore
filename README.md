@@ -24,8 +24,9 @@ JSON + CSV + NDJSON + SQLite on GitHub Pages: **$0/month, no backend, no API key
 
 | Capability | Detail |
 | --- | --- |
-| **Tabular database** | `data/ideas.csv` (23 stable columns), `data/ideas.ndjson`, and a gzipped **SQLite** file with `events` / `projects` / `moves` / `project_moves` — query it in DuckDB, pandas, Excel or SQL without a server |
-| **Two-tier sharded index** | Tier 1 `catalog-packed.json` (dictionary-encoded, **16.1 KB** gzip for 165 records, budget 1.2 MB) + Tier 2 per-sector deep shards, lazy-loaded |
+| **Quality-gated catalog** | nothing ships without an audit sheet: 12 mandatory fields, 6 evidence-backed checks, a verdict ladder and a duplicate-merge pass. The catalog is deliberately small (2 records today); the 163 admitted-but-unaudited records stay reachable in `data/pool.json` with per-record reasons — see [`docs/AUDIT_PROTOCOL.md`](docs/AUDIT_PROTOCOL.md) |
+| **Tabular database** | `data/ideas.csv` (31 stable columns — 8 audit + 23 catalog), `data/ideas.ndjson`, and a gzipped **SQLite** file with `events` / `projects` / `moves` / `project_moves` — query it in DuckDB, pandas, Excel or SQL without a server |
+| **Two-tier sharded index** | Tier 1 `catalog-packed.json` (dictionary-encoded, 16 columns including `verdict_id`/`worth_id`, budget 1.2 MB) + Tier 2 per-sector deep shards + per-sector **audit sheets**, lazy-loaded |
 | **Honest coverage** | the corpus publishes its own sampling rate: `catalog-stats.json → coverage` says 83 of the 1,401 projects listed in the XPRIZE gallery are in here, from 4 captured pages — a *gated sample*, never a claim of completeness |
 | **18 transferable "moves"** | `price-before-generate`, `evidence-graph`, `human-holds-the-last-button`, `offline-first-fallback`, `data-flywheel`… each with a definition, a `steal_this` imperative, and its own postings index — **the axis that produces new projects, not just lists** |
 | **10 sectors + subsystems** | Agentic Autonomy · Dev Tooling · Health & Care · Climate & Physical World · Public Trust · Money & Commerce · Creative Media · Learning · Accessibility · Data & Memory — plus an honest `Emerging & Cross-Domain` bucket for submissions too thin to place |
@@ -34,12 +35,12 @@ JSON + CSV + NDJSON + SQLite on GitHub Pages: **$0/month, no backend, no API key
 | **The Atlas** | hand-projected canvas vault (no three.js): height = coolness, gold ring = deep record, arcs = shared move, click any node for the deep sheet |
 | **The Remix Bench** | build-time idea collisions: curated + mined pairs, each with `the_wedge`, `starter_stack`, `first_48_hours` and **`kill_criteria`** |
 | **Idea shelf** | star plates → export a markdown brief with links, provenance footer and all — paste it into your next project plan or hand it to an agent |
-| **Agent-native** | `llms.txt`, JSON Schema with **per-field provenance**, OpenAPI 3.1, an agent `SKILL.md`, and a stdlib **MCP server** with 8 tools |
-| **Reproducible & gated** | `make verify`: offline rebuild → byte-diff of **every** emitted surface → cross-surface parity → budget ceiling → 39 tests. Scores are stamped as-of the corpus, not the clock, so a rebuild in January matches a build in September. CI fails on drift and refuses to publish a collapsed corpus |
+| **Agent-native** | `llms.txt`, JSON Schema with **per-field provenance** (the `audit` block included), OpenAPI 3.1 with the audit surfaces, an agent `SKILL.md`, and a stdlib **MCP server** with 11 tools (`audit_report`, `promotion_queue`, `audit_rubric` included) |
+| **Reproducible & gated** | `make verify`: offline rebuild → byte-diff of **every** emitted surface → catalog/pool partition parity → budget ceiling → 58 tests → a node check that the browser decodes the same verdicts the gates validated. Scores are stamped as-of the corpus, not the clock, so a rebuild in January matches a build in September. CI fails on drift and refuses to publish a collapsed corpus |
 
 ---
 
-## 🔌 Data as an API (six surfaces, one emitter)
+## 🔌 Data as an API (one emitter, audited gate)
 
 | Endpoint (relative to the site root) | What it is |
 | --- | --- |
@@ -51,6 +52,9 @@ JSON + CSV + NDJSON + SQLite on GitHub Pages: **$0/month, no backend, no API key
 | `data/moves.json` · `data/hackathons.json` · `data/sectors.json` | the three dimensions: trick vocabulary, event table, sector definitions |
 | `data/remixes.json` | generated idea collisions with build briefs |
 | `catalog-stats.json` · `manifest.json` | corpus counts + build provenance (`corpus_sha256`) |
+| `data/audits.json` · `data/audits/<sector>.json` | audit index (verdict + coverage per record) and full evidence sheets: fields, per-check reasoning, evidence ledger |
+| `data/pool.json` · `data/pool.csv` · `data/promotion-queue.json` | what the audit held out, why, and what would settle it — the work list, ranked by information gain |
+| `data/audit-rubric.json` | the rubric itself, so anyone can re-derive (or argue with) a verdict |
 | `agents/{llms.txt,schema.json,openapi.json,ethics.json,RECIPES.md,skill/…}` | the machine contract |
 
 ```bash

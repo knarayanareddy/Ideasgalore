@@ -9,8 +9,13 @@ the MCP tools can never disagree.
 
 | File | Shape | Use when |
 | --- | --- | --- |
-| `catalog-packed.json` | dictionary-encoded rows (14 cols) + lookup tables + `sectors` | one request must give you the whole corpus for ranking/filtering; it is ~14 KB gzip for 165 records (~88 bytes each) |
-| `data/ideas.csv` | 23 stable columns | spreadsheets, DuckDB, quick `sort`/`awk`, "tabular database" |
+| `catalog-packed.json` | dictionary-encoded rows (**16 cols**: 14 + `verdict_id`, `worth_id`) + lookup tables + `sectors` + an `audit` block | one request must give you the whole catalog for ranking/filtering, including what has been vetted |
+| `data/ideas.csv` | **31 stable columns** — 8 audit columns first (`verdict, worth, soundness, soundness_score, rubric_coverage, audited_at, unknowns, repo_url`), then the original 23 | spreadsheets, DuckDB, quick `sort`/`awk`, "tabular database" |
+| `data/audits.json` | id → verdict, worth, score, coverage, per-check `status`, unknown field names, sheet pointer | deciding *whether to trust* a record, cheaply, before fetching anything else |
+| `data/audits/<sector>.json` | full audit sheets: `fields[f] = {value, evidence[], confidence, status, why?}`, per-check reasoning, evidence ledger | you are recommending a project and must state what is verified vs assumed |
+| `data/pool.json` / `pool.csv` | records the audit held out, each with `why_not_promoted[]` + `would_settle_it[]` | lead-mining; **never** present one as an example of good work |
+| `data/promotion-queue.json` | unaudited candidates ranked by expected information gain | deciding what to fetch and audit next |
+| `data/audit-rubric.json` | the rubric itself: mandatory fields, checks, weights, verdict ladder, dedup + hazard rules | auditing new candidates the same way, or checking our arithmetic |
 | `data/ideas.ndjson` | one full record per line, **no mirrored prose** | streaming into an embedding job or a judge prompt |
 | `data/ideasgalore.sqlite.gz` | 4 tables: `events`, `projects`, `moves`, `project_moves` | real SQL joins, e.g. "moves per sector per event" |
 | `data/details/<sector>.json` | Tier-2 deep records (the only place prose lives) | you already know the sector; lazy-load one, never all |
@@ -24,7 +29,7 @@ Contract files: `agents/schema.json` (JSON Schema 2020-12 with `x-provenance`),
 `agents/openapi.json` (3.1), `agents/llms.txt`, `agents/RECIPES.md`,
 `agents/ethics.json`, `agents/skill/ideas-galore/SKILL.md`.
 
-## Three rules that keep you from lying
+## Four rules that keep you from lying
 
 1. **`null` ≠ 0.** `likes: null` and `award: "Unknown"` mean *not fetched*
    (listing-depth records). Tier-1 encodes that as `-1`.
@@ -33,6 +38,11 @@ Contract files: `agents/schema.json` (JSON Schema 2020-12 with `x-provenance`),
    value to the project team. Check `domain_margin` before trusting a sector label.
 3. **Prose is Tier 2 only.** Bulk exports omit the authors' text by design
    (`has_deep` flag instead). Cite the `url`; do not reconstruct pages from us.
+4. **Unaudited ≠ approved.** The catalog is audited-only: every published record carries an
+   `audit` verdict, and a `null` verdict (or a row in `data/pool.json`) means nobody
+   verified it — not that it failed. Report `unverifiable` as *unverifiable*: it means the
+   page made no checkable claim, which is not a debunking. Read `unknowns` aloud instead of
+   filling them in; they are the honest part of the record.
 
 ## Query patterns (measured, not aspirational)
 
@@ -52,7 +62,14 @@ sqlite3 g.sqlite "SELECT a.domain, b.domain, count(*) FROM project_moves pa
   JOIN projects a ON a.id=pa.project_id JOIN project_moves pb ON pb.move=pa.move
   JOIN projects b ON b.id=pb.project_id AND b.id<>a.id GROUP BY 1,2 ORDER BY 3 DESC LIMIT 10"
 
-# 4. Verify freshness + which build you are reading
+# 4. Audited picks with the reasoning inline, then the sheet for the two survivors
+curl -sL $BASE/data/audits.json | jq -r '.records | to_entries[]
+  | select(.value.rubric_coverage > 0.6) | .key'
+# 5. What the audit refused to publish, and exactly what would settle it
+curl -sL $BASE/data/pool.json | jq -r '.records[]
+  | "\(.id) · \(.why_not_promoted | join("; ")) · settle: \(.would_settle_it | join(", "))"'
+
+# 6. Verify freshness + which build you are reading
 curl -sL $BASE/manifest.json | jq '{corpus_sha256, generated_at, scoring_version}'
 ```
 
@@ -68,7 +85,8 @@ python3 mcp/ideasgalore_mcp.py --dir web/public --selftest # smoke test
 ```
 
 `search_projects · get_project · ideas_for_goal · similar_to · list_moves ·
-remix_briefs · random_muse · explain_scoring` — stdio JSON-RPC, stdlib only, no
+remix_briefs · random_muse · explain_scoring · audit_report · promotion_queue ·
+audit_rubric` — stdio JSON-RPC, stdlib only, no
 network calls beyond reading these same files. `ideas_for_goal` is the interesting
 one: it maps a fuzzy goal onto moves before it searches, because "an agent I can't
 trust blindly" is a *move* query, not a keyword query. Client config in
@@ -76,16 +94,24 @@ trust blindly" is a *move* query, not a keyword query. Client config in
 
 ## Stability & versioning
 
-`schema_version` and `scoring_version` ride inside the data. Changes are additive;
+`schema_version`, `scoring_version` and `audit_version` ride inside the data. Changes are additive;
 a weight change bumps `scoring_version` and re-emits every surface in the same PR,
 so a cached copy always self-identifies. Column order in `ideas.csv` is frozen by
 `test_csv_header_is_stable_and_documented`; row order in `catalog-packed.json` is
-frozen by `row_format`. Breakages are announced by a version bump, not discovered
-by a `KeyError`.
+frozen by `row_format`, and both are imported from the *same* constants the emitter uses
+(`taxonomy_hacks.ROW_FORMAT` / `CSV_COLUMNS`) — a test asserts the emitted bytes match, so
+the documentation cannot describe a shape we stopped building. `audit_version` bumps
+whenever a rubric change re-derives verdicts; a missing `audit` block on a record is
+itself a version signal ("built before the audit layer"), not a data error. Breakages are
+announced by a version bump, not discovered by a `KeyError`.
 
 ## Known limits (do not over-trust)
 
-- The committed corpus is **165 published records** (167 ingested, 2 held back as
+- The **catalog is audited-only**: 2 records publish today because 4 projects have been
+  captured and audited deeply enough to certify; the other 163 admitted records sit in
+  `data/pool.json` with reasons. Do not describe the pool as weak work — most of it is
+  simply unchecked. See [`AUDIT_PROTOCOL.md`](AUDIT_PROTOCOL.md).
+- The committed corpus is **165 admitted records** (167 ingested, 2 held back as
   placeholder summaries) across 5 sources, harvested at listing depth. `catalog-stats.json
   → coverage` states the sampling rate per event: the XPRIZE gallery alone lists **1,401
   projects over 59 pages**, of which we captured 4 pages. Treat sector statistics as

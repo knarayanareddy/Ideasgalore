@@ -257,7 +257,39 @@ wanted the default; resolved as default-off + explicit `include_pool=true`).
   falls back to a reachable demo/working app, which flatters throwaway UIs. Next iteration should add
   `demo_responds` as an equal rung rather than a fallback (needs a fetch budget decision).
 
-## 8 · What changed against the first instinct
+## 8 · Where the implementation overruled the spec
+
+Five things the code taught us after the panel signed off. Each became a rule **and** a test.
+
+1. **Coverage-aware renormalisation.** §A3's ladder let a record with two checks and a high
+   mean reach `strong`. `derive_verdict()` now renormalises by `rubric_coverage` and requires
+   `≥ 0.80` for `strong`, so Greenlight (score 0.77, coverage 0.64) publishes as
+   `sound-with-caveats` with its gaps named. A `strong` badge on 64% of the rubric would have
+   been the exact failure mode the panel was convened to prevent.
+2. **Duplicate detection needed arithmetic, not prose.** Cross-event resubmissions are
+   written fresh for each event: Jaccard on text stayed at 0.25, below every threshold we
+   had. `numeric_fingerprint()` compares the distinctive figures ($0.02, $20, $238, $4.50,
+   29%, 49%) and merges on ≥3 shared fingerprints plus a name-token match. A14's threshold
+   pair is unchanged; the fingerprint is a third, disjunctive route.
+3. **Never trust the audited text's own vocabulary.** An `arithmetic` note reading "not
+   falsifiable as presented" was parsed as confirmation (MCOP: `1.0 confirmed`), and a
+   measured A/B table was scored "no tests visible" because the word "benchmark" was absent
+   (Greenlight: `0.0`). Statuses now come from explicit `verifiable`/`denominator` fields and
+   from patterns a page cannot accidentally satisfy.
+4. **`publishable` must be recomputed after the similarity pass.** The duplicate merge
+   changed a verdict but not its publish flag; the new gate caught it
+   ("published with non-publishable verdict 'duplicate'") — which is the first time this
+   pipeline's gates caught a *logic* bug rather than a size regression.
+5. **Word-bounded banned-language scan.** A10's substring scan flagged AudioNova for
+   `lied` inside `implied`. The scan is now `\blied\w*\b`-style and covers the three
+   editorial fields rather than `worth_note` alone.
+
+**Shipped verdicts at first build:** Greenlight (nine-agent) `sound-with-caveats` 0.77 /
+worth `strong`, coverage 0.64 · AudioNova `sound-with-caveats` 0.59 / `strong` ·
+MCOP `thin` (artifact cap), numbers `unverifiable` · Greenlight (screenplay) `duplicate` →
+merged into the nine-agent record. Catalog 2, pool 163.
+
+## 9 · What changed against the first instinct
 
 First instinct was: add a `quality_flag` column, hand-label the 165 rows, keep publishing them all.
 The panel's net effect: the flag became a **derived verdict over an evidence ledger**; hand-labelling
