@@ -384,6 +384,28 @@ class TestAgentContract(unittest.TestCase):
             self.assertIsInstance(r["moves"], list)
             self.assertIsNotNone(r["event"], "event title must resolve for every row")
 
+    def test_mcp_audit_tools(self):
+        import ideasgalore_mcp as m
+        m.DIR, m.BASE = os.path.join(REPO, "web/public"), None
+        names = {t["name"] for t in m.tools_list()["tools"]}
+        self.assertTrue({"audit_report", "promotion_queue", "audit_rubric"} <= names, names)
+        sheet = m.call("audit_report", {"id": "audionova"})
+        body = json.loads(sheet["content"][0]["text"])
+        self.assertTrue(body["found"] and body["verdict"] in T.AUDIT_PUBLISH_VERDICTS)
+        self.assertEqual(set(body["fields"]), set(T.AUDIT_MANDATORY_FIELDS))
+        held = json.loads(m.call("get_project", {"id": "mcop"})["content"][0]["text"])
+        self.assertEqual(held.get("found"), "pool", "an audited-but-held record must not 404")
+        self.assertFalse(held["vetted"])
+        self.assertTrue(held["why_not_promoted"])
+        q = json.loads(m.call("promotion_queue", {"limit": 3})["content"][0]["text"])
+        self.assertGreater(q["count"], 0, "the pool must be workable, not just visible")
+        rub = json.loads(m.call("audit_rubric", {})["content"][0]["text"])
+        self.assertEqual(rub["published_verdicts"], list(T.AUDIT_PUBLISH_VERDICTS))
+        mixed = json.loads(m.call("search_projects", {"query": "screenplay", "include_pool": True,
+                                                       "limit": 5})["content"][0]["text"])
+        self.assertTrue(any(r["vetted"] for r in mixed["results"]))
+        self.assertTrue(all(r.get("why_not_promoted") for r in mixed["results"] if not r["vetted"]))
+
     def test_mcp_tools_run_and_cite(self):
         import ideasgalore_mcp as m
         m.DIR, m.BASE = os.path.join(REPO, "web/public"), None
