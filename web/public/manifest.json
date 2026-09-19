@@ -18,16 +18,19 @@
  "scoring_version":1,
  "corpus_sha256":"f7a7aa82d360b032",
  "corpus_records":167,
- "generated_at":"2026-09-19T14:23:22+00:00",
+ "generated_at":"2026-09-19T14:53:49+00:00",
  "audit_version":1,
- "audited_published":2,
- "pool_records":163,
+ "audited_published":5,
+ "pool_records":160,
  "surfaces":{
   "tier1":"catalog-packed.json",
   "audit":[
    "data/audits.json",
    "data/audit-rubric.json",
-   "data/audits/creative-media-story-and-play.json"
+   "data/audits/agentic-autonomy-and-orchestration.json",
+   "data/audits/creative-media-story-and-play.json",
+   "data/audits/health-care-and-human-performance.json",
+   "data/audits/money-commerce-and-marketplaces.json"
   ],
   "pool":[
    "data/pool.json",
@@ -35,7 +38,10 @@
    "data/promotion-queue.json"
   ],
   "tier2":[
-   "data/details/creative-media-story-and-play.json"
+   "data/details/agentic-autonomy-and-orchestration.json",
+   "data/details/creative-media-story-and-play.json",
+   "data/details/health-care-and-human-performance.json",
+   "data/details/money-commerce-and-marketplaces.json"
   ],
   "dimensions":[
    "data/hackathons.json",
@@ -49,7 +55,7 @@
  },
  "budgets":{
   "tier1_gzip_kb":[
-   2.4,
+   2.9,
    1200.0
   ]
  }

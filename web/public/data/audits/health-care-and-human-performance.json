@@ -1,0 +1,230 @@
+{
+ "audit_version":1,
+ "generated_at":"2026-09-18",
+ "records":{
+  "neuroguard-ai-adaptiveconcussionrecoveryintelligencesystem":{
+   "audit_version":1,
+   "audited_at":"2026-09-19",
+   "award":null,
+   "built_with":[
+    "python",
+    "fastapi",
+    "streamlit",
+    "pydantic",
+    "sqlite",
+    "faiss",
+    "render",
+    "sqlitedb"
+   ],
+   "checks":{
+    "artifact_exists":{
+     "pass":0.5,
+     "status":"supported",
+     "why":"no source repo linked, but the page publishes a working artifact: https://www.youtube.com/watch?v=6VTxPCeStvo"
+    },
+    "build_is_real":{
+     "pass":null,
+     "status":"unverifiable",
+     "why":"no repository published, so the build cannot be read"
+    },
+    "limits_disclosed":{
+     "pass":0.5,
+     "status":"supported",
+     "why":"no limitations section, but 'what's next' implies the open edges"
+    },
+    "numbers_add_up":{
+     "pass":0.5,
+     "status":"partial",
+     "why":"1 figure(s) a reader can check against the product (five-stage recovery plan), but 1 headline figure(s) carry no testable denominator: 100% accuracy across the included evaluation cases"
+    },
+    "stack_consistency":{
+     "pass":null,
+     "status":"unverifiable",
+     "why":"no repo to cross-check the declared stack against"
+    },
+    "test_or_eval_evidence":{
+     "pass":0.75,
+     "status":"supported",
+     "why":"a measured evaluation with a stated denominator is described on the page (an A/B comparison or a logged-outcome harness counts; a bare 'we tested it' does not)"
+    }
+   },
+   "evidence":[
+    {
+     "checked_at":"2026-09-19",
+     "claim":"Is there an artifact at all \u2014 a repo, a deployed app, or a video of it running?",
+     "detail":"no source repo linked, but the page publishes a working artifact: https://www.youtube.com/watch?v=6VTxPCeStvo",
+     "id":"neuroguard-ai-adaptiveconcussionrecoveryintelligencesystem:artifact_exists",
+     "kind":"page",
+     "source":"https://devpost.com/software/neuroguard-ai-adaptiveconcussionrecoveryintelligencesystem",
+     "status":"supported"
+    },
+    {
+     "checked_at":"2026-09-19",
+     "claim":"Does the repo's language/file mix match the stack they described?",
+     "detail":"no repo to cross-check the declared stack against",
+     "id":"neuroguard-ai-adaptiveconcussionrecoveryintelligencesystem:stack_consistency",
+     "kind":"page",
+     "source":"https://devpost.com/software/neuroguard-ai-adaptiveconcussionrecoveryintelligencesystem",
+     "status":"unverifiable"
+    },
+    {
+     "checked_at":"2026-09-19",
+     "claim":"Is the code a real build (source tree, setup steps, non-trivial size) rather than a stub or zip?",
+     "detail":"no repository published, so the build cannot be read",
+     "id":"neuroguard-ai-adaptiveconcussionrecoveryintelligencesystem:build_is_real",
+     "kind":"page",
+     "source":"https://devpost.com/software/neuroguard-ai-adaptiveconcussionrecoveryintelligencesystem",
+     "status":"unverifiable"
+    },
+    {
+     "checked_at":"2026-09-19",
+     "claim":"Do their metrics have a denominator, and is the arithmetic internally consistent?",
+     "detail":"1 figure(s) a reader can check against the product (five-stage recovery plan), but 1 headline figure(s) carry no testable denominator: 100% accuracy across the included evaluation cases",
+     "id":"neuroguard-ai-adaptiveconcussionrecoveryintelligencesystem:numbers_add_up",
+     "kind":"page",
+     "source":"https://devpost.com/software/neuroguard-ai-adaptiveconcussionrecoveryintelligencesystem",
+     "status":"partial"
+    },
+    {
+     "checked_at":"2026-09-19",
+     "claim":"Did they state what does not work, or where it fails?",
+     "detail":"no limitations section, but 'what's next' implies the open edges",
+     "id":"neuroguard-ai-adaptiveconcussionrecoveryintelligencesystem:limits_disclosed",
+     "kind":"page",
+     "source":"https://devpost.com/software/neuroguard-ai-adaptiveconcussionrecoveryintelligencesystem",
+     "status":"supported"
+    },
+    {
+     "checked_at":"2026-09-19",
+     "claim":"Any test suite, eval harness, or measured benchmark we can see?",
+     "detail":"a measured evaluation with a stated denominator is described on the page (an A/B comparison or a logged-outcome harness counts; a bare 'we tested it' does not)",
+     "id":"neuroguard-ai-adaptiveconcussionrecoveryintelligencesystem:test_or_eval_evidence",
+     "kind":"page",
+     "source":"https://devpost.com/software/neuroguard-ai-adaptiveconcussionrecoveryintelligencesystem",
+     "status":"supported"
+    }
+   ],
+   "fields":{
+    "built_with_verified":{
+     "provenance":"observed",
+     "value":"declared by the authors (8): python, fastapi, streamlit, pydantic, sqlite, faiss, render, sqlitedb \u00b7 no repository published, so these are the team's own claim and nothing corroborates them"
+    },
+    "clone_cost":{
+     "note":"our estimate with assumptions visible; not a claim about the team",
+     "provenance":"derived",
+     "value":{
+      "assumptions":[
+       "you may legally embed the guideline text you retrieve from",
+       "a clinician reviews the escalation thresholds before anyone relies on them",
+       "no diagnosis or treatment claim is made in your copy"
+      ],
+      "estimate":"1 week for the check-in core, 3-4 weeks with history, handoff and a real eval",
+      "why":"FastAPI, SQLite, Pydantic and local retrieval are ordinary parts; the work is the guideline corpus, the rule set and the evaluation cases"
+     }
+    },
+    "data_and_models":{
+     "provenance":"observed",
+     "value":"No model trained or fine-tuned: Pydantic-validated deterministic extraction, rule-based history-aware risk scoring, and FAISS retrieval over a locally stored concussion-guideline corpus. The generative model is not presented as the decision-maker, which is the architecturally correct choice for this domain."
+    },
+    "how_it_works":{
+     "provenance":"observed",
+     "value":"Full-stack web app: FastAPI service, Streamlit frontend, Pydantic validation of every structured result before display, SQLite history, FAISS retrieval over a local concussion-guideline corpus, deterministic local symptom extraction, history-aware risk scoring, red-flag guardrails, privacy-conscious logging, and offline regression/safety/quality benchmarks. Deployed on Render."
+    },
+    "how_they_tested":{
+     "provenance":"observed",
+     "value":"Offline regression, safety and quality benchmarks exist and the page states plainly that they 'demonstrate consistency within our included test cases, not clinical validation'. No case count, split, seed or harness is published, and no test code is linked, so the pass rate is not reproducible by a reader."
+    },
+    "limits_they_disclosed":{
+     "provenance":"observed",
+     "value":"Usefulness against safety: no false reassurance, no overstated certainty. Red flags prioritised, escalation made visually prominent, normal progression suppressed when urgent signs appear, recommendations kept conservative, results schema-validated before rendering. Also representing recovery over time rather than as one score."
+    },
+    "numbers_with_arithmetic":{
+     "provenance":"observed",
+     "value":[
+      {
+       "arithmetic":"unfalsifiable as published - denominator is undefined, so the percentage has no measurable content",
+       "claim":"100% accuracy across the included evaluation cases",
+       "denominator":"a self-authored offline case set of unstated size, including synthetic red-flag scenarios",
+       "verifiable":false
+      },
+      {
+       "arithmetic":"structural claim, checkable against the deployed flow rather than a benchmark",
+       "claim":"five-stage recovery plan",
+       "denominator":"stages defined in the application's rules",
+       "verifiable":true
+      }
+     ]
+    },
+    "prior_art":{
+     "note":"each entry resolves to a URL we opened this session or a corpus id",
+     "provenance":"editorial",
+     "value":[
+      {
+       "corpus_id":"neuroguard-ai-0qb34c",
+       "relation":"parallel invention at the same event under the same name: baseline-relative monitoring, no rules, no retrieval - keep both, and note this one is specified far more tightly"
+      },
+      {
+       "corpus_id":"wpf-reliability-agent",
+       "relation":"same containment pattern elsewhere: bounded evidence requests and one human-approved mutation step"
+      },
+      {
+       "corpus_id":"billright",
+       "relation":"same 'cite the rule the verdict came from' discipline applied to a different regulated document type"
+      }
+     ]
+    },
+    "what_breaks_first":{
+     "provenance":"editorial",
+     "value":"The self-graded benchmark: 100% across a case set nobody outside the team defined or counted measures their agreement with themselves, and the page is honest enough to say it is not clinical validation - so a clone inherits the need for a real evaluation with data and a clinician. Second, multi-day history with no persistence story (secure cross-session storage is still on the roadmap)."
+    },
+    "what_it_does":{
+     "provenance":"observed",
+     "value":"Free-text symptom description plus optional guided questions, a structured symptom summary, a conservative risk assessment, a five-stage recovery plan, evidence supporting the guidance, multi-day trend view (improving / stable / worsening), and a caregiver or clinician handoff summary. Urgent warning signs replace normal advice with escalation."
+    },
+    "what_it_is":{
+     "provenance":"observed",
+     "value":"A daily concussion check-in that extracts symptoms deterministically, scores risk against recovery history, and escalates red flags before it offers any advice."
+    },
+    "what_to_steal":{
+     "provenance":"editorial",
+     "value":"Escalation precedence: compute the red-flag rules first and *suppress* the normal path when they fire, rather than letting a friendly assistant narrate its way past a warning sign. Pair it with schema validation of every structured result before it renders, and hand the professional a summary artifact rather than a chat transcript."
+    }
+   },
+   "hazard":{
+    "class":"clinical",
+    "note":"Risk assessment on a medical condition. The team disclaims diagnosis, states the benchmarks are not clinical validation, and keeps recommendations conservative; that is better hygiene than most of the corpus, not permission to run it on real patients without oversight.",
+    "team_disclaimed":false
+   },
+   "id":"neuroguard-ai-adaptiveconcussionrecoveryintelligencesystem",
+   "likes":null,
+   "moves":[
+    "human-holds-the-last-button",
+    "deterministic-guardrail"
+   ],
+   "name":"NeuroGuard AI",
+   "parallel_invention_of":"neuroguard-ai-0qb34c",
+   "provenance":{
+    "checks":"derived",
+    "clone_cost":"derived",
+    "evidence":"observed",
+    "fields":"observed",
+    "verdict":"derived",
+    "worth":"editorial"
+   },
+   "publishable":true,
+   "repo":null,
+   "right_of_reply":"https://github.com/knarayanareddy/Ideasgalore/issues/new?labels=audit-recheck",
+   "rubric_coverage":0.64,
+   "soundness":"partial",
+   "soundness_score":0.5547,
+   "source_url":"https://devpost.com/software/neuroguard-ai-adaptiveconcussionrecoveryintelligencesystem",
+   "unknowns":[],
+   "verdict":"sound-with-caveats",
+   "verdict_reasons":[
+    "soundness 0.55 over 64% of the rubric; 0 named unknown(s) remain \u2192 publishable with caveats"
+   ],
+   "worth":"strong",
+   "worth_note":"The architecture is the contribution: deterministic extraction, rule-based history-aware scoring, retrieval over a guideline corpus, and escalation that pre-empts advice - with the generative model kept out of the decision path. That is the correct shape for software that touches a regulated outcome, and it is rare to see it chosen deliberately at hackathon scale. Held below breakthrough because the pieces are standard practice in clinical decision support."
+  }
+ }
+}

@@ -31,7 +31,7 @@
 **The finding that reframed the whole debate (Osei, §2):** the request "audit every project
 carefully and publish full detail" cannot be satisfied by *classifying harder*. Classification was
 never the bottleneck — evidence was. With 2 of 165 rows carrying authored content, any verdict on
-the other 163 would be a guess about a stranger's competence. Therefore the audit is a
+every unaudited row would be a guess about a stranger's competence. Therefore the audit is a
 **budgeted, evidence-gated promotion pipeline**, and the honest failure mode of "not enough
 evidence" is *exclusion with a reason*, never a score.
 
@@ -288,6 +288,72 @@ Five things the code taught us after the panel signed off. Each became a rule **
 worth `strong`, coverage 0.64 · AudioNova `sound-with-caveats` 0.59 / `strong` ·
 MCOP `thin` (artifact cap), numbers `unverifiable` · Greenlight (screenplay) `duplicate` →
 merged into the nine-agent record. Catalog 2, pool 163.
+
+### 8.1 · What working the promotion queue taught us (2026-09-19, six more pages)
+
+The panel's rules were written against four captures. Six more — two teams that independently
+built the same concussion product, one platform split across two slugs, a nurse's medication
+reminder, a live illustration product, and a Rust supply-chain verifier — broke five
+assumptions, all in the *same* direction: the engine was too generous, not too strict.
+
+6. **Denials were read as evidence (the mirror image of deviation 3).** `test_or_eval_evidence`
+   scanned the whole page for evaluation vocabulary, so "no test suite, evaluation set, or
+   validation is described" matched `evaluation` and scored `supported 0.75`
+   (neuroguard-ai-0qb34c). The check now reads the capture's `testing` field first and discards
+   any keyword sitting inside a negation. The residual risk the panel accepted — auditors
+   over-trusting page prose — turned out to be the dominant failure mode, not an edge case.
+7. **Prose adjectives matched benchmark vocabulary.** "Coding the sync layer on a phone demanded
+   precision" read as a measured comparison (Medvoice). A comparator word now counts only in a
+   sentence carrying a digit, a prose-only mention settles at `partial 0.4` with the contradiction
+   quoted, and the bare word `baseline` left the benchmark pattern entirely — in this corpus a
+   "personal baseline" is an architecture, not an evaluation.
+8. **A feature list was vouching for an accuracy claim.** `arithmetic: "structural, checkable in
+   the live product"` satisfied `_testable()`, so SketchWish's ten styles and ACM's twelve
+   scenarios produced `numbers_add_up: 1.0 confirmed` beside an unmeasured "100%". Structural
+   figures now live in a separate `checkable` tier capped at 0.5–0.6. This is the same laundering
+   deviation 3 named, arriving through a field the auditors wrote themselves.
+9. **Building painfully is not disclosing limits.** A challenges section about coding on a phone
+   overnight scored `confirmed 1.0` (ACM). `limits_disclosed` now needs a capability-shaped
+   statement in a sentence that is not about the build; process-only honesty caps at 0.6.
+   Conversely SketchWish's real disclosures — a free-render tool attracts farming, so accounts are
+   capped and gated; Google blocks OAuth inside in-app browsers, so an escape hatch exists —
+   initially failed to score and now do, after the capability vocabulary grew to admit them.
+10. **Duplicate detection needed a listing-level route.** Prose Jaccard between `gemini-box` and
+    `adversarial-compliance-matrix` was 0.07 — two pages about one platform, written for different
+    prompts — and their numeric fingerprints shared nothing, so both would have published. The
+    merge route that catches them (exact published display name + same event, §4 of the protocol)
+    was not in the panel's draft at all; and the pair it must *not* touch — same idea, same event,
+    names differing by a suffix — is kept and cross-linked instead, which is the case A14 predicted
+    would be hardest. Two of A14's three mechanisms proved insufficient on real data.
+
+11. **The pool needed two kinds, not one.** D5's mitigation put `provenance: unaudited` on every
+    pool row, which was true while the pool held only unchecked records. Once auditing produced
+    `thin` and `duplicate` verdicts, the label began asserting that a scored record was
+    unscored — and `would_settle_it` told audited rows to "go fetch a project page" they had
+    already fetched. Pool rows now carry `provenance: audited-hold | unaudited`, the same audit
+    columns the catalog carries (`verdict`, `worth`, `soundness`, `soundness_score`,
+    `rubric_coverage`, `audited_at`, `unknowns`, `repo_url`) so one parser reads both surfaces,
+    and `would_settle_it` is derived from the ledger (open unknowns first, then each check below
+    0.75 with the artifact named in `AUDIT_CHECKS[*].settles_with`, which is also in the rubric).
+    `catalog-stats.json` publishes `pool_audited_held` beside `pool_unaudited` so no consumer has
+    to infer the split. Same lesson as deviation 4: a derived flag must be recomputed when the
+    world it describes changes — a label that was accurate for a 165-row unchecked pool is a
+    false statement about a pool that is now 5-of-160 scored.
+
+Also surfaced, and deliberately *not* fixed by softening a rule: coverage tops out near 0.64 for
+any record without a repository, because `build_is_real`, `stack_consistency` and a corroborated
+`built_with_verified` cannot be filed without one — so `strong` is unreachable for projects that
+publish no code, and 0 of 165 admitted records link a repository. The panel's `strong` rung stays
+as specified; the honest reading is that `strong` demands evidence the platform's own norms make
+rare. The protocol states this in §4 and §8 rather than tuning around it.
+
+**Shipped verdicts after queue batch 1:** SketchWish `sound-with-caveats` 0.68 / worth `strong` ·
+NeuroGuard AI (the team with a red-flag escalation path) 0.55 / `strong` · Adversarial Compliance
+Matrix 0.52 / `niche` — kept as the better-evidenced of the two Gemini-Box listings, and held to
+`partial` because its fixture suite was authored by the same agents it tests · AudioNova 0.51 /
+`strong` · Greenlight (nine-agent) 0.77 / `strong`. Held: `gemini-box` `duplicate`,
+`neuroguard-ai-0qb34c` `thin` 0.33, `medvoice-y87kei` `thin` 0.27 *with* `worth: strong`, `MCOP`
+`thin` 0.41, `greenlight-screenplay-to-film` `duplicate`. Catalog 5, pool 160, 64 tests green.
 
 ## 9 · What changed against the first instinct
 

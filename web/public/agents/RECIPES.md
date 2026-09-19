@@ -7,7 +7,12 @@ checkout: `python3 -m http.server -d web/dist`).
 
 ```bash
 curl -sL https://knarayanareddy.github.io/Ideasgalore/data/ideas.csv | head -1
-curl -sL https://knarayanareddy.github.io/Ideasgalore/data/ideas.csv | tail -n +2 | sort -t, -k10 -gr | head -20
+# columns are quoted and the audit block leads, so parse by name, not by position:
+curl -sL https://knarayanareddy.github.io/Ideasgalore/data/ideas.csv | python3 -c "
+import csv, sys
+rows = sorted(csv.DictReader(sys.stdin), key=lambda r: -float(r['coolness']))
+for r in rows[:20]:
+    print(f"{r['coolness']}  {r['verdict']:18}  {r['name']}")"
 ```
 
 ## Every project that demonstrates a given move

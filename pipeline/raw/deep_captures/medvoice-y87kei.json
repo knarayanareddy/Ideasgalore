@@ -1,0 +1,36 @@
+{
+ "award": null,
+ "built_with": [
+  "firebase",
+  "firestore",
+  "html5",
+  "css3",
+  "javascript",
+  "web-speech-api"
+ ],
+ "captured_at": "2026-09-19",
+ "data_and_models": "No ML in the shipped path: Firestore documents, scheduled triggers and platform speech synthesis. No patient data model, retention, consent or offline behaviour is described.",
+ "gallery_images": 7,
+ "id": "medvoice-y87kei",
+ "likes": 8,
+ "links": {
+  "demo": null,
+  "repo": null,
+  "video": "https://www.youtube.com/watch?v=Jae84EhFTcg"
+ },
+ "name": "Medvoice",
+ "numbers": [],
+ "one_line": "A medication assistant that removes reading from the loop: a nurse photographs the pill, and the patient's monitor stays silent until dose time, then shows that photo and speaks the instruction.",
+ "sections": {
+  "accomplishments": "A functional cloud-synced tool built from a phone, and the confirmation voice loop working end to end.",
+  "challenges": "A 24-hour pivot: the original entry was disqualified on a technicality and MedVoice was designed and coded in two days. Firebase integration on a phone screen demanded precision.",
+  "how_we_built_it": "HTML5/CSS3/JavaScript front end with Firebase Firestore for real-time sync and the Web Speech API for the voice-over; built entirely on a smartphone using mobile code editors and AI-assisted development.",
+  "inspiration": "From an ER nurse's view: elderly patients return with complications not because medicine is missing but because they cannot read the instructions, and low literacy plus declining vision turns a prescription into a guessing game.",
+  "learned": "Designing for accessibility changes the architecture (asynchronous JavaScript, real-time database shape) rather than decorating it.",
+  "what_it_does": "Nurse portal: photograph the actual pill, set a daily or weekly schedule. Patient monitor: a no-reading interface that wakes only at dose time, shows the specific pill's photo and speaks the instruction. A voice loop repeats until the patient confirms the dose. Real-time sync keeps the patient's device current.",
+  "what_next": "Patient files with medication and adherence history, a PWA so alerts survive the app being closed, a low-cost vibrating bracelet with a physical confirm button, and Iraqi-dialect voice models."
+ },
+ "software_id": 1413224,
+ "source_url": "https://devpost.com/software/medvoice-y87kei",
+ "testing": "No tests, no evaluation with patients, no adherence measurement described - the confirmation loop is asserted to work in the demo video only."
+}

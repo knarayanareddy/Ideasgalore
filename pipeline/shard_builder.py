@@ -13,6 +13,7 @@ Writes  web/public/...                   (every read surface, one emitter)
           data/hackathons.json    event dimension table (ADR-2)
           data/moves.json         the transferable-trick vocabulary + postings
   Tabular data/ideas.csv          the literal tabular database (stable columns)
+          data/pool.csv           same columns + provenance/why_not_promoted/would_settle_it
           data/ideas.ndjson       streaming/line-delimited for agents
           data/ideasgalore.sqlite.gz   optional SQL surface (only if < 4 MB)
   Meta    catalog-stats.json      counts for the UI badge
@@ -30,6 +31,7 @@ from __future__ import annotations
 
 import argparse
 import datetime as dt
+import csv
 import gzip
 import hashlib
 import json
@@ -44,7 +46,8 @@ from typing import Any, Dict, List, Optional, Tuple
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 from taxonomy_hacks import (  # noqa: E402
     AUDIT_MANDATORY_FIELDS, AUDIT_PUBLISH_VERDICTS, AUDIT_STATUSES, AUDIT_VERSION,
-    BANNED_VERDICT_WORDS, CSV_COLUMNS, DOMAINS, MOVES, ROW_FORMAT, UNSHELVED, audit_rubric,
+    BANNED_VERDICT_WORDS, CSV_COLUMNS, DOMAINS, MOVES, POOL_CSV_COLUMNS, ROW_FORMAT, UNSHELVED,
+    audit_rubric,
 )
 
 REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -131,32 +134,49 @@ def _pool_record(r: Dict[str, Any], sheet: Optional[Dict[str, Any]]) -> Dict[str
     """A1: nothing is deleted, and nothing unverified is presented as vetted."""
     reasons: List[str] = []
     settle: List[str] = []
+    provenance = "unaudited"
     if sheet is None:
         reasons.append("not_audited")
         settle += ["project page capture (deep)", "artifact check via repo_verify.py"]
     else:
+        # `audited-hold`, not `unaudited`: a scored thin/duplicate record HAS been checked, and
+        # labelling it otherwise is how a pool row gets re-audited by someone who cannot tell.
+        provenance = "audited-hold"
         reasons.append("verdict:" + str(sheet.get("verdict")))
         wnp = sheet.get("why_not_promoted") or []
         reasons += [str(x) for x in ([wnp] if isinstance(wnp, str) else wnp)]
         settle += [u.get("missing", "") for u in (sheet.get("unknowns") or [])][:4]
         if sheet.get("duplicate_of"):
             reasons.append("duplicate_of:" + str(sheet["duplicate_of"]))
-    return {
+    out = {
         "id": str(r["id"]), "name": r.get("name"), "url": r.get("url"),
         "domain": r.get("domain"), "subsystem": r.get("subsystem"),
         "event": r.get("event_title"), "coolness": round(r.get("coolness", 0), 4),
         "moves": r.get("moves") or [], "specificity": r.get("specificity"),
         "summary": " ".join((r.get("summary") or "").split())[:280],
-        "provenance": "unaudited",
+        "provenance": provenance,
         "why_not_promoted": reasons,
         "would_settle_it": [x for x in dict.fromkeys(settle) if x][:4] or [
             "a fetched project page and an artifact check"],
         "audit": None if sheet is None else {
-            "verdict": sheet.get("verdict"), "soundness_score": sheet.get("soundness_score"),
+            "verdict": sheet.get("verdict"), "worth": sheet.get("worth"),
+            "soundness": sheet.get("soundness"), "soundness_score": sheet.get("soundness_score"),
             "rubric_coverage": sheet.get("rubric_coverage"), "audited_at": sheet.get("audited_at"),
             "unknowns": len(sheet.get("unknowns") or []), "duplicate_of": sheet.get("duplicate_of"),
+            "hazard": bool(sheet.get("hazard") or {}), "evidence": len(sheet.get("evidence") or []),
             "reasons": sheet.get("verdict_reasons") or []},
     }
+    # A held-but-scored record reads like an audit row, not an unchecked one: the same keys the
+    # catalog and `data/audits.json` use, so one parser serves both surfaces and an agent
+    # filtering pool.json on `verdict` gets the truth instead of a null.
+    if sheet is not None:
+        out["would_settle_it"] = sheet.get("would_settle_it") or out["would_settle_it"]
+        for key in ("verdict", "worth", "soundness", "soundness_score", "rubric_coverage",
+                    "audited_at"):
+            out[key] = sheet.get(key)
+        out["unknowns"] = len(sheet.get("unknowns") or [])
+        out["repo_url"] = sheet.get("repo")
+    return out
 
 
 def build(records: List[Dict[str, Any]], out_dir: str, today: str,
@@ -183,6 +203,7 @@ def build(records: List[Dict[str, Any]], out_dir: str, today: str,
     admitted = 0
 
     pool: List[Dict[str, Any]] = []
+    pool_csv: List[List[Any]] = []
     audit_sheets: Dict[str, Dict[str, Any]] = {}
     for r in records:
         if not r.get("admitted", True):
@@ -190,7 +211,16 @@ def build(records: List[Dict[str, Any]], out_dir: str, today: str,
         rid = str(r["id"])
         sheet = audits.get(rid)
         if sheet is None or not sheet.get("publishable"):
-            pool.append(_pool_record(r, sheet))          # A1: catalog is audited-only
+            pr = _pool_record(r, sheet)                   # A1: catalog is audited-only
+            pool.append(pr)
+            # A pool row is the same table with three more columns, because a 31-name header
+            # over 10-value rows is a trap for anyone parsing it positionally.
+            pcsv = _csv_cells(r, sheet, extra={
+                "provenance": pr["provenance"],
+                "why_not_promoted": "|".join(pr["why_not_promoted"]),
+                "would_settle_it": "|".join(pr["would_settle_it"]),
+            })
+            pool_csv.append([pcsv[c] for c in POOL_CSV_COLUMNS])
             continue
         admitted += 1
         verdict_id = verdict_enc.id(sheet.get("verdict") or "thin")
@@ -239,23 +269,7 @@ def build(records: List[Dict[str, Any]], out_dir: str, today: str,
         })
         ev_slot["project_count"] += 1
 
-        csv_rows.append([
-            rid, r.get("name"), r.get("url"), r.get("event_title") or "", r.get("event_org") or "",
-            r.get("domain"), r.get("subsystem"), "|".join(r.get("moves") or []),
-            "|".join(r.get("stack") or []), f"{r.get('coolness', 0):.4f}",
-            f"{parts.get('engagement', 0):.3f}", f"{parts.get('validation', 0):.3f}",
-            f"{parts.get('event_prestige', 0):.3f}", f"{parts.get('recency', 0):.3f}",
-            f"{parts.get('specificity', 0):.3f}", f"{parts.get('signal_richness', 0):.3f}",
-            f"{parts.get('redundancy', 0):.3f}",
-            "" if r.get("likes") is None else r.get("likes"),
-            r.get("award") or "Unknown", r.get("depth") or "listing",
-            1 if r.get("depth") == "deep" else 0,
-            r.get("event_date") or "", r.get("harvested_at") or "",
-            sheet.get("verdict") or "", sheet.get("worth") or "unrated",
-            sheet.get("soundness") or "", sheet.get("rubric_coverage"),
-            sheet.get("audited_at") or "", len(sheet.get("unknowns") or []),
-            (sheet.get("repo") or {}).get("url") or "",
-        ])
+        csv_rows.append(_csv_row(r, sheet))
         ndjson_rows.append(_ndjson_record(r, sheet))
         sql_projects.append((
             rid, r.get("name"), r.get("url"), str(ev_key), r.get("domain"), r.get("subsystem"),
@@ -397,20 +411,24 @@ def build(records: List[Dict[str, Any]], out_dir: str, today: str,
     pool.sort(key=lambda x: -(x.get("coolness") or 0))
     with open(f"{out_dir}/data/pool.json", "w", encoding="utf-8") as f:
         json.dump({"audit_version": AUDIT_VERSION, "generated_at": today, "count": len(pool),
-                   "meaning": "Unaudited candidates. Nothing here has been checked against an "
-                              "artifact; do not present a pool row or its coolness as a judgement "
-                              "of merit (ADR-A1/A10).",
+                   "meaning": "Records held out of the catalog. `provenance` splits them in two: "
+                              "`unaudited` rows were never captured or checked; `audited-hold` rows "
+                              "were captured, scored and held for cause (thin, duplicate or "
+                              "hazard-capped) and carry the same audit columns the catalog does. "
+                              "Neither kind is a judgement of merit — read why_not_promoted and "
+                              "would_settle_it before quoting one (ADR-A1/A10).",
                    "records": pool}, f, separators=(",", ":"), indent=1)
-    _write_csv(f"{out_dir}/data/pool.csv",
-               [[p["id"], p.get("name"), p.get("url"), p.get("domain") or "", p.get("event") or "",
-                 f"{(p.get('coolness') or 0):.4f}", "|".join(p.get("moves") or []),
-                 "|".join(p.get("why_not_promoted") or [])] for p in pool])
+    _write_csv(f"{out_dir}/data/pool.csv", pool_csv, header=POOL_CSV_COLUMNS)
     index_kb = len(gzip.compress(open(f"{out_dir}/data/audits.json", "rb").read(),
                                 compresslevel=9, mtime=0)) / 1024
     stats = {
         "total": admitted,
         "audited_published": admitted,
         "pool_records": len(pool),
+        # The pool is two different things and a reader must not confuse them: records we
+        # captured, scored and held back for cause, and records nobody has looked at yet.
+        "pool_audited_held": sum(1 for x in pool if x.get("provenance") == "audited-hold"),
+        "pool_unaudited": sum(1 for x in pool if x.get("provenance") == "unaudited"),
         "audit_version": AUDIT_VERSION,
         "audit_index_kb": round(index_kb, 1),
         "audit_sheets_kb": round(sheets_kb, 1),
@@ -543,13 +561,65 @@ def _ndjson_record(r: Dict[str, Any], sheet: Optional[Dict[str, Any]] = None) ->
     return out
 
 
+def _csv_cells(r: Dict[str, Any], sheet: Optional[Dict[str, Any]],
+               extra: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
+    """Every tabular cell keyed by its column *name*, so header and rows cannot drift.
+
+    `sheet is None` leaves the audit columns blank rather than inventing a value: an empty
+    `verdict` is how these surfaces say "nobody has checked", and the UI reads the same
+    absence as `unaudited`. Rows were previously emitted in the pre-audit order — base
+    columns first, audit block appended — under a header that *leads* with the audit block,
+    which silently relabelled all 31 columns for anyone parsing positionally. A row is now
+    `[cells[c] for c in COLUMNS]`, and `--check` compares header, row width and the `id`
+    column against the JSON surfaces so the mistake cannot come back.
+    """
+    parts = r.get("coolness_parts") or {}
+    sh = sheet or {}
+    repo = sh.get("repo")
+    cells: Dict[str, Any] = {
+        "verdict": sh.get("verdict") or "",
+        "worth": sh.get("worth") or ("unrated" if sheet else ""),
+        "soundness": sh.get("soundness") or "",
+        "soundness_score": sh.get("soundness_score") if sheet else "",
+        "rubric_coverage": sh.get("rubric_coverage") if sheet else "",
+        "audited_at": sh.get("audited_at") or "",
+        "unknowns": len(sh.get("unknowns") or []) if sheet else "",
+        "repo_url": (repo or {}).get("url") if isinstance(repo, dict) else (repo or ""),
+        "id": str(r["id"]), "name": r.get("name"), "url": r.get("url"),
+        "event": r.get("event_title") or "", "event_org": r.get("event_org") or "",
+        "domain": r.get("domain"), "subsystem": r.get("subsystem"),
+        "moves": "|".join(r.get("moves") or []), "stack": "|".join(r.get("stack") or []),
+        "coolness": f"{r.get('coolness', 0):.4f}",
+        "engagement": f"{parts.get('engagement', 0):.3f}",
+        "validation": f"{parts.get('validation', 0):.3f}",
+        "event_prestige": f"{parts.get('event_prestige', 0):.3f}",
+        "recency": f"{parts.get('recency', 0):.3f}",
+        "specificity": f"{parts.get('specificity', 0):.3f}",
+        "signal_richness": f"{parts.get('signal_richness', 0):.3f}",
+        "redundancy": f"{parts.get('redundancy', 0):.3f}",
+        "likes": "" if r.get("likes") is None else r.get("likes"),
+        "award": r.get("award") or "Unknown", "depth": r.get("depth") or "listing",
+        "has_deep": 1 if r.get("depth") == "deep" else 0,
+        "event_date": r.get("event_date") or "", "harvested_at": r.get("harvested_at") or "",
+    }
+    cells.update(extra or {})
+    return cells
+
+
+def _csv_row(r: Dict[str, Any], sheet: Optional[Dict[str, Any]],
+             columns: Optional[List[str]] = None) -> List[Any]:
+    cols = columns or CSV_COLUMNS
+    cells = _csv_cells(r, sheet, extra={c: "" for c in cols if c not in CSV_COLUMNS})
+    return [cells[c] for c in cols]
+
+
 def _write_csv(path: str, rows: List[List[Any]], header: Optional[List[str]] = None) -> None:
     def esc(v: Any) -> str:
         s = "" if v is None else str(v)
         return '"' + s.replace('"', '""') + '"' if any(c in s for c in [",", '"', "\n"]) else s
 
     with open(path, "w", encoding="utf-8", newline="") as f:
-        f.write(",".join(CSV_COLUMNS) + "\n")
+        f.write(",".join(header or CSV_COLUMNS) + "\n")
         for row in rows:
             f.write(",".join(esc(v) for v in row) + "\n")
 
@@ -643,6 +713,38 @@ def audit_gate_checks(records, stats, out_dir, audits) -> List[str]:
     except Exception as e:
         return [f"unreadable Tier-1: {e}"]
     ids = [row[0] for row in packed["rows"]]
+    # Tabular alignment: a header that does not match its rows is worse than no table, because
+    # every consumer reads the wrong column. Checked on the emitted bytes, not on the builder.
+    for fname, cols, expect_verdict in (("data/ideas.csv", CSV_COLUMNS, True),
+                                        ("data/pool.csv", POOL_CSV_COLUMNS, False)):
+        try:
+            with open(f"{out_dir}/{fname}", newline="", encoding="utf-8") as fh:
+                table = list(csv.reader(fh))
+        except OSError as e:
+            problems.append(f"{fname}: {e}")
+            continue
+        if not table or table[0] != list(cols):
+            problems.append(f"{fname}: header is not exactly {len(cols)} documented columns")
+            continue
+        bad = [i for i, row in enumerate(table[1:], 1) if len(row) != len(cols)]
+        if bad:
+            problems.append(f"{fname}: {len(bad)} row(s) with the wrong field count "
+                            f"(first at line {bad[0] + 1})")
+            continue
+        at = {c: i for i, c in enumerate(cols)}
+        csv_ids = {row[at["id"]] for row in table[1:]}
+        json_ids = {str(x["id"]) for x in (
+            [{"id": i} for i in ids] if expect_verdict
+            else json.load(open(f"{out_dir}/data/pool.json", encoding="utf-8"))["records"])}
+        if csv_ids != json_ids:
+            problems.append(f"{fname}: id column disagrees with the JSON surface "
+                            f"(csv-only {sorted(csv_ids - json_ids)[:3]}, json-only {sorted(json_ids - csv_ids)[:3]})")
+        if expect_verdict:
+            off = [row[at["verdict"]] for row in table[1:] if row[at["verdict"]] not in AUDIT_PUBLISH_VERDICTS]
+            if off:
+                problems.append(f"ideas.csv verdict column carries {sorted(set(off))[:3]} "
+                                f"(only {AUDIT_PUBLISH_VERDICTS} may be published)")
+
     published = [str(r["id"]) for r in records
                  if r.get("admitted", True) and (audits.get(str(r["id"])) or {}).get("publishable")]
     if sorted(ids) != sorted(published):
@@ -791,8 +893,10 @@ def main() -> int:
     with open(f"{args.out}/manifest.json", "w", encoding="utf-8") as f:
         json.dump(manifest, f, separators=(",", ":"), indent=1)
 
+    held = stats.get("pool_audited_held", 0)
     print(f"🔎 audited catalog: {stats['audited_published']} published · "
-          f"{stats['pool_records']} in the unaudited pool · sheets {stats['audit_sheets_kb']} KB gz")
+          f"{stats['pool_records']} in the pool ({held} audited-but-held · "
+          f"{stats['pool_records'] - held} never captured) · sheets {stats['audit_sheets_kb']} KB gz")
     print(f"✅ Tier 1: catalog-packed.json — {stats['tier1_gzip_kb']} KB gzip "
           f"(budget {TIER1_GZIP_BUDGET_KB:.0f} KB)")
     for slug, v in sorted(stats["shards"].items(), key=lambda kv: -kv[1]["records"]):

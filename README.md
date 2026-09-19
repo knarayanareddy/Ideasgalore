@@ -24,7 +24,7 @@ JSON + CSV + NDJSON + SQLite on GitHub Pages: **$0/month, no backend, no API key
 
 | Capability | Detail |
 | --- | --- |
-| **Quality-gated catalog** | nothing ships without an audit sheet: 12 mandatory fields, 6 evidence-backed checks, a verdict ladder and a duplicate-merge pass. The catalog is deliberately small (2 records today); the 163 admitted-but-unaudited records stay reachable in `data/pool.json` with per-record reasons — see [`docs/AUDIT_PROTOCOL.md`](docs/AUDIT_PROTOCOL.md) |
+| **Quality-gated catalog** | nothing ships without an audit sheet: 12 mandatory fields, 6 evidence-backed checks, a verdict ladder and a duplicate-merge pass. The catalog is deliberately small (5 records out of 165 today); the other 160 stay reachable in `data/pool.json` with a per-record reason — 155 of them have never been audited at all — see [`docs/AUDIT_PROTOCOL.md`](docs/AUDIT_PROTOCOL.md) |
 | **Tabular database** | `data/ideas.csv` (31 stable columns — 8 audit + 23 catalog), `data/ideas.ndjson`, and a gzipped **SQLite** file with `events` / `projects` / `moves` / `project_moves` — query it in DuckDB, pandas, Excel or SQL without a server |
 | **Two-tier sharded index** | Tier 1 `catalog-packed.json` (dictionary-encoded, 16 columns including `verdict_id`/`worth_id`, budget 1.2 MB) + Tier 2 per-sector deep shards + per-sector **audit sheets**, lazy-loaded |
 | **Honest coverage** | the corpus publishes its own sampling rate: `catalog-stats.json → coverage` says 83 of the 1,401 projects listed in the XPRIZE gallery are in here, from 4 captured pages — a *gated sample*, never a claim of completeness |
@@ -53,7 +53,7 @@ JSON + CSV + NDJSON + SQLite on GitHub Pages: **$0/month, no backend, no API key
 | `data/remixes.json` | generated idea collisions with build briefs |
 | `catalog-stats.json` · `manifest.json` | corpus counts + build provenance (`corpus_sha256`) |
 | `data/audits.json` · `data/audits/<sector>.json` | audit index (verdict + coverage per record) and full evidence sheets: fields, per-check reasoning, evidence ledger |
-| `data/pool.json` · `data/pool.csv` · `data/promotion-queue.json` | what the audit held out, why, and what would settle it — the work list, ranked by information gain |
+| `data/pool.json` · `data/pool.csv` · `data/promotion-queue.json` | what the audit held out, why, and what would settle it — `provenance` marks each pool row as scored-and-held or never captured — plus the work list, ranked by information gain |
 | `data/audit-rubric.json` | the rubric itself, so anyone can re-derive (or argue with) a verdict |
 | `agents/{llms.txt,schema.json,openapi.json,ethics.json,RECIPES.md,skill/…}` | the machine contract |
 

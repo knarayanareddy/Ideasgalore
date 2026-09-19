@@ -27,7 +27,7 @@
     "limits_disclosed":{
      "pass":1.0,
      "status":"confirmed",
-     "why":"the team wrote down what broke while building"
+     "why":"the team named what the system itself cannot do (accuracy)"
     },
     "numbers_add_up":{
      "pass":0.25,
@@ -40,9 +40,9 @@
      "why":"no repo to cross-check the declared stack against"
     },
     "test_or_eval_evidence":{
-     "pass":0.75,
-     "status":"supported",
-     "why":"a measured evaluation with a stated denominator is described on the page (an A/B comparison or a logged-outcome harness counts; a bare 'we tested it' does not)"
+     "pass":0.4,
+     "status":"partial",
+     "why":"the page reports a measured comparison (versus) but the capture records no harness, method or eval set to reproduce it from"
     }
    },
    "evidence":[
@@ -85,7 +85,7 @@
     {
      "checked_at":"2026-09-18",
      "claim":"Did they state what does not work, or where it fails?",
-     "detail":"the team wrote down what broke while building",
+     "detail":"the team named what the system itself cannot do (accuracy)",
      "id":"audionova:limits_disclosed",
      "kind":"page",
      "source":"https://devpost.com/software/audionova",
@@ -94,17 +94,17 @@
     {
      "checked_at":"2026-09-18",
      "claim":"Any test suite, eval harness, or measured benchmark we can see?",
-     "detail":"a measured evaluation with a stated denominator is described on the page (an A/B comparison or a logged-outcome harness counts; a bare 'we tested it' does not)",
+     "detail":"the page reports a measured comparison (versus) but the capture records no harness, method or eval set to reproduce it from",
      "id":"audionova:test_or_eval_evidence",
      "kind":"page",
      "source":"https://devpost.com/software/audionova",
-     "status":"supported"
+     "status":"partial"
     }
    ],
    "fields":{
     "built_with_verified":{
      "provenance":"observed",
-     "value":"fastapi, python, react, qualcomm, qualcomm-ai-hub"
+     "value":"declared by the authors (5): fastapi, python, react, qualcomm, qualcomm-ai-hub \u00b7 no repository published, so these are the team's own claim and nothing corroborates them"
     },
     "clone_cost":{
      "note":"our estimate with assumptions visible; not a claim about the team",
@@ -203,12 +203,12 @@
    "right_of_reply":"https://github.com/knarayanareddy/Ideasgalore/issues/new?labels=audit-recheck",
    "rubric_coverage":0.64,
    "soundness":"partial",
-   "soundness_score":0.5859,
+   "soundness_score":0.5094,
    "source_url":"https://devpost.com/software/audionova",
    "unknowns":[],
    "verdict":"sound-with-caveats",
    "verdict_reasons":[
-    "soundness 0.59 over 64% of the rubric; 0 named unknown(s) remain \u2192 publishable with caveats"
+    "soundness 0.51 over 64% of the rubric; 0 named unknown(s) remain \u2192 publishable with caveats"
    ],
    "worth":"strong",
    "worth_note":"547 likes and a staff feature on a Windows-on-Snapdragon app is not luck: it deletes the cloud bill, the latency and the privacy argument at once. Held back from 'breakthrough' because on-device TTS is a crowded field and the moat here is toolchain work (AI Hub quantisation), not a new capability."
@@ -253,7 +253,7 @@
     "limits_disclosed":{
      "pass":1.0,
      "status":"confirmed",
-     "why":"the team wrote down what broke while building"
+     "why":"the team named what the system itself cannot do (fail)"
     },
     "numbers_add_up":{
      "pass":1.0,
@@ -311,7 +311,7 @@
     {
      "checked_at":"2026-09-19",
      "claim":"Did they state what does not work, or where it fails?",
-     "detail":"the team wrote down what broke while building",
+     "detail":"the team named what the system itself cannot do (fail)",
      "id":"greenlight-nine-agent-production-crew:limits_disclosed",
      "kind":"page",
      "source":"https://devpost.com/software/greenlight-nine-agent-production-crew",
@@ -330,7 +330,7 @@
    "fields":{
     "built_with_verified":{
      "provenance":"observed",
-     "value":"clickhouse, cloud-run, cloud-storage, docker, fastapi, ffmpeg, firestore, gemini, gemini-flash, gemini-tts, google-adk, google-cloud, google-genai, model-context-protocol, pydantic, python, react, typescript, vertex-ai, vite"
+     "value":"declared by the authors (20): clickhouse, cloud-run, cloud-storage, docker, fastapi, ffmpeg, firestore, gemini \u00b7 no repository published, so these are the team's own claim and nothing corroborates them"
     },
     "clone_cost":{
      "note":"our estimate with assumptions visible; not a claim about the team",

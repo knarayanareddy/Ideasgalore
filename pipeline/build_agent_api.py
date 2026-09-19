@@ -25,7 +25,8 @@ from typing import Any, Dict, List
 REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(os.path.join(REPO, "pipeline"))
 from taxonomy_hacks import (  # noqa: E402
-    AUDIT_PUBLISH_VERDICTS, CSV_COLUMNS, DOMAINS, MOVES, ROW_FORMAT, SCORING_VERSION,
+    AUDIT_PUBLISH_VERDICTS, CSV_COLUMNS, DOMAINS, MOVES, POOL_CSV_COLUMNS, ROW_FORMAT,
+    SCORING_VERSION,
     audit_rubric,
 )
 
@@ -177,6 +178,11 @@ def openapi() -> Dict[str, Any]:
                 "responses": {"200": {"description": "counts, shard sizes, gzip budget"}}}},
             "/manifest.json": {"get": {"summary": "Build provenance: corpus sha256, generated_at, surface list", "operationId": "getManifest",
                 "responses": {"200": {"description": "verify what you loaded was built from what commit"}}}},
+            "/data/pool.csv": {"get": {"summary": "Held-out records, same columns + why_not_promoted",
+                    "operationId": "getPoolCSV", "tags": ["data"], "responses": {"200": {
+                    "description": "CSV", "content": {"text/csv": {"schema": {
+                        "type": "string",
+                        "example": ",".join(POOL_CSV_COLUMNS)}}}}}}},
             "/data/ideas.csv": {"get": {"summary": "The tabular database (stable column order)", "operationId": "getCSV",
                 "responses": {"200": {"description": "One row per admitted project; bulk exports omit authored prose by policy",
                     "content": {"text/csv": {"schema": {"type": "string", "example": ",".join(CSV_COLUMNS)}}}}}}},
@@ -249,6 +255,9 @@ def llms_txt(stats: Dict[str, Any]) -> str:
 - `catalog-packed.json` — Tier-1: every admitted row, dictionary-encoded. Best for
   whole-corpus ranking/filtering in one request (~{stats.get('tier1_gzip_kb')} KB gzip).
 - `data/ideas.csv` — the tabular database; stable column order, spreadsheet-safe.
+- `data/pool.csv` — the same columns in the same order, plus `provenance`,
+  `why_not_promoted`, `would_settle_it`. `verdict` blank means never audited; `provenance`
+  says whether a row was scored and held (`audited-hold`) or never captured (`unaudited`).
 - `data/ideas.ndjson` — full metadata, one record per line, no bulk prose.
 - `data/hackathons.json` — event dimension: prize, registrations, themes, gallery URL.
 - `data/moves.json` — the inspiration vocabulary: definition + `steal_this` per move,
@@ -264,7 +273,9 @@ def llms_txt(stats: Dict[str, Any]) -> str:
   assumptions, `unknowns`, `prior_art`, `hazard`). Detail shard, not default.
 - `data/audit-rubric.json` — the rubric itself (mandatory fields, checks, weights, verdict
   ladder, dedup and hazard rules) so you can audit new candidates yourself the same way.
-- `data/pool.json` — records held *out* of the catalog (unaudited, thin, duplicate, hazard).
+- `data/pool.json` — records held *out* of the catalog. `provenance` separates the two kinds:
+  `audited-hold` (captured, scored, and held: `thin` / `duplicate` / hazard-capped) from
+  `unaudited` (never captured). Both carry `why_not_promoted[]` and `would_settle_it[]`.
   Queryable for lead-mining; never present one as vetted.
 - `catalog-stats.json` / `manifest.json` — corpus counts + build provenance (sha256).
 
@@ -351,7 +362,12 @@ checkout: `python3 -m http.server -d web/dist`).
 
 ```bash
 curl -sL {PAGES}/data/ideas.csv | head -1
-curl -sL {PAGES}/data/ideas.csv | tail -n +2 | sort -t, -k10 -gr | head -20
+# columns are quoted and the audit block leads, so parse by name, not by position:
+curl -sL {PAGES}/data/ideas.csv | python3 -c "
+import csv, sys
+rows = sorted(csv.DictReader(sys.stdin), key=lambda r: -float(r['coolness']))
+for r in rows[:20]:
+    print(f\"{{r['coolness']}}  {{r['verdict']:18}}  {{r['name']}}\")"
 ```
 
 ## Every project that demonstrates a given move

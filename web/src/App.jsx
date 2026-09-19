@@ -218,8 +218,9 @@ export default function App() {
             <b className="text-bone-900">{stats?.total ?? rows.length}</b> audited in catalog
           </span>
           <button onClick={() => setPoolOpen(true)} className="underline decoration-dotted hover:text-signal-700"
-            title="held out of the catalog by the audit — leads, not vetted examples">
-            <b className="text-bone-900">{stats?.pool_records ?? pool?.count ?? 0}</b> unaudited pool
+            title={`${stats?.pool_audited_held ?? 0} captured, scored and held for cause · ${stats?.pool_unaudited ?? 0} never captured — leads, not vetted examples`}
+            aria-label="open the pool of records held out of the catalog">
+            <b className="text-bone-900">{stats?.pool_records ?? pool?.count ?? 0}</b> in the pool
           </button>
           <span><b className="text-bone-900">{Object.keys(movesMeta).length}</b> moves</span>
           <span><b className="text-bone-900">{events.length}</b> hackathons</span>
@@ -328,7 +329,7 @@ export default function App() {
               <p className="mt-1 text-sm text-bone-700">
               The catalog is audited-only, so an empty result is an honest one: loosen the coolness floor,
               drop a move filter, or open the {' '}
-              <button className="underline decoration-dotted" onClick={() => setPoolOpen(true)}>unaudited pool</button>
+              <button className="underline decoration-dotted" onClick={() => setPoolOpen(true)}>the pool</button>
               {' '}({stats?.pool_records ?? 0} records) to see what has not been checked yet.
             </p>
               <button className="btn-quiet mt-3" onClick={reset}>reset filters</button>

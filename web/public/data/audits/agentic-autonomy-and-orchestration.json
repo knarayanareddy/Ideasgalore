@@ -1,0 +1,219 @@
+{
+ "audit_version":1,
+ "generated_at":"2026-09-18",
+ "records":{
+  "adversarial-compliance-matrix":{
+   "audit_version":1,
+   "audited_at":"2026-09-19",
+   "award":null,
+   "built_with":[
+    "rust",
+    "github-actions",
+    "ci/cd",
+    "security"
+   ],
+   "checks":{
+    "artifact_exists":{
+     "pass":0.5,
+     "status":"supported",
+     "why":"no source repo linked, but the page publishes a working artifact: https://www.youtube.com/watch?v=Uix0Pzf8YqY"
+    },
+    "build_is_real":{
+     "pass":null,
+     "status":"unverifiable",
+     "why":"no repository published, so the build cannot be read"
+    },
+    "limits_disclosed":{
+     "pass":0.6,
+     "status":"supported",
+     "why":"the team described how hard the build was, but not a limitation of the system itself \u2014 no accuracy, coverage, privacy or failure-mode statement"
+    },
+    "numbers_add_up":{
+     "pass":0.5,
+     "status":"partial",
+     "why":"1 figure(s) a reader can check against the product (twelve attack scenarios in the simulation matrix), but 1 headline figure(s) carry no testable denominator: 100% successful compilation and green test run on the first attempt"
+    },
+    "stack_consistency":{
+     "pass":null,
+     "status":"unverifiable",
+     "why":"no repo to cross-check the declared stack against"
+    },
+    "test_or_eval_evidence":{
+     "pass":0.5,
+     "status":"partial",
+     "why":"a harness is described (ci, fixture) but no result, run link or case count is published, so it cannot be checked"
+    }
+   },
+   "evidence":[
+    {
+     "checked_at":"2026-09-19",
+     "claim":"Is there an artifact at all \u2014 a repo, a deployed app, or a video of it running?",
+     "detail":"no source repo linked, but the page publishes a working artifact: https://www.youtube.com/watch?v=Uix0Pzf8YqY",
+     "id":"adversarial-compliance-matrix:artifact_exists",
+     "kind":"page",
+     "source":"https://devpost.com/software/adversarial-compliance-matrix",
+     "status":"supported"
+    },
+    {
+     "checked_at":"2026-09-19",
+     "claim":"Does the repo's language/file mix match the stack they described?",
+     "detail":"no repo to cross-check the declared stack against",
+     "id":"adversarial-compliance-matrix:stack_consistency",
+     "kind":"page",
+     "source":"https://devpost.com/software/adversarial-compliance-matrix",
+     "status":"unverifiable"
+    },
+    {
+     "checked_at":"2026-09-19",
+     "claim":"Is the code a real build (source tree, setup steps, non-trivial size) rather than a stub or zip?",
+     "detail":"no repository published, so the build cannot be read",
+     "id":"adversarial-compliance-matrix:build_is_real",
+     "kind":"page",
+     "source":"https://devpost.com/software/adversarial-compliance-matrix",
+     "status":"unverifiable"
+    },
+    {
+     "checked_at":"2026-09-19",
+     "claim":"Do their metrics have a denominator, and is the arithmetic internally consistent?",
+     "detail":"1 figure(s) a reader can check against the product (twelve attack scenarios in the simulation matrix), but 1 headline figure(s) carry no testable denominator: 100% successful compilation and green test run on the first attempt",
+     "id":"adversarial-compliance-matrix:numbers_add_up",
+     "kind":"page",
+     "source":"https://devpost.com/software/adversarial-compliance-matrix",
+     "status":"partial"
+    },
+    {
+     "checked_at":"2026-09-19",
+     "claim":"Did they state what does not work, or where it fails?",
+     "detail":"the team described how hard the build was, but not a limitation of the system itself \u2014 no accuracy, coverage, privacy or failure-mode statement",
+     "id":"adversarial-compliance-matrix:limits_disclosed",
+     "kind":"page",
+     "source":"https://devpost.com/software/adversarial-compliance-matrix",
+     "status":"supported"
+    },
+    {
+     "checked_at":"2026-09-19",
+     "claim":"Any test suite, eval harness, or measured benchmark we can see?",
+     "detail":"a harness is described (ci, fixture) but no result, run link or case count is published, so it cannot be checked",
+     "id":"adversarial-compliance-matrix:test_or_eval_evidence",
+     "kind":"page",
+     "source":"https://devpost.com/software/adversarial-compliance-matrix",
+     "status":"partial"
+    }
+   ],
+   "fields":{
+    "built_with_verified":{
+     "provenance":"observed",
+     "value":"declared by the authors (4): rust, github-actions, ci/cd, security \u00b7 no repository published, so these are the team's own claim and nothing corroborates them"
+    },
+    "clone_cost":{
+     "note":"our estimate with assumptions visible; not a claim about the team",
+     "provenance":"derived",
+     "value":{
+      "assumptions":[
+       "you use a published attack corpus rather than only your own fixtures",
+       "you link the repo and the CI run, or the number is decoration"
+      ],
+      "estimate":"2 days for a Rust validator with a fixture generator and a CI matrix",
+      "why":"the engine is small and the harness is standard cargo plus actions; the expensive part is sourcing real payloads, which this project did not do"
+     }
+    },
+    "data_and_models":{
+     "provenance":"observed",
+     "value":"No model; a rule/classification engine over fixtures it generates itself. Nothing in the capture describes where the twelve vector definitions came from or how a missed vector would be discovered."
+    },
+    "how_it_works":{
+     "provenance":"observed",
+     "value":"100% Rust. Engine logic in src/cvm.rs and src/main.rs; src/bin/gen_fixtures.rs generates clean and malicious fixtures; tests/simulation_matrix.rs runs the twelve scenarios; .github/workflows/test.yml provisions a runner, caches dependencies, compiles and executes the whole suite per change."
+    },
+    "how_they_tested":{
+     "provenance":"observed",
+     "value":"A real harness is described - a fixture generator plus a twelve-scenario matrix executed by CI on every commit - which is the right shape for this kind of validator. But the page links no repository, workflow or run id, so the green-checkmark claim cannot be checked, and a suite whose cases and fixtures are both authored by the system measures agreement with itself."
+    },
+    "limits_they_disclosed":{
+     "provenance":"observed",
+     "value":"The whole framework was written and committed from a mobile device, so every pushed command had to work first time; runner compilation and dependency conflicts were the failure mode to avoid."
+    },
+    "numbers_with_arithmetic":{
+     "provenance":"observed",
+     "value":[
+      {
+       "arithmetic":"structural claim; the set's coverage of real attack space is not argued anywhere",
+       "claim":"twelve attack scenarios in the simulation matrix",
+       "denominator":"the test file named on the page",
+       "verifiable":true
+      },
+      {
+       "arithmetic":"unfalsifiable as published - no workflow URL or run id to check",
+       "claim":"100% successful compilation and green test run on the first attempt",
+       "denominator":"one CI run, not linked",
+       "verifiable":false
+      }
+     ]
+    },
+    "prior_art":{
+     "note":"each entry resolves to a URL we opened this session or a corpus id",
+     "provenance":"editorial",
+     "value":[
+      {
+       "corpus_id":"gemini-box",
+       "relation":"same author's same platform - this page is one component of it, which is why the records are merged"
+      },
+      {
+       "corpus_id":"agent-launchpad-self-healing-middleware-for-ai-agents",
+       "relation":"runtime guardrails plus auditability for agents, delivered as middleware instead of a validator"
+      },
+      {
+       "corpus_id":"dev1-i6ma2u",
+       "relation":"compliance fleet that leans on vendor guardrails - same 'policy as code' instinct, less proof"
+      }
+     ]
+    },
+    "what_breaks_first":{
+     "provenance":"editorial",
+     "value":"A suite whose cases and fixtures are both authored by the system measures agreement with itself, so '12 of 12' says nothing about the attack space it did not write; and the pass claim is not reachable at all here - no repository, workflow URL or run id is linked. The honest next step for a clone is an external corpus of real malicious samples with a published miss rate."
+    },
+    "what_it_does":{
+     "provenance":"observed",
+     "value":"Analyses binaries and payloads, classifies them against a fixed set of attack vectors, and reports a verdict per scenario; positioned as the drift-catching layer of a larger audit platform."
+    },
+    "what_it_is":{
+     "provenance":"observed",
+     "value":"A Rust validator that classifies payloads against twelve hand-written attack scenarios, regenerated by a fixture generator and run on every commit by CI."
+    },
+    "what_to_steal":{
+     "provenance":"editorial",
+     "value":"gen_fixtures.rs as a test *generator*: emit the clean and adversarial cases from the same spec the validator consumes, then let CI rebuild the whole matrix on every commit. It makes a regression impossible to hide and costs one file."
+    }
+   },
+   "hazard":null,
+   "id":"adversarial-compliance-matrix",
+   "likes":2,
+   "moves":[
+    "institutional-grade-reliability"
+   ],
+   "name":"Gemini-Box",
+   "provenance":{
+    "checks":"derived",
+    "clone_cost":"derived",
+    "evidence":"observed",
+    "fields":"observed",
+    "verdict":"derived",
+    "worth":"editorial"
+   },
+   "publishable":true,
+   "repo":null,
+   "right_of_reply":"https://github.com/knarayanareddy/Ideasgalore/issues/new?labels=audit-recheck",
+   "rubric_coverage":0.64,
+   "soundness":"partial",
+   "soundness_score":0.5188,
+   "source_url":"https://devpost.com/software/adversarial-compliance-matrix",
+   "unknowns":[],
+   "verdict":"sound-with-caveats",
+   "verdict_reasons":[
+    "soundness 0.52 over 64% of the rubric; 0 named unknown(s) remain \u2192 publishable with caveats"
+   ],
+   "worth":"niche",
+   "worth_note":"The part worth keeping is the smallest credible security demo there is: a fixture generator plus a fixed scenario matrix wired into CI, so the artifact is a run rather than a slide. It is merged into the sibling submission because both pages describe one platform by one author, and the split version publishes twice the entries for half the evidence."
+  }
+ }
+}

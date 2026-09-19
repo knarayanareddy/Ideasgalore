@@ -206,12 +206,12 @@ AUDIT_WORTH = {
 
 # A3 — six mechanical checks. Weights published; `pass` values are 0 / 0.5 / 1.
 AUDIT_CHECKS = {
-    "artifact_exists":       {"w": 0.22, "ask": "Is there an artifact at all — a repo, a deployed app, or a video of it running?"},
-    "stack_consistency":     {"w": 0.18, "ask": "Does the repo's language/file mix match the stack they described?"},
-    "build_is_real":         {"w": 0.18, "ask": "Is the code a real build (source tree, setup steps, non-trivial size) rather than a stub or zip?"},
-    "numbers_add_up":        {"w": 0.16, "ask": "Do their metrics have a denominator, and is the arithmetic internally consistent?"},
-    "limits_disclosed":      {"w": 0.12, "ask": "Did they state what does not work, or where it fails?"},
-    "test_or_eval_evidence": {"w": 0.14, "ask": "Any test suite, eval harness, or measured benchmark we can see?"},
+    "artifact_exists":       {"w": 0.22, "ask": "Is there an artifact at all — a repo, a deployed app, or a video of it running?", "settles_with": "a repository, deployment or store listing we can resolve"},
+    "stack_consistency":     {"w": 0.18, "ask": "Does the repo's language/file mix match the stack they described?", "settles_with": "a repository to compare the declared stack against"},
+    "build_is_real":         {"w": 0.18, "ask": "Is the code a real build (source tree, setup steps, non-trivial size) rather than a stub or zip?", "settles_with": "a readable source tree (a repo link, then `python3 pipeline/repo_verify.py`)"},
+    "numbers_add_up":        {"w": 0.16, "ask": "Do their metrics have a denominator, and is the arithmetic internally consistent?", "settles_with": "a denominator and baseline for the headline figure, or the raw log behind it"},
+    "limits_disclosed":      {"w": 0.12, "ask": "Did they state what does not work, or where it fails?", "settles_with": "a statement of what the system itself cannot do (accuracy, coverage, privacy, failure modes)"},
+    "test_or_eval_evidence": {"w": 0.14, "ask": "Any test suite, eval harness, or measured benchmark we can see?", "settles_with": "a published eval table, harness or CI run link with a case count"},
 }
 AUDIT_HARD_FAIL = {"artifact_exists": "thin"}   # caps the verdict, per A3
 AUDIT_CONTRADICTED_CAP = 2                      # >=2 contradicted load-bearing claims => unsound
@@ -237,6 +237,17 @@ HAZARD_DOMAINS = {
     "Accessibility & Assistive Tech": "assistive-safety",
     "Public Trust, Safety & Compliance": "compliance-signoff",
 }
+# What counts as the team disclaiming a regulated outcome, in their own words. The pattern is
+# phrasal on purpose: a page writing "positioned as recovery support, not a diagnostic
+# replacement" HAS disclaimed, and an auditor that misses it ships a false statement about
+# somebody else's caution ("no team disclaimer found").
+HAZARD_DISCLAIM_RE = (
+    r"\b(not a medical[^.]{0,40}|not for (medical )?diagnos\w*|no diagnos\w*|does not diagnos\w*|"
+    r"not.{0,25}diagnostic (replacement|tool|device|system)|not (a )?clinical[^.]{0,30}|"
+    r"no clinical[^.]{0,30}|demo only|proof of concept|prototype only|still a prototype|"
+    r"educational purposes|not a substitute for|informational only|wellness[^.]{0,20}(tool|support)|"
+    r"not intended (for|to be) (medical|use in))"
+)
 HAZARD_CLAIM_RE = (
     r"\b(diagnos\w*|screen\w*|triage|medicat\w*|dosage|prescri\w*|clear\w* to (return|play)|"
     r"regulat\w*|approval|sign-?off|compliance|detect\w* (concussion|cancer|tumor|fraud)|"
@@ -883,3 +894,7 @@ BASE_CSV_COLUMNS = [
     "has_deep", "event_date", "harvested_at",
 ]
 CSV_COLUMNS = AUDIT_CSV_COLUMNS + BASE_CSV_COLUMNS
+# The pool is the same table plus three columns, so one `csv.DictReader` configuration serves
+# both files and a consumer never has to guess which column holds the id.
+POOL_CSV_EXTRA = ["provenance", "why_not_promoted", "would_settle_it"]
+POOL_CSV_COLUMNS = CSV_COLUMNS + POOL_CSV_EXTRA

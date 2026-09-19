@@ -13,7 +13,7 @@ the MCP tools can never disagree.
 | `data/ideas.csv` | **31 stable columns** — 8 audit columns first (`verdict, worth, soundness, soundness_score, rubric_coverage, audited_at, unknowns, repo_url`), then the original 23 | spreadsheets, DuckDB, quick `sort`/`awk`, "tabular database" |
 | `data/audits.json` | id → verdict, worth, score, coverage, per-check `status`, unknown field names, sheet pointer | deciding *whether to trust* a record, cheaply, before fetching anything else |
 | `data/audits/<sector>.json` | full audit sheets: `fields[f] = {value, evidence[], confidence, status, why?}`, per-check reasoning, evidence ledger | you are recommending a project and must state what is verified vs assumed |
-| `data/pool.json` / `pool.csv` | records the audit held out, each with `why_not_promoted[]` + `would_settle_it[]` | lead-mining; **never** present one as an example of good work |
+| `data/pool.json` / `pool.csv` | records the audit held out, each with `why_not_promoted[]` + `would_settle_it[]`; `pool.csv` carries `ideas.csv`'s 31 columns in the same order plus `provenance`, `why_not_promoted`, `would_settle_it` | lead-mining; `provenance` says whether a row was scored-and-held or never checked — **never** present either as an example of good work |
 | `data/promotion-queue.json` | unaudited candidates ranked by expected information gain | deciding what to fetch and audit next |
 | `data/audit-rubric.json` | the rubric itself: mandatory fields, checks, weights, verdict ladder, dedup + hazard rules | auditing new candidates the same way, or checking our arithmetic |
 | `data/ideas.ndjson` | one full record per line, **no mirrored prose** | streaming into an embedding job or a judge prompt |
@@ -107,10 +107,16 @@ announced by a version bump, not discovered by a `KeyError`.
 
 ## Known limits (do not over-trust)
 
-- The **catalog is audited-only**: 2 records publish today because 4 projects have been
-  captured and audited deeply enough to certify; the other 163 admitted records sit in
-  `data/pool.json` with reasons. Do not describe the pool as weak work — most of it is
-  simply unchecked. See [`AUDIT_PROTOCOL.md`](AUDIT_PROTOCOL.md).
+- The **catalog is audited-only**: 5 records publish today because 10 projects have been
+  captured deeply enough to audit (5 cleared the ladder, 5 are held for cause); the other 155
+  admitted records sit in `data/pool.json` with reasons. Do not describe the pool as weak work —
+  most of it is simply unchecked, and a `thin` record with `worth: strong` is a project the
+  auditors liked but could not verify. See [`AUDIT_PROTOCOL.md`](AUDIT_PROTOCOL.md).
+- `audit.verdict` (evidence strength) and `audit.worth` (copy-worthiness) are **two axes**; no
+  composite exists, by design. And no record in this corpus can reach `strong`: `strong` needs
+  rubric coverage ≥ 0.80, which requires a published repository, and 0 of 165 admitted records
+  link one. `sound-with-caveats` is the ceiling of what a Devpost page can prove — treat it as
+  "the claims hold up against the page and its artifact", not as a weak verdict.
 - The committed corpus is **165 admitted records** (167 ingested, 2 held back as
   placeholder summaries) across 5 sources, harvested at listing depth. `catalog-stats.json
   → coverage` states the sampling rate per event: the XPRIZE gallery alone lists **1,401

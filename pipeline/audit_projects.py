@@ -41,8 +41,9 @@ sys.path.insert(0, HERE)
 from taxonomy_hacks import (  # noqa: E402
     AUDIT_CHECKS, AUDIT_CONTRADICTED_CAP, AUDIT_HARD_FAIL, AUDIT_LOAD_BEARING,
     AUDIT_MANDATORY_FIELDS, AUDIT_MAX_LOAD_BEARING_UNKNOWNS, AUDIT_PUBLISH_VERDICTS,
-    AUDIT_VERSION, BANNED_VERDICT_WORDS, DUP_MECHANISM_OVERLAP, DUP_TEXT_OVERLAP,
-    HAZARD_CLAIM_RE, HAZARD_DOMAINS, MOVES, detect_moves, jaccard_kin,
+    AUDIT_VERSION, BANNED_VERDICT_WORDS, DUP_MECHANISM_OVERLAP,
+    DUP_TEXT_OVERLAP, HAZARD_CLAIM_RE, HAZARD_DISCLAIM_RE, HAZARD_DOMAINS, MOVES,
+    detect_moves, jaccard_kin,
 )
 
 CORPUS = os.path.join(HERE, "corpus.jsonl")
@@ -103,6 +104,45 @@ def _sections_text(cap: Dict[str, Any]) -> str:
     return "\n".join(str(sec.get(k) or "") for k in sec).lower()
 
 
+_NEG_CUE = re.compile(r"\b(no|not|never|none|nothing|without|absent|lacks?|missing|"
+                      r"unpublished|undocumented|unsaid|omitted|does ?n.t|didn?t|zero|yet)\b", re.I)
+# Deliberately excludes the bare word "baseline": in this corpus a "personal baseline" is
+# an architecture choice, not an evaluation. A comparison needs comparator words.
+_BENCH_RE = re.compile(r"(accuracy|f1\b|auc|precision|recall|latency|p95|benchmark|ab test|"
+                       r"before/after|first-?pass|success rate|a/b|measured|sample size|"
+                       r"seeded .*bias|calibrat|versus|vs\.\s|compared to|improvement over)", re.I)
+_HARNESS_RE = re.compile(r"(fixture|test suite|unit tests?|integration test|regression|"
+                         r"simulation matrix|ci\b|workflow|github actions|cypress|jest|pytest)", re.I)
+_CAPABILITY_RE = re.compile(r"(accuracy|latency|hallucinat|false (positive|negative)|"
+                            r"unsupported|edge case|cannot|can not|only works|limitation|privacy|retention|"
+                            r"offline|degrade|bias|drift|error rate|not measured|crash|fails?|"
+                            r"block(s|ed)?|abuse|hard-?cap|rate[- ]limit|escape hatch|not supported|"
+                            r"unavailable|prone|vulnerable|silent(ly)? (fail|drop))", re.I)
+# A sentence about compiling, pushing or surviving a night of coding describes the *build*,
+# not the product's limits. Only product-shaped sentences count toward limits_disclosed.
+# No "dashboard": in this corpus that word names a UI surface, not a measurement loop.
+_MEASURE_RE = re.compile(r"(posthog|analytics|funnel|instrumented|telemetry|logged|"
+                         r"a/b test|experiment|user study|usability test)", re.I)
+_PROCESS_RE = re.compile(r"(compil|dependency|runner|push|commit|merge|deploy|phone|mobile|"
+                         r"screen|hours|night|deadline|token|licence|disqualif)", re.I)
+
+
+def _affirmative(rx: re.Pattern, text: str, lookback: int = 80) -> List[str]:
+    """Keyword hits that are not inside a negation.
+
+    A capture writes both kinds of sentence — 'we ran a regression suite' and 'no test
+    suite is described' — and they contain the same nouns. Reading the noun without the
+    polarity is how an audit lauds a project for admitting it has no evidence, so every
+    keyword here is checked against the clause in front of it.
+    """
+    hits: List[str] = []
+    for m in rx.finditer(text):
+        if _NEG_CUE.search(text[max(0, m.start() - lookback):m.start()]):
+            continue
+        hits.append(m.group(0))
+    return hits
+
+
 def run_checks(cap: Dict[str, Any], repo_name: Optional[str], repo: Optional[Dict[str, Any]],
                notes: Dict[str, Any]) -> Tuple[Dict[str, Dict[str, Any]], List[Dict[str, Any]]]:
     """A3: six mechanical checks. Each returns {pass, status, why}; `unverifiable` is an
@@ -120,12 +160,21 @@ def run_checks(cap: Dict[str, Any], repo_name: Optional[str], repo: Optional[Dic
         if n.get("verifiable") is False:
             return False
         arith = str(n.get("arithmetic") or "").strip()
-        return bool(arith) and not re.match(r"(not|unfalsifiable|cannot|no |n/?a)", arith, re.I)
+        # "structural" marks a feature a reader can count in the product (ten styles,
+        # twelve scenarios). Treating that as a recomputed figure would let a feature list
+        # vouch for an accuracy claim, so it goes to the `checkable` tier instead.
+        return bool(arith) and not re.match(
+            r"(not|unfalsifiable|cannot|no |n/?a|structural)", arith, re.I)
 
     ok = [n for n in numbers if _testable(n)]
+    # A structural figure ("10 styles", "three free renders") is checkable by opening the
+    # product, which is not the same as a performance figure we re-derived. Counting the
+    # first as the second would let a feature list vouch for an accuracy claim.
+    checkable = [n for n in numbers if n not in ok
+                 and re.match(r"structural", str(n.get("arithmetic") or ""), re.I)]
     unfalsifiable = [n for n in numbers
                      if n.get("arithmetic") or n.get("denominator") or n.get("verifiable") is False]
-    unfalsifiable = [n for n in unfalsifiable if n not in ok]
+    unfalsifiable = [n for n in unfalsifiable if n not in ok and n not in checkable]
     sec = cap.get("sections") or {}
 
     def emit(name: str, passed: Optional[float], status: str, why: str,
@@ -142,7 +191,16 @@ def run_checks(cap: Dict[str, Any], repo_name: Optional[str], repo: Optional[Dic
         emit("artifact_exists", 1.0, "confirmed",
              f"repo {repo_name} exists ({repo.get('size_kb')} KB, {repo.get('language')}), "
              f"last push {repo.get('pushed_at')}", "api", f"https://github.com/{repo_name}", rwhen)
-    elif (cap.get("links") or {}).get("demo") or (cap.get("links") or {}).get("video") or (cap.get("links") or {}).get("app_store"):
+    elif (cap.get("links") or {}).get("demo") or (cap.get("links") or {}).get("app_store"):
+        # A deployment anyone can open is the strongest artifact a hackathon page offers:
+        # the reader can check it without us. We could not reach it from the build
+        # environment, so it is `supported`, not `confirmed`.
+        links = [v for k, v in (cap.get("links") or {}).items() if v and k != "repo"]
+        emit("artifact_exists", 0.75, "supported",
+             "no source repo linked, but the product is published at a live address a reader "
+             "can open: " + ", ".join(links[:3]),
+             "page", cap.get("source_url", ""), when)
+    elif (cap.get("links") or {}).get("video"):
         links = [v for k, v in (cap.get("links") or {}).items() if v and k != "repo"]
         emit("artifact_exists", 0.5, "supported",
              "no source repo linked, but the page publishes a working artifact: " + ", ".join(links[:3]),
@@ -212,7 +270,23 @@ def run_checks(cap: Dict[str, Any], repo_name: Optional[str], repo: Optional[Dic
 
     # 4 · numbers_add_up
     with_denom = [n for n in numbers if (n.get("denominator") or n.get("baseline"))]
-    if unfalsifiable and not ok:
+    if checkable and unfalsifiable:
+        # Some of the arithmetic is checkable and the headline is not; that is a different
+        # finding from "nothing here is testable", and merging the two would let a feature
+        # list launder an unmeasured claim (or hide a measured one).
+        emit("numbers_add_up", 0.5, "partial",
+             f"{len(checkable)} figure(s) a reader can check against the product "
+             f"({'; '.join(n_['claim'] for n_ in checkable[:2])}), but "
+             f"{len(unfalsifiable)} headline figure(s) carry no testable denominator: "
+             + "; ".join(n_["claim"] for n_ in unfalsifiable[:2]),
+             "page", cap.get("source_url", ""), when)
+    elif checkable:
+        emit("numbers_add_up", 0.6, "supported",
+             f"{len(checkable)} figure(s) stated as structural facts checkable in the "
+             f"product ({'; '.join(n_['claim'] for n_ in checkable[:3])}); no outcome metric "
+             f"was published, so nothing was re-derived",
+             "page", cap.get("source_url", ""), when)
+    elif unfalsifiable and not ok:
         # A headline number nobody can check is a finding about the claim, not about the
         # team's competence, so the wording stays descriptive (A10).
         emit("numbers_add_up", 0.25, "unverifiable",
@@ -238,10 +312,30 @@ def run_checks(cap: Dict[str, Any], repo_name: Optional[str], repo: Optional[Dic
 
     # 5 · limits_disclosed
     limits = str(sec.get("challenges") or sec.get("limitations") or "")
-    if len(limits) >= 60 and re.search(r"(fail|couldn|could not|limit|bug|crash|struggl|not yet|"
-                                       r"only supports|had to|required|balanc|trade-?off|hard|difficult|"
-                                       r"never got to|no public|unresolved)", limits.lower()):
-        emit("limits_disclosed", 1.0, "confirmed", "the team wrote down what broke while building",
+    effort = re.search(r"(couldn|could not|had to|required|balanc|trade-?off|hard|difficult|"
+                       r"never got to|struggl)", limits.lower())
+    capability = [c for c in _affirmative(_CAPABILITY_RE, limits.lower())
+                  if not _PROCESS_RE.search(
+                      re.split(r"(?<=[.;!?])", limits.lower() or " ")[0:0] or "")]
+    # sentence-scoped: a capability word sitting in a build-process sentence is not a
+    # disclosure about the system
+    _sentences = re.split(r"(?<=[.!?])\s+", limits or "")
+    capability = [c for i, sent in enumerate(_sentences)
+                  for c in _affirmative(_CAPABILITY_RE, sent.lower())
+                  if not _PROCESS_RE.search(sent)]
+    capability = list(dict.fromkeys(capability))
+    if len(limits) >= 60 and capability:
+        emit("limits_disclosed", 1.0, "confirmed",
+             "the team named what the system itself cannot do ("
+             + ", ".join(sorted(set(capability))[:3]) + ")",
+             "page", cap.get("source_url", ""), when)
+    elif len(limits) >= 60 and effort:
+        # Honest about the build, silent about the product: worth credit, not a
+        # disclosure. "We coded this on a phone all night" tells a builder nothing that
+        # will save them when the thing is live.
+        emit("limits_disclosed", 0.6, "supported",
+             "the team described how hard the build was, but not a limitation of the "
+             "system itself — no accuracy, coverage, privacy or failure-mode statement",
              "page", cap.get("source_url", ""), when)
     elif str(sec.get("what_next") or "").strip():
         emit("limits_disclosed", 0.5, "supported",
@@ -257,10 +351,26 @@ def run_checks(cap: Dict[str, Any], repo_name: Optional[str], repo: Optional[Dic
 
     # 6 · test_or_eval_evidence
     tests = repo.get("test_paths") if repo else None
-    testing_text = text + " " + str(cap.get("testing") or "").lower()
-    benchmark = bool(re.search(r"(accuracy|f1\b|auc|precision|recall|latency|p95|benchmark|ab test|"
-                               r"before/after|baseline|first-?pass|success rate|a/b|measured|sample size|"
-                               r"seeded .*bias|calibrat)", testing_text, re.I))
+    # `testing` is the audited field for this question. Scanning the whole page instead
+    # let a section that says "compares against a personal baseline" outvote the capture's
+    # own sentence "no test suite, evaluation set, or validation is described" — the
+    # denial was scored as evidence. Fall back to page text only when no field was filed.
+    testing_field = str(cap.get("testing") or "").strip()
+    testing_text = (testing_field or text).lower()
+    # A comparator word in *prose* is not a measured comparison: "the work demanded
+    # precision" says nothing was measured. Only a hit sitting in a sentence that carries a
+    # figure counts, which is the difference between an evaluation claim and an adjective.
+    def _bench_with_figures(blob: str) -> List[str]:
+        out: List[str] = []
+        for sent in re.split(r"(?<=[.!?])\s+", blob or ""):
+            if re.search(r"\d", sent):
+                out += _affirmative(_BENCH_RE, sent.lower())
+        return out
+
+    page_bench = _bench_with_figures(text)
+    denied = bool(testing_field) and not _affirmative(_BENCH_RE, testing_field.lower())
+    benchmark = _affirmative(_BENCH_RE, testing_text)
+    harness = _affirmative(_HARNESS_RE, testing_text)
     if tests:
         emit("test_or_eval_evidence", 1.0, "confirmed",
              f"test paths in repo: {', '.join(tests[:3])}", "api",
@@ -275,9 +385,32 @@ def run_checks(cap: Dict[str, Any], repo_name: Optional[str], repo: Optional[Dic
         emit("test_or_eval_evidence", 0.4, "partial",
              "evaluation language present but no numbers attached", "page",
              cap.get("source_url", ""), when)
+    elif denied and page_bench:
+        # A measured comparison described in prose with no harness behind it is neither
+        # evidence nor its absence; the audit records both halves of that sentence.
+        emit("test_or_eval_evidence", 0.4, "partial",
+             "the page reports a measured comparison (" + ", ".join(sorted(set(page_bench))[:3]) +
+             ") but the capture records no harness, method or eval set to reproduce it from",
+             "page", cap.get("source_url", ""), when)
+    elif harness:
+        emit("test_or_eval_evidence", 0.5, "partial",
+             "a harness is described (" + ", ".join(sorted(set(harness))[:3]) +
+             ") but no result, run link or case count is published, so it cannot be checked",
+             "page", cap.get("source_url", ""), when)
+    elif measurement_practice := _affirmative(_MEASURE_RE, testing_text + " " + (text or "").lower()):
+        # A loop that watches the product in use is not an accuracy eval, but it is real
+        # evidence practice and far above "no tests visible" — the difference matters to a
+        # builder deciding whether the team measured anything at all.
+        emit("test_or_eval_evidence", 0.5, "partial",
+             "a product measurement loop is described (" + ", ".join(sorted(set(measurement_practice))[:3]) +
+             ") — analytics, funnels or logs rather than an accuracy or quality eval",
+             "page", cap.get("source_url", ""), when)
     else:
         emit("test_or_eval_evidence", 0.0, "unverifiable",
-             "no tests visible and no evaluation described", "api" if repo else "page",
+             "the page states no tests and describes no evaluation"
+             if not _NEG_CUE.search(testing_text) else
+             "the only testing sentence on the page is a denial (no suite, set or run is linked)",
+             "api" if repo else "page",
              f"https://github.com/{repo_name}" if repo_name else cap.get("source_url", ""),
              rwhen if repo else when)
     return checks, ev
@@ -307,9 +440,22 @@ def build_fields(cap: Dict[str, Any], notes: Dict[str, Any], repo_name: Optional
         "no step-by-step description of user-visible behaviour on the page")
     put("how_it_works", sec.get("how_we_built_it"), "observed",
         "the 'how we built it' section describes no architecture/data flow; a repo README would settle it")
-    put("built_with_verified",
-        (", ".join(cap.get("built_with") or [])) or None, "observed",
-        "authors published no 'Built With' tags")
+    # The field is called *verified*, so its value has to say whether verification
+    # happened — a bare tag list was being dropped as "too short to be a finding", which
+    # turned a format floor into an unfiled mandatory field and failed the build gate.
+    tags = [str(t).strip() for t in (cap.get("built_with") or []) if str(t).strip()]
+    if tags:
+        langs = ", ".join(sorted({str(k) for k in ((repo or {}).get("languages") or {})}))
+        declared = f"declared by the authors ({len(tags)}): {', '.join(tags[:8])}"
+        if langs:
+            declared += f" · repo languages say: {langs[:70]}"
+        else:
+            declared += " · no repository published, so these are the team's own claim and nothing corroborates them"
+        put("built_with_verified", declared, "observed",
+            "authors published no 'Built With' tags, and no repo exists to read the stack from")
+    else:
+        put("built_with_verified", None, "observed",
+            "authors published no 'Built With' tags, and no repo exists to read the stack from")
     put("data_and_models", cap.get("data_and_models") or sec.get("how_we_built_it"), "observed",
         "which model(s), on what data, and at what cost are not stated anywhere public")
     put("how_they_tested",
@@ -405,14 +551,15 @@ def hazard_for(rec: Dict[str, Any], cap: Dict[str, Any], notes: Dict[str, Any]) 
     """A13: one stamp, one line, mandatory for agents."""
     dom = rec.get("domain")
     cls = HAZARD_DOMAINS.get(dom)
-    text = _sections_text(cap) + " " + (rec.get("summary") or "").lower()
+    # The one-liner is where a regulated claim is most likely to be made, so it is part of
+    # what we scan, alongside everything the team wrote about what the tool is *not*.
+    text = (_sections_text(cap) + " " + str(cap.get("one_line") or "")
+            + " " + (rec.get("summary") or "")).lower()
     if not cls and not re.search(HAZARD_CLAIM_RE, text, re.I):
         return None
     if not re.search(HAZARD_CLAIM_RE, text, re.I):
         return None
-    disclaimed = bool(re.search(r"(not a medical device|not for (medical )?diagnos|demo only|"
-                                r"proof of concept|educational purposes|no clinical|"
-                                r"not a substitute for)", text))
+    disclaimed = bool(re.search(HAZARD_DISCLAIM_RE, text))
     return {
         "class": cls or "regulated-claim",
         "team_disclaimed": disclaimed,
@@ -453,7 +600,18 @@ def similarity_verdicts(sheets: List[Dict[str, Any]], recs: Dict[str, Dict[str, 
             numjac = num_shared / max(1, len(fa | fb))
             first = na.split(" ")[0].strip("—-:")
             same_word = first == nb.split(" ")[0].strip("—-:") and len(first) > 4
-            same_event = (recs.get(a["id"], {}).get("event_key") == recs.get(b["id"], {}).get("event_key"))
+            ea = recs.get(a["id"], {}) or {}
+            eb = recs.get(b["id"], {}) or {}
+            ev_key = lambda r_: (r_.get("event_key") or r_.get("event_slug") or r_.get("event_title") or "")
+            same_event = ev_key(ea) == ev_key(eb) and bool(ev_key(ea))
+            # Two submissions whose *published display names are identical* inside one event
+            # are one product published twice (each page carries the platform title), while
+            # "NeuroGuard AI" vs "NeuroGuard AI (v2)" is two teams converging — a name that
+            # differs by a suffix is a different team's name. That distinction is invisible
+            # to text overlap, which is why it gets its own route instead of a lower bar.
+            display_a = str(ra.get("name") or "").strip().lower()
+            display_b = str(rb.get("name") or "").strip().lower()
+            same_listing = bool(display_a) and display_a == display_b and same_event
             # Prose overlap alone cannot prove a resubmission (each event wants its own
             # write-up), so the strong route is shared *numbers*: a 45-page script does not
             # independently produce "29% → 49%" and "$0.02 / $1 / $20" twice. A team re-
@@ -465,16 +623,17 @@ def similarity_verdicts(sheets: List[Dict[str, Any]], recs: Dict[str, Dict[str, 
             tok_b = set(re.findall(r"[a-z]{4,}", tb)) | set(b.get("moves") or [])
             overlap = len(tok_a & tok_b) / max(1, len(tok_a | tok_b))
             if (same_name and overlap >= DUP_TEXT_OVERLAP) or (same_product and overlap >= DUP_MECHANISM_OVERLAP) \
-                    or fingerprint:
+                    or fingerprint or same_listing:
                 keep, drop = ((a, b) if a["soundness_score"] >= b["soundness_score"] else (b, a))
                 drop["duplicate_of"] = keep["id"]
                 drop["verdict"] = "duplicate"
                 drop["verdict_reasons"].append(
-                    f"resubmission of the same product — name match {same_name}, shared mechanism/text "
+                    f"resubmission of the same product — name match {same_name}, listing-title "
+                    f"equality {same_listing}, shared mechanism/text "
                     f"overlap {overlap:.2f}, shared numeric fingerprints {sorted(fa & fb)[:4]} "
                     f"({numjac:.2f} jaccard); merged into the better-evidenced copy (A5)")
                 actions.append(f"duplicate: {drop['id']} → {keep['id']}")
-            elif overlap >= DUP_MECHANISM_OVERLAP and (ra.get("domain") == rb.get("domain")):
+            elif (overlap >= DUP_MECHANISM_OVERLAP or (same_word and ra.get("domain") == rb.get("domain"))):
                 a["parallel_invention_of"] = b["id"]
                 b["parallel_invention_of"] = a["id"]
                 actions.append(f"parallel invention kept + cross-linked: {a['id']} ↔ {b['id']}")
@@ -569,6 +728,24 @@ def audit(corpus_path: str = CORPUS, out_path: str = AUDIT_OUT, report: bool = F
             if s.get("duplicate_of"):
                 why.append(f"merged into {s['duplicate_of']} — same submission, richer twin published")
             s["why_not_promoted"] = [w for w in dict.fromkeys(why) if w]
+            # The actionable half of a hold: named unknowns first, then each check that did not
+            # clear, with the artifact that would answer it. A record already captured must
+            # never be told to "go fetch a project page".
+            if s.get("duplicate_of"):
+                s["would_settle_it"] = [
+                    f"nothing — {s['duplicate_of']} is the same submission with more evidence; "
+                    f"read its audit sheet instead"]
+            else:
+                settle = [str(u.get("missing")) for u in (s.get("unknowns") or [])
+                          if u.get("missing")][:2]
+                for ck in AUDIT_CHECKS:          # declaration order, so the list is stable
+                    st = s["checks"].get(ck) or {}
+                    if st.get("status") in ("unverifiable", "contradicted") \
+                            or (st.get("pass") or 0) < 0.75:
+                        got = AUDIT_CHECKS[ck].get("settles_with")
+                        if got:
+                            settle.append(f"{ck}: {got}")
+                s["would_settle_it"] = [x for x in dict.fromkeys(settle) if x][:5]
         s.pop("_sections", None)
         s.pop("_numbers", None)
     with open(out_path, "w", encoding="utf-8") as fh:

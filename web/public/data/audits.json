@@ -11,7 +11,7 @@
    "verdict":"sound-with-caveats",
    "worth":"strong",
    "soundness":"partial",
-   "soundness_score":0.5859,
+   "soundness_score":0.5094,
    "rubric_coverage":0.64,
    "checks":{
     "artifact_exists":"supported",
@@ -19,7 +19,7 @@
     "limits_disclosed":"confirmed",
     "numbers_add_up":"unverifiable",
     "stack_consistency":"unverifiable",
-    "test_or_eval_evidence":"supported"
+    "test_or_eval_evidence":"partial"
    },
    "unknowns":[],
    "evidence":6,
@@ -54,6 +54,78 @@
    "audit_version":1,
    "url":"https://devpost.com/software/greenlight-nine-agent-production-crew",
    "name":"Greenlight - Nine-Agent Production Crew"
+  },
+  "sketchwish":{
+   "verdict":"sound-with-caveats",
+   "worth":"strong",
+   "soundness":"partial",
+   "soundness_score":0.6797,
+   "rubric_coverage":0.64,
+   "checks":{
+    "artifact_exists":"supported",
+    "build_is_real":"unverifiable",
+    "limits_disclosed":"confirmed",
+    "numbers_add_up":"partial",
+    "stack_consistency":"unverifiable",
+    "test_or_eval_evidence":"partial"
+   },
+   "unknowns":[],
+   "evidence":6,
+   "contradicted":0,
+   "hazard":false,
+   "repo":null,
+   "audited_at":"2026-09-19",
+   "audit_version":1,
+   "url":"https://devpost.com/software/sketchwish",
+   "name":"SketchWish"
+  },
+  "adversarial-compliance-matrix":{
+   "verdict":"sound-with-caveats",
+   "worth":"niche",
+   "soundness":"partial",
+   "soundness_score":0.5188,
+   "rubric_coverage":0.64,
+   "checks":{
+    "artifact_exists":"supported",
+    "build_is_real":"unverifiable",
+    "limits_disclosed":"supported",
+    "numbers_add_up":"partial",
+    "stack_consistency":"unverifiable",
+    "test_or_eval_evidence":"partial"
+   },
+   "unknowns":[],
+   "evidence":6,
+   "contradicted":0,
+   "hazard":false,
+   "repo":null,
+   "audited_at":"2026-09-19",
+   "audit_version":1,
+   "url":"https://devpost.com/software/adversarial-compliance-matrix",
+   "name":"Gemini-Box"
+  },
+  "neuroguard-ai-adaptiveconcussionrecoveryintelligencesystem":{
+   "verdict":"sound-with-caveats",
+   "worth":"strong",
+   "soundness":"partial",
+   "soundness_score":0.5547,
+   "rubric_coverage":0.64,
+   "checks":{
+    "artifact_exists":"supported",
+    "build_is_real":"unverifiable",
+    "limits_disclosed":"supported",
+    "numbers_add_up":"partial",
+    "stack_consistency":"unverifiable",
+    "test_or_eval_evidence":"supported"
+   },
+   "unknowns":[],
+   "evidence":6,
+   "contradicted":0,
+   "hazard":true,
+   "repo":null,
+   "audited_at":"2026-09-19",
+   "audit_version":1,
+   "url":"https://devpost.com/software/neuroguard-ai-adaptiveconcussionrecoveryintelligencesystem",
+   "name":"NeuroGuard AI"
   }
  }
 }

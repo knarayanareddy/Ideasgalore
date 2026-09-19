@@ -1,0 +1,68 @@
+{
+ "award": null,
+ "built_with": [
+  "nextjs",
+  "react",
+  "typescript",
+  "vercel",
+  "supabase",
+  "google-oauth",
+  "cloudflare-r2",
+  "upstash",
+  "stripe",
+  "posthog",
+  "gemini",
+  "google-gemini",
+  "nano-banana"
+ ],
+ "captured_at": "2026-09-19",
+ "data_and_models": "No training: two Gemini models in a pipeline (a fast vision pass, then image generation) with prompts per style. Storage, quota and payment are all third-party services, which is what makes the free tier arithmetic work.",
+ "gallery_images": 9,
+ "id": "sketchwish",
+ "likes": 2,
+ "links": {
+  "demo": "https://sketchwish.com",
+  "repo": null,
+  "video": "https://www.youtube.com/watch?v=fS0kO-mert4"
+ },
+ "name": "SketchWish",
+ "numbers": [
+  {
+   "arithmetic": "structural, checkable in the live product",
+   "claim": "ten art styles",
+   "denominator": "styles offered in the picker",
+   "verifiable": true
+  },
+  {
+   "arithmetic": "structural, bounded by the Upstash cap stated on the page",
+   "claim": "three free renders per new account",
+   "denominator": "per Google-authenticated account",
+   "verifiable": true
+  },
+  {
+   "arithmetic": "structural; print-suitability at that size is not measured or claimed",
+   "claim": "export up to 4K",
+   "denominator": "maximum export resolution",
+   "verifiable": true
+  },
+  {
+   "arithmetic": "unfalsifiable as published - a marketing-reach figure with no denominator for volume or conversion",
+   "claim": "reach across 18 countries",
+   "denominator": "their own PostHog analytics over an unstated window",
+   "verifiable": false
+  }
+ ],
+ "one_line": "Photo to print-ready sketch in ten styles at up to 4K, live in production, with a free tier that is defensible because sign-in, caps and rate limits were engineered first.",
+ "sections": {
+  "accomplishments": "Shipped live with users in 18 countries, and used their own analytics to find that broad ad targeting was sending low-intent traffic plus real conversion bugs in the funnel. Cost per sketch is low enough that the free tier is sustainable.",
+  "challenges": "A free-render tool attracts abuse, so sign-in is mandatory and generation is hard-capped; Google blocks sign-in inside Facebook and Instagram in-app browsers, so they built an escape that routes those users to a real browser; the model in the original plan was retired mid-build and the pipeline was migrated with no downtime.",
+  "how_we_built_it": "Gemini as the engine rather than an add-on: the image model renders the sketch from photo plus style, and a cheaper fast model reads the photo first so the result stays true to the subject. Next.js 15 on Vercel, Supabase for Google sign-in, Cloudflare R2 for storage, Upstash for rate limiting, Stripe for live payments, PostHog for analytics.",
+  "inspiration": "Print-on-demand sellers need custom sketch art; commissioning an artist is slow and expensive while cheap photo filters are not sellable, so the gap is a result good enough to put on a product at a solo seller's price.",
+  "learned": "Traffic quality beats volume - cheap clicks convert at nearly zero - and the funnel matters as much as the traffic: one broken login button silently sank motivated visitors until analytics caught it.",
+  "what_it_does": "Upload a photo, pick one of ten styles (pencil, charcoal, ink, watercolor, line art and others), get a high-resolution sketch exportable for print up to 4K. Three free renders after one-tap Google sign-in, then credits. Running in production.",
+  "what_next": "A product demo as the primary ad creative, bulk generation and an API for print shops, more styles and larger exports."
+ },
+ "software_id": 1276916,
+ "source_url": "https://devpost.com/software/sketchwish",
+ "testing": "No unit or eval suite is described; the measurable loop they do have is product analytics - PostHog funnel inspection that found conversion bugs and mispriced ad targeting. That is a real feedback mechanism, just not a quality gate on output fidelity."
+}

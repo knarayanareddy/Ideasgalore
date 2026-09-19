@@ -1,81 +1,9 @@
 {
  "audit_version": 1,
- "pool_size": 161,
+ "pool_size": 155,
  "queued": 12,
  "note": "Ranking of never-audited candidates by expected information gain (ADR-A7). Nothing here has been verified; the order is only 'what would teach us most'. `pool_size` counts records with no sheet at all \u2014 the full holding area, including audited-but-held records (thin, duplicate, hazard), is data/pool.json.",
  "candidates": [
-  {
-   "id": "neuroguard-ai-0qb34c",
-   "name": "NeuroGuard AI (v2)",
-   "domain": "Health, Care & Human Performance",
-   "coolness": 0.323,
-   "expected_gain": 0.9472,
-   "why": "sector Health has 24 rows and no audit",
-   "would_settle_it": [
-    "project page capture",
-    "repo link check"
-   ]
-  },
-  {
-   "id": "neuroguard-ai-adaptiveconcussionrecoveryintelligencesystem",
-   "name": "NeuroGuard AI",
-   "domain": "Health, Care & Human Performance",
-   "coolness": 0.32,
-   "expected_gain": 0.9462,
-   "why": "sector Health has 24 rows and no audit",
-   "would_settle_it": [
-    "project page capture",
-    "repo link check"
-   ]
-  },
-  {
-   "id": "gemini-box",
-   "name": "Gemini-Box",
-   "domain": "Agentic Autonomy & Orchestration",
-   "coolness": 0.337,
-   "expected_gain": 0.9155,
-   "why": "mechanism-rich hook; depth likely to convert",
-   "would_settle_it": [
-    "project page capture",
-    "repo link check"
-   ]
-  },
-  {
-   "id": "medvoice-y87kei",
-   "name": "Medvoice",
-   "domain": "Health, Care & Human Performance",
-   "coolness": 0.297,
-   "expected_gain": 0.8831,
-   "why": "sector Health has 24 rows and no audit",
-   "would_settle_it": [
-    "project page capture",
-    "repo link check"
-   ]
-  },
-  {
-   "id": "adversarial-compliance-matrix",
-   "name": "Gemini-Box",
-   "domain": "Agentic Autonomy & Orchestration",
-   "coolness": 0.333,
-   "expected_gain": 0.7865,
-   "why": "mechanism-rich hook; depth likely to convert",
-   "would_settle_it": [
-    "project page capture",
-    "repo link check"
-   ]
-  },
-  {
-   "id": "sketchwish",
-   "name": "SketchWish",
-   "domain": "Money, Commerce & Marketplaces",
-   "coolness": 0.422,
-   "expected_gain": 0.6126,
-   "why": "sector Money has 10 rows and no audit",
-   "would_settle_it": [
-    "project page capture",
-    "repo link check"
-   ]
-  },
   {
    "id": "complianceguardian-kcqs32",
    "name": "ComplianceGuardian",
@@ -143,6 +71,78 @@
    "coolness": 0.389,
    "expected_gain": 0.5484,
    "why": "sector Learning & Knowledge Systems has 13 rows and no audit",
+   "would_settle_it": [
+    "project page capture",
+    "repo link check"
+   ]
+  },
+  {
+   "id": "carbender",
+   "name": "Carbender",
+   "domain": "Climate, Energy & the Physical World",
+   "coolness": 0.382,
+   "expected_gain": 0.5421,
+   "why": "sector Climate has 6 rows and no audit",
+   "would_settle_it": [
+    "project page capture",
+    "repo link check"
+   ]
+  },
+  {
+   "id": "newspectives-new-perspective-on-news",
+   "name": "Newspectives - new perspective on news",
+   "domain": "Creative Media, Story & Play",
+   "coolness": 0.408,
+   "expected_gain": 0.5321,
+   "why": "sector Creative Media has 28 rows and no audit",
+   "would_settle_it": [
+    "project page capture",
+    "repo link check"
+   ]
+  },
+  {
+   "id": "finova-j9av5f",
+   "name": "Finova",
+   "domain": "Money, Commerce & Marketplaces",
+   "coolness": 0.42,
+   "expected_gain": 0.5269,
+   "why": "sector Money has 10 rows and no audit",
+   "would_settle_it": [
+    "project page capture",
+    "repo link check"
+   ]
+  },
+  {
+   "id": "tower-dq18x2",
+   "name": "Tower",
+   "domain": "Agentic Autonomy & Orchestration",
+   "coolness": 0.396,
+   "expected_gain": 0.5212,
+   "why": "mechanism-rich hook; depth likely to convert",
+   "would_settle_it": [
+    "project page capture",
+    "repo link check"
+   ]
+  },
+  {
+   "id": "airlock-s2kidr",
+   "name": "Airlock",
+   "domain": "Public Trust, Safety & Compliance",
+   "coolness": 0.383,
+   "expected_gain": 0.5172,
+   "why": "sector Public Trust has 16 rows and no audit",
+   "would_settle_it": [
+    "project page capture",
+    "repo link check"
+   ]
+  },
+  {
+   "id": "kimocchi-voice-mood-tracker",
+   "name": "Kimocchi - Voice Mood Tracker",
+   "domain": "Health, Care & Human Performance",
+   "coolness": 0.428,
+   "expected_gain": 0.5141,
+   "why": "sector Health has 24 rows and no audit",
    "would_settle_it": [
     "project page capture",
     "repo link check"

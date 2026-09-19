@@ -52,15 +52,16 @@ export default function AuditPool({ open, pool, stats, onClose }) {
             <div className="min-w-0 flex-1">
               <p className="accession">holding area · not part of the catalog</p>
               <h2 className="font-display text-[22px] font-medium leading-tight tracking-[-0.015em]">
-                The unaudited pool
+                The pool
               </h2>
             </div>
             <button onClick={onClose} className="btn-quiet !px-2"><X className="h-4 w-4" /></button>
           </div>
           <p className="mt-2 text-[12.5px] leading-snug text-bone-700">
-            {(stats?.pool_records ?? pool?.count ?? 0)} records that the audit has <b>not</b> cleared for the
-            catalog. Nothing was deleted — these are leads for a future audit, not examples to cite. Each row
-            states why it is here and what would settle it.
+            {(stats?.pool_records ?? pool?.count ?? 0)} records the audit has <b>not</b> cleared for the catalog:
+            {stats?.pool_audited_held ?? 0} were captured, scored and held back for cause, and
+            {stats?.pool_unaudited ?? 0} have never been captured at all. Nothing was deleted — these are leads
+            for a future audit, not examples to cite. Each row states why it is here and what would settle it.
           </p>
           <div className="mt-2 flex items-center gap-1.5">
             <div className="relative flex-1">
@@ -104,7 +105,12 @@ export default function AuditPool({ open, pool, stats, onClose }) {
                 <a href={r.url} target="_blank" rel="noreferrer noopener" title="original submission"
                   className="text-bone-500 hover:text-signal-700"><ExternalLink className="h-3 w-3" /></a>
               </div>
-              <p className="micro mt-0.5 text-bone-600">{r.domain} · {r.event || 'unattributed'}</p>
+              <p className="micro mt-0.5 text-bone-600">
+                {r.domain} · {r.event || 'unattributed'} ·
+                {' '}{r.provenance === 'audited-hold'
+                  ? <span className="text-signal-700" title="a sheet exists: scored and held back, not unchecked">scored &amp; held</span>
+                  : <span title="no audit sheet exists for this record">never captured</span>}
+              </p>
               {r.summary && <p className="mt-1 text-[12.5px] leading-snug text-bone-800">{r.summary}</p>}
               <div className="mt-1.5 flex flex-wrap gap-1">
                 {(r.why_not_promoted || []).map((w) => (

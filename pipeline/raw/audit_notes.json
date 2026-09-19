@@ -1,4 +1,33 @@
 {
+ "adversarial-compliance-matrix": {
+  "clone_cost": {
+   "assumptions": [
+    "you use a published attack corpus rather than only your own fixtures",
+    "you link the repo and the CI run, or the number is decoration"
+   ],
+   "estimate": "2 days for a Rust validator with a fixture generator and a CI matrix",
+   "why": "the engine is small and the harness is standard cargo plus actions; the expensive part is sourcing real payloads, which this project did not do"
+  },
+  "hazard_note": "Security tooling that claims to catch drift. A missed vector is invisible by construction in a self-authored matrix, so publish coverage limits whenever you reuse this pattern.",
+  "prior_art": [
+   {
+    "corpus_id": "gemini-box",
+    "relation": "same author's same platform - this page is one component of it, which is why the records are merged"
+   },
+   {
+    "corpus_id": "agent-launchpad-self-healing-middleware-for-ai-agents",
+    "relation": "runtime guardrails plus auditability for agents, delivered as middleware instead of a validator"
+   },
+   {
+    "corpus_id": "dev1-i6ma2u",
+    "relation": "compliance fleet that leans on vendor guardrails - same 'policy as code' instinct, less proof"
+   }
+  ],
+  "what_breaks_first": "A suite whose cases and fixtures are both authored by the system measures agreement with itself, so '12 of 12' says nothing about the attack space it did not write; and the pass claim is not reachable at all here - no repository, workflow URL or run id is linked. The honest next step for a clone is an external corpus of real malicious samples with a published miss rate.",
+  "what_to_steal": "gen_fixtures.rs as a test *generator*: emit the clean and adversarial cases from the same spec the validator consumes, then let CI rebuild the whole matrix on every commit. It makes a regression impossible to hide and costs one file.",
+  "worth": "niche",
+  "worth_note": "The part worth keeping is the smallest credible security demo there is: a fixture generator plus a fixed scenario matrix wired into CI, so the artifact is a run rather than a slide. It is merged into the sibling submission because both pages describe one platform by one author, and the split version publishes twice the entries for half the evidence."
+ },
  "audionova": {
   "clone_cost": {
    "assumptions": [
@@ -22,6 +51,36 @@
   "what_to_steal": "Make the hardware path the product, not the fallback: quantise and route to DSP/GPU deliberately, then publish the delta against your own unoptimised path (2x speed, ~35% power) as the headline number instead of a model name.",
   "worth": "strong",
   "worth_note": "547 likes and a staff feature on a Windows-on-Snapdragon app is not luck: it deletes the cloud bill, the latency and the privacy argument at once. Held back from 'breakthrough' because on-device TTS is a crowded field and the moat here is toolchain work (AI Hub quantisation), not a new capability."
+ },
+ "gemini-box": {
+  "clone_cost": {
+   "assumptions": [
+    "you keep a KMS or an explicit key file, and say so",
+    "you publish the canonicalisation rules, or signatures will not verify elsewhere",
+    "you do not market integrity as correctness"
+   ],
+   "estimate": "2 days for a signing envelope plus a verify() CLI",
+   "why": "ed25519 over a canonicalised JSON blueprint is a small amount of code; a CI job that regenerates and verifies the fixture set is most of the rest"
+  },
+  "hazard_note": "Sold as a compliance capability. Nothing here is audited by anyone: an 'immutable audit trail' claim in front of a regulated buyer carries weight the capture does not support, so repeat only what is demonstrated.",
+  "prior_art": [
+   {
+    "corpus_id": "proofline-65a8t4",
+    "relation": "the closest sibling in the corpus - tamper-evident proof packets built before an external claim is made"
+   },
+   {
+    "corpus_id": "proofflow-agent",
+    "relation": "binding rules plus live evidence into a judge-ready ledger; same audience, different artifact"
+   },
+   {
+    "corpus_id": "dataaeternum-com",
+    "relation": "provenance-aware memory as the fix for unverified context - same diagnosis, different layer"
+   }
+  ],
+  "what_breaks_first": "Everything the pitch assumes away: key custody, rotation, revocation, what happens when the model version changes, and what a verifier does about a signature over a *wrong* claim. Signing proves integrity, never correctness, and an auditor will ask that question first. Also the submission itself: this page and its sibling describe one product across four names, so the trail of what was actually built is spread too thin to check.",
+  "what_to_steal": "Make verification a primitive with a name and a licence (verify(bundle) -> bool) instead of a dashboard feature, and pin generation determinism by combining temperature 0 with a strict response schema so the signed artifact is reproducible rather than merely plausible.",
+  "worth": "strong",
+  "worth_note": "'Sign the claim, not the log' is a genuinely good idea: an agent's post-hoc action record becomes a schema-validated blueprint with a one-call verify() primitive, and the SDK being MIT keeps the trust story cheap. What stops it being a reference implementation is that no code, deployment or measurement is reachable - the strongest sentence on the page is a restatement of an ed25519 property rather than evidence about their system."
  },
  "greenlight-nine-agent-production-crew": {
   "clone_cost": {
@@ -90,5 +149,125 @@
   "what_to_steal": "The framing, not the artifact: pinning the toolchain is part of determinism, and provenance changes what 'correct' means for a team. Also steal the honesty of listing cross-runtime divergence as the hard problem.",
   "worth": "niche",
   "worth_note": "'Replay every agent step byte-identically and hash it into a ledger' is a real want in production agent work, and the disclosed difficulty (float formatting and JSON serialisation differences across runtimes) is genuinely the reason nobody has it. What the page does not do is let anyone check a single claim."
+ },
+ "medvoice-y87kei": {
+  "clone_cost": {
+   "assumptions": [
+    "a clinician owns the schedule and the escalation when a dose is unconfirmed",
+    "you treat reminders as reminders, not adherence measurement",
+    "you handle the closed-app delivery problem they deferred"
+   ],
+   "estimate": "a weekend for the nurse portal plus silent monitor",
+   "why": "one photo upload, one schedule document, one timed client, plus platform speech - Firestore does the rest"
+  },
+  "hazard_note": "Medication adherence for elderly and low-literacy patients, where a missed dose is a clinical event and a false confirmation is worse than none. The page does not disclaim the gap between 'confirmed' and 'taken', which is exactly where the risk lives.",
+  "prior_art": [
+   {
+    "corpus_id": "pulsecheck-granola-clinical-note-assistant",
+    "relation": "also built around compliance for complex medical regimens, via note capture instead of the patient's own device"
+   },
+   {
+    "corpus_id": "dentops",
+    "relation": "same economics - the lost appointment or missed dose is the product's real target"
+   },
+   {
+    "corpus_id": "lenis-zwxmea",
+    "relation": "same accessibility-first instinct: use an ambient channel the user already has open"
+   }
+  ],
+  "what_breaks_first": "The acknowledgement loop, because 'confirmed' is only a tap - it proves the patient was present, not that the dose was taken, and the design invites the failure it is meant to catch. Second, delivery: browser speech and timers die when the tab is backgrounded, which the team already knows (PWA and background push are still future work). Third, sync-down and device loss, which the page does not address.",
+  "what_to_steal": "Replace the label with the object: photograph the thing the user must act on and show that image at the moment of action, then require an explicit acknowledgement and repeat until it arrives. Silence is a feature - the alarm's absence is what makes the alert legible.",
+  "worth": "strong",
+  "worth_note": "Designed by someone who watches the failure happen: the interface deletes reading from the dose loop, the pill's own photo is the identifier, and nothing appears until the medicine is due. Those are three small decisions that a builder in any low-attention, low-literacy or hands-busy context can lift directly, and 8 likes on an entry built in two days on a phone suggests the wedge reads immediately."
+ },
+ "neuroguard-ai-0qb34c": {
+  "clone_cost": {
+   "assumptions": [
+    "you accept a camera balance test is a demo and not an instrument",
+    "you have a clinician to define what an alert obliges anyone to do",
+    "single-user pilot scale"
+   ],
+   "estimate": "3 weeks for the test battery plus baseline detector",
+   "why": "the tests are standard web tasks and the detector is a small scikit-learn job over a per-user series; no training is implied"
+  },
+  "hazard_note": "Head-injury monitoring with alerting. The page disclaims diagnosis and refuses unsafe claims, which is the right posture, but an alert that a patient reads as clearance is a clinical event; anything built from this needs an explicit escalation path and a review by a clinician.",
+  "prior_art": [
+   {
+    "corpus_id": "neuroguard-ai-adaptiveconcussionrecoveryintelligencesystem",
+    "relation": "same name and problem, different team and a far more specified architecture (deterministic extraction, retrieval, escalation precedence); treat it as the stronger record of the two"
+   },
+   {
+    "corpus_id": "neuropath-kbe2ys",
+    "relation": "concussion and ADHD recovery app that also triages symptoms; adds therapy automation the monitoring framing avoids"
+   },
+   {
+    "corpus_id": "acl-movemement-analytics-lab",
+    "relation": "same bet - video plus computer vision to turn movement into interpretable evidence - in a different injury domain"
+   }
+  ],
+  "what_breaks_first": "The physical test. MediaPipe pose through a laptop webcam degrades with lighting, framing and a person who has vertigo, so the anomaly detector starts flagging the camera rather than the recovery; second, distribution - a monitoring tool with no clinical pathway has nowhere to send a bad reading.",
+  "what_to_steal": "Baseline-relative anomaly detection as the product's whole claim: never assert a norm, assert deviation from the user's own series. It converts a small sample into a usable signal and it is honest about what it is.",
+  "worth": "niche",
+  "worth_note": "The framing is right - measure the person against their own baseline instead of a population threshold - and that transferable piece survives even though nothing about this build is checkable: no dataset, no metric, no repo, and a browser webcam asked to judge balance in someone who is dizzy."
+ },
+ "neuroguard-ai-adaptiveconcussionrecoveryintelligencesystem": {
+  "clone_cost": {
+   "assumptions": [
+    "you may legally embed the guideline text you retrieve from",
+    "a clinician reviews the escalation thresholds before anyone relies on them",
+    "no diagnosis or treatment claim is made in your copy"
+   ],
+   "estimate": "1 week for the check-in core, 3-4 weeks with history, handoff and a real eval",
+   "why": "FastAPI, SQLite, Pydantic and local retrieval are ordinary parts; the work is the guideline corpus, the rule set and the evaluation cases"
+  },
+  "hazard_note": "Risk assessment on a medical condition. The team disclaims diagnosis, states the benchmarks are not clinical validation, and keeps recommendations conservative; that is better hygiene than most of the corpus, not permission to run it on real patients without oversight.",
+  "prior_art": [
+   {
+    "corpus_id": "neuroguard-ai-0qb34c",
+    "relation": "parallel invention at the same event under the same name: baseline-relative monitoring, no rules, no retrieval - keep both, and note this one is specified far more tightly"
+   },
+   {
+    "corpus_id": "wpf-reliability-agent",
+    "relation": "same containment pattern elsewhere: bounded evidence requests and one human-approved mutation step"
+   },
+   {
+    "corpus_id": "billright",
+    "relation": "same 'cite the rule the verdict came from' discipline applied to a different regulated document type"
+   }
+  ],
+  "what_breaks_first": "The self-graded benchmark: 100% across a case set nobody outside the team defined or counted measures their agreement with themselves, and the page is honest enough to say it is not clinical validation - so a clone inherits the need for a real evaluation with data and a clinician. Second, multi-day history with no persistence story (secure cross-session storage is still on the roadmap).",
+  "what_to_steal": "Escalation precedence: compute the red-flag rules first and *suppress* the normal path when they fire, rather than letting a friendly assistant narrate its way past a warning sign. Pair it with schema validation of every structured result before it renders, and hand the professional a summary artifact rather than a chat transcript.",
+  "worth": "strong",
+  "worth_note": "The architecture is the contribution: deterministic extraction, rule-based history-aware scoring, retrieval over a guideline corpus, and escalation that pre-empts advice - with the generative model kept out of the decision path. That is the correct shape for software that touches a regulated outcome, and it is rare to see it chosen deliberately at hackathon scale. Held below breakthrough because the pieces are standard practice in clinical decision support."
+ },
+ "sketchwish": {
+  "clone_cost": {
+   "assumptions": [
+    "you have a Stripe account and a domain, since the product is the checkout",
+    "you accept a per-render cost and price the free tier against it",
+    "you define 'print-ready' as a test you can fail, or drop the claim"
+   ],
+   "estimate": "1 week for the render pipeline and payment loop, 3 weeks with caps, escapes and analytics wired",
+   "why": "the models are hosted, and auth, storage, quota and payments are all configuration of existing services"
+  },
+  "hazard_note": null,
+  "prior_art": [
+   {
+    "corpus_id": "ai-fitting-labs",
+    "relation": "same commerce logic in another modality: plug into someone else's store and cut a return-logistics cost rather than chase delight"
+   },
+   {
+    "corpus_id": "carbender",
+    "relation": "photo in, structured commercially actionable output out - same trust problem, resolved with an estimate instead of an artwork"
+   },
+   {
+    "corpus_id": "unleashed-simplicity-crew",
+    "relation": "also sells speed-to-artifact to solo sellers; this one owns the production concern the others skip"
+   }
+  ],
+  "what_breaks_first": "Taste. 'Print-ready' is a per-style judgement, and a paid print-on-demand seller returns goods that merely look like a filter - there is no fidelity metric anywhere in the capture, no style-level acceptance rate, and no human review loop. The single-provider dependency is the other one: they already survived one model retirement mid-build, and the pipeline still has one throat to choke.",
+  "what_to_steal": "Engineer the free tier as the abuse surface first: sign-in as the price of a render, a hard generation cap, and an explicit rate limiter as its own component. Then use the cheap model to read and the expensive model to render, so the cost curve, not the vendor's price list, decides how much you can give away.",
+  "worth": "strong",
+  "worth_note": "Not a photo filter but a small company assembled correctly: a cheap vision pass protecting fidelity, an image model doing the rendering, third-party auth, storage, quota and payments so the free tier stays solvent, plus two genuinely hard-won findings - that model deprecation mid-build is an operational risk to design for, and that in-app browsers break Google sign-in so the funnel needs an escape hatch. Most hackathon 'live product' claims are demos; this one names its own margin."
  }
 }

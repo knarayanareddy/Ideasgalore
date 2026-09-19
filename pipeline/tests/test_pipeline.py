@@ -532,6 +532,52 @@ class TestAuditGate(unittest.TestCase):
         problems = shard_builder.gate_checks(self.records, stats, td, audits)
         return td, stats, packed, pool, problems
 
+    def test_a_csv_header_must_match_its_rows(self):
+        """A table whose rows sit under the wrong header is worse than no table at all.
+
+        `ideas.csv` once led with 23 base columns under a header that led with the 8 audit
+        ones: every consumer reading `verdict` got an id, and no gate noticed. Rows are now
+        built by column name and the alignment is gated.
+        """
+        # one sheet, not two: the fixture needs a non-empty pool to test both tables
+        audits = audit_sheets_for(self.records[:1])
+        td, stats, packed, pool, problems = self._build(audits)
+        self.assertEqual(problems, [])
+        self.assertTrue(pool["records"], "fixture must leave held-out rows")
+        import csv as _csv
+        with open(f"{td}/data/ideas.csv", newline="", encoding="utf-8") as fh:
+            ideas = list(_csv.reader(fh))
+        with open(f"{td}/data/pool.csv", newline="", encoding="utf-8") as fh:
+            pools = list(_csv.reader(fh))
+        self.assertEqual(ideas[0], T.CSV_COLUMNS)
+        self.assertEqual(pools[0], T.POOL_CSV_COLUMNS)
+        for table, cols, path in ((ideas, T.CSV_COLUMNS, "ideas.csv"), (pools, T.POOL_CSV_COLUMNS, "pool.csv")):
+            widths = {len(r) for r in table[1:]}
+            self.assertEqual(widths, {len(cols)}, f"{path}: field counts {widths} vs header {len(cols)}")
+            at = {c: i for i, c in enumerate(table[0])}
+            ids = {r[at["id"]] for r in table[1:]}
+            want = {r[0] for r in packed["rows"]} if path == "ideas.csv" else {
+                str(r["id"]) for r in pool["records"]}
+            self.assertEqual(ids, want, f"{path}: id column does not identify the ids")
+        at = {c: i for i, c in enumerate(ideas[0])}
+        verdicts = {r[at["verdict"]] for r in ideas[1:]}
+        self.assertTrue(verdicts and verdicts <= set(T.AUDIT_PUBLISH_VERDICTS),
+                        f"the verdict column must hold verdicts, not ids — got {sorted(verdicts)[:3]}. "
+                        "An id landing in `verdict` is exactly what a base-first row under an "
+                        "audit-first header does")
+        self.assertEqual({r[at["worth"]] for r in ideas[1:]} - set(T.AUDIT_WORTH), set(),
+                         "the worth column must hold worth labels")
+        # and the gate has to notice the old bug
+        rows = ideas[1:]
+        order = T.BASE_CSV_COLUMNS + T.AUDIT_CSV_COLUMNS
+        with open(f"{td}/data/ideas.csv", "w", newline="", encoding="utf-8") as fh:
+            fh.write(",".join(ideas[0]) + "\n")
+            for r in rows:
+                fh.write(",".join(r[order.index(c)] for c in ideas[0]) + "\n")
+        caught = [g for g in shard_builder.audit_gate_checks(self.records, stats, td, audits)
+                  if "ideas.csv" in g]
+        self.assertTrue(caught, "a header/row misalignment must fail the build, not ship")
+
     def test_unaudited_build_publishes_nothing(self):
         _td, stats, packed, pool, problems = self._build({})
         self.assertEqual(packed["rows"], [], "no audit sheet means nothing may be published")
@@ -694,6 +740,153 @@ class TestAuditEngine(unittest.TestCase):
             if sh["verdict"] == "strong":
                 self.assertGreaterEqual(sh["rubric_coverage"], 0.80,
                                         "A15: 'strong' needs rubric coverage, not just high scores")
+
+    def test_a_denial_of_testing_is_not_read_as_evidence_of_testing(self):
+        """The page saying "no test suite is described" must lower the score, not raise it.
+
+        Both sentences contain the nouns "test" and "evaluation"; only the polarity makes
+        them different claims, so the check is a polarity test and this is its pin.
+        """
+        def check_for(testing: str, sections: str):
+            cap = {"id": "fixture", "name": "Fixture", "source_url": "https://devpost.com/software/fixture",
+                   "sections": {"how_we_built_it": sections}, "testing": testing, "numbers": [],
+                   "built_with": ["python"], "links": {"video": "https://youtu.be/x"}}
+            return A.run_checks(cap, None, None, {})[0]["test_or_eval_evidence"]
+
+        denial = check_for("No test suite, evaluation set or validation is described.",
+                           "The model compares each reading against a personal baseline.")
+        self.assertEqual(denial["status"], "unverifiable", denial["why"])
+        self.assertEqual(denial["pass"], 0.0)
+        # the same nouns, affirmed: still no repo, so supported at best — never confirmed
+        affirmed = check_for("We ran a seeded regression set against the unoptimised path and logged 2x.",
+                             "Nothing else on the page.")
+        self.assertIn(affirmed["status"], ("supported", "partial"), affirmed["why"])
+        self.assertLess(affirmed["pass"], 1.0)
+        # an adjective is not an evaluation: "demanded precision" has no figure in it
+        prose_only = check_for("No tests of any kind were run.",
+                               "Coding the sync layer on a phone demanded precision and patience.")
+        self.assertEqual(prose_only["status"], "unverifiable", prose_only["why"])
+
+    def test_structural_figures_cannot_vouch_for_an_unmeasured_headline(self):
+        """Ten styles is checkable by opening the app; a self-graded 100% is not a result."""
+        cap = {"id": "fixture", "name": "Fixture", "source_url": "https://devpost.com/software/fixture",
+               "sections": {"what_it_does": "Renders a photo in ten styles."},
+               "testing": "", "built_with": ["react"], "links": {},
+               "numbers": [{"claim": "ten art styles", "denominator": None,
+                            "arithmetic": "structural, checkable in the live product", "verifiable": True},
+                           {"claim": "97% accurate transcription", "denominator": None,
+                            "arithmetic": "not falsifiable from the page", "verifiable": False}]}
+        chk = A.run_checks(cap, None, None, {})[0]["numbers_add_up"]
+        self.assertEqual(chk["status"], "partial", chk["why"])
+        self.assertEqual(chk["pass"], 0.5)
+        self.assertIn("headline", chk["why"].lower())
+        # without the structural figure the same page is worse-evidenced, not equally so
+        cap["numbers"] = cap["numbers"][1:]
+        worse = A.run_checks(cap, None, None, {})[0]["numbers_add_up"]
+        self.assertLess(worse["pass"], chk["pass"], (worse["why"], chk["why"]))
+
+    def test_a_live_product_url_outranks_a_video_of_one(self):
+        """A deployment any reader can open is a different kind of artifact than a recording."""
+        def artifact(links):
+            cap = {"id": "fixture", "name": "Fixture", "source_url": "https://devpost.com/software/fixture",
+                   "sections": {}, "testing": "", "built_with": [], "links": links, "numbers": []}
+            return A.run_checks(cap, None, None, {})[0]["artifact_exists"]
+
+        live, video = artifact({"demo": "https://sketchwish.com"}), artifact({"video": "https://youtu.be/x"})
+        self.assertGreater(live["pass"], video["pass"], (live["why"], video["why"]))
+        self.assertEqual(live["status"], "supported", "unreachable from the build box, so never confirmed")
+        zero = artifact({})
+        self.assertEqual((zero["pass"], zero["status"]), (0.0, "unverifiable"))
+        # and in the real ledger: SketchWish ships to a URL, AudioNova ships a video
+        self.assertEqual(self.sheets["sketchwish"]["checks"]["artifact_exists"]["pass"], 0.75)
+        self.assertEqual(self.sheets["audionova"]["checks"]["artifact_exists"]["pass"], 0.5)
+
+    def test_one_product_under_two_listings_merges_while_two_teams_do_not(self):
+        """A14/A5: identical published listing titles in one event = one product submitted twice.
+
+        A name that differs by a suffix ("NeuroGuard AI" vs "NeuroGuard AI (v2)") is two teams
+        converging on an idea, which is the most interesting thing in the corpus; it must be
+        kept and cross-linked, never merged.
+        """
+        kept, dropped = self.sheets["adversarial-compliance-matrix"], self.sheets["gemini-box"]
+        self.assertTrue(dropped["publishable"] is False and kept["publishable"] is True,
+                        (kept["verdict"], dropped["verdict"]))
+        self.assertEqual(dropped["verdict"], "duplicate")
+        self.assertEqual(dropped["duplicate_of"], "adversarial-compliance-matrix")
+        self.assertIn("listing-title equality True", dropped["verdict_reasons"][-1])
+        pair = ("neuroguard-ai-0qb34c",
+                "neuroguard-ai-adaptiveconcussionrecoveryintelligencesystem")
+        for rid in pair:
+            self.assertIsNone(self.sheets[rid].get("duplicate_of"), f"{rid}: parallel invention is not a duplicate")
+        self.assertEqual(self.sheets[pair[0]].get("parallel_invention_of"), pair[1])
+        self.assertEqual(self.sheets[pair[1]].get("parallel_invention_of"), pair[0])
+        self.assertTrue(any("parallel invention" in a for a in self.actions), self.actions)
+
+    def test_a_short_tag_list_is_still_a_filed_mandatory_field(self):
+        """A 40-character floor for prose must not turn a real enumeration into a hole."""
+        published = [sh for sh in self.sheets.values() if sh["publishable"]]
+        self.assertTrue(published)
+        for sh in published:
+            self.assertIn("built_with_verified", sh["fields"], f"{sh['id']}: mandatory field unfiled")
+            self.assertNotIn("built_with_verified", [u["field"] for u in sh["unknowns"]])
+        # and the field has to say whether anything corroborates the tags it lists
+        stated = [sh for sh in published
+                  if "no repository published" in sh["fields"]["built_with_verified"]["value"]]
+        self.assertTrue(stated, "an uncorroborated stack claim must be labelled as one")
+
+    def test_a_ui_name_is_not_a_measurement_loop(self):
+        """"dashboard" names a screen here; a measurement loop has to measure something."""
+        cap = {"id": "fixture", "name": "Fixture", "source_url": "https://devpost.com/software/fixture",
+               "sections": {"how_we_built_it": "The platform adds a dashboard for the operator."},
+               "testing": "No test suite, eval set or benchmark is described.", "numbers": [],
+               "built_with": [], "links": {}}
+        chk = A.run_checks(cap, None, None, {})[0]["test_or_eval_evidence"]
+        self.assertEqual(chk["status"], "unverifiable", chk["why"])
+        cap["testing"] = ("We watch a PostHog funnel on the live app and logged a 2x conversion "
+                          "difference after fixing the sign-in button.")
+        loop = A.run_checks(cap, None, None, {})[0]["test_or_eval_evidence"]
+        self.assertEqual(loop["status"], "partial", loop["why"])
+        self.assertGreater(loop["pass"], chk["pass"])
+
+    def test_an_audited_hold_is_labelled_as_scored_not_unchecked(self):
+        """`provenance: unaudited` on a record this pipeline *did* score is a false statement,
+        and "go fetch a project page" on a page we already fetched wastes the next auditor's
+        time. The two kinds of pool row have to be tellable apart without opening the sheets."""
+        pub = os.path.join(REPO, "web", "public")
+        pool_path, audit_path = f"{pub}/data/pool.json", os.path.join(REPO, "pipeline", "audit.jsonl")
+        if not (os.path.exists(pool_path) and os.path.exists(audit_path)):
+            self.skipTest("built surfaces not present; run `make build`")
+        sheets = {sh["id"]: sh for sh in (json.loads(l) for l in open(audit_path, encoding="utf-8"))}
+        rows = {r["id"]: r for r in json.load(open(pool_path, encoding="utf-8"))["records"]}
+        held = [rid for rid, sh in sheets.items()
+                if not sh["publishable"] and rid in rows]
+        self.assertTrue(held, "expected at least one audited-but-held record")
+        for rid in held:
+            row = rows[rid]
+            self.assertEqual(row["provenance"], "audited-hold", rid)
+            self.assertEqual(row["verdict"], sheets[rid]["verdict"], rid)
+            self.assertEqual(row["worth"], sheets[rid].get("worth"), rid)
+            self.assertEqual(row["soundness_score"], sheets[rid]["soundness_score"], rid)
+            self.assertTrue(row["would_settle_it"], f"{rid}: a hold without a next step is a dead end")
+            self.assertNotIn("a fetched project page and an artifact check", row["would_settle_it"],
+                            f"{rid}: already captured, so must not be told to go fetch the page")
+        unchecked = [r for r in rows.values() if r["provenance"] == "unaudited"]
+        self.assertTrue(unchecked)
+        for row in unchecked:
+            self.assertFalse(row.get("verdict"), f"{row['id']}: unaudited rows must not carry a verdict")
+
+    def test_a_team_that_disclaimed_is_not_recorded_as_silent(self):
+        """The hazard stamp may say a claim is regulated; it may not invent a missing disclaimer."""
+        disclaimed = self.sheets["neuroguard-ai-0qb34c"]
+        self.assertEqual(disclaimed["hazard"]["class"], "clinical")
+        self.assertTrue(disclaimed["hazard"]["team_disclaimed"],
+                        "the page reads 'positioned as recovery support, not a diagnostic replacement'")
+        self.assertNotIn("hazard: clinical (no team disclaimer found)",
+                         disclaimed.get("why_not_promoted") or [])
+        silent = self.sheets["medvoice-y87kei"]
+        self.assertFalse(silent["hazard"]["team_disclaimed"],
+                         "medvoice's capture contains no disclaimer of its own, so the stamp must say so")
+        self.assertIn("hazard: clinical (no team disclaimer found)", silent["why_not_promoted"])
 
     def test_nothing_publishable_is_banned_language_free(self):
         for sh in self.sheets.values():

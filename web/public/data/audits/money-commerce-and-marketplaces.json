@@ -1,0 +1,242 @@
+{
+ "audit_version":1,
+ "generated_at":"2026-09-18",
+ "records":{
+  "sketchwish":{
+   "audit_version":1,
+   "audited_at":"2026-09-19",
+   "award":null,
+   "built_with":[
+    "nextjs",
+    "react",
+    "typescript",
+    "vercel",
+    "supabase",
+    "google-oauth",
+    "cloudflare-r2",
+    "upstash",
+    "stripe",
+    "posthog",
+    "gemini",
+    "google-gemini",
+    "nano-banana"
+   ],
+   "checks":{
+    "artifact_exists":{
+     "pass":0.75,
+     "status":"supported",
+     "why":"no source repo linked, but the product is published at a live address a reader can open: https://sketchwish.com, https://www.youtube.com/watch?v=fS0kO-mert4"
+    },
+    "build_is_real":{
+     "pass":null,
+     "status":"unverifiable",
+     "why":"no repository published, so the build cannot be read"
+    },
+    "limits_disclosed":{
+     "pass":1.0,
+     "status":"confirmed",
+     "why":"the team named what the system itself cannot do (abuse, blocks, hard-cap)"
+    },
+    "numbers_add_up":{
+     "pass":0.5,
+     "status":"partial",
+     "why":"3 figure(s) a reader can check against the product (ten art styles; three free renders per new account), but 1 headline figure(s) carry no testable denominator: reach across 18 countries"
+    },
+    "stack_consistency":{
+     "pass":null,
+     "status":"unverifiable",
+     "why":"no repo to cross-check the declared stack against"
+    },
+    "test_or_eval_evidence":{
+     "pass":0.5,
+     "status":"partial",
+     "why":"a product measurement loop is described (analytics, funnel, posthog) \u2014 analytics, funnels or logs rather than an accuracy or quality eval"
+    }
+   },
+   "evidence":[
+    {
+     "checked_at":"2026-09-19",
+     "claim":"Is there an artifact at all \u2014 a repo, a deployed app, or a video of it running?",
+     "detail":"no source repo linked, but the product is published at a live address a reader can open: https://sketchwish.com, https://www.youtube.com/watch?v=fS0kO-mert4",
+     "id":"sketchwish:artifact_exists",
+     "kind":"page",
+     "source":"https://devpost.com/software/sketchwish",
+     "status":"supported"
+    },
+    {
+     "checked_at":"2026-09-19",
+     "claim":"Does the repo's language/file mix match the stack they described?",
+     "detail":"no repo to cross-check the declared stack against",
+     "id":"sketchwish:stack_consistency",
+     "kind":"page",
+     "source":"https://devpost.com/software/sketchwish",
+     "status":"unverifiable"
+    },
+    {
+     "checked_at":"2026-09-19",
+     "claim":"Is the code a real build (source tree, setup steps, non-trivial size) rather than a stub or zip?",
+     "detail":"no repository published, so the build cannot be read",
+     "id":"sketchwish:build_is_real",
+     "kind":"page",
+     "source":"https://devpost.com/software/sketchwish",
+     "status":"unverifiable"
+    },
+    {
+     "checked_at":"2026-09-19",
+     "claim":"Do their metrics have a denominator, and is the arithmetic internally consistent?",
+     "detail":"3 figure(s) a reader can check against the product (ten art styles; three free renders per new account), but 1 headline figure(s) carry no testable denominator: reach across 18 countries",
+     "id":"sketchwish:numbers_add_up",
+     "kind":"page",
+     "source":"https://devpost.com/software/sketchwish",
+     "status":"partial"
+    },
+    {
+     "checked_at":"2026-09-19",
+     "claim":"Did they state what does not work, or where it fails?",
+     "detail":"the team named what the system itself cannot do (abuse, blocks, hard-cap)",
+     "id":"sketchwish:limits_disclosed",
+     "kind":"page",
+     "source":"https://devpost.com/software/sketchwish",
+     "status":"confirmed"
+    },
+    {
+     "checked_at":"2026-09-19",
+     "claim":"Any test suite, eval harness, or measured benchmark we can see?",
+     "detail":"a product measurement loop is described (analytics, funnel, posthog) \u2014 analytics, funnels or logs rather than an accuracy or quality eval",
+     "id":"sketchwish:test_or_eval_evidence",
+     "kind":"page",
+     "source":"https://devpost.com/software/sketchwish",
+     "status":"partial"
+    }
+   ],
+   "fields":{
+    "built_with_verified":{
+     "provenance":"observed",
+     "value":"declared by the authors (13): nextjs, react, typescript, vercel, supabase, google-oauth, cloudflare-r2, upstash \u00b7 no repository published, so these are the team's own claim and nothing corroborates them"
+    },
+    "clone_cost":{
+     "note":"our estimate with assumptions visible; not a claim about the team",
+     "provenance":"derived",
+     "value":{
+      "assumptions":[
+       "you have a Stripe account and a domain, since the product is the checkout",
+       "you accept a per-render cost and price the free tier against it",
+       "you define 'print-ready' as a test you can fail, or drop the claim"
+      ],
+      "estimate":"1 week for the render pipeline and payment loop, 3 weeks with caps, escapes and analytics wired",
+      "why":"the models are hosted, and auth, storage, quota and payments are all configuration of existing services"
+     }
+    },
+    "data_and_models":{
+     "provenance":"observed",
+     "value":"No training: two Gemini models in a pipeline (a fast vision pass, then image generation) with prompts per style. Storage, quota and payment are all third-party services, which is what makes the free tier arithmetic work."
+    },
+    "how_it_works":{
+     "provenance":"observed",
+     "value":"Gemini as the engine rather than an add-on: the image model renders the sketch from photo plus style, and a cheaper fast model reads the photo first so the result stays true to the subject. Next.js 15 on Vercel, Supabase for Google sign-in, Cloudflare R2 for storage, Upstash for rate limiting, Stripe for live payments, PostHog for analytics."
+    },
+    "how_they_tested":{
+     "provenance":"observed",
+     "value":"No unit or eval suite is described; the measurable loop they do have is product analytics - PostHog funnel inspection that found conversion bugs and mispriced ad targeting. That is a real feedback mechanism, just not a quality gate on output fidelity."
+    },
+    "limits_they_disclosed":{
+     "provenance":"observed",
+     "value":"A free-render tool attracts abuse, so sign-in is mandatory and generation is hard-capped; Google blocks sign-in inside Facebook and Instagram in-app browsers, so they built an escape that routes those users to a real browser; the model in the original plan was retired mid-build and the pipeline was migrated with no downtime."
+    },
+    "numbers_with_arithmetic":{
+     "provenance":"observed",
+     "value":[
+      {
+       "arithmetic":"structural, checkable in the live product",
+       "claim":"ten art styles",
+       "denominator":"styles offered in the picker",
+       "verifiable":true
+      },
+      {
+       "arithmetic":"structural, bounded by the Upstash cap stated on the page",
+       "claim":"three free renders per new account",
+       "denominator":"per Google-authenticated account",
+       "verifiable":true
+      },
+      {
+       "arithmetic":"structural; print-suitability at that size is not measured or claimed",
+       "claim":"export up to 4K",
+       "denominator":"maximum export resolution",
+       "verifiable":true
+      },
+      {
+       "arithmetic":"unfalsifiable as published - a marketing-reach figure with no denominator for volume or conversion",
+       "claim":"reach across 18 countries",
+       "denominator":"their own PostHog analytics over an unstated window",
+       "verifiable":false
+      }
+     ]
+    },
+    "prior_art":{
+     "note":"each entry resolves to a URL we opened this session or a corpus id",
+     "provenance":"editorial",
+     "value":[
+      {
+       "corpus_id":"ai-fitting-labs",
+       "relation":"same commerce logic in another modality: plug into someone else's store and cut a return-logistics cost rather than chase delight"
+      },
+      {
+       "corpus_id":"carbender",
+       "relation":"photo in, structured commercially actionable output out - same trust problem, resolved with an estimate instead of an artwork"
+      },
+      {
+       "corpus_id":"unleashed-simplicity-crew",
+       "relation":"also sells speed-to-artifact to solo sellers; this one owns the production concern the others skip"
+      }
+     ]
+    },
+    "what_breaks_first":{
+     "provenance":"editorial",
+     "value":"Taste. 'Print-ready' is a per-style judgement, and a paid print-on-demand seller returns goods that merely look like a filter - there is no fidelity metric anywhere in the capture, no style-level acceptance rate, and no human review loop. The single-provider dependency is the other one: they already survived one model retirement mid-build, and the pipeline still has one throat to choke."
+    },
+    "what_it_does":{
+     "provenance":"observed",
+     "value":"Upload a photo, pick one of ten styles (pencil, charcoal, ink, watercolor, line art and others), get a high-resolution sketch exportable for print up to 4K. Three free renders after one-tap Google sign-in, then credits. Running in production."
+    },
+    "what_it_is":{
+     "provenance":"observed",
+     "value":"Photo to print-ready sketch in ten styles at up to 4K, live in production, with a free tier that is defensible because sign-in, caps and rate limits were engineered first."
+    },
+    "what_to_steal":{
+     "provenance":"editorial",
+     "value":"Engineer the free tier as the abuse surface first: sign-in as the price of a render, a hard generation cap, and an explicit rate limiter as its own component. Then use the cheap model to read and the expensive model to render, so the cost curve, not the vendor's price list, decides how much you can give away."
+    }
+   },
+   "hazard":null,
+   "id":"sketchwish",
+   "likes":2,
+   "moves":[
+    "wrap-the-legacy-surface",
+    "constraint-is-the-feature"
+   ],
+   "name":"SketchWish",
+   "provenance":{
+    "checks":"derived",
+    "clone_cost":"derived",
+    "evidence":"observed",
+    "fields":"observed",
+    "verdict":"derived",
+    "worth":"editorial"
+   },
+   "publishable":true,
+   "repo":null,
+   "right_of_reply":"https://github.com/knarayanareddy/Ideasgalore/issues/new?labels=audit-recheck",
+   "rubric_coverage":0.64,
+   "soundness":"partial",
+   "soundness_score":0.6797,
+   "source_url":"https://devpost.com/software/sketchwish",
+   "unknowns":[],
+   "verdict":"sound-with-caveats",
+   "verdict_reasons":[
+    "soundness 0.68 over 64% of the rubric; 0 named unknown(s) remain \u2192 publishable with caveats"
+   ],
+   "worth":"strong",
+   "worth_note":"Not a photo filter but a small company assembled correctly: a cheap vision pass protecting fidelity, an image model doing the rendering, third-party auth, storage, quota and payments so the free tier stays solvent, plus two genuinely hard-won findings - that model deprecation mid-build is an operational risk to design for, and that in-app browsers break Google sign-in so the funnel needs an escape hatch. Most hackathon 'live product' claims are demos; this one names its own margin."
+  }
+ }
+}

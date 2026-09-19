@@ -1,19 +1,21 @@
 {
- "total":2,
- "audited_published":2,
- "pool_records":163,
+ "total":5,
+ "audited_published":5,
+ "pool_records":160,
+ "pool_audited_held":5,
+ "pool_unaudited":155,
  "audit_version":1,
- "audit_index_kb":0.6,
- "audit_sheets_kb":6.4,
- "records_hazarded":1,
- "domains":1,
- "subsystems":2,
- "moves":7,
- "events":2,
+ "audit_index_kb":0.7,
+ "audit_sheets_kb":17.0,
+ "records_hazarded":2,
+ "domains":4,
+ "subsystems":5,
+ "moves":10,
+ "events":4,
  "deep_records":2,
- "tier1_gzip_kb":2.4,
+ "tier1_gzip_kb":2.9,
  "tier1_budget_kb":1200.0,
- "sqlite_kb":4.4,
+ "sqlite_kb":5.0,
  "corpus_ingested":167,
  "held_back":{
   "placeholder_summary":2
@@ -36,9 +38,21 @@
  },
  "generated_at":"2026-09-18",
  "shards":{
+  "agentic-autonomy-and-orchestration":{
+   "records":1,
+   "kb":5.3
+  },
   "creative-media-story-and-play":{
    "records":2,
    "kb":15.0
+  },
+  "health-care-and-human-performance":{
+   "records":1,
+   "kb":6.3
+  },
+  "money-commerce-and-marketplaces":{
+   "records":1,
+   "kb":5.6
   }
  }
 }

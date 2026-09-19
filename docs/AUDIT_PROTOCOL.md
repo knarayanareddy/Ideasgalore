@@ -23,10 +23,18 @@ else — thin evidence, resubmissions, hazard-blocked, never-audited — moves t
 `data/pool.json` with machine-readable reasons and stays reachable, because nothing here
 is deleted.
 
-The catalog currently holds 2 records out of 165 admitted ones, because only 4 projects
-have been captured deeply enough to audit. That gap is the point of the promotion queue
-(§6), not a defect to hide: `agents/llms.txt` and `catalog-stats.json` both publish
-`audited_published` next to `pool_records`.
+The catalog currently holds **5** records out of 165 admitted ones. Ten projects have been
+captured and scored; five cleared the ladder and five are held for cause (two resubmissions,
+three thin-evidence). The other 155 were never captured deeply enough to audit. Both gaps are
+the point of the promotion queue (§6), not defects to hide: `agents/llms.txt` and
+`catalog-stats.json` publish `audited_published` next to `pool_records`, and `pool.json`
+carries a per-record reason for every one of the 160.
+
+The published five span the range a reader should expect from this method: a cost-model
+pipeline at 0.77, a live production consumer product at 0.68, a concussion-recovery triage
+tool at 0.55, a Rust supply-chain verifier at 0.52, an on-device transcription stack at 0.51.
+All five are `sound-with-caveats` — no project in this corpus can currently reach `strong`,
+and §4 explains why that is a finding about hackathon pages rather than about teams.
 
 ---
 
@@ -77,6 +85,43 @@ Checks, each `status` + `pass ∈ [0,1]` + `why` + evidence ids:
 `soundness_score` is the mean of scored checks; `rubric_coverage` is the fraction of the 12
 fields filed with an evidence status. Both are emitted, never a composite of them.
 
+### Reading prose without being fooled by it
+
+Every one of these rules exists because a real page broke the simpler version. They are
+mechanical, not judgement calls, and each is pinned by a test.
+
+- **Polarity, not vocabulary.** `test_or_eval_evidence` reads the capture's `testing` field,
+  then the page, and discards any keyword sitting inside a negation (`no`, `not`, `without`,
+  `absent`, `no public`… within 80 characters before it). "No test suite, evaluation set, or
+  validation is described" must lower the score; an earlier version scored that sentence as
+  *supported 0.75* because it contained the word "evaluation".
+- **A comparator word is not a comparison.** `accuracy`, `precision`, `latency` count as
+  evaluation language only inside a sentence that carries a digit. "Coding the sync layer on a
+  phone demanded precision" is an adjective. Prose-only mentions of a measurement earn
+  `partial 0.4` with both halves of the contradiction quoted, never `supported`.
+- **Structural figures cannot vouch for outcome figures.** "Ten art styles" and "twelve attack
+  scenarios" are checkable by opening the product; they are recorded in a `checkable` tier and
+  lift a page to `partial 0.5`/`supported 0.6`, never to `confirmed 1.0`. `confirmed` requires
+  arithmetic *we* re-derived (`_testable` rejects `arithmetic` beginning `structural`, `n/a`,
+  `not`, `cannot`).
+- **A hard weekend is not a disclosed limitation.** `limits_disclosed` reaches `confirmed` only
+  on a capability-shaped statement (accuracy, privacy, offline, unsupported, fails, abuse,
+  rate-limit…) sitting in a sentence that is not about compiling, pushing, devices or hours.
+  Build-process honesty scores `supported 0.6`, with a `why` that says which half is missing.
+- **A described harness and a measured loop are different from absence.** A harness named
+  without a linked result scores `partial 0.5`; a product measurement loop (analytics, funnels,
+  logged A/B) also scores `partial 0.5` — above `unverifiable 0.0`, which is reserved for pages
+  that state nothing or deny testing. "Dashboard" is deliberately *not* a measurement word: in
+  this corpus it names a screen.
+- **`artifact_exists` ranks the artifact.** A live address any reader can open scores
+  `supported 0.75`; a video of a working thing `supported 0.5`; nothing linkable
+  `unverifiable 0.0` and the record is hard-capped to `thin`.
+- **`built_with_verified` says whether it was verified.** Its value is the declared tag list plus
+  what corroborates it — repo languages, or "no repository published, so these are the team's
+  own claim and nothing corroborates them". A mandatory field's value has to carry its own
+  epistemic status; a length floor that dropped a four-tag list into `unknowns` once failed the
+  build gate, which is the wrong place to discover a formatting rule.
+
 ---
 
 ## 4 · Verdict ladder
@@ -96,12 +141,30 @@ Two deviations from the panel's first draft, both of which the code enforced on 
 1. **Coverage-aware renormalisation.** A record cannot be `strong` at 64% coverage however
    high its score: `strong` requires `rubric_coverage ≥ 0.80`. Greenlight sits at
    `sound-with-caveats` for exactly this reason — its scores are high and its gaps are many.
-2. **Resubmission detection by numeric fingerprint.** Prose Jaccard cannot catch the same
+2. **Listing-title equality merges what prose cannot.** Two records whose *published display
+   names are identical* inside one event are one product submitted twice — on Devpost each page
+   carries the platform's title, and the teams' own prose diverges on purpose. `gemini-box` and
+   `adversarial-compliance-matrix` both list as "Gemini-Box" at XPRIZE, so the thinner-evidenced
+   one is a `duplicate`. The route reads the corpus listing title, not the slug or the capture
+   name, and needs no text overlap (their Jaccard was 0.07). The pair it must *not* touch —
+   "NeuroGuard AI" vs "NeuroGuard AI (v2)", two teams, same event, same idea — differs by a
+   suffix, so it fails exact equality and is instead kept and cross-linked as parallel
+   invention. That is the whole distinction: a name a team chose twice is a collision, a name
+   that is byte-identical is a listing.
+3. **Resubmission detection by numeric fingerprint.** Prose Jaccard cannot catch the same
    product rewritten for a different hackathon (each event gets its own write-up; overlap
    stayed under the 0.60 threshold). `numeric_fingerprint()` extracts the distinctive
    `$`/`%`/unit figures from numbers, sections and one-liners; two records that share ≥3
    fingerprints *and* a leading name token merge. Greenlight's two slugs share
    `$0.02 · $20 · $238 · $4.50 · 29% · 49%`.
+
+One consequence is worth stating plainly, because it looks like a scoring bug until you read
+the corpus: `rubric_coverage` tops out near **0.64** for any record without a repository, since
+`built_with_verified`, `build_is_real` and `stack_consistency` can never be *filed with
+evidence* without one. `strong` needs coverage ≥ 0.80. So **`strong` is unreachable for
+projects that publish no code** — and 0 of the 165 admitted records link a repository. The top
+rung of the ladder is currently aspirational by construction, which is a finding about
+hackathon submission pages, not a defect: from a page alone, nobody can certify a build.
 
 `worth` (`breakthrough | strong | niche | tired`) is decided *only* after soundness, and
 never combined into a single number. An impressive-but-unverifiable project is
@@ -144,6 +207,29 @@ For each candidate: fetch its Devpost page (`pipeline/harvest_devpost.py deep`),
 add editorial notes for anything you can cite, then `make build`. The gates decide whether
 it ships; no manual promotion path exists.
 
+Two operational facts, learned the hard way in batch 1:
+
+- **The pipeline cannot fetch Devpost.** `harvest_devpost.py` only paginates galleries it was
+  given as saved HTML, and the search endpoints answer 500. A capture is written by hand from
+  a fetched page — `https://devpost.com/software/<slug>`, chunk 0 carries all eight authored
+  sections, the `Built With` list and the `software_id`. `harvest_devpost.py deep` has no
+  per-id selector, so targeted refetches mean authoring the capture file yourself.
+- **Only `api.github.com` is reachable from the build box.** Live deployments were probed once:
+  the TCP connect succeeded and the TLS handshake was closed. So `repo_verify.py` is the sole
+  independent verification channel, `artifact_exists` for a page with a live URL but no repo
+  stops at `supported`, and `confirmed` needs a GitHub repository. Write `provenance:
+  "unavailable"` and a `why` rather than guessing at an org name: `repo_checks.json` records
+  which repos were actually queried, and a capture with `links.repo = null` produces no
+  `build_is_real` check at all (A14/C5) — absence of a link is not treated as absence of code.
+
+**Batch 1 (2026-09-19)** captured six pages: NeuroGuard AI (both teams), Gemini-Box,
+Adversarial Compliance Matrix, Medvoice, SketchWish. Two shipped (`SketchWish` 0.68,
+`NeuroGuard AI` 0.55), one shipped under its sibling's slug after the listing-title merge
+(`adversarial-compliance-matrix` 0.52), three are held: `gemini-box` as a duplicate,
+`neuroguard-ai-0qb34c` and `medvoice-y87kei` as `thin` — no measurements, no repo, video only.
+Working that batch is what produced the six prose-reading rules in §3; five of the six pages
+initially scored too well, in ways that flattered the teams' vocabulary rather than their evidence.
+
 `data/promotion-queue.json` ranks unaudited rows by expected information gain — a sector
 with many rows and no audit is worth more than a 12th agentic-crew project. It is a
 *learning* order, explicitly not a merit order.
@@ -157,7 +243,7 @@ with many rows and no audit is worth more than a 12th agentic-crew project. It i
 | `data/audits.json` | id → verdict, worth, score, coverage, per-check `status`, unknown field names, sheet pointer (~150 B/record) |
 | `data/audits/<sector>.json` | full sheets: `fields[f] = {value, evidence[], confidence, status, why?}`, per-check `why`, the evidence ledger, `right_of_reply` |
 | `data/audit-rubric.json` | the rubric itself: mandatory fields, check weights, verdict ladder, hard caps, dedup thresholds, banned words, policy |
-| `data/pool.json` / `pool.csv` | held-out records with `why_not_promoted[]` and `would_settle_it[]` |
+| `data/pool.json` / `pool.csv` | held-out records with `why_not_promoted[]` and `would_settle_it[]`; `provenance` splits `audited-hold` (scored, capped) from `unaudited` (never captured), and the CSV repeats `ideas.csv`'s column order so one parser reads both |
 | `data/promotion-queue.json` | the work list |
 | `agents/schema.json → audit` | the same vocabulary, generated from the rubric rather than retyped |
 | MCP `audit_report` / `promotion_queue` / `audit_rubric` | the same three answers over the protocol |
@@ -178,5 +264,22 @@ never "passed".
 - It will call a claim `unverifiable`, not false. Reporting `unverifiable` as a debunking
   is the most likely misuse of this layer, and the reason the word "harness" appears in the
   `why` strings rather than a verdict adjective.
-- It inherits the corpus's biases (one dominant hackathon, 4 of 1,401 XPRIZE pages).
-  Coverage is stated in the same files so a consumer cannot quietly forget it.
+- It cannot reach the artifacts it would most like to check. From the build environment only
+  `api.github.com` responds, so a live deployment is credited as `supported`, never
+  `confirmed`, and a page with neither repo nor URL cannot be helped at all. A reader or agent
+  with a browser *can* do the remaining step; `would_settle_it[]` on the pool row names it.
+- It cannot see a repository that a page does not link. Since 0 of 165 admitted records link
+  one, `build_is_real` and `stack_consistency` are `unverifiable` for the whole corpus, and
+  `strong` is out of reach for every record (§4).
+- It scores an authored fixture suite generously unless someone reads it as what it is: an
+  agent that wrote its own attack matrix and its own tests, then ran them in CI it configured,
+  has produced *agreement with itself*. That reads as `partial 0.5` here with the reason
+  spelled out, which is a smaller claim than the page's own "flawless / bulletproof" framing.
+- A `thin` verdict is a statement about this audit's evidence, not about the team. Three of the
+  five held records here are projects a builder may well want to copy — `Medvoice` carries
+  `worth: strong` while sitting in the pool at 0.27, and `why_not_promoted` says the only thing
+  that would change that.
+- It inherits the corpus's biases. 85 of the 165 admitted rows come from one XPRIZE gallery
+  that is 1,401 pages deep, of which 4 pages were crawled (5.9%); 10 records in total have been
+  captured for audit. `catalog-stats.json → coverage` publishes the same figures so a consumer
+  cannot quietly forget them.

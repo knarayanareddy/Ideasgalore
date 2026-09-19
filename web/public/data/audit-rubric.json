@@ -18,26 +18,32 @@
  "checks": {
   "artifact_exists": {
    "ask": "Is there an artifact at all \u2014 a repo, a deployed app, or a video of it running?",
+   "settles_with": "a repository, deployment or store listing we can resolve",
    "w": 0.22
   },
   "build_is_real": {
    "ask": "Is the code a real build (source tree, setup steps, non-trivial size) rather than a stub or zip?",
+   "settles_with": "a readable source tree (a repo link, then `python3 pipeline/repo_verify.py`)",
    "w": 0.18
   },
   "limits_disclosed": {
    "ask": "Did they state what does not work, or where it fails?",
+   "settles_with": "a statement of what the system itself cannot do (accuracy, coverage, privacy, failure modes)",
    "w": 0.12
   },
   "numbers_add_up": {
    "ask": "Do their metrics have a denominator, and is the arithmetic internally consistent?",
+   "settles_with": "a denominator and baseline for the headline figure, or the raw log behind it",
    "w": 0.16
   },
   "stack_consistency": {
    "ask": "Does the repo's language/file mix match the stack they described?",
+   "settles_with": "a repository to compare the declared stack against",
    "w": 0.18
   },
   "test_or_eval_evidence": {
    "ask": "Any test suite, eval harness, or measured benchmark we can see?",
+   "settles_with": "a published eval table, harness or CI run link with a case count",
    "w": 0.14
   }
  },

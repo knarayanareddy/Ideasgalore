@@ -1,0 +1,51 @@
+{
+ "award": null,
+ "built_with": [
+  "python",
+  "fastapi",
+  "streamlit",
+  "pydantic",
+  "sqlite",
+  "faiss",
+  "render",
+  "sqlitedb"
+ ],
+ "captured_at": "2026-09-19",
+ "data_and_models": "No model trained or fine-tuned: Pydantic-validated deterministic extraction, rule-based history-aware risk scoring, and FAISS retrieval over a locally stored concussion-guideline corpus. The generative model is not presented as the decision-maker, which is the architecturally correct choice for this domain.",
+ "gallery_images": 1,
+ "id": "neuroguard-ai-adaptiveconcussionrecoveryintelligencesystem",
+ "likes": null,
+ "links": {
+  "demo": null,
+  "repo": null,
+  "video": "https://www.youtube.com/watch?v=6VTxPCeStvo"
+ },
+ "name": "NeuroGuard AI - Adaptive Concussion Recovery Intelligence",
+ "numbers": [
+  {
+   "arithmetic": "unfalsifiable as published - denominator is undefined, so the percentage has no measurable content",
+   "claim": "100% accuracy across the included evaluation cases",
+   "denominator": "a self-authored offline case set of unstated size, including synthetic red-flag scenarios",
+   "verifiable": false
+  },
+  {
+   "arithmetic": "structural claim, checkable against the deployed flow rather than a benchmark",
+   "claim": "five-stage recovery plan",
+   "denominator": "stages defined in the application's rules",
+   "verifiable": true
+  }
+ ],
+ "one_line": "A daily concussion check-in that extracts symptoms deterministically, scores risk against recovery history, and escalates red flags before it offers any advice.",
+ "sections": {
+  "accomplishments": "Working deployed end-to-end application, automatic recovery-day progression, preserved multi-day history, reset flow for a new injury, emergency escalation exercised on synthetic red-flag scenarios, evidence-linked guidance, handoff summary, offline benchmarks reported at 100% across the included cases.",
+  "challenges": "Usefulness against safety: no false reassurance, no overstated certainty. Red flags prioritised, escalation made visually prominent, normal progression suppressed when urgent signs appear, recommendations kept conservative, results schema-validated before rendering. Also representing recovery over time rather than as one score.",
+  "how_we_built_it": "Full-stack web app: FastAPI service, Streamlit frontend, Pydantic validation of every structured result before display, SQLite history, FAISS retrieval over a local concussion-guideline corpus, deterministic local symptom extraction, history-aware risk scoring, red-flag guardrails, privacy-conscious logging, and offline regression/safety/quality benchmarks. Deployed on Render.",
+  "inspiration": "Patients and caregivers do not know what to monitor, what activity is appropriate, or when to seek help; the goal was a calm safety-first companion that also produces something a clinician can read.",
+  "learned": "Communicating uncertainty, separating education from diagnosis, designing for the tired or distracted user, and treating usability as part of safety.",
+  "what_it_does": "Free-text symptom description plus optional guided questions, a structured symptom summary, a conservative risk assessment, a five-stage recovery plan, evidence supporting the guidance, multi-day trend view (improving / stable / worsening), and a caregiver or clinician handoff summary. Urgent warning signs replace normal advice with escalation.",
+  "what_next": "Secure cross-session persistence, age- and context-aware guidance, separate return-to-learn and return-to-activity pathways, clinician-reviewed summaries, usability testing, expanded and regularly reviewed evidence corpus, multilingual and accessibility work."
+ },
+ "software_id": 1377687,
+ "source_url": "https://devpost.com/software/neuroguard-ai-adaptiveconcussionrecoveryintelligencesystem",
+ "testing": "Offline regression, safety and quality benchmarks exist and the page states plainly that they 'demonstrate consistency within our included test cases, not clinical validation'. No case count, split, seed or harness is published, and no test code is linked, so the pass rate is not reproducible by a reader."
+}

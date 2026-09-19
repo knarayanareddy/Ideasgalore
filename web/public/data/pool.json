@@ -1,8 +1,8 @@
 {
  "audit_version":1,
  "generated_at":"2026-09-18",
- "count":163,
- "meaning":"Unaudited candidates. Nothing here has been checked against an artifact; do not present a pool row or its coolness as a judgement of merit (ADR-A1/A10).",
+ "count":160,
+ "meaning":"Records held out of the catalog. `provenance` splits them in two: `unaudited` rows were never captured or checked; `audited-hold` rows were captured, scored and held for cause (thin, duplicate or hazard-capped) and carry the same audit columns the catalog does. Neither kind is a judgement of merit \u2014 read why_not_promoted and would_settle_it before quoting one (ADR-A1/A10).",
  "records":[
   {
    "id":"ai-image-detector-9ayw71",
@@ -128,27 +128,6 @@
    ],
    "specificity":0.79,
    "summary":"CAGE: 1ZMG9 / UEI: FQJUJKVKSAS3 dual-use VEX-GSR kernel. Replaces clock-sync with join-semilattice algebraic logic to stop edge node drift and AI hallucinations under EW jamming at O(1) constant cost",
-   "provenance":"unaudited",
-   "why_not_promoted":[
-    "not_audited"
-   ],
-   "would_settle_it":[
-    "project page capture (deep)",
-    "artifact check via repo_verify.py"
-   ],
-   "audit":null
-  },
-  {
-   "id":"sketchwish",
-   "name":"SketchWish",
-   "url":"https://devpost.com/software/sketchwish",
-   "domain":"Money, Commerce & Marketplaces",
-   "subsystem":"Marketplace & Matching",
-   "event":"Build with Gemini XPRIZE",
-   "coolness":0.422,
-   "moves":[],
-   "specificity":0.77,
-   "summary":"Turn any photo into a print-ready sketch in seconds, powered by Google Gemini. Built for print-on-demand sellers and gift buyers, live in production today.",
    "provenance":"unaudited",
    "why_not_promoted":[
     "not_audited"
@@ -465,25 +444,40 @@
    ],
    "specificity":0.59,
    "summary":"MCOP is deterministic, crypto-verifiable substrate for recursive triad orchestration - delivering byte-identical reasoning reproducibility across Node, browser, and edge in 4.4 milliseconds.",
-   "provenance":"unaudited",
+   "provenance":"audited-hold",
    "why_not_promoted":[
     "verdict:thin",
     "artifact_exists failed \u2192 capped at 'thin' (A3)"
    ],
    "would_settle_it":[
-    "a fetched project page and an artifact check"
+    "artifact_exists: a repository, deployment or store listing we can resolve",
+    "stack_consistency: a repository to compare the declared stack against",
+    "build_is_real: a readable source tree (a repo link, then `python3 pipeline/repo_verify.py`)",
+    "numbers_add_up: a denominator and baseline for the headline figure, or the raw log behind it"
    ],
    "audit":{
     "verdict":"thin",
+    "worth":"niche",
+    "soundness":"weak",
     "soundness_score":0.4141,
     "rubric_coverage":0.64,
     "audited_at":"2026-09-19",
     "unknowns":0,
     "duplicate_of":null,
+    "hazard":false,
+    "evidence":6,
     "reasons":[
      "artifact_exists failed \u2192 capped at 'thin' (A3)"
     ]
-   }
+   },
+   "verdict":"thin",
+   "worth":"niche",
+   "soundness":"weak",
+   "soundness_score":0.4141,
+   "rubric_coverage":0.64,
+   "audited_at":"2026-09-19",
+   "unknowns":0,
+   "repo_url":null
   },
   {
    "id":"neuthera-drug-discovery-platform",
@@ -1044,31 +1038,43 @@
    ],
    "specificity":0.7,
    "summary":"Turn a screenplay into a film you can afford. Nine Gemini agents storyboard, cast, shoot and cut it, quoting cost and odds first. Learns from every take in ClickHouse.",
-   "provenance":"unaudited",
+   "provenance":"audited-hold",
    "why_not_promoted":[
     "verdict:duplicate",
-    "soundness 0.68 over 64% of the rubric; 1 named unknown(s) remain \u2192 publishable with caveats",
-    "resubmission of the same product \u2014 name match False, shared mechanism/text overlap 0.25, shared numeric fingerprints ['$0.02', '$20', '$238', '$4.50'] (0.60 jaccard); merged into the better-evidenced copy (A5)",
+    "soundness 0.77 over 64% of the rubric; 1 named unknown(s) remain \u2192 publishable with caveats",
+    "resubmission of the same product \u2014 name match False, listing-title equality False, shared mechanism/text overlap 0.25, shared numeric fingerprints ['$0.02', '$20', '$238', '$4.50'] (0.60 jaccard); merged into the better-evidenced copy (A5)",
     "unknown: prior_art \u2014 no named competitor; a search pass would settle it",
     "hazard: regulated-claim (no team disclaimer found)",
     "merged into greenlight-nine-agent-production-crew \u2014 same submission, richer twin published",
     "duplicate_of:greenlight-nine-agent-production-crew"
    ],
    "would_settle_it":[
-    "no named competitor; a search pass would settle it"
+    "nothing \u2014 greenlight-nine-agent-production-crew is the same submission with more evidence; read its audit sheet instead"
    ],
    "audit":{
     "verdict":"duplicate",
-    "soundness_score":0.6797,
+    "worth":"strong",
+    "soundness":"verified",
+    "soundness_score":0.7734,
     "rubric_coverage":0.64,
     "audited_at":"2026-09-19",
     "unknowns":1,
     "duplicate_of":"greenlight-nine-agent-production-crew",
+    "hazard":true,
+    "evidence":6,
     "reasons":[
-     "soundness 0.68 over 64% of the rubric; 1 named unknown(s) remain \u2192 publishable with caveats",
-     "resubmission of the same product \u2014 name match False, shared mechanism/text overlap 0.25, shared numeric fingerprints ['$0.02', '$20', '$238', '$4.50'] (0.60 jaccard); merged into the better-evidenced copy (A5)"
+     "soundness 0.77 over 64% of the rubric; 1 named unknown(s) remain \u2192 publishable with caveats",
+     "resubmission of the same product \u2014 name match False, listing-title equality False, shared mechanism/text overlap 0.25, shared numeric fingerprints ['$0.02', '$20', '$238', '$4.50'] (0.60 jaccard); merged into the better-evidenced copy (A5)"
     ]
-   }
+   },
+   "verdict":"duplicate",
+   "worth":"strong",
+   "soundness":"verified",
+   "soundness_score":0.7734,
+   "rubric_coverage":0.64,
+   "audited_at":"2026-09-19",
+   "unknowns":1,
+   "repo_url":null
   },
   {
    "id":"fragmentos-del-crepusculo",
@@ -2486,15 +2492,41 @@
    ],
    "specificity":0.31,
    "summary":"Gemini-Box: Bounded cryptographic execution claims for autonomous Gemini agents. Any mutation collapses verification instantly.",
-   "provenance":"unaudited",
+   "provenance":"audited-hold",
    "why_not_promoted":[
-    "not_audited"
+    "verdict:duplicate",
+    "soundness 0.33 is too low to certify; stays in the pool",
+    "resubmission of the same product \u2014 name match True, listing-title equality True, shared mechanism/text overlap 0.07, shared numeric fingerprints [] (0.00 jaccard); merged into the better-evidenced copy (A5)",
+    "merged into adversarial-compliance-matrix \u2014 same submission, richer twin published",
+    "duplicate_of:adversarial-compliance-matrix"
    ],
    "would_settle_it":[
-    "project page capture (deep)",
-    "artifact check via repo_verify.py"
+    "nothing \u2014 adversarial-compliance-matrix is the same submission with more evidence; read its audit sheet instead"
    ],
-   "audit":null
+   "audit":{
+    "verdict":"duplicate",
+    "worth":"strong",
+    "soundness":"weak",
+    "soundness_score":0.3281,
+    "rubric_coverage":0.64,
+    "audited_at":"2026-09-19",
+    "unknowns":0,
+    "duplicate_of":"adversarial-compliance-matrix",
+    "hazard":false,
+    "evidence":6,
+    "reasons":[
+     "soundness 0.33 is too low to certify; stays in the pool",
+     "resubmission of the same product \u2014 name match True, listing-title equality True, shared mechanism/text overlap 0.07, shared numeric fingerprints [] (0.00 jaccard); merged into the better-evidenced copy (A5)"
+    ]
+   },
+   "verdict":"duplicate",
+   "worth":"strong",
+   "soundness":"weak",
+   "soundness_score":0.3281,
+   "rubric_coverage":0.64,
+   "audited_at":"2026-09-19",
+   "unknowns":0,
+   "repo_url":null
   },
   {
    "id":"intent-compiler",
@@ -2593,29 +2625,6 @@
    "moves":[],
    "specificity":0.52,
    "summary":"Lenis reads the sound of your voice to pace gentle EMDR-style eye movements that calm you down; the same eye-tracking engine doubles as symptom-titrated concussion recovery.",
-   "provenance":"unaudited",
-   "why_not_promoted":[
-    "not_audited"
-   ],
-   "would_settle_it":[
-    "project page capture (deep)",
-    "artifact check via repo_verify.py"
-   ],
-   "audit":null
-  },
-  {
-   "id":"adversarial-compliance-matrix",
-   "name":"Gemini-Box",
-   "url":"https://devpost.com/software/adversarial-compliance-matrix",
-   "domain":"Agentic Autonomy & Orchestration",
-   "subsystem":"General",
-   "event":"Build with Gemini XPRIZE",
-   "coolness":0.333,
-   "moves":[
-    "institutional-grade-reliability"
-   ],
-   "specificity":0.28,
-   "summary":"Gemini-Box: Immutable cryptographic claims for Gemini agents. Any bit flip -> instant INVALID.",
    "provenance":"unaudited",
    "why_not_promoted":[
     "not_audited"
@@ -2948,15 +2957,42 @@
    ],
    "specificity":0.4,
    "summary":"Uses personalized cognitive and physical tests to track concussion recovery, detect unusual changes, and provide AI-powered recovery insights.",
-   "provenance":"unaudited",
+   "provenance":"audited-hold",
    "why_not_promoted":[
-    "not_audited"
+    "verdict:thin",
+    "soundness 0.33 is too low to certify; stays in the pool",
+    "hazard: clinical"
    ],
    "would_settle_it":[
-    "project page capture (deep)",
-    "artifact check via repo_verify.py"
+    "artifact_exists: a repository, deployment or store listing we can resolve",
+    "stack_consistency: a repository to compare the declared stack against",
+    "build_is_real: a readable source tree (a repo link, then `python3 pipeline/repo_verify.py`)",
+    "numbers_add_up: a denominator and baseline for the headline figure, or the raw log behind it",
+    "limits_disclosed: a statement of what the system itself cannot do (accuracy, coverage, privacy, failure modes)"
    ],
-   "audit":null
+   "audit":{
+    "verdict":"thin",
+    "worth":"niche",
+    "soundness":"weak",
+    "soundness_score":0.3281,
+    "rubric_coverage":0.64,
+    "audited_at":"2026-09-19",
+    "unknowns":0,
+    "duplicate_of":null,
+    "hazard":true,
+    "evidence":6,
+    "reasons":[
+     "soundness 0.33 is too low to certify; stays in the pool"
+    ]
+   },
+   "verdict":"thin",
+   "worth":"niche",
+   "soundness":"weak",
+   "soundness_score":0.3281,
+   "rubric_coverage":0.64,
+   "audited_at":"2026-09-19",
+   "unknowns":0,
+   "repo_url":null
   },
   {
    "id":"cinepilot-ai-multi-agent-film-production-assistant",
@@ -3034,30 +3070,6 @@
    "moves":[],
    "specificity":0.05,
    "summary":"Refining Raw Medical Record Chaos into Personal Clinical Sovereignty",
-   "provenance":"unaudited",
-   "why_not_promoted":[
-    "not_audited"
-   ],
-   "would_settle_it":[
-    "project page capture (deep)",
-    "artifact check via repo_verify.py"
-   ],
-   "audit":null
-  },
-  {
-   "id":"neuroguard-ai-adaptiveconcussionrecoveryintelligencesystem",
-   "name":"NeuroGuard AI",
-   "url":"https://devpost.com/software/neuroguard-ai-adaptiveconcussionrecoveryintelligencesystem",
-   "domain":"Health, Care & Human Performance",
-   "subsystem":"Screening & Diagnostics",
-   "event":"Hack for Humanity | Summer 2026",
-   "coolness":0.3197,
-   "moves":[
-    "human-holds-the-last-button",
-    "deterministic-guardrail"
-   ],
-   "specificity":0.4,
-   "summary":"Turns daily concussion symptoms into clear, evidence-grounded recovery guidance and timely safety escalation for patients, caregivers, and clinicians.",
    "provenance":"unaudited",
    "why_not_promoted":[
     "not_audited"
@@ -3343,15 +3355,43 @@
    "moves":[],
    "specificity":0.18,
    "summary":"A voice-first, visual medication assistant designed by a nurse to help elderly and low-literacy patients take the right medicine at the right time.",
-   "provenance":"unaudited",
+   "provenance":"audited-hold",
    "why_not_promoted":[
-    "not_audited"
+    "verdict:thin",
+    "soundness 0.27 is too low to certify; stays in the pool",
+    "unknown: numbers_with_arithmetic \u2014 no measurable outcome is asserted; a benchmark table would settle it",
+    "hazard: clinical (no team disclaimer found)"
    ],
    "would_settle_it":[
-    "project page capture (deep)",
-    "artifact check via repo_verify.py"
+    "no measurable outcome is asserted; a benchmark table would settle it",
+    "artifact_exists: a repository, deployment or store listing we can resolve",
+    "stack_consistency: a repository to compare the declared stack against",
+    "build_is_real: a readable source tree (a repo link, then `python3 pipeline/repo_verify.py`)",
+    "numbers_add_up: a denominator and baseline for the headline figure, or the raw log behind it"
    ],
-   "audit":null
+   "audit":{
+    "verdict":"thin",
+    "worth":"strong",
+    "soundness":"weak",
+    "soundness_score":0.2656,
+    "rubric_coverage":0.64,
+    "audited_at":"2026-09-19",
+    "unknowns":1,
+    "duplicate_of":null,
+    "hazard":true,
+    "evidence":6,
+    "reasons":[
+     "soundness 0.27 is too low to certify; stays in the pool"
+    ]
+   },
+   "verdict":"thin",
+   "worth":"strong",
+   "soundness":"weak",
+   "soundness_score":0.2656,
+   "rubric_coverage":0.64,
+   "audited_at":"2026-09-19",
+   "unknowns":1,
+   "repo_url":null
   },
   {
    "id":"cinema-os",
