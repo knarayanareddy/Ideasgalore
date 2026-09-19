@@ -62,12 +62,32 @@ precision over recall.
 
 **Classification contract.** `classify_record()` scores a weighted lexicon vote
 (name/summary ×2.0 weight, authored prose ×1.0, sector `signature` terms ×3.0/1.5)
-over the project's *own* text. Two rules learned during the build, both tested:
+over the project's *own* text. Four rules learned during the build, all tested:
 1. Event title and event themes are **excluded** — "Build with Gemini XPRIZE"
    would otherwise shelve a thousand projects under Developer Tooling because of
    the word "build".
 2. Short keywords match as whole words, long ones as stems — otherwise `cli`
    matches "CLIP" and `crop` matches an image transform.
+3. Only *subject* text may shelve a record. The `page` field is the classification text, and for
+   audit captures it is filled from exactly one authored section, `what_it_does` (see
+   `ingest_seed.CAPTURE_CLASSIFY_SECTIONS`). `how_we_built_it` and `data_and_models` describe the
+   stack, and the stack is not a subject: with them folded in, a compliance harness moved to Data
+   Infrastructure because it stores a signed ledger, and an orchestration platform's margin fell
+   from 0.71 to 0.14. Our own commentary sections are excluded for the same reason read from the
+   other side — with all seven folded in, a salvage-estimation tool landed in Learning because a
+   sentence *we* wrote began "The lesson the page argues hardest is…".
+4. A sector's `signature` has to contain the sector's *subject*. Two records were shelved at
+   `margin 0.00` on a single subsystem word because the winning sector had no vocabulary of its own:
+   a news-comparison engine sat under Games & Interactive Fiction on the word `world` matching
+   "Arab World" — tied with Learning's `search`, so dictionary order chose — because Public Trust's
+   signature had no `news`, `journalis`, `editorial`, `fact-check` or `misinformation` at all, and a
+   parts-pricing tool sat under Climate ("vision", "emission") because Money's signature had no
+   `price`, `valuation`, `resale`, `auction` or `shopping` (its hook does say "price reports" and
+   "repair costs"; Climate scored on `vision`, from "Computer vision"). `retrieval` left Learning's
+   signature for the same reason in the other direction — it names how a system is built, so at 1.5×
+   on prose it pulled a shopping copilot into an education sector. Measured over all 167 rows these changes moved six
+   records, and each move reads better than its predecessor; bare `quote` was tried for Money and
+   rejected, since half the corpus quotes users.
 
 Zero-score records land in `Emerging & Cross-Domain` with `domain_margin 0.0`
 instead of being silently misfiled.

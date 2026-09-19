@@ -55,6 +55,15 @@
     "stars": 0
    }
   ],
+  "Carbender": [
+   {
+    "description": "Solving Dreadnode's Carbender Challenge",
+    "full_name": "FifthGenML/carbender",
+    "language": "Python",
+    "pushed_at": "2024-12-30",
+    "stars": 0
+   }
+  ],
   "ComplianceGuardian": [
    {
     "description": "",
@@ -251,7 +260,6 @@
     "pushed_at": "2025-07-06",
     "stars": 2
    }
-  ],
-  "NeuroGuard AI - Adaptive Concussion Recovery Intelligence": []
+  ]
  }
 }

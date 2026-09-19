@@ -1236,25 +1236,192 @@ class TestShelvingAcademy(unittest.TestCase):
         self.assertNotEqual(domain, "Learning & Knowledge Systems", (domain, sub, margin))
 
 
+class TestShelvingSubjectVocabulary(unittest.TestCase):
+    """A shelf is a claim about what a product is *for*, so only subject text may decide it.
+
+    Batch 5 found two opposite leaks at once. A news-comparison engine shelved under "Games &
+    Interactive Fiction" and a salvage-estimation tool under Climate, both at margin 0.00,
+    because Public Trust had no news vocabulary and Money had no pricing vocabulary: the win
+    came from a single subsystem word ("game" in one, "vision" and "emission" in the other).
+    Folding captured prose in then created the mirror-image leak — our own `learned` section,
+    which began "The lesson the page argues hardest is…", moved a car tool into Learning. Both
+    halves are pinned here: the sectors must recognise their subjects, and the classifier must
+    read only text that describes the subject.
+    """
+
+    def test_a_news_product_reaches_the_sector_that_owns_verification(self):
+        rec = {"name": "Newspectives - new perspective on news",
+               "summary": "One news event. Every regional lens. Side-by-side. Compares how USA, "
+                          "China, Russia and the Arab World frame each story - daily.",
+               "built_with": ["react", "typescript", "vite"]}
+        domain, sub, margin = T.classify_record(rec)
+        self.assertEqual(domain, "Public Trust, Safety & Compliance", (domain, sub, margin))
+        self.assertEqual(sub, "Civics & Discourse", (domain, sub, margin))
+        self.assertGreater(margin, 0.0, "a tie means the shelf is arbitrary, which is what broke")
+
+    def test_an_editorial_tool_does_not_fall_to_the_entertainment_sectors(self):
+        rec = {"name": "Headline Lens",
+               "summary": "An editorial desk that checks a claim against each country's press "
+                          "before the story is published.", "built_with": []}
+        domain, sub, margin = T.classify_record(rec)
+        self.assertNotIn(domain, ("Creative Media, Story & Play", "Emerging & Cross-Domain"),
+                         (domain, sub, margin))
+
+    def test_pricing_an_asset_is_commerce_even_when_the_tool_uses_vision(self):
+        rec = {"name": "Carbender",
+               "summary": "Identifies damaged car parts, estimates repair costs and turns photos "
+                          "into OEM part lists with real-market price reports and a resale-value "
+                          "verdict.",
+               "built_with": ["next.js", "typescript", "prisma", "postgresql", "stripe"]}
+        domain, sub, margin = T.classify_record(rec)
+        self.assertEqual(domain, "Money, Commerce & Marketplaces", (domain, sub, margin))
+        self.assertNotEqual(domain, "Climate, Energy & the Physical World")
+
+    def test_the_stack_a_product_runs_on_is_not_its_subject(self):
+        """`what_it_does` is the captured text the classifier may read, so the projection is the
+        seam. `how_we_built_it` and `data_and_models` describe storage, and storage vocabulary
+        (`state`, `index`, `ledger`) outvoted the product: a compliance harness moved to Data
+        Infrastructure and an orchestration platform's margin fell from 0.71 to 0.14."""
+        import ingest_seed as I
+        self.assertEqual(tuple(I.CAPTURE_CLASSIFY_SECTIONS), ("what_it_does",))
+
+
+class TestEvidenceTiersAreNamedByTheirEvidence(unittest.TestCase):
+    """What a page measured has to match what the check claims it measured."""
+
+    @staticmethod
+    def _cap(testing, nums, challenges="We tuned the splash screen."):
+        return {"id": "fixture", "name": "Fixture",
+                "source_url": "https://devpost.com/software/fixture",
+                "sections": {"what_it_does": "It reads a corpus and answers questions.",
+                             "challenges": challenges},
+                "testing": testing, "numbers": nums, "built_with": ["python"],
+                "links": {"video": "https://youtu.be/x"}}
+
+    def test_a_performance_figure_is_not_an_evaluation_of_the_output(self):
+        """'TTI 40s to 0.9s' is a real measurement of the build, not a check of what the system
+        produces; crediting it at the top tier told readers a news engine's journalism was
+        evaluated when only its load time was."""
+        cap = self._cap(
+            "Time to interactive was measured before/after: 40s to 0.9s on mobile Safari.",
+            [{"claim": "TTI 40s to 0.9s", "denominator": "first interactive on mobile Safari",
+              "verifiable": False,
+              "arithmetic": "not falsifiable from the page: no device list, network condition or sample size"}])
+        chk = A.run_checks(cap, None, None, {})[0]["test_or_eval_evidence"]
+        self.assertEqual(chk["pass"], 0.5, chk["why"])
+        self.assertIn("no harness, held-out set or method behind it", chk["why"])
+        self.assertIn("measurement words", chk["why"], "the why must name the figure it found")
+
+    def test_a_quality_metric_with_a_recomputed_figure_reaches_the_supported_tier(self):
+        cap = self._cap(
+            "Held-out accuracy was 95.1% against a 412-clip labelled set, versus 71% for the baseline.",
+            [{"claim": "95.1% held-out accuracy", "denominator": "412 labelled clips",
+              "verifiable": True, "arithmetic": "recomputed: 392/412 = 95.1%"}])
+        chk = A.run_checks(cap, None, None, {})[0]["test_or_eval_evidence"]
+        self.assertIn(chk["pass"], (0.75, 1.0), chk["why"])
+
+    def test_a_config_block_is_not_a_limitation_of_the_system(self):
+        """`block` used to be a capability cue, so 'the hosting block in firebase.json' read as
+        a disclosure of what the product cannot do."""
+        cap = self._cap("", [], challenges="The hosting block in firebase.json was silently "
+                        "ignored, so the sitemap and RSS were proxied by hand in server.ts.")
+        chk = A.run_checks(cap, None, None, {})[0]["limits_disclosed"]
+        self.assertLess(chk["pass"] or 0.0, 1.0, chk["why"])
+
+    def test_naming_the_limits_of_its_own_data_is_a_disclosure(self):
+        """A page can admit a limit without writing 'we cannot': the noun phrase counts."""
+        cap = self._cap("", [], challenges="Coverage is thin outside the EU, so the interface "
+                        "carries advisory banners whose job is to communicate the limits of the "
+                        "parts catalog instead of returning an empty result.")
+        chk = A.run_checks(cap, None, None, {})[0]["limits_disclosed"]
+        self.assertEqual((chk["pass"], chk["status"]), (1.0, "confirmed"), chk["why"])
+        self.assertIn("what the system itself cannot do", chk["why"])
+
+    def test_a_failure_post_mortem_says_fail_not_cannot(self):
+        """Same tier, different evidence, and the sentence has to tell them apart."""
+        cap = self._cap("", [], challenges="The music API failed quietly: a null payload produced "
+                        "an undefined task id and the client polled it fifty times, so the server "
+                        "now returns a real 502 and bails after five nulls.")
+        chk = A.run_checks(cap, None, None, {})[0]["limits_disclosed"]
+        self.assertEqual(chk["pass"], 1.0, chk["why"])
+        self.assertIn("where the system fails", chk["why"], chk["why"])
+
+
+class TestHazardFollowsTheClaimNotTheShelf(unittest.TestCase):
+    """A13 says the hazard is stamped from what a page asserts; a shelf change must not lose it."""
+
+    REC = {"domain": "Money, Commerce & Marketplaces", "summary": "salvage repair estimate tool"}
+
+    def test_invoking_a_regulator_is_a_claim_in_any_sector(self):
+        cap = {"sections": {"what_it_does": "Each estimate is graded against DOT and SAE standards, "
+                            "with the loss bands described as matching EU salvage threshold standards."},
+               "one_line": "A repair estimate with a total-loss verdict.", "testing": "", "numbers": []}
+        hz = A.hazard_for(self.REC, cap, {})
+        self.assertIsNotNone(hz, "the exposure is the borrowed authority, not the sector")
+        self.assertEqual(hz["class"], "regulated-claim")
+        self.assertFalse(hz["team_disclaimed"])
+
+    def test_the_word_standard_alone_is_not_a_hazard(self):
+        cap = {"sections": {"what_it_does": "The layout follows a standard grid of cards."},
+               "one_line": "A design surface.", "testing": "", "numbers": []}
+        self.assertIsNone(A.hazard_for(self.REC, cap, {}))
+
+
 class TestGeneratedCensus(unittest.TestCase):
     """The docs quote counts, and the counting is done by a program.
 
-    Hand-copied stats were wrong inside a batch of being written — three documents at once — so
-    every count in that prose lives between sentinels and is emitted from `catalog-stats.json`.
-    These two tests are the gate in unittest form; `pipeline/docsync.py --check` is the same claim
-    on the committed tree.
+    Hand-copied stats were wrong inside a batch of being written — three documents at once — so every
+    count in that prose lives between sentinels and is emitted from the built surfaces. Batch 5 widened
+    the rule, because one census block was not enough: a document that regenerates its headline while a
+    paragraph further down still quotes "157 held-out records" and "8 of 165 audited" has only moved the
+    lie. `docsync` now renders *named* regions, and a region name with no renderer — or a renderer whose
+    output the file disagrees with — fails the build. These tests are that gate in unittest form;
+    `pipeline/docsync.py --check` is the same claim on the committed tree.
     """
+
+    @staticmethod
+    def _src(rel):
+        with open(os.path.join(REPO, rel), encoding="utf-8") as fh:
+            return fh.read()
 
     def test_every_doc_carries_the_generated_census(self):
         import docsync
+        b, e = docsync.begin("census"), docsync.end("census")
         for rel in docsync.TARGETS:
-            with open(os.path.join(REPO, rel), encoding="utf-8") as fh:
-                src = fh.read()
-            self.assertIn(docsync.BEGIN, src, f"{rel} lost its census sentinel")
-            self.assertIn(docsync.END, src, f"{rel} lost its census end sentinel")
-            self.assertLess(src.index(docsync.BEGIN), src.index(docsync.END), rel)
-            self.assertNotIn("placeholder", src[src.index(docsync.BEGIN):src.index(docsync.END)],
-                            f"{rel}: census block was never generated")
+            src = self._src(rel)
+            self.assertIn(b, src, f"{rel} lost its census sentinel")
+            self.assertIn(e, src, f"{rel} lost its census end sentinel")
+            self.assertLess(src.index(b), src.index(e), rel)
+            self.assertNotIn("placeholder", src[src.index(b):src.index(e)],
+                             f"{rel}: census block was never generated")
+
+    def test_every_region_in_a_doc_is_generated_by_something(self):
+        """The failure mode this pins is prose that starts quoting a number nobody regenerates."""
+        import docsync
+        known = set(docsync.REGIONS) | {"census"}
+        for rel in docsync.TARGETS:
+            src = self._src(rel)
+            for name in re.findall(r"<!-- ([a-z-]+):begin -->", src):
+                self.assertIn(name, known, f"{rel}: region `{name}` has no renderer")
+                self.assertIn(docsync.end(name), src, f"{rel}: region `{name}` never closes")
+
+    def test_the_regions_say_what_the_built_surfaces_say(self):
+        import docsync
+        with open(os.path.join(REPO, "web", "public", "catalog-stats.json"), encoding="utf-8") as fh:
+            stats = json.load(fh)
+        caps = docsync._captures()
+        rendered = {"census": docsync.render_census(stats, caps)}
+        for name, fn in docsync.REGIONS.items():
+            rendered[name] = fn(stats, caps)
+        for rel in docsync.TARGETS:
+            src = self._src(rel)
+            for name, body in rendered.items():
+                beg, fin = docsync.begin(name), docsync.end(name)
+                if beg not in src:
+                    continue
+                region = src[src.index(beg) + len(beg):src.index(fin)]
+                self.assertEqual(" ".join(region.split()), " ".join(("\n".join(body)).split()),
+                                 f"{rel}: region `{name}` disagrees with the surfaces it claims to quote")
 
     def test_the_census_says_what_the_stats_say(self):
         import docsync
@@ -1262,7 +1429,7 @@ class TestGeneratedCensus(unittest.TestCase):
             stats = json.load(fh)
         with open(os.path.join(REPO, "pipeline", "corpus.jsonl"), encoding="utf-8") as fh:
             corpus = [json.loads(l) for l in fh]
-        block = "\n".join(docsync.render(stats))
+        block = "\n".join(docsync.render_census(stats, docsync._captures()))
         self.assertIn(f"**{stats['audited_published']} of {stats['coverage']['published_total']}**", block)
         self.assertIn(f"**{stats['pool_records']}** sit in", block)
         self.assertIn(f"{stats['pool_audited_held']} captured, scored and held for cause", block)
@@ -1270,12 +1437,7 @@ class TestGeneratedCensus(unittest.TestCase):
         self.assertEqual(stats["audited_published"] + stats["pool_records"],
                         stats["coverage"]["published_total"],
                         "catalog + pool must still be the whole admitted corpus, or the census is a lie")
-        capdir = os.path.join(REPO, "pipeline", "raw", "deep_captures")
-        caps = []
-        for name in sorted(os.listdir(capdir)):
-            if name.endswith(".json"):
-                with open(os.path.join(capdir, name), encoding="utf-8") as fh:
-                    caps.append(json.load(fh))
+        caps = docsync._captures()
         self.assertEqual(len(caps), stats["deep_records"], "capture count in stats must match the files")
         self.assertTrue(all(c["id"] in {r["id"] for r in corpus} for c in caps),
                         "every capture must have a corpus row — see the capture-parity gate")

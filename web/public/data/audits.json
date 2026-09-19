@@ -103,6 +103,30 @@
    "url":"https://devpost.com/software/sketchwish",
    "name":"SketchWish"
   },
+  "carbender":{
+   "verdict":"sound-with-caveats",
+   "worth":"niche",
+   "soundness":"partial",
+   "soundness_score":0.5703,
+   "rubric_coverage":0.64,
+   "checks":{
+    "artifact_exists":"supported",
+    "build_is_real":"unverifiable",
+    "limits_disclosed":"confirmed",
+    "numbers_add_up":"partial",
+    "stack_consistency":"unverifiable",
+    "test_or_eval_evidence":"unverifiable"
+   },
+   "unknowns":[],
+   "evidence":6,
+   "contradicted":0,
+   "hazard":true,
+   "repo":null,
+   "audited_at":"2026-09-19",
+   "audit_version":1,
+   "url":"https://devpost.com/software/carbender",
+   "name":"Carbender"
+  },
   "continuity-g7bty0":{
    "verdict":"sound-with-caveats",
    "worth":"strong",
@@ -150,6 +174,30 @@
    "audit_version":1,
    "url":"https://devpost.com/software/complianceguardian-kcqs32",
    "name":"ComplianceGuardian"
+  },
+  "newspectives-new-perspective-on-news":{
+   "verdict":"sound-with-caveats",
+   "worth":"strong",
+   "soundness":"partial",
+   "soundness_score":0.5938,
+   "rubric_coverage":0.64,
+   "checks":{
+    "artifact_exists":"supported",
+    "build_is_real":"unverifiable",
+    "limits_disclosed":"confirmed",
+    "numbers_add_up":"partial",
+    "stack_consistency":"unverifiable",
+    "test_or_eval_evidence":"partial"
+   },
+   "unknowns":[],
+   "evidence":6,
+   "contradicted":0,
+   "hazard":true,
+   "repo":null,
+   "audited_at":"2026-09-19",
+   "audit_version":1,
+   "url":"https://devpost.com/software/newspectives-new-perspective-on-news",
+   "name":"Newspectives - new perspective on news"
   },
   "vitalis-bio":{
    "verdict":"sound-with-caveats",

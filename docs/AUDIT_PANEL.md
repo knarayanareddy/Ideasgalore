@@ -392,6 +392,70 @@ sentinels, emitted from `catalog-stats.json` by `pipeline/docsync.py` on `make b
 `docsync.py --check` on `make verify`: a document that restates a stale count fails the build, and
 qualitative prose stays hand-written because that is the part a program cannot derive.
 
+**After queue batch 5** the catalog is 11 of 157: **Newspectives 0.59 / `strong`** (a multi-region
+news engine whose real thesis is that *machines* are the audience for a news product — Claim-level
+schema.org with a citation array per lens, a `disambiguatingDescription` marking the satirical one,
+`llms.txt`, OpenAPI, IndexNow and a no-auth API; hazard `compliance-signoff`, because every unverified
+lens sentence is packaged as a citable claim; its four silent-failure post-mortems earn
+`limits_disclosed: confirmed`, and the "99/100 on schema" it quotes from an audit it never names earns
+nothing) and **Carbender 0.57 / `niche`** (salvage photos → priced OEM parts list → a Loss Ratio verdict
+on whether the car is worth fixing; a live paid deployment so `artifact_exists` is `supported 0.75`, no
+repository, and not one accuracy figure on the page — which the team itself treats as the problem, since
+its stated principle is that a confident wrong part code is worse than no answer). 96 tests green.
+
+The batch's actual finding was that **both records had been mis-shelved before we read them**: each
+classified at `domain_margin 0.00` with zero signature hits in its own sector, the winner chosen by a
+single subsystem word ("world", from "Arab World", for the news product; "vision", from "Computer
+vision", for the car tool). Three fixes followed, each measured over all 167 rows, and each with a
+rejected variant recorded so it is not retried:
+
+- **Sector lexicons gained their subjects** — news/journalism/editorial/fact-check/misinformation in
+  Public Trust, price/valuation/resale/auction/shopping in Money, and `retrieval` *removed* from
+  Learning's signature. Six records re-shelved across the corpus and each reads better than its
+  predecessor: Newspectives 0.00 → **Public Trust / Civics & Discourse at 0.66**; Carbender 0.00 →
+  **Money / Retail & Conversion at 0.55**; an "AI-powered asset valuation platform" out of Creative
+  Media's *Design & Visual Tools* into Money; an "#e-commerce search" concierge out of Learning's
+  *Search & Retrieval*; `gemini-box` from the Agentic "General" bucket into *Agent Guardrails &
+  Gating*; and a WhatsApp anti-scam bot out of "Unclassified" into Civics & Discourse, where it stays
+  a 0.00 tie — a tie the UI already prints as "browse, don't trust", which is the honest answer while
+  two sectors score it equal. `quote` was tried for Money and **rejected**: half the corpus quotes
+  users, and a magnet word is worse than a gap.
+- **Capture prose reached the classifier — then was narrowed to one section.** `_corpus()` had always
+  been documented as including "the authors' own sections", but audit captures wrote their sections to
+  `sections` while only the harvester's `page` field was read, so the richest 16 rows in the corpus were
+  shelved from a slogan. Folding all seven captured sections in first *broke* two shelves: a compliance
+  harness moved to Data Infrastructure because it stores a signed ledger, an orchestration platform's
+  margin fell 0.71 → 0.14, and a car tool landed in Learning because a sentence **we** wrote began
+  "The lesson the page argues hardest is…". Final rule: `what_it_does` only — subject text, from the
+  authors, which is what the field is for. `learn` → `learner` was tried to fix the same collision and
+  **rejected**: it moved nothing we cared about and collapsed AX4U's margin to 0.00.
+- **Two evidence tiers stopped over-claiming.** The `supported 0.75` eval rung now requires a
+  quality-metric cue, so a before/after load time plus an unnamed third-party score falls to the
+  denominator rung at 0.5 with the words it found quoted back; `block` left the capability cue list
+  (a JSON hosting block is not a limitation); `limits?` and a named coverage gap joined it; and the
+  `confirmed` `why` now distinguishes "named what the system itself cannot do" from "stated where the
+  system fails, in production terms". A hazard stamp was moved off the sector onto the claim — naming
+  DOT/SAE/ECE or "matching EU threshold standards" is a compliance assertion whatever shelf the record
+  sits on, which is how the corrected Money record kept its hazard instead of quietly losing it.
+
+Because the classification corpus for captured records grew by one authored section, four records
+also gained specificity and with it coolness (SATU 0.4764 → 0.4834, Continuity 0.4557 → 0.4725,
+Newspectives 0.4085 → 0.4287, Carbender 0.3818 → 0.4245). No pre-existing verdict or soundness score
+moved: the two tiers rewritten this batch were tested against all 18 sheets, and only the two new
+records changed state.
+
+One more outcome belongs to the catalog rather than the engine: the promotion queue had selected these
+two records with the reason "Climate has 6 rows and no audit" and "Creative Media has 28 rows" — counts
+computed from shelves that were themselves wrong. A queue ranking is only as honest as the taxonomy it
+summarises, which is why the sector census is now quoted by the surfaces that use it.
+
+**Generated prose widened.** `docsync` no longer regenerates one census block: counted sentences in this
+protocol's §6 and §8 — the pool split, the coverage line, both JSON excerpts, the repository-blindness
+and corpus-bias bullets — live in named regions (`<!-- pool-split:begin -->`, …) emitted from the built
+surfaces, and `make verify` fails on any region a build does not generate, including an unknown name.
+The hand-written counts there had drifted by three batches, in a document that *says* the doc is the
+thing that is wrong when they disagree.
+
 ## 9 · What changed against the first instinct
 
 First instinct was: add a `quality_flag` column, hand-label the 165 rows, keep publishing them all.

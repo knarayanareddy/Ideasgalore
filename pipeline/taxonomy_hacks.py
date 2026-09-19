@@ -87,7 +87,21 @@ DOMAINS: Dict[str, Dict[str, Any]] = {
         },
     },
     "Public Trust, Safety & Compliance": {
-        "signature": ['audit', 'provenance', 'forensic', 'deepfake', 'watermark', 'tamper', 'compliance', 'moderation', 'dispute', 'evidence', 'verdict', 'questionnaire'],
+        # Information-integrity vocabulary was missing entirely: no news, journalism,
+        # editorial or misinformation word anywhere in the signature. A product whose whole
+        # subject is how the press frames an event therefore had no path into the one sector
+        # that owns the question "who verified this" — Newspectives scored zero signature
+        # hits in core *and* full text, won Creative Media on one subsystem word — "world",
+        # matching "Arab World" — tied 3.0 with Learning's "search", and shelved under "Games &
+        # Interactive Fiction" at margin 0.00. The tie is the tell: two accidental hits, and the
+        # dict order picked the winner. Words here are chosen so they cannot fire on infrastructure prose: `news` is
+        # matched as a whole word (`newspaper` needs `newsroom`), and the ambiguous
+        # `press`/`media` stay out because "under pressure" and "social media" would join
+        # every record in the corpus.
+        "signature": ['audit', 'provenance', 'forensic', 'deepfake', 'watermark', 'tamper', 'compliance', 'moderation',
+                      'dispute', 'evidence', 'verdict', 'questionnaire',
+                      'news', 'journalis', 'editorial', 'newsroom', 'fact-check', 'misinformation', 'disinformation',
+                      'propaganda', 'media literacy'],
         "hue": "#495057",
         "blurb": "Verification, provenance, moderation, forensics, and the paperwork "
                  "of modern institutions rebuilt as machine-readable evidence.",
@@ -97,18 +111,32 @@ DOMAINS: Dict[str, Dict[str, Any]] = {
                                        "audit finding", "auditor", "regulat",
                                        "questionnaire", "sign-off"],
             "Safety & Emergency Response": ["emergency", "responder", "accident", "safety", "alert"],
-            "Civics & Discourse": ["civic", "vote", "public", "discourse", "policy", "government"],
+            "Civics & Discourse": ["civic", "vote", "public", "discourse", "policy", "government",
+                                  "news", "journalis", "editorial", "headline", "opinion", "perspective"],
         },
     },
     "Money, Commerce & Marketplaces": {
-        "signature": ['payment', 'checkout', 'invoice', 'marketplace', 'seller', 'buyer', 'pricing', 'refund', 'transaction', 'revenue', 'smb'],
+        # The sector was described entirely through settlement, so a product about selling
+        # — rather than paying — scored nothing: a shopping copilot sat in Learning because
+        # "retrieval", "document" and "lesson" appeared in its page and `retail` appeared
+        # nowhere in Money. `conversion` is a funnel word here and a document word there,
+        # and the corpus run says the second sense does not occur in listings.
+        "signature": ['payment', 'checkout', 'invoice', 'marketplace', 'seller', 'buyer', 'pricing', 'refund',
+                      'transaction', 'revenue', 'smb',
+                      'shopping', 'e-commerce', 'retail', 'merchandis', 'product catalog', 'conversion',
+                      # Priced-asset products — what a damage estimate, an auction lot or a
+                      # resale valuation actually are — were invisible here. `quote` is
+                      # deliberately absent: an AI page's "user quotes" would outvote every
+                      # real commerce signal in the corpus.
+                      'price', 'valuation', 'resale', 'auction', 'shopper'],
         "hue": "#b2710d",
         "blurb": "Transactions, matching, pricing, and the boring plumbing that "
                  "makes an exchange actually settle.",
         "subsystems": {
             "Payments & Claims": ["payment", "invoice", "billing", "payout", "refund", "dispute"],
             "Marketplace & Matching": ["marketplace", "matchmaking", "buyer", "seller", "listing", "p2p"],
-            "Retail & Conversion": ["cart", "checkout", "shop", "product", "try-on", "conversion"],
+            "Retail & Conversion": ["cart", "checkout", "shop", "shopping", "retail", "product", "product page",
+                                    "try-on", "conversion", "price", "resale", "listing"],
             "Fintech & Personal Finance": ["budget", "saving", "invest", "credit", "finance", "wallet"],
         },
     },
@@ -129,7 +157,12 @@ DOMAINS: Dict[str, Dict[str, Any]] = {
         # record named "… Academy" was shelving under Data Infrastructure because its
         # (accurate) Built With tags outvoted one stem in the summary. Signature terms are
         # weighted 3x on name+summary, so the fix is to recognise what the *name* is saying.
-        "signature": ['learn', 'study', 'tutor', 'course', 'quiz', 'wiki', 'document', 'ocr', 'transcri', 'retrieval', 'graphrag', 'notes',
+        # `retrieval` is gone from the signature and stays in the subsystem: it names how a
+        # record is built, not what it is for, so at 1.5x on page prose it swept a shopping
+        # copilot into an education sector for using an index. A sector signature has to be
+        # subject vocabulary; mechanism words belong in a subsystem, where they are weighted
+        # for what they are.
+        "signature": ['learn', 'study', 'tutor', 'course', 'quiz', 'wiki', 'document', 'ocr', 'transcri', 'graphrag', 'notes',
                       'educat', 'academy', 'bootcamp', 'curricul', 'classroom', 'teach', 'lesson', 'upskill', 'training program', 'coursework'],
         "hue": "#087f5b",
         "blurb": "Teaching, studying, tutoring, and the organization of what a group "
@@ -261,6 +294,18 @@ HAZARD_CLAIM_RE = (
     r"\b(diagnos\w*|screen\w*|triage|medicat\w*|dosage|prescri\w*|clear\w* to (return|play)|"
     r"regulat\w*|approval|sign-?off|compliance|detect\w* (concussion|cancer|tumor|fraud)|"
     r"autis\w*|concussion|suicid\w*)\b"
+    # Invoking a named regulator or a standards body is the same exposure as writing the word
+    # "compliance": the reader is being told the output has external backing. Carbender moves
+    # here after its own sector shelf is corrected (it is a marketplace tool, not a Climate
+    # project), which is exactly why the hazard question cannot live in `HAZARD_DOMAINS`
+    # alone. Measured over every capture in the corpus, these two patterns flag one record and
+    # it is the one that should be flagged, so no looser form (bare "standard", bare "ISO")
+    # is worth the noise.
+    r"|\b(?:DOT|SAE|ECE|ISO\s?\d+|GDPR|HIPAA|FDA|EPA|FCC|CE marking|EN\s?\d{4}|WCAG|SOC\s?2)\b"
+    r"|\b(?:threshold|standards?|directive|regulation|guideline)s?\b[^.]{0,30}"
+    r"\b(?:match\w*|comply|compliant|certif\w*|conform\w*|require\w*)\b"
+    r"|\b(?:match\w*|compliant with|conforms? to|certified by|accredited by)\b[^.]{0,30}"
+    r"\b(?:standard|threshold|directive|regulation|authority)\b"
 )
 
 # A5 — similarity thresholds, pinned by fixtures (A15).

@@ -204,10 +204,7 @@
     "video":"https://www.youtube.com/watch?v=mqsMewtdZdY"
    },
    "moves":[
-    "make-the-invisible-measurable",
-    "price-before-generate",
-    "deterministic-guardrail",
-    "artifacts-not-forms"
+    "make-the-invisible-measurable"
    ],
    "name":"SATU: Shopping Assistant That Understands",
    "provenance":{
@@ -281,7 +278,7 @@
     "limits_disclosed":{
      "pass":1.0,
      "status":"confirmed",
-     "why":"the team named what the system itself cannot do (abuse, blocks, hard-cap)"
+     "why":"the team named what the system itself cannot do (abuse, hard-cap)"
     },
     "numbers_add_up":{
      "pass":0.5,
@@ -339,7 +336,7 @@
     {
      "checked_at":"2026-09-19",
      "claim":"Did they state what does not work, or where it fails?",
-     "detail":"the team named what the system itself cannot do (abuse, blocks, hard-cap)",
+     "detail":"the team named what the system itself cannot do (abuse, hard-cap)",
      "id":"sketchwish:limits_disclosed",
      "kind":"page",
      "source":"https://devpost.com/software/sketchwish",
@@ -488,6 +485,265 @@
    ],
    "worth":"strong",
    "worth_note":"Not a photo filter but a small company assembled correctly: a cheap vision pass protecting fidelity, an image model doing the rendering, third-party auth, storage, quota and payments so the free tier stays solvent, plus two genuinely hard-won findings - that model deprecation mid-build is an operational risk to design for, and that in-app browsers break Google sign-in so the funnel needs an escape hatch. Most hackathon 'live product' claims are demos; this one names its own margin."
+  },
+  "carbender":{
+   "audit_version":1,
+   "audited_at":"2026-09-19",
+   "award":null,
+   "built_with":[
+    "antigravity",
+    "cloudflare-r2",
+    "gemini-api",
+    "google-genai",
+    "google-search-grounding",
+    "inngest",
+    "neon.tech",
+    "next.js",
+    "node.js",
+    "postgresql",
+    "prisma",
+    "react",
+    "sharp",
+    "stripe",
+    "supabase",
+    "tailwind-css",
+    "typescript"
+   ],
+   "checks":{
+    "artifact_exists":{
+     "pass":0.75,
+     "status":"supported",
+     "why":"no source repo linked, but the product is published at a live address a reader can open: https://carbender.com, https://www.youtube.com/watch?v=gXPxplOgSPY"
+    },
+    "build_is_real":{
+     "pass":null,
+     "status":"unverifiable",
+     "why":"no repository published, so the build cannot be read"
+    },
+    "limits_disclosed":{
+     "pass":1.0,
+     "status":"confirmed",
+     "why":"the team named what the system itself cannot do (limits)"
+    },
+    "numbers_add_up":{
+     "pass":0.5,
+     "status":"partial",
+     "why":"2 figure(s) a reader can check against the product (Loss Ratio bands: Low <40%, Moderate 40-70%, High >70%; 4 locales (English, Lithuanian, Polish, US English)), but 3 headline figure(s) carry no testable denominator: \"in under 2 minutes\" end to end; proprietary 700,000+ record OEM parts catalog"
+    },
+    "stack_consistency":{
+     "pass":null,
+     "status":"unverifiable",
+     "why":"no repo to cross-check the declared stack against"
+    },
+    "test_or_eval_evidence":{
+     "pass":0.0,
+     "status":"unverifiable",
+     "why":"the only testing sentence on the page is a denial (no suite, set or run is linked)"
+    }
+   },
+   "evidence":[
+    {
+     "checked_at":"2026-09-19",
+     "claim":"Is there an artifact at all \u2014 a repo, a deployed app, or a video of it running?",
+     "detail":"no source repo linked, but the product is published at a live address a reader can open: https://carbender.com, https://www.youtube.com/watch?v=gXPxplOgSPY",
+     "id":"carbender:artifact_exists",
+     "kind":"page",
+     "source":"https://devpost.com/software/carbender",
+     "status":"supported"
+    },
+    {
+     "checked_at":"2026-09-19",
+     "claim":"Does the repo's language/file mix match the stack they described?",
+     "detail":"no repo to cross-check the declared stack against",
+     "id":"carbender:stack_consistency",
+     "kind":"page",
+     "source":"https://devpost.com/software/carbender",
+     "status":"unverifiable"
+    },
+    {
+     "checked_at":"2026-09-19",
+     "claim":"Is the code a real build (source tree, setup steps, non-trivial size) rather than a stub or zip?",
+     "detail":"no repository published, so the build cannot be read",
+     "id":"carbender:build_is_real",
+     "kind":"page",
+     "source":"https://devpost.com/software/carbender",
+     "status":"unverifiable"
+    },
+    {
+     "checked_at":"2026-09-19",
+     "claim":"Do their metrics have a denominator, and is the arithmetic internally consistent?",
+     "detail":"2 figure(s) a reader can check against the product (Loss Ratio bands: Low <40%, Moderate 40-70%, High >70%; 4 locales (English, Lithuanian, Polish, US English)), but 3 headline figure(s) carry no testable denominator: \"in under 2 minutes\" end to end; proprietary 700,000+ record OEM parts catalog",
+     "id":"carbender:numbers_add_up",
+     "kind":"page",
+     "source":"https://devpost.com/software/carbender",
+     "status":"partial"
+    },
+    {
+     "checked_at":"2026-09-19",
+     "claim":"Did they state what does not work, or where it fails?",
+     "detail":"the team named what the system itself cannot do (limits)",
+     "id":"carbender:limits_disclosed",
+     "kind":"page",
+     "source":"https://devpost.com/software/carbender",
+     "status":"confirmed"
+    },
+    {
+     "checked_at":"2026-09-19",
+     "claim":"Any test suite, eval harness, or measured benchmark we can see?",
+     "detail":"the only testing sentence on the page is a denial (no suite, set or run is linked)",
+     "id":"carbender:test_or_eval_evidence",
+     "kind":"page",
+     "source":"https://devpost.com/software/carbender",
+     "status":"unverifiable"
+    }
+   ],
+   "fields":{
+    "built_with_verified":{
+     "provenance":"observed",
+     "value":"declared by the authors (17): antigravity, cloudflare-r2, gemini-api, google-genai, google-search-grounding, inngest, neon.tech, next.js \u00b7 no repository published, so these are the team's own claim and nothing corroborates them"
+    },
+    "clone_cost":{
+     "note":"our estimate with assumptions visible; not a claim about the team",
+     "provenance":"derived",
+     "value":{
+      "assumptions":[
+       "a parts catalog with per-model-year coverage, or an accepted plan to answer 'not covered' honestly for the vehicles you cannot price",
+       "a price source with enough freshness to quote at auction time, and a stated tolerance for how stale is too stale",
+       "labour-cost assumptions per region, since the repair estimate and therefore the Total Loss verdict depend on them even though the page never names them",
+       "a review path for the regulatory vocabulary: cite the standards and thresholds you invoke, or drop the claims that read like compliance approval"
+      ],
+      "estimate":"5-7 weeks for a single-jurisdiction version a buyer would trust; a year of data work for the catalog that makes it worth using",
+      "why":"The application is ordinary: photo preprocessing with Sharp, a queue on Inngest, Prisma over Postgres, Next.js and Stripe, and a multimodal model call with search grounding for part numbers and live prices - two or three weeks for someone fluent in that stack. The time goes into the parts catalog and the pricing source, which are the only defensible parts of the product and are not built here at all: structuring OEM data per make, model and year, keeping prices from becoming stale, and deciding what to return when coverage is thin. Adding a second jurisdiction (ECE instead of DOT/SAE, EUR, per-country import and inspection rules) is a further multiplier rather than a config flag. A clone can reproduce the flow quickly; it cannot reproduce the asset."
+     }
+    },
+    "data_and_models":{
+     "provenance":"observed",
+     "value":"Two vendor capabilities and one internal asset: Gemini 2.5 Flash, Pro and Flash-Lite via @google/genai for the multimodal read (with automatic failover between the three), Google Search grounding for OEM part-number lookup and live price verification, and a proprietary parts catalog the page sizes at 700,000-plus records across 60-plus makes. Prisma plus PostgreSQL hold estimates and users, Inngest runs the pipeline, R2 or Supabase hold images, Sharp normalises them before inference. No model is trained, and no accuracy, precision or price-error figure is published for either the vision step or the grounding step - the numbers on the page are throughput (under 2 minutes), asset size (700,000 records, 60-plus makes) and band edges (40 and 70 percent), not measurement."
+    },
+    "how_it_works":{
+     "provenance":"observed",
+     "value":"Next.js App Router with TypeScript, Tailwind and React on the front; Prisma over PostgreSQL (Neon) for state, Cloudflare R2 or Supabase for media, Sharp for image preparation, and Inngest for the asynchronous estimate pipeline. Stripe carries multi-currency billing. Recognition and pricing run on Gemini 2.5 Flash, Pro and Flash-Lite through @google/genai, with automatic failover between the three models, and Google Search grounding is used to look up OEM part numbers and verify live prices. Nothing is trained; the parts catalog the page calls proprietary, at 700,000-plus records across 60-plus vehicle makes, is presented as an asset rather than as something built here, and its construction is not documented."
+    },
+    "how_they_tested":{
+     "provenance":"observed",
+     "value":"No evaluation of any kind is described: no precision or recall on part identification, no back-test of repair estimates against shop invoices or auction outcomes, no error bars on the Loss Ratio, no hold-out by make or model year, and no mention of a test suite. The only quantitative structure on the page is the Loss Ratio band policy - Low under 40 percent, Moderate 40 to 70, High above 70 - which is a threshold choice presented as matching 'EU & US salvage threshold standards' with no citation for either standard. The honesty device the page does describe is in the interface rather than in a benchmark: scarcity detection and advisory banners that flag where the catalog does not reach."
+    },
+    "limits_they_disclosed":{
+     "provenance":"observed",
+     "value":"Coverage is the stated problem, and the page treats it as a design constraint rather than an edge case: it describes scarcity detection and advisory banners whose job is to communicate the limits of the parts catalog honestly instead of returning empty or misleading results, with the operating principle stated plainly - a wrong OEM code shown with false confidence is worse than showing no result. The second named difficulty is jurisdiction: two standards bodies, two currencies, and per-country import, title, emissions and inspection rules that have to be attached to the right estimate rather than translated after the fact, which is also what pulls Stripe multi-currency into the stack."
+    },
+    "numbers_with_arithmetic":{
+     "provenance":"observed",
+     "value":[
+      {
+       "arithmetic":"not falsifiable from the page: no timing method, device, image count or sample of runs is given, and the call path includes model failover plus live search grounding, so a reader cannot bound the tail a buyer would actually hit",
+       "claim":"\"in under 2 minutes\" end to end",
+       "denominator":"damage photos in to priced parts list and repair plan out",
+       "verifiable":false
+      },
+      {
+       "arithmetic":"not falsifiable from the page: the catalog is proprietary with no coverage breakdown by make, model or year, so 700,000 rows spread over 60-plus makes and decades of model years says nothing about whether the specific car in the photograph is priced - and every downstream figure, including the Total Loss verdict, depends on that coverage",
+       "claim":"proprietary 700,000+ record OEM parts catalog",
+       "denominator":"rows in the parts database",
+       "load_bearing":true,
+       "verifiable":false
+      },
+      {
+       "arithmetic":"not falsifiable from the page: a count of makes with no per-make model or year ranges, so it cannot be checked against a buyer's vehicle, and it is the denominator the 700,000-record figure needs in order to mean anything",
+       "claim":"60+ vehicle makes supported",
+       "denominator":"makes with parts coverage",
+       "verifiable":false
+      },
+      {
+       "arithmetic":"structural: the formula is stated with both inputs named, so a reader holding the two figures can reproduce the band and the Total Loss call; the band edges themselves are a policy choice, and the appeal to 'EU & US salvage threshold standards' is uncited, with the resale denominator coming from another estimate rather than a transaction record",
+       "claim":"Loss Ratio bands: Low <40%, Moderate 40-70%, High >70%",
+       "denominator":"Total Estimated Repair Cost divided by Clean Market Resale Value",
+       "verifiable":true
+      },
+      {
+       "arithmetic":"structural: countable by opening the product's language settings; nothing about accuracy or coverage depends on it, though the locale list is the only hint of which markets the jurisdiction logic has actually been exercised in",
+       "claim":"4 locales (English, Lithuanian, Polish, US English)",
+       "denominator":"UI locales shipped",
+       "verifiable":true
+      }
+     ]
+    },
+    "prior_art":{
+     "note":"each entry resolves to a URL we opened this session or a corpus id",
+     "provenance":"editorial",
+     "value":[
+      {
+       "corpus_id":"vms-ai-guard-fisheries-compliance-monitoring-alerts",
+       "relation":"both turn a stream of sensor evidence into a regulatory-flavoured verdict for a human to act on, and neither page publishes an accuracy figure - the fisheries tool goes further and states there is no ground truth for its risk classification, while Carbender's page implies its bands come from external standards without naming them. Read together, they are the two failure modes of the same design: admit the measurement problem, or borrow authority from a regulator."
+      },
+      {
+       "corpus_id":"continuity-g7bty0",
+       "relation":"both end in an artifact a person checks rather than an action the system takes - a repair plan PDF against a cited diff - and both leave the accuracy of the underlying judgement unmeasured. The difference is what they attach evidence to: Continuity grounds a claim against the live web and shows the citation next to the verdict, while Carbender grounds a part number against a proprietary catalog the reader cannot inspect, so its traceability stops at the vendor boundary."
+      },
+      {
+       "corpus_id":"sketchwish",
+       "relation":"both put a machine-readable judgement in front of a purchase decision and both monetise through the transaction surface rather than the model; the marketplace tool's advantage is that its output is checked by the market on the next listing, whereas a repair estimate is only checked when the parts arrive, so the feedback loop is months long."
+      }
+     ]
+    },
+    "what_breaks_first":{
+     "provenance":"editorial",
+     "value":"Catalog coverage, on both ends of the pipeline. The 700,000-row figure is spread over 60-plus makes and their model years, so the first user with a twelve-year-old European hatchback gets either no parts or a plausible wrong code - and the scarcity banner only helps if scarcity is detected against coverage the product actually measures rather than against a lookup that happens to miss. Second, the severity-to-cost link: the bands assume the repair estimate is close enough to divide by resale value, and near 40 and 70 percent a modest error in labour or parts changes 'repairable' into 'Total Loss' with no stated error model to tell the buyer which side of the line they are on. Third, spatial normalisation: the driver-side versus passenger-side disambiguation is the difference between quoting a mirror or a fender, and a cropped, low-light auction photo is precisely where a 3D-normalisation step degrades."
+    },
+    "what_it_does":{
+     "provenance":"observed",
+     "value":"Photos go in and a structured estimate comes out: damaged parts identified against an OEM catalog, each graded Severe, Moderate or Cosmetic, with 3D spatial normalisation used to tell driver-side from passenger-side damage rather than trusting the photo's left and right. Every identified part carries a real-market price report, and the parts assemble into a Repair Planner that exports a PDF. A Loss Ratio - Total Estimated Repair Cost divided by Clean Market Resale Value - is banded Low under 40 percent, Moderate 40 to 70, High above 70, described as matching EU and US salvage threshold standards, and a High ratio returns a Total Loss verdict. Jurisdiction changes the vocabulary (US DOT/SAE standards and USD, EU ECE in EUR) and adds country-aware import, title, emissions and inspection warnings. A separate free tool at carbender.com/window-sticker turns a VIN into a Monroney window sticker, and the whole product is a zero-download mobile web app in four locales (English, Lithuanian, Polish and US English)."
+    },
+    "what_it_is":{
+     "provenance":"derived",
+     "value":"A salvage-buyer's tool that turns damage photos into a priced OEM parts list, grades severity panel by panel, and divides the repair estimate by clean resale value to say whether the car is worth fixing at all - with US and EU rulebooks treated as different products, and missing parts coverage announced instead of papered over."
+    },
+    "what_to_steal":{
+     "provenance":"editorial",
+     "value":"Publish the decision rule, not just the score: the Loss Ratio names both inputs, states the band edges, and returns a verdict - a reader can recompute it and argue with it, which is more than most 'AI estimate' products offer. Then steal the failure-surface design: scarcity detection wired to an advisory banner, with the explicit principle that admitting no coverage beats a confident wrong answer. Region should be an input, not a translation - standards family, currency and title/import/emissions/inspection rules change what the estimate means, so carry them through the model call and the UI together. Free adjacent utility as acquisition: a VIN-to-window-sticker generator that costs nothing to run and lands the same audience on the paid product. And three model tiers with automatic failover in a flow running against an auction clock."
+    }
+   },
+   "hazard":{
+    "class":"regulated-claim",
+    "note":"This is a money decision dressed in regulatory vocabulary. The product returns a Total Loss verdict and a repair estimate that a buyer may bid against, while invoking DOT, SAE and ECE standards, country-specific import, title, emissions and inspection requirements, and a Loss Ratio band policy described as 'matching EU & US salvage threshold standards' with no citation and no named issuing body for either threshold. Nothing on the page states who is liable when the estimate is wrong, no accuracy figure exists for either the part identification or the price, and the resale denominator comes from another estimate rather than a transaction record, so a High-band verdict near a boundary can flip on inputs that are both soft. The team's stated posture is the right instinct - a wrong OEM code shown with false confidence is worse than no result - but an interface banner is not a compliance sign-off, and a tool that names regulators should either cite them or stop invoking them. Held from promotion on that basis: publishable as a documented case, not as a usable figure.",
+    "team_disclaimed":false
+   },
+   "id":"carbender",
+   "likes":2,
+   "links":{
+    "demo":"https://carbender.com",
+    "repo":null,
+    "video":"https://www.youtube.com/watch?v=gXPxplOgSPY"
+   },
+   "moves":[
+    "deterministic-guardrail",
+    "make-the-invisible-measurable",
+    "offline-first-fallback",
+    "model-cost-routing"
+   ],
+   "name":"Carbender",
+   "provenance":{
+    "checks":"derived",
+    "clone_cost":"derived",
+    "evidence":"observed",
+    "fields":"observed",
+    "verdict":"derived",
+    "worth":"editorial"
+   },
+   "publishable":true,
+   "repo":null,
+   "right_of_reply":"https://github.com/knarayanareddy/Ideasgalore/issues/new?labels=audit-recheck",
+   "rubric_coverage":0.64,
+   "soundness":"partial",
+   "soundness_score":0.5703,
+   "source_url":"https://devpost.com/software/carbender",
+   "unknowns":[],
+   "verdict":"sound-with-caveats",
+   "verdict_reasons":[
+    "soundness 0.57 over 64% of the rubric; 0 named unknown(s) remain \u2192 publishable with caveats"
+   ],
+   "worth":"niche",
+   "worth_note":"The audience is specific and it pays: people bidding on salvage lots, body shops and mechanics, for whom a photo-to-parts-list-with-prices replaces a guess made in a ten-minute walk-around. Within that audience the wedge is real and better than the obvious alternative, because the two things a human estimator cannot do at an auction - check a 700,000-row OEM catalog and price parts across a jurisdiction boundary - are exactly what the build automates, and the Loss Ratio turns a pile of numbers into the one decision the buyer came with. What keeps it niche rather than strong is that the mechanism does not outlive the project: vision plus grounded pricing plus a published decision ratio is a well-executed instance of a pattern that will be repeated, and the moat is the catalog, not the method. No accuracy figure anywhere means a buyer inherits the author's confidence rather than a measured one - which the page at least admits is the wrong thing to hand over, hence the scarcity banners."
   }
  }
 }

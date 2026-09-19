@@ -54,6 +54,14 @@ def load_deep(path: str) -> Dict[str, Dict[str, Any]]:
 # these are the fields that only exist *on* the page, so a bulk export that says "listing"
 # for a record someone actually opened is simply wrong.
 CAPTURE_ROW_FIELDS = ("likes", "award", "software_id", "built_with", "gallery_images")
+
+# The only captured section that enters the classification text (see `load_capture_projection`).
+# `what_it_does` states the subject; the sections around it do not, and measuring the difference
+# is what settled the choice. With `how_we_built_it` and `data_and_models` folded in too, the
+# adversarial compliance harness moved to Data Infrastructure because it stores a signed ledger,
+# and MCOP's margin collapsed from 0.71 to 0.14 — storage vocabulary (`state`, `index`, `cache`)
+# is a corpus-wide magnet, and the stack a product runs on is not the thing a sector is for.
+CAPTURE_CLASSIFY_SECTIONS = ("what_it_does",)
 CAPTURE_LINK_FIELDS = (("repo_url", "repo"), ("demo_url", "demo"), ("video_url", "video"))
 
 
@@ -78,6 +86,26 @@ def load_capture_projection(path: str) -> Dict[str, Dict[str, Any]]:
         # `depth` is the flag; `page` stays a harvester-only field (its value is a dict of
         # section prose that other stages walk, so a boolean here would crash them).
         proj: Dict[str, Any] = {"depth": "deep"}
+        # `_corpus()` — the text the sector classifier, `moves` and `specificity` read — is
+        # documented as including "the authors' own sections", and for harvester records it does,
+        # via `page`. An audit capture writes the same seven sections to `sections` and nothing
+        # put them in either field, so 16 of the corpus's richest records were shelved from a
+        # 140-character hook: a news product landed under Games & Interactive Fiction on the word
+        # "world" inside "Arab World", and a repair-estimating tool under Climate on "vision"
+        # inside "Computer vision" — both at margin 0.00, where the winner is dict order. `page` is internal — exports never mirror
+        # prose (ADR-12) — so this changes classification, not the published payload.
+        # Which captured text the classifier may read: the authors' own statement of what
+        # the product does, and nothing else — see `CAPTURE_CLASSIFY_SECTIONS`. The other
+        # sections are either the stack (which is not a subject) or our commentary (which is
+        # not the authors'); with all seven folded in, a salvage-estimation tool moved to
+        # Learning & Knowledge Systems because our own sentence began "The lesson the page
+        # argues hardest is…". `capture:` stays in the key so a reader can tell whose words a
+        # derived field leaned on.
+        sec = {f"capture:{k}": str(cap["sections"][k]).strip()
+               for k in CAPTURE_CLASSIFY_SECTIONS
+               if str((cap.get("sections") or {}).get(k) or "").strip()}
+        if sec:
+            proj["page"] = sec
         for key in CAPTURE_ROW_FIELDS:
             # `likes` is a real zero; everything else in an empty list is "the page read did
             # not see this widget", which must not erase what the listing scrape already knew.

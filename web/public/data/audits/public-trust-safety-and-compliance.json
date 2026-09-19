@@ -229,7 +229,7 @@
    },
    "moves":[
     "evidence-graph",
-    "deterministic-guardrail",
+    "human-holds-the-last-button",
     "make-the-invisible-measurable",
     "offline-first-fallback"
    ],
@@ -256,6 +256,254 @@
    ],
    "worth":"strong",
    "worth_note":"The product decision is the transferable one: refuse to let a model answer unless the answer names a rule from a versioned file, and escalate when it cannot. Pair that with an audit trail enforced at the permission layer and an entitlement model that spends counters inside a transaction, and you have three moves that apply to any agent product expected to produce evidence a third party will rely on. The incident write-up is unusually useful too - six failures behind each other, none of which crashed."
+  },
+  "newspectives-new-perspective-on-news":{
+   "audit_version":1,
+   "audited_at":"2026-09-19",
+   "award":null,
+   "built_with":[
+    "express-on-firebase-app-hosting-(cloud-run-under-the-hood)",
+    "firebase",
+    "firestore",
+    "firestore-for-persistence",
+    "react",
+    "typescript",
+    "vite"
+   ],
+   "checks":{
+    "artifact_exists":{
+     "pass":0.5,
+     "status":"supported",
+     "why":"no source repo linked, but the page publishes a working artifact: https://www.youtube.com/watch?v=2-UzVIu1dcA"
+    },
+    "build_is_real":{
+     "pass":null,
+     "status":"unverifiable",
+     "why":"no repository published, so the build cannot be read"
+    },
+    "limits_disclosed":{
+     "pass":1.0,
+     "status":"confirmed",
+     "why":"the team stated where the system fails, in production terms (fail)"
+    },
+    "numbers_add_up":{
+     "pass":0.5,
+     "status":"partial",
+     "why":"3 figure(s) a reader can check against the product (~90 Vertex AI grounding redirect URLs per topic page unresolved; about 13 regional lenses enabled by default out of roughly 20 configured), but 2 headline figure(s) carry no testable denominator: 99/100 on schema, Trustworthiness 82/100; time to interactive from 30-45s to under 1s"
+    },
+    "stack_consistency":{
+     "pass":null,
+     "status":"unverifiable",
+     "why":"no repo to cross-check the declared stack against"
+    },
+    "test_or_eval_evidence":{
+     "pass":0.5,
+     "status":"partial",
+     "why":"a figure with a stated denominator is quoted, but the capture records no harness, held-out set or method behind it (the page's measurement words: measured)"
+    }
+   },
+   "evidence":[
+    {
+     "checked_at":"2026-09-19",
+     "claim":"Is there an artifact at all \u2014 a repo, a deployed app, or a video of it running?",
+     "detail":"no source repo linked, but the page publishes a working artifact: https://www.youtube.com/watch?v=2-UzVIu1dcA",
+     "id":"newspectives-new-perspective-on-news:artifact_exists",
+     "kind":"page",
+     "source":"https://devpost.com/software/newspectives-new-perspective-on-news",
+     "status":"supported"
+    },
+    {
+     "checked_at":"2026-09-19",
+     "claim":"Does the repo's language/file mix match the stack they described?",
+     "detail":"no repo to cross-check the declared stack against",
+     "id":"newspectives-new-perspective-on-news:stack_consistency",
+     "kind":"page",
+     "source":"https://devpost.com/software/newspectives-new-perspective-on-news",
+     "status":"unverifiable"
+    },
+    {
+     "checked_at":"2026-09-19",
+     "claim":"Is the code a real build (source tree, setup steps, non-trivial size) rather than a stub or zip?",
+     "detail":"no repository published, so the build cannot be read",
+     "id":"newspectives-new-perspective-on-news:build_is_real",
+     "kind":"page",
+     "source":"https://devpost.com/software/newspectives-new-perspective-on-news",
+     "status":"unverifiable"
+    },
+    {
+     "checked_at":"2026-09-19",
+     "claim":"Do their metrics have a denominator, and is the arithmetic internally consistent?",
+     "detail":"3 figure(s) a reader can check against the product (~90 Vertex AI grounding redirect URLs per topic page unresolved; about 13 regional lenses enabled by default out of roughly 20 configured), but 2 headline figure(s) carry no testable denominator: 99/100 on schema, Trustworthiness 82/100; time to interactive from 30-45s to under 1s",
+     "id":"newspectives-new-perspective-on-news:numbers_add_up",
+     "kind":"page",
+     "source":"https://devpost.com/software/newspectives-new-perspective-on-news",
+     "status":"partial"
+    },
+    {
+     "checked_at":"2026-09-19",
+     "claim":"Did they state what does not work, or where it fails?",
+     "detail":"the team stated where the system fails, in production terms (fail)",
+     "id":"newspectives-new-perspective-on-news:limits_disclosed",
+     "kind":"page",
+     "source":"https://devpost.com/software/newspectives-new-perspective-on-news",
+     "status":"confirmed"
+    },
+    {
+     "checked_at":"2026-09-19",
+     "claim":"Any test suite, eval harness, or measured benchmark we can see?",
+     "detail":"a figure with a stated denominator is quoted, but the capture records no harness, held-out set or method behind it (the page's measurement words: measured)",
+     "id":"newspectives-new-perspective-on-news:test_or_eval_evidence",
+     "kind":"page",
+     "source":"https://devpost.com/software/newspectives-new-perspective-on-news",
+     "status":"partial"
+    }
+   ],
+   "fields":{
+    "built_with_verified":{
+     "provenance":"observed",
+     "value":"declared by the authors (7): express-on-firebase-app-hosting-(cloud-run-under-the-hood), firebase, firestore, firestore-for-persistence, react, typescript, vite \u00b7 no repository published, so these are the team's own claim and nothing corroborates them"
+    },
+    "clone_cost":{
+     "note":"our estimate with assumptions visible; not a claim about the team",
+     "provenance":"derived",
+     "value":{
+      "assumptions":[
+       "grounding you can pin per region: search access to each region's press, plus a stated fallback label for when a region returns nothing",
+       "a citation pipeline that canonicalises publisher URLs, since redirect-chained citations are the part agents will inherit broken",
+       "editorial capacity for the synthesis and the corrections page, which the product presents as human curation and cannot automate without contradicting itself",
+       "a QA pass on what a lens may assert beyond its sources, before anyone treats the Claim objects as evidence rather than as framing"
+      ],
+      "estimate":"6-9 weeks for the agent roster plus the schema surface; another quarter for the four media pipelines and the editorial tooling",
+      "why":"The core loop is a fan-out with grounding: one event, N lens prompts each pinned to a region's outlets through search grounding, rendered side by side with tone labels - a few weeks in React, Express and Firestore, and the SPA-plus-Cloud-Run shape is well trodden. The work that is not routine is the surface the page treats as the product: emitting valid Claim-partitioned structured data per perspective with citation arrays, resolving grounded URLs to canonical publisher addresses (its own open defect), and keeping a public llms.txt, OpenAPI document and no-auth endpoint honest as the schema evolves. The radio bulletin, song and portrait video are each a separate third-party integration that fails silently often enough that the author wrote it up. And the editorial layer - curating Common Ground, maintaining /corrections - is recurring human cost rather than build cost, which is why a clone of this is smaller than its feature list and bigger than its line count."
+     }
+    },
+    "data_and_models":{
+     "provenance":"observed",
+     "value":"Gemini 3 Flash with Google Search grounding runs every lens, pointed at each region's own outlets; Gemini Native Audio renders the daily radio bulletin; Imagen 4 makes the topic imagery; Suno makes the per-topic songs; Firestore persists topics, perspectives and donor records, and Firebase Storage holds media. No model is trained and no retrieval configuration is published: the page states no per-region coverage figure, no rate at which a lens's sentences are unsupported by the cited source, and no fallback policy for when a region's press is unreachable - while naming that exact failure as the thing that turns multi-perspective AI into ventriloquism. The measured numbers on the page are about the surface (schema score, load time), not about the journalism."
+    },
+    "how_it_works":{
+     "provenance":"observed",
+     "value":"React 19 with TypeScript and Vite as a client-side SPA, Express on Firebase App Hosting (Cloud Run underneath), Firestore for persistence and Firebase Storage for media, Imagen 4 for imagery and Gemini 3 Flash with Search grounding for the lens agents. The part the page spends most of its technical detail on is the machine-readable surface: every topic page ships a schema.org NewsArticle whose hasPart is an ItemList of Claim items, each with a per-perspective @id anchor and its own citation array, and the Jester carries a disambiguatingDescription marking it as satire so downstream models will not read it as fact. Alongside it: llms.txt and a 42,000-word llms-full.txt, ai-plugin.json, an OpenAPI 3.0.3 document, IndexNow pings, and a fully public no-auth /api/topics/recent endpoint."
+    },
+    "how_they_tested":{
+     "provenance":"observed",
+     "value":"No evaluation of journalistic quality is described: no precision or recall against a labelled set of regional articles, no inter-rater check between lenses and human correspondents, no measurement of how often a perspective's claim is unsupported by its own citation, and no test-suite mention. The closest thing to a measurement on the page is an unnamed 'recent independent GEO audit' that scored schema 99/100 and Trustworthiness 82/100 - a machine-readability audit of metadata, not of content accuracy, with no auditor, date or rubric published. The one figure that does carry a before/after denominator is load time (30-45s to under 1s TTI), and the page volunteers a measured defect count in the same area: about ninety unresolved grounding redirect URLs per topic page."
+    },
+    "limits_they_disclosed":{
+     "provenance":"observed",
+     "value":"The challenges section is a set of post-mortems rather than a list of feature difficulty. Firebase App Hosting silently ignored the hosting block in firebase.json, so sitemap and RSS returned 404 with no error anywhere, and the fix was explicit Express proxies in server.ts. Suno failed quietly: a null data payload produced an undefined taskId, JSON.stringify dropped the key, and the client polled /api/music/status/undefined fifty times against {code: 200, data: null}; it was fixed at three layers - a real 502 from the server, bailing after five consecutive nulls, and refusing to start on an empty, 'undefined' or 'null' id. On iOS Safari under ITP and some carriers, an App Check ReCaptcha V3 token was the reason for a 30-45 second blank splash. And a Firestore rule written for /donations/{docId} did not match the client's /donors/{docId} path, which went unnoticed for months because the Admin SDK bypasses rules - so only the admin UI was broken, silently."
+    },
+    "numbers_with_arithmetic":{
+     "provenance":"observed",
+     "value":[
+      {
+       "arithmetic":"not falsifiable from the page: no audit firm, date, link or rubric is published, so neither score can be reproduced - and both measure the machine-readable surface, not whether any lens reported the event accurately",
+       "claim":"99/100 on schema, Trustworthiness 82/100",
+       "denominator":"an unnamed 'recent independent GEO audit' and its own rubric",
+       "verifiable":false
+      },
+      {
+       "arithmetic":"structural: a self-reported defect count a reader can confirm by opening any topic page and inspecting whether the citation links resolve to the publisher or to a redirect, which is exactly the seam an agent consuming the Claim objects would inherit",
+       "claim":"~90 Vertex AI grounding redirect URLs per topic page unresolved",
+       "denominator":"citation links on one topic page",
+       "verifiable":true
+      },
+      {
+       "arithmetic":"not falsifiable from the page: no device list, network condition, sample size or measurement tool behind either number, though it is the only performance claim on the page stated as a before/after pair rather than a capability",
+       "claim":"time to interactive from 30-45s to under 1s",
+       "denominator":"first interactive load on mobile Safari after the splash-dismiss change",
+       "verifiable":false
+      },
+      {
+       "arithmetic":"structural: countable in the product's own settings panel, and the ratio is what a reader needs to know to judge whether 'every regional lens' is the default experience or a subset",
+       "claim":"about 13 regional lenses enabled by default out of roughly 20 configured",
+       "denominator":"perspective roster",
+       "verifiable":true
+      },
+      {
+       "arithmetic":"structural: a public file anyone can fetch and count, which makes it the one figure on the page a machine reader can verify without the author's cooperation",
+       "claim":"42K-word llms-full.txt",
+       "denominator":"the public llms-full.txt file",
+       "verifiable":true
+      }
+     ]
+    },
+    "prior_art":{
+     "note":"each entry resolves to a URL we opened this session or a corpus id",
+     "provenance":"editorial",
+     "value":[
+      {
+       "corpus_id":"adversarial-compliance-matrix",
+       "relation":"both convert an unverifiable judgement into a machine-checkable artifact - a signed finding in a CI matrix against a Claim object with a citation array - and both leave the same gap: the artifact proves the format, not the accuracy of what is inside it. ACM measures its own detectors while Newspectives does not measure its lenses, which is the sharper omission given that the lens output is read as fact by other models."
+      },
+      {
+       "corpus_id":"continuity-g7bty0",
+       "relation":"both attach citations to language a model generated and both keep a human as the writer of record, but they differ on direction and schedule: Continuity re-checks existing claims over time and hands back a diff, Newspectives generates fresh accounts of one event across regions and hands back a comparison. Neither publishes a false-negative rate, and in both cases that rate is what the user is actually buying."
+      },
+      {
+       "corpus_id":"complianceguardian-kcqs32",
+       "relation":"both sit in the sector where the hazard question is sign-off and both answer it with transparency rather than authority - methodology, editorial-standards and corrections pages against an audit-ready rule set. The pair is the catalog's clearest illustration that disclosure and compliance are different objects: one tells a reader how the output was made, the other tells an auditor what was checked."
+      }
+     ]
+    },
+    "what_breaks_first":{
+     "provenance":"editorial",
+     "value":"The grounding fallback. When a region's outlets are unreachable - a paywall, a regional block, a story too new to have local coverage - the lens still produces fluent text, which is the exact failure the page names as ventriloquism, and there is no published policy for it and no rate for how often it happens. Second, citation integrity: about ninety redirect URLs per topic page still resolve through Vertex rather than to the publisher, so the citation array an agent inherits is a chain of third-party hops that can rot or 404 independently of the article. Third, the Jester: satire is marked with disambiguatingDescription, which most consumers ignore, so a joke line becomes a Claim in someone else's context window. Fourth, the Common Ground synthesis - labelled editorial curation on the site, but a downstream reader who takes the ItemList and drops the framing gets a machine-generated consensus view of a contested event, which is the one artifact this product's own principles say not to produce."
+    },
+    "what_it_does":{
+     "provenance":"observed",
+     "value":"For a news event, roughly twenty configured regional lenses (about thirteen enabled by default - USA, China, Russia, India, Germany, UK, Israel, Arab World, Latin America, South Africa, a Humanitarian lens, a satirical 'Jester' and a Common Ground synthesis) each produce an account of the same story, grounded with Google Search against that region's press - BBC, Global Times, RT, Al Jazeera, NDTV, Times of Israel are the outlets named. The output is presented side by side with a tone classification and citations per perspective, and the Common Ground panel is an editor-curated synthesis rather than a model verdict. Three adjacent formats ride the same pipeline: a daily eight-minute AI radio bulletin on Gemini Native Audio, a per-topic Suno song, and a 20-second portrait video. Transparency pages are part of the product rather than a footer - /methodology, /editorial-standards and /corrections name the model and admit its limits."
+    },
+    "what_it_is":{
+     "provenance":"derived",
+     "value":"A roster of about thirteen regional-lens agents reads one news event against each region's own press and publishes the frames side by side as schema.org Claim objects with citations - so the machines downstream inherit the framing, not just a flattened headline."
+    },
+    "what_to_steal":{
+     "provenance":"editorial",
+     "value":"Ship claim-level structured data rather than page-level: NewsArticle to hasPart to an ItemList of Claim objects, each perspective with its own @id anchor and citation array, so a consuming agent can attribute a sentence to a lens instead of to a URL. Use disambiguatingDescription to mark non-factual voices inside the same structure, and publish llms.txt, llms-full.txt, ai-plugin.json, an OpenAPI document, IndexNow pings and an unauthenticated read endpoint - treat machine readers as an audience and the transparency pages become distribution. Then take the operational post-mortems, the most reusable content on the page: never return a 200 with a null payload (make it a real 502), bail after five consecutive nulls instead of polling an 'undefined' id fifty times, refuse to start on an empty or 'undefined' config value, treat silently ignored hosting config as untrustworthy and proxy it explicitly, dismiss splash screens in about 150ms and load auth and settings in the background, and remember that Admin SDK paths bypass security rules, so rule-only tests prove nothing about an admin UI. Last: keep synthesis human and say so on the page."
+    }
+   },
+   "hazard":{
+    "class":"compliance-signoff",
+    "note":"An AI publisher with a compliance-shaped surface and no compliance process. Every lens output is packaged as a machine-readable Claim with citations, which downstream agents will ingest as evidence rather than as one model's reading of one region's press; the page publishes no measurement of how often a lens asserts something its own cited source does not support, no policy for when a region's press is unreachable, and no recall figure per region - while its own stated lesson is that ungrounded multi-perspective output is stylistic ventriloquism. The defences are disclosure devices (methodology, editorial standards, corrections, a satire marker) plus an editor-curated synthesis, which is a real posture but not a sign-off, and nothing on the page says who reviews a lens before a story with legal or safety weight - an election, a conflict, an indictment - is published with citations attached. That combination is why this record carries a hazard: the schema machinery makes unverified content more portable, not less.",
+    "team_disclaimed":false
+   },
+   "id":"newspectives-new-perspective-on-news",
+   "likes":1,
+   "links":{
+    "demo":null,
+    "repo":null,
+    "video":"https://www.youtube.com/watch?v=2-UzVIu1dcA"
+   },
+   "moves":[
+    "make-the-invisible-measurable",
+    "long-horizon-watcher",
+    "wrap-the-legacy-surface",
+    "constraint-is-the-feature"
+   ],
+   "name":"Newspectives - new perspective on news",
+   "provenance":{
+    "checks":"derived",
+    "clone_cost":"derived",
+    "evidence":"observed",
+    "fields":"observed",
+    "verdict":"derived",
+    "worth":"editorial"
+   },
+   "publishable":true,
+   "repo":null,
+   "right_of_reply":"https://github.com/knarayanareddy/Ideasgalore/issues/new?labels=audit-recheck",
+   "rubric_coverage":0.64,
+   "soundness":"partial",
+   "soundness_score":0.5938,
+   "source_url":"https://devpost.com/software/newspectives-new-perspective-on-news",
+   "unknowns":[],
+   "verdict":"sound-with-caveats",
+   "verdict_reasons":[
+    "soundness 0.59 over 64% of the rubric; 0 named unknown(s) remain \u2192 publishable with caveats"
+   ],
+   "worth":"strong",
+   "worth_note":"The wedge is different in the way that matters for an agent-read catalog: it treats other models as first-class readers of a news product and builds for them - NewsArticle objects whose hasPart is an ItemList of Claim objects, one per perspective, each with its own anchor and citation array, a disambiguatingDescription marking the satirical lens so it is not quoted as fact, llms.txt, a 42,000-word llms-full.txt, ai-plugin.json, OpenAPI, IndexNow pings and an unauthenticated recent-topics endpoint. Almost nobody has taken that position, and for a product whose output will be summarized by machines it is the correct one: an agent should inherit the framing and the citations rather than a flattened paragraph. The editorial judgement is as sound as the plumbing - side by side rather than a merged balanced answer, Common Ground labelled as human curation, transparency pages at /methodology, /editorial-standards and /corrections. What holds it short of breakthrough is that the hard part is not built here: grounding quality, which the page itself names as the whole difference between perspective and ventriloquism, is unmeasured, and roughly ninety unresolved citation redirect URLs per topic page says the last mile of the citation layer is still open."
   }
  }
 }

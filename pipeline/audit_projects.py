@@ -116,13 +116,39 @@ _NEG_CUE = re.compile(r"\b(no|not|never|none|nothing|without|absent|lacks?|missi
 _BENCH_RE = re.compile(r"(accuracy|f1\b|auc|precision|recall|latency|p95|benchmark|ab test|"
                        r"before/after|first-?pass|success rate|a/b|measured|sample size|"
                        r"seeded .*bias|calibrat|versus|vs\.\s|compared to|improvement over)", re.I)
+# Two kinds of measurement a page can cite, and only one of them answers this rubric's
+# question. A before/after load time says the team tuned the product; accuracy, precision,
+# recall or a held-out set say the team checked what the product *produces*. Treating the
+# first as evidence of an eval is how a fast-but-unverified system buys a soundness tier.
+# The 0.75 tier asks for a *measured evaluation*, so the cue has to name a quality metric.
+# `measured`, `before/after` and `latency` sit in `_BENCH_RE` because that is how honest pages
+# talk about tuning, and a denial can be written entirely in those words. A page reporting a
+# load-time improvement plus a third-party score it never names has told a reader something
+# real - just nothing about whether its output was checked. So the top tier requires a cue from
+# this list, and everything else falls through to the denominator tier, which is worded to
+# describe exactly that: a figure with no method behind it.
+# (A page naming a benchmark with no number at all still lands lower down, at 0.4.)
+_QUALITY_BENCH_RE = re.compile(r"(accuracy|precision|recall|f1\b|auc|success rate|error rate|"
+                               r"benchmark|held-?out|eval(?:uation)? set|test set|sample size|"
+                               r"ground truth|inter-?rater|calibrat|improvement over|compared to|"
+                               r"versus|vs\.\s)", re.I)
 _HARNESS_RE = re.compile(r"(fixture|test suite|unit tests?|integration test|regression|"
                          r"simulation matrix|ci\b|workflow|github actions|cypress|jest|pytest)", re.I)
 _CAPABILITY_RE = re.compile(r"(accuracy|latency|hallucinat|false (positive|negative)|"
                             r"unsupported|edge case|cannot|can not|only works|limitation|privacy|retention|"
                             r"offline|degrade|bias|drift|error rate|not measured|crash|fails?|"
-                            r"block(s|ed)?|abuse|hard-?cap|rate[- ]limit|escape hatch|not supported|"
-                            r"unavailable|prone|vulnerable|silent(ly)? (fail|drop))", re.I)
+                            # `block(s|ed)?` used to be in this list and matched every record
+                            # whose challenges section mentioned a config block. Blocking is a
+                            # feature and a JSON block is a noun; neither is a limitation.
+                            r"abuse|hard-?cap|rate[- ]limit|escape hatch|not supported|"
+                            r"unavailable|prone|vulnerable|silent(ly)? (fail|drop)|"
+                            # A page can admit a limit without writing the word "limitation":
+                            # naming the limits of its own data, or a coverage hole, is the
+                            # same disclosure in a different tense, and the tier has to read
+                            # it. `limits?\b` is whole-word so "rate limit" and "limitations"
+                            # keep matching the way they always did.
+                            r"limits?\b|(coverage|index|catalog) (gap|gaps|hole|holes)|"
+                            r"does not cover|out of coverage)", re.I)
 # A sentence about compiling, pushing or surviving a night of coding describes the *build*,
 # not the product's limits. Only product-shaped sentences count toward limits_disclosed.
 # No "dashboard": in this corpus that word names a UI surface, not a measurement loop.
@@ -365,9 +391,19 @@ def run_checks(cap: Dict[str, Any], repo_name: Optional[str], repo: Optional[Dic
                   if not _PROCESS_RE.search(sent)]
     capability = list(dict.fromkeys(capability))
     if len(limits) >= 60 and capability:
+        # Two different disclosures land on this tier and the `why` has to tell them apart:
+        # a capability admission ("it cannot price a car we do not cover") and a failure-mode
+        # admission ("the music API answers 200 with a null body"). Naming a failure the team
+        # watched in production is evidence they stated where it fails, not that they wrote a
+        # capability list, and the check's sentence should not overclaim which one it found.
+        _cannot = [c for c in capability if re.search(
+            r"cannot|can not|only works|limitation|limits?\b|not supported|unsupported|"
+            r"unavailable|coverage gap|does not cover|out of coverage|rate[- ]limit|hard-?cap|"
+            r"prone|vulnerable|escape hatch|privacy|retention|offline|not measured", c, re.I)]
+        lead = ("the team named what the system itself cannot do" if _cannot else
+                "the team stated where the system fails, in production terms")
         emit("limits_disclosed", 1.0, "confirmed",
-             "the team named what the system itself cannot do ("
-             + ", ".join(sorted(set(capability))[:3]) + ")",
+             lead + " (" + ", ".join(sorted(set(capability))[:3]) + ")",
              "page", cap.get("source_url", ""), when)
     elif len(limits) >= 60 and effort:
         # Honest about the build, silent about the product: worth credit, not a
@@ -428,7 +464,7 @@ def run_checks(cap: Dict[str, Any], repo_name: Optional[str], repo: Optional[Dic
         emit("test_or_eval_evidence", 1.0, "confirmed",
              f"test paths in repo: {', '.join(tests[:3])}", "api",
              f"https://api.github.com/repos/{repo_name}/git/trees", rwhen)
-    elif benchmark and (measured or ok):
+    elif benchmark and (measured or ok) and [w for w in benchmark if _QUALITY_BENCH_RE.search(w)]:
         emit("test_or_eval_evidence", 0.75, "supported",
              "a measured evaluation with a stated denominator is described on the page "
              "(an A/B comparison or a logged-outcome harness counts; a bare 'we tested it' does not)",
@@ -440,8 +476,8 @@ def run_checks(cap: Dict[str, Any], repo_name: Optional[str], repo: Optional[Dic
         # would reward the number while ignoring the confession next to it.
         emit("test_or_eval_evidence", 0.5, "partial",
              "a figure with a stated denominator is quoted, but the capture records no "
-             "harness, held-out set or method behind it", "page",
-             cap.get("source_url", ""), when)
+             "harness, held-out set or method behind it (the page's measurement words: "
+             + ", ".join(sorted(set(benchmark))[:3]) + ")", "page", cap.get("source_url", ""), when)
     elif benchmark:
         emit("test_or_eval_evidence", 0.4, "partial",
              "evaluation language present but no numbers attached", "page",

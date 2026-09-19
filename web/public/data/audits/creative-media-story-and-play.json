@@ -27,7 +27,7 @@
     "limits_disclosed":{
      "pass":1.0,
      "status":"confirmed",
-     "why":"the team named what the system itself cannot do (accuracy)"
+     "why":"the team stated where the system fails, in production terms (accuracy)"
     },
     "numbers_add_up":{
      "pass":0.25,
@@ -85,7 +85,7 @@
     {
      "checked_at":"2026-09-18",
      "claim":"Did they state what does not work, or where it fails?",
-     "detail":"the team named what the system itself cannot do (accuracy)",
+     "detail":"the team stated where the system fails, in production terms (accuracy)",
      "id":"audionova:limits_disclosed",
      "kind":"page",
      "source":"https://devpost.com/software/audionova",
@@ -258,7 +258,7 @@
     "limits_disclosed":{
      "pass":1.0,
      "status":"confirmed",
-     "why":"the team named what the system itself cannot do (fail)"
+     "why":"the team stated where the system fails, in production terms (fail)"
     },
     "numbers_add_up":{
      "pass":1.0,
@@ -316,7 +316,7 @@
     {
      "checked_at":"2026-09-19",
      "claim":"Did they state what does not work, or where it fails?",
-     "detail":"the team named what the system itself cannot do (fail)",
+     "detail":"the team stated where the system fails, in production terms (fail)",
      "id":"greenlight-nine-agent-production-crew:limits_disclosed",
      "kind":"page",
      "source":"https://devpost.com/software/greenlight-nine-agent-production-crew",
@@ -444,9 +444,9 @@
     "video":"https://www.youtube.com/watch?v=sS_gIU9flCE"
    },
    "moves":[
-    "make-the-invisible-measurable",
-    "crew-of-specialists",
     "price-before-generate",
+    "crew-of-specialists",
+    "data-flywheel",
     "model-cost-routing"
    ],
    "name":"Greenlight - Nine-Agent Production Crew",

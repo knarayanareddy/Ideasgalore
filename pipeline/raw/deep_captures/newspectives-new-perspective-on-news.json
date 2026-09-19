@@ -1,0 +1,68 @@
+{
+ "award": null,
+ "built_with": [
+  "express-on-firebase-app-hosting-(cloud-run-under-the-hood)",
+  "firebase",
+  "firestore",
+  "firestore-for-persistence",
+  "react",
+  "typescript",
+  "vite"
+ ],
+ "captured_at": "2026-09-19",
+ "data_and_models": "Gemini 3 Flash with Google Search grounding runs every lens, pointed at each region's own outlets; Gemini Native Audio renders the daily radio bulletin; Imagen 4 makes the topic imagery; Suno makes the per-topic songs; Firestore persists topics, perspectives and donor records, and Firebase Storage holds media. No model is trained and no retrieval configuration is published: the page states no per-region coverage figure, no rate at which a lens's sentences are unsupported by the cited source, and no fallback policy for when a region's press is unreachable - while naming that exact failure as the thing that turns multi-perspective AI into ventriloquism. The measured numbers on the page are about the surface (schema score, load time), not about the journalism.",
+ "gallery_images": 4,
+ "id": "newspectives-new-perspective-on-news",
+ "likes": 1,
+ "links": {
+  "demo": null,
+  "repo": null,
+  "video": "https://www.youtube.com/watch?v=2-UzVIu1dcA"
+ },
+ "name": "Newspectives - new perspective on news",
+ "numbers": [
+  {
+   "arithmetic": "not falsifiable from the page: no audit firm, date, link or rubric is published, so neither score can be reproduced - and both measure the machine-readable surface, not whether any lens reported the event accurately",
+   "claim": "99/100 on schema, Trustworthiness 82/100",
+   "denominator": "an unnamed 'recent independent GEO audit' and its own rubric",
+   "verifiable": false
+  },
+  {
+   "arithmetic": "structural: a self-reported defect count a reader can confirm by opening any topic page and inspecting whether the citation links resolve to the publisher or to a redirect, which is exactly the seam an agent consuming the Claim objects would inherit",
+   "claim": "~90 Vertex AI grounding redirect URLs per topic page unresolved",
+   "denominator": "citation links on one topic page",
+   "verifiable": true
+  },
+  {
+   "arithmetic": "not falsifiable from the page: no device list, network condition, sample size or measurement tool behind either number, though it is the only performance claim on the page stated as a before/after pair rather than a capability",
+   "claim": "time to interactive from 30-45s to under 1s",
+   "denominator": "first interactive load on mobile Safari after the splash-dismiss change",
+   "verifiable": false
+  },
+  {
+   "arithmetic": "structural: countable in the product's own settings panel, and the ratio is what a reader needs to know to judge whether 'every regional lens' is the default experience or a subset",
+   "claim": "about 13 regional lenses enabled by default out of roughly 20 configured",
+   "denominator": "perspective roster",
+   "verifiable": true
+  },
+  {
+   "arithmetic": "structural: a public file anyone can fetch and count, which makes it the one figure on the page a machine reader can verify without the author's cooperation",
+   "claim": "42K-word llms-full.txt",
+   "denominator": "the public llms-full.txt file",
+   "verifiable": true
+  }
+ ],
+ "one_line": "A roster of about thirteen regional-lens agents reads one news event against each region's own press and publishes the frames side by side as schema.org Claim objects with citations - so the machines downstream inherit the framing, not just a flattened headline.",
+ "sections": {
+  "accomplishments": "A live, self-funded product with a published editorial layer and the agent surface most sites only plan: the page reports a 99/100 schema score and an 82/100 Trustworthiness dimension from a recent independent GEO audit, and reports taking mobile time-to-interactive from 30-45 seconds to under one second by dismissing its splash screen in about 150 milliseconds and loading auth, settings, stats and the ticker in the background. It also documents four non-trivial platform traps it found and fixed - a hosting layer silently ignoring its config, a third-party API failing silently, a carrier-and-ITP interaction hiding behind a blank screen, and a security rule that never applied to the admin path.",
+  "challenges": "The challenges section is a set of post-mortems rather than a list of feature difficulty. Firebase App Hosting silently ignored the hosting block in firebase.json, so sitemap and RSS returned 404 with no error anywhere, and the fix was explicit Express proxies in server.ts. Suno failed quietly: a null data payload produced an undefined taskId, JSON.stringify dropped the key, and the client polled /api/music/status/undefined fifty times against {code: 200, data: null}; it was fixed at three layers - a real 502 from the server, bailing after five consecutive nulls, and refusing to start on an empty, 'undefined' or 'null' id. On iOS Safari under ITP and some carriers, an App Check ReCaptcha V3 token was the reason for a 30-45 second blank splash. And a Firestore rule written for /donations/{docId} did not match the client's /donors/{docId} path, which went unnoticed for months because the Admin SDK bypasses rules - so only the admin UI was broken, silently.",
+  "how_we_built_it": "React 19 with TypeScript and Vite as a client-side SPA, Express on Firebase App Hosting (Cloud Run underneath), Firestore for persistence and Firebase Storage for media, Imagen 4 for imagery and Gemini 3 Flash with Search grounding for the lens agents. The part the page spends most of its technical detail on is the machine-readable surface: every topic page ships a schema.org NewsArticle whose hasPart is an ItemList of Claim items, each with a per-perspective @id anchor and its own citation array, and the Jester carries a disambiguatingDescription marking it as satire so downstream models will not read it as fact. Alongside it: llms.txt and a 42,000-word llms-full.txt, ai-plugin.json, an OpenAPI 3.0.3 document, IndexNow pings, and a fully public no-auth /api/topics/recent endpoint.",
+  "inspiration": "The premise on the page is that a reader's 'objective' news diet is one region's defaults: the same event is framed differently by press in different countries, and nothing shows those frames side by side. The stated failure mode of the obvious build - one model asked to sound like several - is named outright: multi-perspective AI without grounding is just stylistic ventriloquism. So the project is built around grounding instead of voice: each lens reads that region's actual outlets. It is a solo Amsterdam build, described as having no funding and no team, three months old at the read.",
+  "learned": "Three lessons are stated as such. Grounding is the product: without reading each region's press the lenses only re-style one model's priors, which is the stylistic-ventriloquism line above. Transparency about AI is a feature rather than a confession - the /methodology, /editorial-standards and /corrections pages name Gemini 3 Flash and admit its limits, and that disclosure is presented as the reason to trust the output rather than as a disclaimer. And side by side beats consensus: the synthesis is labelled as an editorial curation, because a merged 'balanced' answer is the most misleading artifact the system could produce. A fourth lesson is technical: silent 200s are worse than errors, which is why the Suno fix added an explicit 502 and a refusal to start on a null id.",
+  "what_it_does": "For a news event, roughly twenty configured regional lenses (about thirteen enabled by default - USA, China, Russia, India, Germany, UK, Israel, Arab World, Latin America, South Africa, a Humanitarian lens, a satirical 'Jester' and a Common Ground synthesis) each produce an account of the same story, grounded with Google Search against that region's press - BBC, Global Times, RT, Al Jazeera, NDTV, Times of Israel are the outlets named. The output is presented side by side with a tone classification and citations per perspective, and the Common Ground panel is an editor-curated synthesis rather than a model verdict. Three adjacent formats ride the same pipeline: a daily eight-minute AI radio bulletin on Gemini Native Audio, a per-topic Suno song, and a 20-second portrait video. Transparency pages are part of the product rather than a footer - /methodology, /editorial-standards and /corrections name the model and admit its limits.",
+  "what_next": "The page's own roadmap names its largest open defect: about ninety Vertex AI grounding redirect URLs per topic page are still unresolved to canonical publisher URLs, which is the last mile of the citation layer the whole product is built on. It also keeps Common Ground editorially curated rather than automated, which is a stated posture ('default to side-by-side, not consensus') as much as a limitation. Beyond that the open questions are the ones the page does not quantify: per-region coverage when an outlet is unreachable, and what any lens says when its grounding comes back empty."
+ },
+ "software_id": 1278254,
+ "source_url": "https://devpost.com/software/newspectives-new-perspective-on-news",
+ "testing": "No evaluation of journalistic quality is described: no precision or recall against a labelled set of regional articles, no inter-rater check between lenses and human correspondents, no measurement of how often a perspective's claim is unsupported by its own citation, and no test-suite mention. The closest thing to a measurement on the page is an unnamed 'recent independent GEO audit' that scored schema 99/100 and Trustworthiness 82/100 - a machine-readability audit of metadata, not of content accuracy, with no auditor, date or rubric published. The one figure that does carry a before/after denominator is load time (30-45s to under 1s TTI), and the page volunteers a measured defect count in the same area: about ninety unresolved grounding redirect URLs per topic page."
+}

@@ -61,7 +61,7 @@
     "test_or_eval_evidence":{
      "pass":0.5,
      "status":"partial",
-     "why":"a figure with a stated denominator is quoted, but the capture records no harness, held-out set or method behind it"
+     "why":"a figure with a stated denominator is quoted, but the capture records no harness, held-out set or method behind it (the page's measurement words: accuracy)"
     }
    },
    "evidence":[
@@ -113,7 +113,7 @@
     {
      "checked_at":"2026-09-19",
      "claim":"Any test suite, eval harness, or measured benchmark we can see?",
-     "detail":"a figure with a stated denominator is quoted, but the capture records no harness, held-out set or method behind it",
+     "detail":"a figure with a stated denominator is quoted, but the capture records no harness, held-out set or method behind it (the page's measurement words: accuracy)",
      "id":"vitalis-bio:test_or_eval_evidence",
      "kind":"page",
      "source":"https://devpost.com/software/vitalis-bio",

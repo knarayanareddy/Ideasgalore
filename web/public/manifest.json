@@ -16,12 +16,12 @@
   "reading":"corpus is a quality-gated sample of the pages crawled, not the platform"
  },
  "scoring_version":1,
- "corpus_sha256":"9e4fa99eb61b0998",
+ "corpus_sha256":"0b9bc5ece188372e",
  "corpus_records":167,
- "generated_at":"2026-09-19T15:54:39+00:00",
+ "generated_at":"2026-09-19T16:29:58+00:00",
  "audit_version":1,
- "audited_published":9,
- "pool_records":156,
+ "audited_published":11,
+ "pool_records":154,
  "surfaces":{
   "tier1":"catalog-packed.json",
   "audit":[
@@ -59,7 +59,7 @@
  },
  "budgets":{
   "tier1_gzip_kb":[
-   3.7,
+   4.0,
    1200.0
   ]
  }

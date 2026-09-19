@@ -1,7 +1,7 @@
 {
  "audit_version":1,
  "generated_at":"2026-09-18",
- "count":156,
+ "count":154,
  "meaning":"Records held out of the catalog. `provenance` splits them in two: `unaudited` rows were never captured or checked; `audited-hold` rows were captured, scored and held for cause (thin, duplicate or hazard-capped) and carry the same audit columns the catalog does. Neither kind is a judgement of merit \u2014 read why_not_promoted and would_settle_it before quoting one (ADR-A1/A10).",
  "records":[
   {
@@ -218,9 +218,9 @@
    "event":"Build with Gemini XPRIZE",
    "coolness":0.4193,
    "moves":[
-    "institutional-grade-reliability",
     "deterministic-guardrail",
     "offline-first-fallback",
+    "institutional-grade-reliability",
     "crew-of-specialists"
    ],
    "specificity":0.68,
@@ -269,8 +269,8 @@
    "event":"Build with Gemini XPRIZE",
    "coolness":0.4153,
    "moves":[
-    "deterministic-guardrail",
     "long-horizon-watcher",
+    "deterministic-guardrail",
     "make-the-invisible-measurable"
    ],
    "specificity":0.78,
@@ -365,27 +365,6 @@
    "moves":[],
    "specificity":0.38,
    "summary":"Finds the correct product through conversation. Asks useful questions, remembers what matters and adapts when preferences change.",
-   "provenance":"unaudited",
-   "why_not_promoted":[
-    "not_audited"
-   ],
-   "would_settle_it":[
-    "project page capture (deep)",
-    "artifact check via repo_verify.py"
-   ],
-   "audit":null
-  },
-  {
-   "id":"newspectives-new-perspective-on-news",
-   "name":"Newspectives - new perspective on news",
-   "url":"https://devpost.com/software/newspectives-new-perspective-on-news",
-   "domain":"Creative Media, Story & Play",
-   "subsystem":"Games & Interactive Fiction",
-   "event":"Build with Gemini XPRIZE",
-   "coolness":0.4085,
-   "moves":[],
-   "specificity":0.65,
-   "summary":"One news event. Every regional lens. Side-by-side. Newspectives uses Google Gemini and Search grounding to compare how USA, China, Russia, Arab World and more frame each story - daily.",
    "provenance":"unaudited",
    "why_not_promoted":[
     "not_audited"
@@ -877,27 +856,6 @@
    "audit":null
   },
   {
-   "id":"carbender",
-   "name":"Carbender",
-   "url":"https://devpost.com/software/carbender",
-   "domain":"Climate, Energy & the Physical World",
-   "subsystem":"Sensing, Vision & Robotics",
-   "event":"Build with Gemini XPRIZE",
-   "coolness":0.3818,
-   "moves":[],
-   "specificity":0.48,
-   "summary":"A tool for identifying damaged car parts and estimating repair costs. Computer vision turns photos into organized OEM part lists with real-market price reports.",
-   "provenance":"unaudited",
-   "why_not_promoted":[
-    "not_audited"
-   ],
-   "would_settle_it":[
-    "project page capture (deep)",
-    "artifact check via repo_verify.py"
-   ],
-   "audit":null
-  },
-  {
    "id":"medvoice-y87kei",
    "name":"Medvoice",
    "url":"https://devpost.com/software/medvoice-y87kei",
@@ -905,7 +863,9 @@
    "subsystem":"Care Navigation & Records",
    "event":"Hack for Humanity | Summer 2026",
    "coolness":0.3814,
-   "moves":[],
+   "moves":[
+    "long-horizon-watcher"
+   ],
    "specificity":0.32,
    "summary":"A voice-first, visual medication assistant designed by a nurse to help elderly and low-literacy patients take the right medicine at the right time.",
    "provenance":"audited-hold",
@@ -1104,8 +1064,8 @@
    "id":"truthshield-ai",
    "name":"TruthShield AI",
    "url":"https://devpost.com/software/truthshield-ai",
-   "domain":"Emerging & Cross-Domain",
-   "subsystem":"Unclassified",
+   "domain":"Public Trust, Safety & Compliance",
+   "subsystem":"Civics & Discourse",
    "event":"Build with Gemini XPRIZE",
    "coolness":0.3781,
    "moves":[],
@@ -1330,10 +1290,13 @@
    "name":"Gemini-Box",
    "url":"https://devpost.com/software/gemini-box",
    "domain":"Agentic Autonomy & Orchestration",
-   "subsystem":"General",
+   "subsystem":"Agent Guardrails & Gating",
    "event":"Build with Gemini XPRIZE",
    "coolness":0.3729,
    "moves":[
+    "verification-first",
+    "evidence-graph",
+    "deterministic-guardrail",
     "institutional-grade-reliability"
    ],
    "specificity":0.4,
@@ -1429,7 +1392,10 @@
    "event":"Agentic Cinema: The Blockbuster Hackathon",
    "coolness":0.3712,
    "moves":[
-    "data-flywheel"
+    "price-before-generate",
+    "offline-first-fallback",
+    "data-flywheel",
+    "model-cost-routing"
    ],
    "specificity":0.74,
    "summary":"Turn a screenplay into a film you can afford. Nine Gemini agents storyboard, cast, shoot and cut it, quoting cost and odds first. Learns from every take in ClickHouse.",
@@ -1437,7 +1403,7 @@
    "why_not_promoted":[
     "verdict:duplicate",
     "soundness 0.77 over 64% of the rubric; 1 named unknown(s) remain \u2192 publishable with caveats",
-    "resubmission of the same product \u2014 name match False, listing-title equality False, shared mechanism/text overlap 0.25, shared numeric fingerprints ['$0.02', '$20', '$238', '$4.50'] (0.60 jaccard); merged into the better-evidenced copy (A5)",
+    "resubmission of the same product \u2014 name match False, listing-title equality False, shared mechanism/text overlap 0.26, shared numeric fingerprints ['$0.02', '$20', '$238', '$4.50'] (0.60 jaccard); merged into the better-evidenced copy (A5)",
     "unknown: prior_art \u2014 no named competitor; a search pass would settle it",
     "hazard: regulated-claim (no team disclaimer found)",
     "merged into greenlight-nine-agent-production-crew \u2014 same submission, richer twin published",
@@ -1459,7 +1425,7 @@
     "evidence":6,
     "reasons":[
      "soundness 0.77 over 64% of the rubric; 1 named unknown(s) remain \u2192 publishable with caveats",
-     "resubmission of the same product \u2014 name match False, listing-title equality False, shared mechanism/text overlap 0.25, shared numeric fingerprints ['$0.02', '$20', '$238', '$4.50'] (0.60 jaccard); merged into the better-evidenced copy (A5)"
+     "resubmission of the same product \u2014 name match False, listing-title equality False, shared mechanism/text overlap 0.26, shared numeric fingerprints ['$0.02', '$20', '$238', '$4.50'] (0.60 jaccard); merged into the better-evidenced copy (A5)"
     ]
    },
    "verdict":"duplicate",
@@ -1496,8 +1462,8 @@
    "id":"ava-ebqmj6",
    "name":"AVA",
    "url":"https://devpost.com/software/ava-ebqmj6",
-   "domain":"Creative Media, Story & Play",
-   "subsystem":"Design & Visual Tools",
+   "domain":"Money, Commerce & Marketplaces",
+   "subsystem":"General",
    "event":"Build with Gemini XPRIZE",
    "coolness":0.3705,
    "moves":[],
@@ -2061,8 +2027,8 @@
    "id":"the-ai-concierge-bar",
    "name":"The AI Concierge Bar",
    "url":"https://devpost.com/software/the-ai-concierge-bar",
-   "domain":"Learning & Knowledge Systems",
-   "subsystem":"Search & Retrieval",
+   "domain":"Money, Commerce & Marketplaces",
+   "subsystem":"General",
    "event":"Build with Gemini XPRIZE",
    "coolness":0.3529,
    "moves":[],

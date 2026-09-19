@@ -1,27 +1,27 @@
 {
- "total":9,
- "audited_published":9,
- "pool_records":156,
+ "total":11,
+ "audited_published":11,
+ "pool_records":154,
  "pool_audited_held":7,
- "pool_unaudited":149,
+ "pool_unaudited":147,
  "audit_version":1,
  "audit_index_kb":1.0,
- "audit_sheets_kb":34.1,
- "records_hazarded":4,
+ "audit_sheets_kb":44.7,
+ "records_hazarded":6,
  "records_hazarded_held":4,
  "domains":6,
- "subsystems":7,
- "moves":12,
+ "subsystems":8,
+ "moves":11,
  "events":5,
- "deep_records":16,
- "tier1_gzip_kb":3.7,
+ "deep_records":18,
+ "tier1_gzip_kb":4.0,
  "tier1_budget_kb":1200.0,
- "sqlite_kb":5.7,
+ "sqlite_kb":5.9,
  "corpus_ingested":167,
  "held_back":{
   "placeholder_summary":2
  },
- "records_with_moves":68,
+ "records_with_moves":69,
  "coverage":{
   "events":{
    "xprize":{
@@ -45,23 +45,23 @@
   },
   "creative-media-story-and-play":{
    "records":2,
-   "kb":15.0
+   "kb":11.7
   },
   "health-care-and-human-performance":{
    "records":2,
-   "kb":13.4
+   "kb":13.5
   },
   "learning-and-knowledge-systems":{
    "records":1,
-   "kb":8.2
+   "kb":8.5
   },
   "money-commerce-and-marketplaces":{
-   "records":2,
-   "kb":12.7
+   "records":3,
+   "kb":23.3
   },
   "public-trust-safety-and-compliance":{
-   "records":1,
-   "kb":7.7
+   "records":2,
+   "kb":19.2
   }
  }
 }

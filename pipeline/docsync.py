@@ -1,13 +1,27 @@
 #!/usr/bin/env python3
-"""Regenerate the census block inside the hand-written docs.
+"""Regenerate the counted prose inside the hand-written docs.
 
 Every audit batch moves the published / held / captured counts, and three prose surfaces restate
 them. Those sentences were wrong within a batch of being written — twice — because a count copied
 from a terminal into markdown is a *quote* of a moment, not a fact about the catalog. So the
-numbers now live in one generated block between sentinels, emitted from `catalog-stats.json` by
-`make build`, and `make verify --check` fails a doc whose census has drifted.
+numbers now live in generated blocks between sentinels, emitted from the built surfaces by
+`make build`, and `make verify` fails a doc whose census has drifted.
 
-Qualitative prose stays hand-written: this script never touches a sentence, only the block.
+Five regions exist, because one census block was not enough: a doc that generates its headline
+counts while a paragraph further down still quotes "14 records deep-captured" has simply moved
+the lie. Each region is `<!-- name:begin -->` … `<!-- name:end -->` and knows how to render
+itself from a built artifact:
+
+    census            the catalog's state, in all three docs
+    audits-example    the two JSON excerpts in the protocol's "Reading the queues back" section
+    pool-split        what the pool holds, split by provenance, with the blocker-count ranges
+    coverage          the queue denominator and how much of the catalog is audited
+    repo-blindness    which captures link a repository, and what that costs the audit
+    corpus-bias       where the admitted rows come from and how deep the crawl went
+
+Qualitative prose stays hand-written: this script never edits a sentence, only the regions. An
+unrecognised region name is a hard failure, so prose cannot quietly start quoting a number the
+build does not emit.
 """
 from __future__ import annotations
 
@@ -16,99 +30,269 @@ import json
 import os
 import re
 import sys
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Optional
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.dirname(HERE)
-BEGIN = "<!-- census:begin -->"
-END = "<!-- census:end -->"
+PUBLIC = os.path.join(REPO, "web", "public")
 TARGETS = ["README.md", "docs/AGENT_ACCESS.md", "docs/AUDIT_PROTOCOL.md"]
 
 
+def _load(rel: str) -> Any:
+    with open(os.path.join(REPO, rel), encoding="utf-8") as fh:
+        return json.load(fh)
+
+
+def _read(rel: str) -> str:
+    with open(os.path.join(REPO, rel), encoding="utf-8") as fh:
+        return fh.read()
+
+
 def _test_count() -> int:
-    with open(os.path.join(REPO, "pipeline", "tests", "test_pipeline.py"), encoding="utf-8") as fh:
-        return len(re.findall(r"^\s*def test_", fh.read(), re.M))
+    return len(re.findall(r"^\s*def test_", _read("pipeline/tests/test_pipeline.py"), re.M))
 
 
-def _capture_census() -> Dict[str, int]:
+def _captures() -> List[Dict[str, Any]]:
     d = os.path.join(REPO, "pipeline", "raw", "deep_captures")
-    caps = []
+    out = []
     for name in sorted(os.listdir(d)):
         if name.endswith(".json"):
             with open(os.path.join(d, name), encoding="utf-8") as fh:
-                caps.append(json.load(fh))
-    return {
-        "captured": len(caps),
-        "with_repo": sum(1 for c in caps if (c.get("links") or {}).get("repo")),
-        "with_numbers": sum(1 for c in caps if c.get("numbers")),
-    }
+                out.append(json.load(fh))
+    return out
 
 
-def render(stats: Dict[str, Any]) -> List[str]:
+def _sentence_list(items: List[str]) -> str:
+    if not items:
+        return "none"
+    if len(items) == 1:
+        return items[0]
+    return ", ".join(items[:-1]) + " and " + items[-1]
+
+
+def render_census(stats: Dict[str, Any], caps: List[Dict[str, Any]]) -> List[str]:
     admitted = (stats.get("coverage") or {}).get("published_total", stats.get("total", 0))
     pub = stats.get("audited_published", 0)
     pool = stats.get("pool_records", 0)
     held = stats.get("pool_audited_held", 0)
     never = stats.get("pool_unaudited", 0)
-    caps = _capture_census()
+    with_repo = sum(1 for c in caps if (c.get("links") or {}).get("repo"))
+    with_numbers = sum(1 for c in caps if c.get("numbers"))
     haz_p = stats.get("records_hazarded", 0)
     haz_h = stats.get("records_hazarded_held", 0)
-    tests = _test_count()
     return [
-        BEGIN,
-        f"- **{pub} of {admitted}** admitted records are published — this catalog is audited-only — and "
-        f"**{pool}** sit in `data/pool.json`: {held} captured, scored and held for cause · {never} never "
-        f"captured at all.",
-        f"- **{caps['captured']}** project pages have been deep-captured, {caps['with_numbers']} of them "
-        f"with a recorded figures table (claims written down with a denominator — whether they then proved "
-        f"checkable is each record's `numbers_add_up`), and {caps['with_repo']} linking a repository we "
-        f"could verify against `api.github.com`. Hazard notes sit on {haz_p} published and {haz_h} held records.",
-        f"- {tests} pipeline tests, every surface regenerated by `make build`, and `make verify` fails the "
-        f"build if this block and `catalog-stats.json` ever disagree — including this block.",
-        END,
+        "- **{pub} of {admitted}** admitted records are published — this catalog is audited-only — and "
+        "**{pool}** sit in `data/pool.json`: {held} captured, scored and held for cause · {never} never "
+        "captured at all.".format(pub=pub, admitted=admitted, pool=pool, held=held, never=never),
+        "- **{n}** project pages have been deep-captured, {wn} of them with a recorded figures table "
+        "(claims written down with a denominator — whether they then proved checkable is each record's "
+        "`numbers_add_up`), and {wr} linking a repository we could verify against `api.github.com`. "
+        "Hazard notes sit on {hp} published and {hh} held records.".format(
+            n=len(caps), wn=with_numbers, wr=with_repo, hp=haz_p, hh=haz_h),
+        "- {t} pipeline tests, every surface regenerated by `make build`, and `make verify` fails the "
+        "build if this block and `catalog-stats.json` ever disagree — including this block.".format(
+            t=_test_count()),
     ]
 
 
-def patch(path: str, block: List[str], check: bool) -> bool:
+def render_audits_example() -> List[str]:
+    """The protocol's two JSON excerpts, emitted from the built surfaces they describe."""
+    audits = _load("web/public/data/audits.json")
+    rows = audits.get("records") or {}
+    queue = _load("web/public/data/promotion-queue.json")
+    top_id: Optional[str] = None
+    if rows:
+        top_id = max(rows, key=lambda k: rows[k].get("soundness_score") or 0.0)
+    lines = ["```jsonc",
+             "// data/audits.json — one entry per published record ({} rows), keyed by id;".format(len(rows)),
+             "// `checks` prints the status string only; the sector file carries each check's `pass` and `why`.",
+             "{"]
+    if top_id:
+        body = json.dumps({top_id: rows[top_id]}, indent=1, ensure_ascii=False)
+        body = body[1:-1].strip("\n")      # drop the outer braces, keep the record's own
+        lines += [" " + ln if ln.strip() else ln for ln in body.split("\n")]
+    lines += ["}", "",
+              "// data/promotion-queue.json — pool_size counts only records with no sheet at all",
+              "{"]
+    qbody = {k: queue.get(k) for k in ("audit_version", "pool_size", "queued", "note")}
+    qbody["candidates"] = (queue.get("candidates") or [])[:1]
+    body = json.dumps(qbody, indent=1, ensure_ascii=False)
+    lines += [" " + ln if ln.strip() else ln for ln in body[1:-1].strip("\n").split("\n")]
+    lines += ["}", "```"]
+    return lines
+
+
+def render_pool_split(stats: Dict[str, Any], caps: List[Dict[str, Any]] = None) -> List[str]:
+    """`provenance` on a pool row is a string — `unaudited` or `audited-hold` — and the blocker
+    lists sit on the row, so the ranges below are computed over held rows only: an unaudited row
+    carries a queue reason in the same field name, and counting those would describe a
+    population that was never audited."""
+    rows = (_load("web/public/data/pool.json").get("records") or [])
+    hold = [r for r in rows if r.get("provenance") == "audited-hold"]
+    unaudited = sum(1 for r in rows if r.get("provenance") == "unaudited")
+
+    def rng(xs: List[int]) -> str:
+        return "{} to {}".format(min(xs), max(xs)) if xs else "none yet"
+
+    return [
+        "- `data/pool.json` holds all {n} held-out records and `provenance` splits them: {u} "
+        "`unaudited` rows nobody has captured, {h} `audited-hold` rows that were captured, scored "
+        "and held back for cause. A held row lists its blockers in `why_not_promoted[]` ({b}) and "
+        "what would clear them in `would_settle_it[]` ({s}).".format(
+            n=len(rows), u=unaudited, h=len(hold),
+            b=rng([len(r.get("why_not_promoted") or []) for r in hold]) + " entries",
+            s=rng([len(r.get("would_settle_it") or []) for r in hold]) + " entries"),
+    ]
+
+
+def render_coverage(stats: Dict[str, Any]) -> List[str]:
+    queue = _load("web/public/data/promotion-queue.json")
+    admitted = (stats.get("coverage") or {}).get("published_total", 0)
+    return [
+        "- `pool_size: {}` is the honest denominator and the `note` says what it excludes. Coverage "
+        "here is {} of {} admitted records audited.".format(queue.get("pool_size"),
+                                                            stats.get("audited_published", 0), admitted),
+    ]
+
+
+def render_repo_blindness(caps: List[Dict[str, Any]]) -> List[str]:
+    named = [c.get("name") or c.get("id") for c in caps if (c.get("links") or {}).get("repo")]
+    total, k = len(caps), len(named)
+    lead = ("exactly one — {} —".format(_sentence_list(named)) if k == 1 else
+            ("{} of them — {} —".format(k, _sentence_list(named)) if k else "not one of them"))
+    others = total - k
+    tail = ("and it is the only record in this catalog whose `build_is_real` could be `confirmed` "
+            "and whose verdict reached `strong` (§4)." if k == 1 else
+            "which is what makes those records' `build_is_real` the only confirmed ones in the "
+            "catalog (§4).")
+    other_sent = ("The other {} sit at `unverifiable` on that check no matter how careful their "
+                  "prose;".format(others) if others else
+                  "Every record without one sits at `unverifiable` on that check;")
+    return [
+        "- It cannot see a repository that a page does not link. Of the {} records deep-captured so "
+        "far, {} printed a repository URL, {}".format(total, lead, tail),
+        "  {} the bulk listing rows carry no links at all, because the gallery scrape never included "
+        "them, so a row learns its `repo_url`, `demo_url` and `video_url` only when a capture is "
+        "folded in at ingest. The audit's reach is therefore a function of what teams chose to link, "
+        "not of how well they wrote.".format(other_sent),
+    ]
+
+
+def render_corpus_bias(stats: Dict[str, Any], caps: List[Dict[str, Any]]) -> List[str]:
+    admitted = (stats.get("coverage") or {}).get("published_total", 0)
+    corpus = [_json_line(l) for l in _read("pipeline/corpus.jsonl").splitlines() if l.strip()]
+    counts: Dict[str, int] = {}
+    for r in corpus:
+        counts[r.get("event_key") or "unknown"] = counts.get(r.get("event_key") or "unknown", 0) + 1
+    top_key, top_n = max(counts.items(), key=lambda kv: kv[1]) if counts else ("—", 0)
+    totals = {}
+    try:
+        totals = _load("pipeline/raw/gallery_totals.json").get(top_key) or {}
+    except FileNotFoundError:
+        pass
+    try:
+        title = ((_load("pipeline/raw/events.json").get("events") or {}).get(top_key) or {}).get("title") or top_key
+    except FileNotFoundError:
+        title = top_key
+    grand = totals.get("total_projects")
+    pages = totals.get("pages_captured")
+    last = totals.get("pager_last_page")
+    deep = ("(`{t}`, {g:,} projects across {p} gallery pages, of which {c} were crawled)"
+            .format(t=title, g=grand, p=last, c=pages) if grand and last else
+            "(its crawl footprint is in `pipeline/raw/gallery_totals.json`)")
+    return [
+        "- It inherits the corpus's biases. {n} of the {a} admitted rows come from one gallery {d}; "
+        "{k} records have been captured for audit, and {a} admitted rows are what the whole corpus holds. "
+        "`catalog-stats.json → coverage` publishes the same figures so a consumer cannot quietly "
+        "forget them.".format(n=top_n, a=admitted, d=deep, k=len(caps)),
+    ]
+
+
+def _json_line(line: str) -> Dict[str, Any]:
+    return json.loads(line)
+
+
+# region name -> renderer(stats, caps). A region is only written for the files that ask for it,
+# and an unrecognised region name is a build failure, so nobody can add a counted sentence that
+# nothing regenerates.
+REGIONS = {
+    "audits-example": lambda stats, caps: render_audits_example(),
+    "pool-split": render_pool_split,
+    "coverage": lambda stats, caps: render_coverage(stats),
+    "repo-blindness": lambda stats, caps: render_repo_blindness(caps),
+    "corpus-bias": render_corpus_bias,
+}
+
+
+def begin(name: str) -> str:
+    return "<!-- {}:begin -->".format(name)
+
+
+def end(name: str) -> str:
+    return "<!-- {}:end -->".format(name)
+
+
+def patch(path: str, rendered: Dict[str, List[str]], check: bool) -> bool:
     with open(path, encoding="utf-8") as fh:
         src = fh.read()
-    body = "\n".join(block)
-    pat = re.compile(re.escape(BEGIN) + r".*?" + re.escape(END), re.S)
-    found = pat.findall(src)
-    if not found:
-        print(f"  ✗ {os.path.relpath(path, REPO)}: no census sentinels")
+    names = re.findall(r"<!-- ([a-z-]+):begin -->", src)
+    if not names:
+        print("  ✗ {}: no generated sentinels".format(os.path.relpath(path, REPO)))
         return False
-    stale = [b for b in found if b.strip() != body.strip()]
-    if check:
-        if stale:
-            print(f"  ✗ {os.path.relpath(path, REPO)}: census block is stale "
-                  f"({len(stale)} of {len(found)} region(s) disagree with the built stats)")
+    unknown = [n for n in names if n not in rendered]
+    if unknown:
+        print("  ✗ {}: region(s) {} are generated by nothing — render them or delete the "
+              "sentinels".format(os.path.relpath(path, REPO), ", ".join(unknown)))
+        return False
+    changed = 0
+    for name in names:
+        body = "\n".join([begin(name)] + rendered[name] + [end(name)])
+        pat = re.compile(re.escape(begin(name)) + r".*?" + re.escape(end(name)), re.S)
+        found = pat.findall(src)
+        if not found:
+            print("  ✗ {}: `{}` has a begin sentinel and no end sentinel".format(
+                os.path.relpath(path, REPO), name))
             return False
-        print(f"  ✓ {os.path.relpath(path, REPO)}: census current")
+        for block in found:
+            if block.strip() != body.strip():
+                if check:
+                    print("  ✗ {}: region `{}` is stale against the built surfaces".format(
+                        os.path.relpath(path, REPO), name))
+                    return False
+                src = src.replace(block, body)
+                changed += 1
+    if check:
+        print("  ✓ {}: {} generated region(s) current".format(
+            os.path.relpath(path, REPO), len(names)))
         return True
-    if not stale:
-        print(f"  = {os.path.relpath(path, REPO)}: unchanged")
+    if not changed:
+        print("  = {}: unchanged".format(os.path.relpath(path, REPO)))
         return True
-    src2 = pat.sub(lambda m: body, src)
     with open(path, "w", encoding="utf-8") as fh:
-        fh.write(src2)
-    print(f"  ✎ {os.path.relpath(path, REPO)}: census regenerated")
+        fh.write(src)
+    print("  ✎ {}: {} region(s) regenerated".format(os.path.relpath(path, REPO), changed))
     return True
 
 
 def main() -> int:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--check", action="store_true", help="fail instead of rewriting (used by make verify)")
+    ap.add_argument("--check", action="store_true",
+                    help="fail instead of rewriting (used by make verify)")
     args = ap.parse_args()
-    with open(os.path.join(REPO, "web", "public", "catalog-stats.json"), encoding="utf-8") as fh:
-        stats = json.load(fh)
-    block = render(stats)
+    if not os.path.isdir(os.path.join(PUBLIC, "data")):
+        print("  ✗ no built surfaces under web/public — run `make build` first")
+        return 1
+    stats = _load("web/public/catalog-stats.json")
+    caps = _captures()
+    rendered = {"census": render_census(stats, caps)}
+    for name, fn in REGIONS.items():
+        rendered[name] = fn(stats, caps)
     ok = True
     for rel in TARGETS:
         p = os.path.join(REPO, rel)
         if not os.path.exists(p):
             continue
-        ok = patch(p, block, args.check) and ok
+        ok = patch(p, rendered, args.check) and ok
     return 0 if ok else 1
 
 
