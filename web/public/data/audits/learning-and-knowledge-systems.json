@@ -235,6 +235,7 @@
    "soundness":"partial",
    "soundness_score":0.5,
    "source_url":"https://devpost.com/software/continuity-g7bty0",
+   "tier":"full",
    "unknowns":[],
    "verdict":"sound-with-caveats",
    "verdict_reasons":[

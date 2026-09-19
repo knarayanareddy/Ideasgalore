@@ -330,6 +330,24 @@ def audit_rubric() -> dict:
         "hard_fail_caps": AUDIT_HARD_FAIL,
         "contradicted_cap": AUDIT_CONTRADICTED_CAP,
         "mandatory_fields": AUDIT_MANDATORY_FIELDS,
+        # ADR-P15 · two ladders, both published. A lite row is not "a shorter audit" in the
+        # dismissive sense: it is a *different claim*, and an agent deciding whether to recommend a
+        # record (or to spend a turn promoting it) needs the rules that produced it.
+        "tiers": {
+            "full": {"fields": AUDIT_MANDATORY_FIELDS, "verdicts": AUDIT_PUBLISH_VERDICTS,
+                     "note": "twelve fields, checked against the page and, when a repository was "
+                             "linked, against the source tree"},
+            "lite": {"fields": AUDIT_LITE_FIELDS, "verdicts": [AUDIT_LITE_VERDICT],
+                     "refused_worth": list(AUDIT_LITE_FORBIDDEN_WORTH),
+                     "requires": ["an artifact we could resolve (demo, listing or repo)",
+                                  "zero contradicted claims",
+                                  "a sentence from the team about limits or measurement",
+                                  "every lite field actually written"],
+                     "note": "six fields established from the page alone; `build_is_real` and "
+                             "`stack_consistency` are unexamined, not passing. A record that fails the "
+                             "full ladder and these four guards publishes as lite; one that contradicts "
+                             "itself never does."},
+        },
         "load_bearing_fields": AUDIT_LOAD_BEARING,
         "max_load_bearing_unknowns": AUDIT_MAX_LOAD_BEARING_UNKNOWNS,
         "banned_words_in_verdict_text": BANNED_VERDICT_WORDS,
@@ -938,13 +956,16 @@ ROW_FORMAT = ["id", "name", "hook", "event_id", "likes", "coolness_x1000", "doma
               "subsystem_id", "move_ids[]", "stack_ids[]", "is_deep", "has_thumbnail",
               "award_id", "event_age_days",
               # audit layer: ids into packed["verdicts"] / packed["worth"], so a client can
-              # drop unvetted or low-worth rows without fetching a single audit sheet
-              "verdict_id", "worth_id"]
+              # drop unvetted or low-worth rows without fetching a single audit sheet.
+              # `tier_id` is 0 for a full twelve-field audit and 1 for an audited-lite row
+              # (ADR-P15); it belongs in the packed table rather than only in the sheet because a
+              # reader who never opens a sheet is exactly the reader a lite row could mislead.
+              "verdict_id", "worth_id", "tier_id"]
 
 # Audit columns lead the CSV, because they change how every column after them should be
 # read; the remaining order is the pre-audit shape, byte-for-byte, for existing consumers.
 AUDIT_CSV_COLUMNS = ["verdict", "worth", "soundness", "soundness_score", "rubric_coverage",
-                     "audited_at", "unknowns", "repo_url"]
+                     "audited_at", "unknowns", "repo_url", "audit_tier"]
 BASE_CSV_COLUMNS = [
     "id", "name", "url", "event", "event_org", "domain", "subsystem", "moves",
     "stack", "coolness", "engagement", "validation", "event_prestige", "recency",
@@ -982,3 +1003,20 @@ def partition_of(project_id, workers) -> int:
     would move ids between workers mid-batch.
     """
     return fnv1a_64(project_id) % max(1, int(workers))
+
+# ADR-P15 · The audited-lite tier, adopted by the operator on 2026-09-19 (see
+# `docs/PARALLELISM_PANEL.md` §11). A record whose evidence supports *six* fields and no more publishes
+# as a lite row rather than being held, because "we could verify this much and it was good" is a
+# different claim from "this project is thin" — but the tier must be visible everywhere a verdict is, or
+# we have sold a reader depth they did not get (the M15 failure class). The six are the fields a builder
+# acts on: what it is, what it does, what the team admitted is limited, how they tested, what came before
+# it, and the numbers with their arithmetic. The other six — `how_it_works`, `built_with_verified`,
+# `data_and_models`, `what_to_steal`, `what_breaks_first`, `clone_cost` — are the ones that need a repo
+# or a longer read, and a lite row says `fields_absent` rather than leaving them blank.
+AUDIT_LITE_FIELDS = ("what_it_is", "what_it_does", "limits_they_disclosed", "how_they_tested",
+                     "prior_art", "numbers_with_arithmetic")
+# A lite row is a capped row: it cannot certify soundness it did not examine, and it cannot call
+# something a breakthrough on six fields. `breakthrough` is refused outright; `strong` as a verdict is
+# unreachable by construction (lite coverage is below the `strong` floor) and capped anyway.
+AUDIT_LITE_VERDICT = "sound-with-caveats"
+AUDIT_LITE_FORBIDDEN_WORTH = ("breakthrough",)

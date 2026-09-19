@@ -210,6 +210,7 @@
    "soundness":"partial",
    "soundness_score":0.5094,
    "source_url":"https://devpost.com/software/audionova",
+   "tier":"full",
    "unknowns":[],
    "verdict":"sound-with-caveats",
    "verdict_reasons":[
@@ -217,6 +218,285 @@
    ],
    "worth":"strong",
    "worth_note":"547 likes and a staff feature on a Windows-on-Snapdragon app is not luck: it deletes the cloud bill, the latency and the privacy argument at once. Held back from 'breakthrough' because on-device TTS is a crowded field and the moat here is toolchain work (AI Hub quantisation), not a new capability."
+  },
+  "attaindesk":{
+   "audit_version":1,
+   "audited_at":"2026-09-19",
+   "award":null,
+   "built_with":[
+    "ai-agents",
+    "cloud-firestore",
+    "express.js",
+    "firebase",
+    "firebase-authentication",
+    "firebase-cloud-functions",
+    "firebase-hosting",
+    "gemini-api",
+    "gemini-tts",
+    "generative-ai",
+    "google-ai-studio",
+    "google-antigravity",
+    "google-cloud",
+    "google-cloud-secret-manager",
+    "google-cloud-tasks",
+    "google-gemini",
+    "google-search-grounding",
+    "google-stitch",
+    "image-generation",
+    "node.js",
+    "react",
+    "serverless",
+    "text-to-speech",
+    "veo",
+    "video-generation"
+   ],
+   "checks":{
+    "artifact_exists":{
+     "pass":0.5,
+     "status":"supported",
+     "why":"no source repo linked, but the page publishes a working artifact: https://www.youtube.com/watch?v=VGJBuZq8FtY"
+    },
+    "build_is_real":{
+     "pass":null,
+     "status":"unverifiable",
+     "why":"no repository published, so the build cannot be read"
+    },
+    "limits_disclosed":{
+     "pass":0.5,
+     "status":"supported",
+     "why":"the challenges section discloses operating constraints (what the pipeline costs to run and to iterate on), but no accuracy, coverage or failure-mode limit; the future-work section implies the remaining open edges"
+    },
+    "numbers_add_up":{
+     "pass":0.5,
+     "status":"partial",
+     "why":"2 figure(s) a reader can check against the product (first subscription revenue on a $49/month (+taxes) plan; nine guided workflows plus a Daily Digest from one workspace), but 3 headline figure(s) carry no testable denominator: 13 real businesses using attainDesk; $0 in paid marketing spend to reach those businesses"
+    },
+    "stack_consistency":{
+     "pass":null,
+     "status":"unverifiable",
+     "why":"no repo to cross-check the declared stack against"
+    },
+    "test_or_eval_evidence":{
+     "pass":0.0,
+     "status":"unverifiable",
+     "why":"the only testing sentence on the page is a denial (no suite, set or run is linked)"
+    }
+   },
+   "evidence":[
+    {
+     "checked_at":"2026-09-19",
+     "claim":"Is there an artifact at all \u2014 a repo, a deployed app, or a video of it running?",
+     "detail":"no source repo linked, but the page publishes a working artifact: https://www.youtube.com/watch?v=VGJBuZq8FtY",
+     "id":"attaindesk:artifact_exists",
+     "kind":"page",
+     "source":"https://devpost.com/software/attaindesk",
+     "status":"supported"
+    },
+    {
+     "checked_at":"2026-09-19",
+     "claim":"Does the repo's language/file mix match the stack they described?",
+     "detail":"no repo to cross-check the declared stack against",
+     "id":"attaindesk:stack_consistency",
+     "kind":"page",
+     "source":"https://devpost.com/software/attaindesk",
+     "status":"unverifiable"
+    },
+    {
+     "checked_at":"2026-09-19",
+     "claim":"Is the code a real build (source tree, setup steps, non-trivial size) rather than a stub or zip?",
+     "detail":"no repository published, so the build cannot be read",
+     "id":"attaindesk:build_is_real",
+     "kind":"page",
+     "source":"https://devpost.com/software/attaindesk",
+     "status":"unverifiable"
+    },
+    {
+     "checked_at":"2026-09-19",
+     "claim":"Do their metrics have a denominator, and is the arithmetic internally consistent?",
+     "detail":"2 figure(s) a reader can check against the product (first subscription revenue on a $49/month (+taxes) plan; nine guided workflows plus a Daily Digest from one workspace), but 3 headline figure(s) carry no testable denominator: 13 real businesses using attainDesk; $0 in paid marketing spend to reach those businesses",
+     "id":"attaindesk:numbers_add_up",
+     "kind":"page",
+     "source":"https://devpost.com/software/attaindesk",
+     "status":"partial"
+    },
+    {
+     "checked_at":"2026-09-19",
+     "claim":"Did they state what does not work, or where it fails?",
+     "detail":"the challenges section discloses operating constraints (what the pipeline costs to run and to iterate on), but no accuracy, coverage or failure-mode limit; the future-work section implies the remaining open edges",
+     "id":"attaindesk:limits_disclosed",
+     "kind":"page",
+     "source":"https://devpost.com/software/attaindesk",
+     "status":"supported"
+    },
+    {
+     "checked_at":"2026-09-19",
+     "claim":"Any test suite, eval harness, or measured benchmark we can see?",
+     "detail":"the only testing sentence on the page is a denial (no suite, set or run is linked)",
+     "id":"attaindesk:test_or_eval_evidence",
+     "kind":"page",
+     "source":"https://devpost.com/software/attaindesk",
+     "status":"unverifiable"
+    }
+   ],
+   "fields":{
+    "built_with_verified":{
+     "provenance":"observed",
+     "value":"declared by the authors (25): ai-agents, cloud-firestore, express.js, firebase, firebase-authentication, firebase-cloud-functions, firebase-hosting, gemini-api \u00b7 no repository published, so these are the team's own claim and nothing corroborates them"
+    },
+    "clone_cost":{
+     "note":"our estimate with assumptions visible; not a claim about the team",
+     "provenance":"derived",
+     "value":{
+      "assumptions":[
+       "an acceptance standard per workflow, written down before shipping, because nothing in the capture defines what a good generated asset is and without one 'quality' is unfalsifiable",
+       "a cost model per generation (tokens, seconds of video, retries) priced against $49/month before adding any video-heavy workflow, since the page never publishes one",
+       "distribution assumed to be the hard part: the record's own growth was founder-led and organic, so a clone inherits the product and not the 13 customers",
+       "brand-context persistence (logos, headshots, style) needs a store and a review path if outputs are to be reusable rather than regenerated"
+      ],
+      "estimate":"3-4 weeks per workflow a business would actually pay for, and the ninth is not nine times cheaper than the first",
+      "why":"The generation plumbing is commodity: Gemini text and image endpoints, Veo for video, TTS for voiceover, Search grounding for the digest, all of it behind Cloud Functions and Cloud Tasks with Firestore for job state - a small team can stand up two or three of these in a month, and the page says its own build was substantially done with Gemini coding agents and Antigravity, which is a claim about speed of authoring, not about defensibility. What is not commodity is the per-vertical taste that makes each output acceptable - what a staged living room has to look like for a listing agent to send it, how a menu photo has to be lit - plus auth, billing, analytics and the trust required for a business to hand a workspace its brand. And the acquisition story the record actually claims as its accomplishment is founder-led outreach at $0 spend, which cannot be cloned at all: the moat named in the page is the team's ability to sell to SMBs, not the pipeline."
+     }
+    },
+    "data_and_models":{
+     "provenance":"observed",
+     "value":"No model is trained and none is claimed to be. The system is an orchestration layer over vendor capabilities: Gemini APIs across text generation and analysis, image generation and editing, video, speech and Google Search-grounded intelligence, with Veo and gemini-tts named in the tag list as the specific generators. On the serving side it is Firebase Cloud Functions plus Cloud Tasks for asynchronous generation, Firestore and Cloud Storage for job state and produced assets, Secret Manager for credentials, Firebase hosting, auth, logging and analytics, with React and Node/Express at the edge. The authored content is notable for what it does not say: no model version is named for any of the five capability classes, no routing rule is given for which workflow calls which model, and no per-generation cost, latency or failure rate is published - which matters because the page itself explains that some operations are computationally intensive and asynchronous, so those three quantities are the product's real economic constraints."
+    },
+    "how_it_works":{
+     "provenance":"observed",
+     "value":"Built 'AI-native from day one', beginning as workflow prototypes in Google AI Studio. The page credits Gemini-powered coding agents and Google Antigravity for architecture brainstorming, coding, testing, debugging and iteration, and Google Stitch for the frontend design process. In production the shape is an asynchronous architecture for AI workloads: Firebase Cloud Functions and Cloud Tasks orchestrate generation jobs, while Firestore and Cloud Storage hold job state and generated assets, on top of the authentication, logging and analytics that Firebase and Google Cloud provide. Model use is spread across capability classes rather than one endpoint - Gemini APIs for text generation and analysis, image generation and editing, video, speech, and Google Search-grounded intelligence - with Node/Express and React at the edges and the twenty-five-item Built With list also naming Veo, gemini-tts, Secret Manager and serverless. AI is also used internally: market analysis, customer targeting, UX development, debugging and documentation."
+    },
+    "how_they_tested":{
+     "provenance":"observed",
+     "value":"Nothing is measured in the sense this catalog counts as measurement. There is no test suite, no eval, no accuracy, acceptance or rejection-rate figure, and no quality claim for any of the nine workflows - no statement, for instance, of how often a generated virtual-staged room or product video is acceptable to the business that asked for it. What the page offers instead is usage: 'early customer usage has been important in helping us make those decisions' between impressive-sounding and genuinely valuable features, which is product research rather than a test result, and 13 businesses as the population it was gathered from, unpublished per workflow. The one appearance of the word testing is in the description of how the code was written - Gemini-powered coding agents and Antigravity used for 'architecture brainstorming, coding, testing, debugging and iteration' - so the assertion is that testing happened, with no harness, count or result attached and no repository to read it from. The absence is load-bearing for a claim of this shape: the acceptance rate of a generated marketing image is the number a buyer of this product would need."
+    },
+    "limits_they_disclosed":{
+     "provenance":"observed",
+     "value":"Three, and all three are stated as product restraint rather than technical failure. The first is 'avoiding the temptation to simply put powerful AI models behind generic prompt boxes' - owners want an outcome, so the workflows are organised around what the business is trying to accomplish, with most prompting and model complexity abstracted behind the experience. The second is workload heterogeneity: text, image, video and research jobs differ by orders of magnitude in cost, some completing quickly while others are computationally intensive and asynchronous, and the Cloud Tasks plus Firebase layer is what keeps that invisible to the user. The third is described as a continual judgement call between features that are technically impressive and features that create genuine value, with early customer usage cited as the thing that decided it."
+    },
+    "numbers_with_arithmetic":{
+     "provenance":"observed",
+     "value":[
+      {
+       "arithmetic":"not falsifiable from the page: no per-workflow or per-vertical breakdown, no date the count was taken, no churn or session volume, and the count is deliberately separated from revenue by the page's own wording ('first subscription revenue' is reported next to it rather than inside it), so 13 could be 13 free accounts and one paying customer without contradicting anything written",
+       "claim":"13 real businesses using attainDesk",
+       "denominator":"not stated - 'using', not paying, not retained",
+       "load_bearing":true,
+       "verifiable":false
+      },
+      {
+       "arithmetic":"structural: a price is checkable by opening the product, and it is the only monetised figure on the page, but revenue is being claimed as an accomplishment while the multiplier is withheld, so a reader can compute nothing from it - at one paying customer it is $588 a year before taxes, at thirteen it is $7,644, and the page lets both stand",
+       "claim":"first subscription revenue on a $49/month (+taxes) plan",
+       "denominator":"paying accounts - not published",
+       "load_bearing":true,
+       "verifiable":true
+      },
+      {
+       "arithmetic":"not falsifiable from the page: a claim about an absence, unfalsifiable by a reader with no analytics access, and it is doing rhetorical work for the Daily Digest anecdote - the causal claim that the product's own research feature produced the first paying customer rests on it",
+       "claim":"$0 in paid marketing spend to reach those businesses",
+       "denominator":"outbound spend during the reported period",
+       "verifiable":false
+      },
+      {
+       "arithmetic":"not falsifiable from the page: no start or end date is published for the build, so 'during the hackathon period' has no bounds a reader could check. The only date visible is that the project was started 33 days before this read (update history), which bounds post-hackathon maintenance, not the build window itself",
+       "claim":"moved from an idea to a functioning SaaS business during the hackathon period",
+       "denominator":"the event's build window - not dated on the page",
+       "verifiable":false
+      },
+      {
+       "arithmetic":"structural and countable from the page: eight generation workflows (social content, virtual staging, image-to-video property tours, product promo video, food-photo transformation, logo, headshot, meeting background) plus the Digest. The gallery carries one screenshot per workflow, which is corroboration of existence and not of quality - and note that breadth of this kind is itself a claim about maintenance cost per workflow, which the page never addresses",
+       "claim":"nine guided workflows plus a Daily Digest from one workspace",
+       "denominator":"workflows shipped",
+       "verifiable":true
+      }
+     ]
+    },
+    "prior_art":{
+     "note":"each entry resolves to a URL we opened this session or a corpus id",
+     "provenance":"editorial",
+     "value":[
+      {
+       "corpus_id":"saral-9bn2lr",
+       "relation":"same buyer, same event, same subsystem, opposite shape: Reeloli goes deep on one channel (WhatsApp, 15 days of local-business marketing video, planned and produced by AI) where attainDesk goes broad across nine workflows in a web workspace - read the pair together for the depth-versus-breadth trade a horizontal SMB product has to answer"
+      },
+      {
+       "corpus_id":"small-business-ai-growth-desk",
+       "relation":"the same pitch stated as a category rather than a product - 'marketing, content, outreach and operational assets in minutes' - which is the generic prompt-box attainDesk's page explicitly argues against"
+      },
+      {
+       "corpus_id":"vibemarketer",
+       "relation":"attainDesk's missing half: VibeMarketer closes the loop with persistent brand context, approval before campaigns go out, and provider-confirmed publishing, where attainDesk generates and stops"
+      },
+      {
+       "corpus_id":"sketchwish",
+       "relation":"one workflow, priced honestly: photo to print-ready sketch for print-on-demand sellers, live in production - the same 'guided outcome, no prompting' bet at a tenth of the surface area, which is the argument for starting narrow"
+      }
+     ]
+    },
+    "what_breaks_first":{
+     "provenance":"editorial",
+     "value":"Unit economics on the expensive workflows, then the quality question nobody measured. A $49/month plan is priced against a catalogue that includes Veo-class video generation and image editing for every customer; one realtor rendering a dozen listings a week can out-earn the subscription in inference on its own, and the page publishes no per-generation cost, latency or failure rate - while simultaneously admitting that some operations are computationally intensive and asynchronous, i.e. it knows exactly where the exposure is. Second: nine workflows means nine vendor surfaces, each with its own silent quality drift, and there is no acceptance metric for any of them, so a model version bump changes what a customer receives with nothing in the loop to notice. Third: '13 businesses using it' has no denominator - not paying, not retained, not per-workflow - so the traction claim that carries the record cannot be turned into a rate by a reader at all."
+    },
+    "what_it_does":{
+     "provenance":"observed",
+     "value":"attainDesk turns common small-business needs into guided, business-specific AI workflows from one workspace: create social-media content; virtually stage real-estate listings; turn property images into video tours; create short promotional product videos; transform ordinary food photos into polished menu and marketing images; generate business logos; create professional headshots; generate branded meeting backgrounds; and a Daily Digest that surfaces relevant market developments, local business groups, events and opportunities. The named verticals are real estate, food, manufacturing, construction, education, clothing and professional services. The features differ and the goal is stated as one: help a small business understand its market, present itself professionally, reach customers and grow without needing a large specialist team."
+    },
+    "what_it_is":{
+     "provenance":"derived",
+     "value":"An AI-native operations workspace for small businesses, where each business outcome - virtual staging a listing, turning food photos into menu images, a product video, a logo, a headshot, a Daily Digest of local opportunities - is its own guided workflow over an asynchronous Firebase Cloud Functions and Cloud Tasks generation pipeline, on the stated premise that owners should not have to learn AI to put it to work."
+    },
+    "what_to_steal":{
+     "provenance":"editorial",
+     "value":"Refuse the prompt box. The stated design principle - users describe a business outcome while model selection, prompting, context and iteration happen behind the scenes - is transferable to any vertical agent, and the async plumbing that makes it survivable is the second half: Cloud Functions plus Cloud Tasks so a two-second text job and a two-minute video job share one UI contract with Firestore holding job state. Then steal the honesty of the product framing itself: 'the best AI experience can sometimes feel like there is less AI, not more' is the line to put on a wall in any team shipping a model-backed workflow, and the Digest-that-found-the-first-customer loop is a template for pointing your own research surface at your own acquisition problem."
+    }
+   },
+   "fields_absent":[
+    "how_it_works",
+    "built_with_verified",
+    "data_and_models",
+    "what_to_steal",
+    "what_breaks_first",
+    "clone_cost"
+   ],
+   "hazard":null,
+   "id":"attaindesk",
+   "likes":3,
+   "links":{
+    "demo":null,
+    "repo":null,
+    "video":"https://www.youtube.com/watch?v=VGJBuZq8FtY"
+   },
+   "moves":[
+    "crew-of-specialists",
+    "constraint-is-the-feature",
+    "single-input-ux",
+    "narrow-domain-deep-model"
+   ],
+   "name":"attainDesk",
+   "provenance":{
+    "checks":"derived",
+    "clone_cost":"derived",
+    "evidence":"observed",
+    "fields":"observed",
+    "verdict":"derived",
+    "worth":"editorial"
+   },
+   "publishable":true,
+   "repo":null,
+   "right_of_reply":"https://github.com/knarayanareddy/Ideasgalore/issues/new?labels=audit-recheck",
+   "rubric_coverage":0.64,
+   "soundness":"weak",
+   "soundness_score":0.3906,
+   "source_url":"https://devpost.com/software/attaindesk",
+   "tier":"lite",
+   "tier_note":"Lite audit: six fields were established from the page and nothing was read from a repository. Treat `build_is_real` and `stack_consistency` as unexamined, not as passing.",
+   "unknowns":[],
+   "verdict":"sound-with-caveats",
+   "verdict_reasons":[
+    "soundness 0.39 is too low to certify; stays in the pool",
+    "published as audited-lite on 6 of 12 fields (64% of the rubric checkable); the other 6 need a repository or a longer read and are named in `fields_absent`"
+   ],
+   "worth":"niche",
+   "worth_note":"Correct, useful, and unusually real: one of a handful of records in this catalog with paying customers attached to it, and the self-acquisition anecdote - their own Daily Digest surfaced local business groups, they used it for outreach, it produced the first paying customer - is the best argument in the whole page because it is a test they ran on themselves rather than a feature claim. Held to 'niche' for two reasons. The category is crowded here and elsewhere: Reeloli, Small Business AI Growth Desk and VibeMarketer are in this corpus with the same 'SMBs, no prompting, we do the marketing' pitch, so the wedge is execution, not insight. And nothing about the nine workflows is measured - no acceptance rate, no per-generation cost, no quality claim, no repository - so the record can support 'this team shipped a business' but not 'this mechanism works'. Breadth is also unpriced: nine generation pipelines is a maintenance commitment the page never accounts for."
   },
   "greenlight-nine-agent-production-crew":{
    "audit_version":1,
@@ -461,6 +741,7 @@
    "soundness":"verified",
    "soundness_score":0.7734,
    "source_url":"https://devpost.com/software/greenlight-nine-agent-production-crew",
+   "tier":"full",
    "unknowns":[],
    "verdict":"sound-with-caveats",
    "verdict_reasons":[

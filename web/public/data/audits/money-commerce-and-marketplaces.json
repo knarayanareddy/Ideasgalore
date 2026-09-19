@@ -237,6 +237,7 @@
    "soundness":"verified",
    "soundness_score":0.862,
    "source_url":"https://devpost.com/software/satu",
+   "tier":"full",
    "unknowns":[],
    "verdict":"strong",
    "verdict_reasons":[
@@ -478,6 +479,7 @@
    "soundness":"partial",
    "soundness_score":0.6797,
    "source_url":"https://devpost.com/software/sketchwish",
+   "tier":"full",
    "unknowns":[],
    "verdict":"sound-with-caveats",
    "verdict_reasons":[
@@ -737,6 +739,7 @@
    "soundness":"partial",
    "soundness_score":0.5703,
    "source_url":"https://devpost.com/software/carbender",
+   "tier":"full",
    "unknowns":[],
    "verdict":"sound-with-caveats",
    "verdict_reasons":[

@@ -1682,6 +1682,111 @@ class TestThroughputRails(unittest.TestCase):
         self.assertTrue(all("incomplete capture" not in " ".join(r["why_not_promoted"]) for r in others))
 
 
+class TestAuditedLiteTier(unittest.TestCase):
+    """ADR-P15: a record can be thin because it is contradicted or because there is less to check, and a
+    tier that publishes the second kind must make readers *see* the difference. These pin the four guards,
+    the caps, and the fact that the tier is on every surface that shows a verdict — a lite row that reads
+    like a full one is the M15 failure in a new costume."""
+
+    @staticmethod
+    def _audit_rows():
+        rows = {}
+        with open(os.path.join(REPO, "pipeline/audit.jsonl"), encoding="utf-8") as fh:
+            for line in fh:
+                if line.strip():
+                    r = json.loads(line)
+                    rows[r["id"]] = r
+        return rows
+
+    def test_a_small_but_honest_record_publishes_as_lite(self):
+        rows = self._audit_rows()
+        lite = [r for r in rows.values() if r.get("tier") == "lite"]
+        self.assertTrue(lite, "the second ladder must actually be used, or it is decoration")
+        for r in lite:
+            self.assertTrue(r["publishable"], r["id"] + " carries a tier but is not published")
+            self.assertEqual(r["verdict"], T.AUDIT_LITE_VERDICT,
+                             "a six-field row may not certify `strong` soundness")
+            self.assertEqual(sorted(r["fields_absent"]),
+                             sorted(set(T.AUDIT_MANDATORY_FIELDS) - set(T.AUDIT_LITE_FIELDS)),
+                             "the row must name exactly what nobody wrote")
+            self.assertNotIn("breakthrough", [r.get("worth")],
+                             "breakthrough is refused at this tier, not softened")
+            self.assertIn("build_is_real", str(r.get("tier_note")),
+                          "the note must say which checks were never run")
+
+    def test_a_refuted_record_cannot_be_lite_washed(self):
+        cap = {"id": "fixture", "sections": {"what_it_does": "x"}}
+        checks = {k: {"pass": 0.9, "status": "supported"} for k in T.AUDIT_CHECKS}
+        ok, refuse, _absent = A.lite_admission(cap, checks, {f: {"value": "v"} for f in T.AUDIT_LITE_FIELDS},
+                                               1, 0.64)
+        self.assertFalse(ok, "a contradicted claim is the one thing lite must never publish")
+        self.assertTrue(any("never washes a refutation" in x for x in refuse), refuse)
+
+    def test_a_bare_feature_list_cannot_be_lite(self):
+        checks = {k: {"pass": 0.9, "status": "supported"} for k in T.AUDIT_CHECKS}
+        checks["limits_disclosed"] = {"pass": 0.0, "status": "unverifiable"}
+        checks["test_or_eval_evidence"] = {"pass": 0.0, "status": "unverifiable"}
+        ok, refuse, _ = A.lite_admission({"id": "f"}, checks,
+                                        {f: {"value": "v"} for f in T.AUDIT_LITE_FIELDS}, 0, 0.64)
+        self.assertFalse(ok, "a page that says nothing about behaviour or measurement is a brochure")
+        self.assertTrue(any("how the thing behaves" in x for x in refuse), refuse)
+
+    def test_no_artifact_resolves_means_no_lite_row(self):
+        checks = {k: {"pass": 0.9, "status": "supported"} for k in T.AUDIT_CHECKS}
+        checks["artifact_exists"] = {"pass": 0.0, "status": "unverifiable"}
+        ok, refuse, _ = A.lite_admission({"id": "f"}, checks,
+                                        {f: {"value": "v"} for f in T.AUDIT_LITE_FIELDS}, 0, 0.64)
+        self.assertFalse(ok)
+        self.assertTrue(any("something to look at" in x for x in refuse), refuse)
+
+    def test_the_tier_is_visible_on_every_published_surface(self):
+        import shard_builder as S
+        with open(os.path.join(REPO, "web/public/catalog-packed.json"), encoding="utf-8") as fh:
+            packed = json.load(fh)
+        self.assertEqual(packed["row_format"], T.ROW_FORMAT)
+        self.assertIn("tier_id", packed["row_format"], "a card that never loads a sheet must still know")
+        idx = packed["row_format"].index("tier_id")
+        tiers = {1: "lite", 0: "full"}
+        rows_by_id = packed["row_format"].index("id")
+        names = {str(r[rows_by_id]): tiers[int(r[idx])] for r in packed["rows"]}
+        with open(os.path.join(REPO, "web/public/data/audits.json"), encoding="utf-8") as fh:
+            index = json.load(fh)["records"]
+        for rid, sheet in index.items():
+            self.assertEqual(names[rid], sheet["tier"], rid + ": packed tier and index tier disagree")
+        with open(os.path.join(REPO, "web/public/data/ideas.ndjson"), encoding="utf-8") as fh:
+            for line in fh:
+                r = json.loads(line)
+                if r.get("audit"):
+                    self.assertEqual(r["audit"]["tier"], index[r["id"]]["tier"],
+                                     r["id"] + ": ndjson and index disagree on the tier")
+        import csv as _csv
+        with open(os.path.join(REPO, "web/public/data/ideas.csv"), newline="", encoding="utf-8") as fh:
+            for row in _csv.DictReader(fh):
+                want = index.get(row["id"], {}).get("tier", "") or ""
+                self.assertEqual(row["audit_tier"], want, row["id"] + ": csv tier drifted")
+
+    def test_the_rubric_publishes_both_ladders(self):
+        with open(os.path.join(REPO, "web/public/data/audit-rubric.json"), encoding="utf-8") as fh:
+            rub = json.load(fh)
+        self.assertEqual(rub["tiers"]["full"]["fields"], list(T.AUDIT_MANDATORY_FIELDS))
+        self.assertEqual(rub["tiers"]["lite"]["fields"], list(T.AUDIT_LITE_FIELDS))
+        self.assertEqual(rub["tiers"]["lite"]["verdicts"], [T.AUDIT_LITE_VERDICT])
+        self.assertEqual(len(rub["tiers"]["lite"]["requires"]), 4,
+                         "an agent must be able to see what promotes a lite row")
+
+    def test_the_census_counts_the_two_ladders_apart(self):
+        with open(os.path.join(REPO, "web/public/catalog-stats.json"), encoding="utf-8") as fh:
+            stats = json.load(fh)
+        self.assertEqual(stats["published_full"] + stats["published_lite"], stats["total"],
+                         "the tier split must account for every published row")
+        for doc in ("README.md", "docs/AGENT_ACCESS.md"):
+            with open(os.path.join(REPO, doc), encoding="utf-8") as fh:
+                text = fh.read()
+            self.assertIn("audited-lite", text, doc + " says `published` without naming the two ladders")
+        self.assertGreater(stats["published_lite"], 0,
+                           "if lite rows vanish the split is untested prose, not a real surface")
+
+
 class TestGeneratedCensus(unittest.TestCase):
     """The docs quote counts, and the counting is done by a program.
 

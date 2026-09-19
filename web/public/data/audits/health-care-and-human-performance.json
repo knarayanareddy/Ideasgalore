@@ -245,6 +245,7 @@
    "soundness":"partial",
    "soundness_score":0.5,
    "source_url":"https://devpost.com/software/vitalis-bio",
+   "tier":"full",
    "unknowns":[],
    "verdict":"sound-with-caveats",
    "verdict_reasons":[
@@ -474,6 +475,7 @@
    "soundness":"partial",
    "soundness_score":0.5547,
    "source_url":"https://devpost.com/software/neuroguard-ai-adaptiveconcussionrecoveryintelligencesystem",
+   "tier":"full",
    "unknowns":[],
    "verdict":"sound-with-caveats",
    "verdict_reasons":[
@@ -481,6 +483,240 @@
    ],
    "worth":"strong",
    "worth_note":"The architecture is the contribution: deterministic extraction, rule-based history-aware scoring, retrieval over a guideline corpus, and escalation that pre-empts advice - with the generative model kept out of the decision path. That is the correct shape for software that touches a regulated outcome, and it is rare to see it chosen deliberately at hackathon scale. Held below breakthrough because the pieces are standard practice in clinical decision support."
+  },
+  "neuroguard-ai-0qb34c":{
+   "audit_version":1,
+   "audited_at":"2026-09-19",
+   "award":null,
+   "built_with":[
+    "mediapipe",
+    "opencv",
+    "numpy",
+    "pandas",
+    "scikit-learn",
+    "streamlit",
+    "python",
+    "html/css",
+    "github"
+   ],
+   "checks":{
+    "artifact_exists":{
+     "pass":0.5,
+     "status":"supported",
+     "why":"no source repo linked, but the page publishes a working artifact: https://www.youtube.com/watch?v=EX-kapJD55U"
+    },
+    "build_is_real":{
+     "pass":null,
+     "status":"unverifiable",
+     "why":"no repository published, so the build cannot be read"
+    },
+    "limits_disclosed":{
+     "pass":0.5,
+     "status":"supported",
+     "why":"the challenges section discloses operating constraints, but no accuracy, coverage or failure-mode limit; the future-work section implies the remaining open edges"
+    },
+    "numbers_add_up":{
+     "pass":0.25,
+     "status":"unverifiable",
+     "why":"1 figure(s) we could not test: detects unusual changes versus a personal baseline \u2014 no published harness, baseline or reproduction command to check against"
+    },
+    "stack_consistency":{
+     "pass":null,
+     "status":"unverifiable",
+     "why":"no repo to cross-check the declared stack against"
+    },
+    "test_or_eval_evidence":{
+     "pass":0.0,
+     "status":"unverifiable",
+     "why":"the only testing sentence on the page is a denial (no suite, set or run is linked)"
+    }
+   },
+   "evidence":[
+    {
+     "checked_at":"2026-09-19",
+     "claim":"Is there an artifact at all \u2014 a repo, a deployed app, or a video of it running?",
+     "detail":"no source repo linked, but the page publishes a working artifact: https://www.youtube.com/watch?v=EX-kapJD55U",
+     "id":"neuroguard-ai-0qb34c:artifact_exists",
+     "kind":"page",
+     "source":"https://devpost.com/software/neuroguard-ai-0qb34c",
+     "status":"supported"
+    },
+    {
+     "checked_at":"2026-09-19",
+     "claim":"Does the repo's language/file mix match the stack they described?",
+     "detail":"no repo to cross-check the declared stack against",
+     "id":"neuroguard-ai-0qb34c:stack_consistency",
+     "kind":"page",
+     "source":"https://devpost.com/software/neuroguard-ai-0qb34c",
+     "status":"unverifiable"
+    },
+    {
+     "checked_at":"2026-09-19",
+     "claim":"Is the code a real build (source tree, setup steps, non-trivial size) rather than a stub or zip?",
+     "detail":"no repository published, so the build cannot be read",
+     "id":"neuroguard-ai-0qb34c:build_is_real",
+     "kind":"page",
+     "source":"https://devpost.com/software/neuroguard-ai-0qb34c",
+     "status":"unverifiable"
+    },
+    {
+     "checked_at":"2026-09-19",
+     "claim":"Do their metrics have a denominator, and is the arithmetic internally consistent?",
+     "detail":"1 figure(s) we could not test: detects unusual changes versus a personal baseline \u2014 no published harness, baseline or reproduction command to check against",
+     "id":"neuroguard-ai-0qb34c:numbers_add_up",
+     "kind":"page",
+     "source":"https://devpost.com/software/neuroguard-ai-0qb34c",
+     "status":"unverifiable"
+    },
+    {
+     "checked_at":"2026-09-19",
+     "claim":"Did they state what does not work, or where it fails?",
+     "detail":"the challenges section discloses operating constraints, but no accuracy, coverage or failure-mode limit; the future-work section implies the remaining open edges",
+     "id":"neuroguard-ai-0qb34c:limits_disclosed",
+     "kind":"page",
+     "source":"https://devpost.com/software/neuroguard-ai-0qb34c",
+     "status":"supported"
+    },
+    {
+     "checked_at":"2026-09-19",
+     "claim":"Any test suite, eval harness, or measured benchmark we can see?",
+     "detail":"the only testing sentence on the page is a denial (no suite, set or run is linked)",
+     "id":"neuroguard-ai-0qb34c:test_or_eval_evidence",
+     "kind":"page",
+     "source":"https://devpost.com/software/neuroguard-ai-0qb34c",
+     "status":"unverifiable"
+    }
+   ],
+   "fields":{
+    "built_with_verified":{
+     "provenance":"observed",
+     "value":"declared by the authors (9): mediapipe, opencv, numpy, pandas, scikit-learn, streamlit, python, html/css \u00b7 no repository published, so these are the team's own claim and nothing corroborates them"
+    },
+    "clone_cost":{
+     "note":"our estimate with assumptions visible; not a claim about the team",
+     "provenance":"derived",
+     "value":{
+      "assumptions":[
+       "you accept a camera balance test is a demo and not an instrument",
+       "you have a clinician to define what an alert obliges anyone to do",
+       "single-user pilot scale"
+      ],
+      "estimate":"3 weeks for the test battery plus baseline detector",
+      "why":"the tests are standard web tasks and the detector is a small scikit-learn job over a per-user series; no training is implied"
+     }
+    },
+    "data_and_models":{
+     "provenance":"observed",
+     "value":"No trained model of their own named: off-the-shelf MediaPipe pose estimation and a scikit-learn anomaly detector over per-user session data. No dataset, sample size, threshold or metric appears on the page."
+    },
+    "how_it_works":{
+     "provenance":"observed",
+     "value":"A Streamlit app: MediaPipe pose for the physical tests, numpy/pandas for the session series, a scikit-learn anomaly detector over the personal baseline, plus session-to-session data tracking."
+    },
+    "how_they_tested":{
+     "provenance":"observed",
+     "value":"No test suite, evaluation set, or validation against clinical measures is described; the page presents the concept and a prototype update, not results."
+    },
+    "limits_they_disclosed":{
+     "provenance":"observed",
+     "value":"Assessments simple enough for anyone to use while still producing meaningful signal; individual differences; keeping the framing away from unsafe medical claims."
+    },
+    "numbers_with_arithmetic":{
+     "provenance":"observed",
+     "value":[
+      {
+       "arithmetic":"unfalsifiable as published - no sensitivity, false-alarm rate or session count is given",
+       "claim":"detects unusual changes versus a personal baseline",
+       "denominator":"each user's own prior sessions; count and window not stated",
+       "verifiable":false
+      }
+     ]
+    },
+    "prior_art":{
+     "note":"each entry resolves to a URL we opened this session or a corpus id",
+     "provenance":"editorial",
+     "value":[
+      {
+       "corpus_id":"neuroguard-ai-adaptiveconcussionrecoveryintelligencesystem",
+       "relation":"same name and problem, different team and a far more specified architecture (deterministic extraction, retrieval, escalation precedence); treat it as the stronger record of the two"
+      },
+      {
+       "corpus_id":"neuropath-kbe2ys",
+       "relation":"concussion and ADHD recovery app that also triages symptoms; adds therapy automation the monitoring framing avoids"
+      },
+      {
+       "corpus_id":"acl-movemement-analytics-lab",
+       "relation":"same bet - video plus computer vision to turn movement into interpretable evidence - in a different injury domain"
+      }
+     ]
+    },
+    "what_breaks_first":{
+     "provenance":"editorial",
+     "value":"The physical test. MediaPipe pose through a laptop webcam degrades with lighting, framing and a person who has vertigo, so the anomaly detector starts flagging the camera rather than the recovery; second, distribution - a monitoring tool with no clinical pathway has nowhere to send a bad reading."
+    },
+    "what_it_does":{
+     "provenance":"observed",
+     "value":"Short cognitive tests (reaction time, memory, attention) plus camera-based balance/movement assessment, a recovery dashboard, and alerts when performance moves away from the user's own baseline."
+    },
+    "what_it_is":{
+     "provenance":"derived",
+     "value":"Concussion recovery tracking that scores short cognitive and camera-based physical tests against the patient's own baseline and flags unusual change."
+    },
+    "what_to_steal":{
+     "provenance":"editorial",
+     "value":"Baseline-relative anomaly detection as the product's whole claim: never assert a norm, assert deviation from the user's own series. It converts a small sample into a usable signal and it is honest about what it is."
+    }
+   },
+   "fields_absent":[
+    "how_it_works",
+    "built_with_verified",
+    "data_and_models",
+    "what_to_steal",
+    "what_breaks_first",
+    "clone_cost"
+   ],
+   "hazard":{
+    "class":"clinical",
+    "note":"Head-injury monitoring with alerting. The page disclaims diagnosis and refuses unsafe claims, which is the right posture, but an alert that a patient reads as clearance is a clinical event; anything built from this needs an explicit escalation path and a review by a clinician.",
+    "team_disclaimed":true
+   },
+   "id":"neuroguard-ai-0qb34c",
+   "likes":3,
+   "links":{
+    "demo":null,
+    "repo":null,
+    "video":"https://www.youtube.com/watch?v=EX-kapJD55U"
+   },
+   "moves":[
+    "deterministic-guardrail"
+   ],
+   "name":"NeuroGuard AI (v2)",
+   "parallel_invention_of":"neuroguard-ai-adaptiveconcussionrecoveryintelligencesystem",
+   "provenance":{
+    "checks":"derived",
+    "clone_cost":"derived",
+    "evidence":"observed",
+    "fields":"observed",
+    "verdict":"derived",
+    "worth":"editorial"
+   },
+   "publishable":true,
+   "repo":null,
+   "right_of_reply":"https://github.com/knarayanareddy/Ideasgalore/issues/new?labels=audit-recheck",
+   "rubric_coverage":0.64,
+   "soundness":"weak",
+   "soundness_score":0.3281,
+   "source_url":"https://devpost.com/software/neuroguard-ai-0qb34c",
+   "tier":"lite",
+   "tier_note":"Lite audit: six fields were established from the page and nothing was read from a repository. Treat `build_is_real` and `stack_consistency` as unexamined, not as passing.",
+   "unknowns":[],
+   "verdict":"sound-with-caveats",
+   "verdict_reasons":[
+    "soundness 0.33 is too low to certify; stays in the pool",
+    "published as audited-lite on 6 of 12 fields (64% of the rubric checkable); the other 6 need a repository or a longer read and are named in `fields_absent`"
+   ],
+   "worth":"niche",
+   "worth_note":"The framing is right - measure the person against their own baseline instead of a population threshold - and that transferable piece survives even though nothing about this build is checkable: no dataset, no metric, no repo, and a browser webcam asked to judge balance in someone who is dizzy."
   }
  }
 }

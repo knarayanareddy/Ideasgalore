@@ -83,10 +83,15 @@ def render_census(stats: Dict[str, Any], caps: List[Dict[str, Any]]) -> List[str
     with_numbers = sum(1 for c in caps if c.get("numbers"))
     haz_p = stats.get("records_hazarded", 0)
     haz_h = stats.get("records_hazarded_held", 0)
+    pub_full = stats.get("published_full", pub)
+    pub_lite = stats.get("published_lite", 0)
     return [
-        "- **{pub} of {admitted}** admitted records are published — this catalog is audited-only — and "
-        "**{pool}** sit in `data/pool.json`: {held} captured, scored and held for cause · {never} never "
-        "captured at all.".format(pub=pub, admitted=admitted, pool=pool, held=held, never=never),
+        "- **{pub} of {admitted}** admitted records are published — this catalog is audited-only — "
+        "**{pf}** on the full twelve-field ladder and **{pl}** as `audited-lite` (six fields established "
+        "from the page, `build_is_real`/`stack_consistency` unexamined — see ADR-P15). **{pool}** sit in "
+        "`data/pool.json`: {held} captured, scored and held for cause · {never} never captured at "
+        "all.".format(pub=pub, admitted=admitted, pf=pub_full, pl=pub_lite, pool=pool, held=held,
+                      never=never),
         "- **{n}** project pages have been deep-captured, {wn} of them with a recorded figures table "
         "(claims written down with a denominator — whether they then proved checkable is each record's "
         "`numbers_add_up`), and {wr} linking a repository we could verify against `api.github.com`. "

@@ -273,6 +273,10 @@ def build(records: List[Dict[str, Any]], out_dir: str, today: str,
             award_enc.id(r.get("award") or "Unknown"),
             _days_ago(r.get("event_date"), dt.date.fromisoformat(today)),
             verdict_id, worth_id,
+            # ADR-P15: which ladder this row was certified on. In the packed table, not only in the
+            # sheet, because the catalog-wide view is where a six-field row could be mistaken for a
+            # twelve-field one by a reader who never opens a sheet.
+            1 if sheet.get("tier") == "lite" else 0,
         ])
 
         details.setdefault(dslug, {})[rid] = _detail_record(r, sheet)
@@ -415,6 +419,7 @@ def build(records: List[Dict[str, Any]], out_dir: str, today: str,
         "evidence": len(sh.get("evidence") or []),
         "contradicted": sum(1 for e in (sh.get("evidence") or []) if e["status"] == "contradicted"),
         "hazard": bool(sh.get("hazard")), "repo": (sh.get("repo") or {}).get("url"),
+        "tier": sh.get("tier"), "fields_absent": sh.get("fields_absent") or [],
         "audited_at": sh.get("audited_at"), "audit_version": sh.get("audit_version"),
         "url": sh.get("source_url"), "name": sh.get("name")}
         for slug in audit_sheets for rid, sh in audit_sheets[slug].items()}
@@ -468,6 +473,10 @@ def build(records: List[Dict[str, Any]], out_dir: str, today: str,
         "audit_version": AUDIT_VERSION,
         "audit_index_kb": round(index_kb, 1),
         "audit_sheets_kb": round(sheets_kb, 1),
+        # ADR-P15: the two ladders are counted separately, because "14 published" and "12 full · 2 lite"
+        # are different claims, and every doc region that quotes a total reads these keys.
+        "published_full": sum(1 for v in audit_index.values() if v.get("tier") != "lite"),
+        "published_lite": sum(1 for v in audit_index.values() if v.get("tier") == "lite"),
         "records_hazarded": sum(1 for sh in audit_index.values() if sh["hazard"]),
         # Held-but-scored records can carry hazard notes too, and a single number that mixes
         # the two populations would tell a reader the catalog is the whole story about
@@ -602,6 +611,8 @@ def _ndjson_record(r: Dict[str, Any], sheet: Optional[Dict[str, Any]] = None) ->
             "evidence": len(sheet.get("evidence") or []),
             "hazard": sheet.get("hazard"), "repo": (sheet.get("repo") or {}).get("url"),
             "audited_at": sheet.get("audited_at"), "audit_version": sheet.get("audit_version"),
+            "tier": sheet.get("tier"), "fields_absent": sheet.get("fields_absent") or [],
+            "tier_note": sheet.get("tier_note"),
             "sheet": f"data/audits/{slugify(r.get('domain'))}.json#{r['id']}",
         },
     }
@@ -631,6 +642,7 @@ def _csv_cells(r: Dict[str, Any], sheet: Optional[Dict[str, Any]],
         "rubric_coverage": sh.get("rubric_coverage") if sheet else "",
         "audited_at": sh.get("audited_at") or "",
         "unknowns": len(sh.get("unknowns") or []) if sheet else "",
+        "audit_tier": sh.get("tier") or "",
         "repo_url": (repo or {}).get("url") if isinstance(repo, dict) else (repo or ""),
         "id": str(r["id"]), "name": r.get("name"), "url": r.get("url"),
         "event": r.get("event_title") or "", "event_org": r.get("event_org") or "",

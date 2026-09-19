@@ -40,6 +40,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 from taxonomy_hacks import (  # noqa: E402
     AUDIT_CHECKS, AUDIT_CONTRADICTED_CAP, AUDIT_HARD_FAIL, AUDIT_LOAD_BEARING,
+    AUDIT_LITE_FIELDS, AUDIT_LITE_FORBIDDEN_WORTH, AUDIT_LITE_VERDICT,
     AUDIT_MANDATORY_FIELDS, AUDIT_MAX_LOAD_BEARING_UNKNOWNS, AUDIT_PUBLISH_VERDICTS,
     AUDIT_VERSION, BANNED_VERDICT_WORDS, DUP_MECHANISM_OVERLAP,
     DUP_TEXT_OVERLAP, HAZARD_CLAIM_RE, HAZARD_DISCLAIM_RE, HAZARD_DOMAINS, MOVES,
@@ -753,6 +754,38 @@ def _measurement_claim(testing_text: str):
     return _affirmative(_MEASURE_RE, " ".join(keep))
 
 
+def lite_admission(cap: Dict[str, Any], checks: Dict[str, Any], fields: Dict[str, Any],
+                   contradicted: int, coverage: float) -> Tuple[bool, List[str], List[str]]:
+    """ADR-P15: the second ladder, and its refusals are recorded rather than swallowed.
+
+    A record reaches `thin` for two quite different reasons: the evidence contradicts it, or there is
+    simply less to check (no repo, no published eval) than the twelve-field rubric assumes. Lite exists for
+    the second case only, so the guards are the ones that matter: something real to look at, no refuted
+    claim, every lite field actually written, and at least one sentence from the team about how the thing
+    behaves or was measured. That last one is what stops a feature list from being laundered into a
+    published row — which is the obvious way a "shorter audit" tier would degrade a catalog.
+    """
+    refuse: List[str] = []
+    absent = [f for f in AUDIT_MANDATORY_FIELDS if f not in AUDIT_LITE_FIELDS]
+    lite_present = [f for f in AUDIT_LITE_FIELDS if f in fields]
+    if len(lite_present) < len(AUDIT_LITE_FIELDS):
+        refuse.append("lite fields unwritten: " + ", ".join(sorted(set(AUDIT_LITE_FIELDS) - set(lite_present))))
+    af = checks.get("artifact_exists") or {}
+    if not af or af.get("pass") in (None, 0.0) or af.get("status") not in ("supported", "confirmed"):
+        refuse.append("no artifact we could resolve (lite still requires something to look at)")
+    if contradicted:
+        refuse.append(f"{contradicted} claim(s) contradicted by evidence — lite never washes a refutation")
+    disclosed = (checks.get("limits_disclosed") or {}).get("pass") or 0.0
+    measured = (checks.get("test_or_eval_evidence") or {}).get("pass") or 0.0
+    if disclosed <= 0.0 and measured <= 0.0:
+        refuse.append("the page says nothing about limits or measurement: a lite row still has to "
+                      "contain a sentence about how the thing behaves")
+    numbers = checks.get("numbers_add_up") or {}
+    if numbers.get("status") == "contradicted":
+        refuse.append("numbers contradicted on their own terms")
+    return (not refuse), refuse, absent
+
+
 def hazard_for(rec: Dict[str, Any], cap: Dict[str, Any], notes: Dict[str, Any]) -> Optional[Dict[str, Any]]:
     """A13: one stamp, one line, mandatory for agents."""
     dom = rec.get("domain")
@@ -926,6 +959,7 @@ def audit(corpus_path: str = CORPUS, out_path: str = AUDIT_OUT, report: bool = F
             "source_url": cap.get("source_url") or rec.get("url"),
             "verdict": verdict,
             "publishable": verdict in AUDIT_PUBLISH_VERDICTS,
+            "tier": "full" if verdict in AUDIT_PUBLISH_VERDICTS else None,
             "soundness_score": score,
             "rubric_coverage": coverage,
             "soundness": ("verified" if score >= 0.7 else "partial" if score >= 0.45
@@ -961,6 +995,36 @@ def audit(corpus_path: str = CORPUS, out_path: str = AUDIT_OUT, report: bool = F
             sheet["unknowns"].append({"field": "repo_verification",
                                       "missing": f"{repo_name} is linked but not yet verified via "
                                                  f"`repo_verify.py`; run it to settle stack/build checks"})
+        # ADR-P15 · the second ladder, applied where the first one said `thin` and nowhere else.
+        if not sheet["publishable"] and verdict == "thin":
+            admitted, refused, absent = lite_admission(cap, checks, fields, contradicted, coverage)
+            if admitted:
+                sheet["verdict"] = AUDIT_LITE_VERDICT          # never `strong`: coverage cannot reach it
+                sheet["publishable"] = True
+                sheet["tier"] = "lite"
+                sheet["fields_absent"] = absent
+                if sheet.get("worth") in AUDIT_LITE_FORBIDDEN_WORTH:
+                    sheet["worth_note"] = (f"worth demoted from {sheet['worth']} to strong: a six-field "
+                                           "row cannot certify a breakthrough (ADR-P15). ") + str(
+                                               sheet.get("worth_note") or "")
+                    sheet["worth"] = "strong"
+                sheet["verdict_reasons"] = list(sheet.get("verdict_reasons") or []) + [
+                    f"published as audited-lite on {len(AUDIT_LITE_FIELDS)} of {len(AUDIT_MANDATORY_FIELDS)} "
+                    f"fields ({int(coverage * 100)}% of the rubric checkable); the other "
+                    f"{len(absent)} need a repository or a longer read and are named in `fields_absent`"]
+                sheet["tier_note"] = ("Lite audit: six fields were established from the page and nothing "
+                                      "was read from a repository. Treat `build_is_real` and "
+                                      "`stack_consistency` as unexamined, not as passing.")
+            else:
+                sheet["tier"] = None
+                # Recorded in the derivation trace, because `why_not_promoted` is rebuilt from it below:
+                # a refusal that only lived in the final list would be silently dropped, and the refusal
+                # is the *instruction* — it says which lite field is unwritten or which guard failed.
+                sheet["verdict_reasons"] = list(sheet.get("verdict_reasons") or []) + [
+                    "audited-lite refused: " + "; ".join(refused)]
+        elif sheet["publishable"]:
+            sheet["tier"] = "full"
+
         sheet["_sections"] = cap.get("sections") or {}   # internal, stripped before write
         sheet["_numbers"] = numeric_fingerprint(cap)
         sheets.append(sheet)
@@ -971,6 +1035,18 @@ def audit(corpus_path: str = CORPUS, out_path: str = AUDIT_OUT, report: bool = F
     # fails for shipping a duplicate.
     for s in sheets:
         s["publishable"] = s["verdict"] in AUDIT_PUBLISH_VERDICTS
+        if not s["publishable"] and s.get("tier") == "lite":
+            # Lite admission was decided before the similarity pass. A record that pass demotes (merged
+            # into a duplicate, say) is no longer a published six-field row, and leaving `tier: lite` on
+            # it would publish "this row was certified with six fields" about a record we are holding —
+            # and its reason list would still say "published as audited-lite".
+            s["tier"] = None
+            s["fields_absent"] = []
+            s["tier_note"] = None
+            s["verdict_reasons"] = [r for r in (s.get("verdict_reasons") or [])
+                                    if not str(r).startswith("published as audited-lite")]
+            s.setdefault("why_not_promoted", []).append(
+                "audited-lite withdrawn: the similarity pass demoted this record after lite admission")
         # A reader of the pool needs the *reason*, not the label: verdict_reasons are the
         # derivation trace, unknowns say what to go and find, hazard says why it is capped.
         if not s["publishable"]:

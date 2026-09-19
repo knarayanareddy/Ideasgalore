@@ -1,22 +1,24 @@
 {
- "total":12,
- "audited_published":12,
- "pool_records":153,
- "pool_audited_held":9,
+ "total":14,
+ "audited_published":14,
+ "pool_records":151,
+ "pool_audited_held":7,
  "pool_unaudited":144,
  "audit_version":1,
- "audit_index_kb":1.1,
- "audit_sheets_kb":51.3,
- "records_hazarded":4,
- "records_hazarded_held":3,
+ "audit_index_kb":1.2,
+ "audit_sheets_kb":58.8,
+ "published_full":12,
+ "published_lite":2,
+ "records_hazarded":5,
+ "records_hazarded_held":2,
  "domains":6,
  "subsystems":9,
- "moves":12,
+ "moves":15,
  "events":5,
  "deep_records":21,
- "tier1_gzip_kb":4.1,
+ "tier1_gzip_kb":4.4,
  "tier1_budget_kb":1200.0,
- "sqlite_kb":6.1,
+ "sqlite_kb":6.3,
  "corpus_ingested":167,
  "held_back":{
   "placeholder_summary":2
@@ -44,12 +46,12 @@
    "kb":16.1
   },
   "creative-media-story-and-play":{
-   "records":2,
-   "kb":11.5
+   "records":3,
+   "kb":21.5
   },
   "health-care-and-human-performance":{
-   "records":2,
-   "kb":13.5
+   "records":3,
+   "kb":19.4
   },
   "learning-and-knowledge-systems":{
    "records":1,

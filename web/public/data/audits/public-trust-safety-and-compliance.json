@@ -249,6 +249,7 @@
    "soundness":"partial",
    "soundness_score":0.5938,
    "source_url":"https://devpost.com/software/complianceguardian-kcqs32",
+   "tier":"full",
    "unknowns":[],
    "verdict":"sound-with-caveats",
    "verdict_reasons":[
@@ -493,6 +494,7 @@
    "soundness":"partial",
    "soundness_score":0.5938,
    "source_url":"https://devpost.com/software/newspectives-new-perspective-on-news",
+   "tier":"full",
    "unknowns":[],
    "verdict":"sound-with-caveats",
    "verdict_reasons":[

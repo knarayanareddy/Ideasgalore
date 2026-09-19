@@ -1,7 +1,7 @@
 {
  "audit_version":1,
  "generated_at":"2026-09-18",
- "count":153,
+ "count":151,
  "meaning":"Records held out of the catalog. `provenance` splits them in two: `unaudited` rows were never captured or checked; `audited-hold` rows were captured, scored and held for cause (thin, duplicate or hazard-capped) and carry the same audit columns the catalog does. Neither kind is a judgement of merit \u2014 read why_not_promoted and would_settle_it before quoting one (ADR-A1/A10).",
  "records":[
   {
@@ -21,6 +21,7 @@
    "why_not_promoted":[
     "verdict:thin",
     "soundness 0.42 is too low to certify; stays in the pool",
+    "audited-lite refused: lite fields unwritten: limits_they_disclosed, prior_art; the page says nothing about limits or measurement: a lite row still has to contain a sentence about how the thing behaves",
     "unknown: limits_they_disclosed \u2014 the team disclosed no limitations; ask on the submission thread",
     "unknown: prior_art \u2014 prior-art entries must carry a URL or corpus id (A5/C5); 1 bare assertion(s)"
    ],
@@ -43,7 +44,8 @@
     "hazard":false,
     "evidence":6,
     "reasons":[
-     "soundness 0.42 is too low to certify; stays in the pool"
+     "soundness 0.42 is too low to certify; stays in the pool",
+     "audited-lite refused: lite fields unwritten: limits_they_disclosed, prior_art; the page says nothing about limits or measurement: a lite row still has to contain a sentence about how the thing behaves"
     ]
    },
    "verdict":"thin",
@@ -106,99 +108,6 @@
    "audit":null
   },
   {
-   "id":"attaindesk",
-   "name":"attainDesk",
-   "url":"https://devpost.com/software/attaindesk",
-   "domain":"Creative Media, Story & Play",
-   "subsystem":"Generative Video & Audio",
-   "event":"Build with Gemini XPRIZE",
-   "coolness":0.4442,
-   "moves":[
-    "crew-of-specialists",
-    "constraint-is-the-feature",
-    "single-input-ux",
-    "narrow-domain-deep-model"
-   ],
-   "specificity":0.74,
-   "summary":"attainDesk turns AI into one-click business operations for SMBs. Create social media content, product videos, marketing assets, research and grow business without specialist teams or AI expertise.",
-   "provenance":"audited-hold",
-   "why_not_promoted":[
-    "verdict:thin",
-    "soundness 0.39 is too low to certify; stays in the pool"
-   ],
-   "would_settle_it":[
-    "artifact_exists: a repository, deployment or store listing we can resolve",
-    "stack_consistency: a repository to compare the declared stack against",
-    "build_is_real: a readable source tree (a repo link, then `python3 pipeline/repo_verify.py`)",
-    "numbers_add_up: a denominator and baseline for the headline figure, or the raw log behind it",
-    "limits_disclosed: a statement of what the system itself cannot do (accuracy, coverage, privacy, failure modes)"
-   ],
-   "audit":{
-    "verdict":"thin",
-    "worth":"niche",
-    "soundness":"weak",
-    "soundness_score":0.3906,
-    "rubric_coverage":0.64,
-    "audited_at":"2026-09-19",
-    "unknowns":0,
-    "duplicate_of":null,
-    "hazard":false,
-    "evidence":6,
-    "reasons":[
-     "soundness 0.39 is too low to certify; stays in the pool"
-    ]
-   },
-   "verdict":"thin",
-   "worth":"niche",
-   "soundness":"weak",
-   "soundness_score":0.3906,
-   "rubric_coverage":0.64,
-   "audited_at":"2026-09-19",
-   "unknowns":0,
-   "repo_url":null,
-   "detail":{
-    "what_it_is":"An AI-native operations workspace for small businesses, where each business outcome - virtual staging a listing, turning food photos into menu images, a product video, a logo, a headshot, a Daily Digest of local opportunities - is its own guided workflow over an asynchronous Firebase Cloud Functions and Cloud Tasks generation pipeline, on the stated premise that owners should not have to learn AI to put it to work.",
-    "what_it_does":"attainDesk turns common small-business needs into guided, business-specific AI workflows from one workspace: create social-media content; virtually stage real-estate listings; turn property images into video tours; create short promotional product videos; transform ordinary food photos into polished menu and marketing images; generate business logos; create professional headshots; generate branded meeting backgrounds; and a Daily Digest that surfaces relevant market developments, local business groups, events and opportunities. The named verticals are real estate, food, manufacturing, construction, education, clothing and professional services. The features differ and the goal is stated as one: help a small business understand its market, present itself professionally, reach customers and grow without needing a large specialist team.",
-    "how_they_tested":"Nothing is measured in the sense this catalog counts as measurement. There is no test suite, no eval, no accuracy, acceptance or rejection-rate figure, and no quality claim for any of the nine workflows - no statement, for instance, of how often a generated virtual-staged room or product video is acceptable to the business that asked for it. What the page offers instead is usage: 'early customer usage has been important in helping us make those decisions' between impressive-sounding and genuinely valuable features, which is product research rather than a test result, and 13 businesses as the population it was gathered from, unpublished per workflow. The one appearance of the word testing is in the description of how the code was written - Gemini-powered coding agents and Antigravity used for 'architecture brainstorming, coding, testing, debugging and iteration' - so the assertion is that testing happened, with no harness, count or result attached and no repository to read it from. The absence is load-bearing for a claim of this shape: the acceptance rate of a generated marketing image is the number a buyer of this product would need.",
-    "limits_they_disclosed":"Three, and all three are stated as product restraint rather than technical failure. The first is 'avoiding the temptation to simply put powerful AI models behind generic prompt boxes' - owners want an outcome, so the workflows are organised around what the business is trying to accomplish, with most prompting and model complexity abstracted behind the experience. The second is workload heterogeneity: text, image, video and research jobs differ by orders of magnitude in cost, some completing quickly while others are computationally intensive and asynchronous, and the Cloud Tasks plus Firebase layer is what keeps that invisible to the user. The third is described as a continual judgement call between features that are technically impressive and features that create genuine value, with early customer usage cited as the thing that decided it.",
-    "numbers_with_arithmetic":[
-     {
-      "arithmetic":"not falsifiable from the page: no per-workflow or per-vertical breakdown, no date the count was taken, no churn or session volume, and the count is deliberately separated from revenue by the page's own wording ('first subscription revenue' is reported next to it rather than inside it), so 13 could be 13 free accounts and one paying customer without contradicting anything written",
-      "claim":"13 real businesses using attainDesk",
-      "denominator":"not stated - 'using', not paying, not retained",
-      "load_bearing":true,
-      "verifiable":false
-     },
-     {
-      "arithmetic":"structural: a price is checkable by opening the product, and it is the only monetised figure on the page, but revenue is being claimed as an accomplishment while the multiplier is withheld, so a reader can compute nothing from it - at one paying customer it is $588 a year before taxes, at thirteen it is $7,644, and the page lets both stand",
-      "claim":"first subscription revenue on a $49/month (+taxes) plan",
-      "denominator":"paying accounts - not published",
-      "load_bearing":true,
-      "verifiable":true
-     },
-     {
-      "arithmetic":"not falsifiable from the page: a claim about an absence, unfalsifiable by a reader with no analytics access, and it is doing rhetorical work for the Daily Digest anecdote - the causal claim that the product's own research feature produced the first paying customer rests on it",
-      "claim":"$0 in paid marketing spend to reach those businesses",
-      "denominator":"outbound spend during the reported period",
-      "verifiable":false
-     },
-     {
-      "arithmetic":"not falsifiable from the page: no start or end date is published for the build, so 'during the hackathon period' has no bounds a reader could check. The only date visible is that the project was started 33 days before this read (update history), which bounds post-hackathon maintenance, not the build window itself",
-      "claim":"moved from an idea to a functioning SaaS business during the hackathon period",
-      "denominator":"the event's build window - not dated on the page",
-      "verifiable":false
-     },
-     {
-      "arithmetic":"structural and countable from the page: eight generation workflows (social content, virtual staging, image-to-video property tours, product promo video, food-photo transformation, logo, headshot, meeting background) plus the Digest. The gallery carries one screenshot per workflow, which is corroboration of existence and not of quality - and note that breadth of this kind is itself a claim about maintenance cost per workflow, which the page never addresses",
-      "claim":"nine guided workflows plus a Daily Digest from one workspace",
-      "denominator":"workflows shipped",
-      "verifiable":true
-     }
-    ],
-    "worth_note":"Correct, useful, and unusually real: one of a handful of records in this catalog with paying customers attached to it, and the self-acquisition anecdote - their own Daily Digest surfaced local business groups, they used it for outreach, it produced the first paying customer - is the best argument in the whole page because it is a test they ran on themselves rather than a feature claim. Held to 'niche' for two reasons. The category is crowded here and elsewhere: Reeloli, Small Business AI Growth Desk and VibeMarketer are in this corpus with the same 'SMBs, no prompting, we do the marketing' pitch, so the wedge is execution, not insight. And nothing about the nine workflows is measured - no acceptance rate, no per-generation cost, no quality claim, no repository - so the record can support 'this team shipped a business' but not 'this mechanism works'. Breadth is also unpriced: nine generation pipelines is a maintenance commitment the page never accounts for."
-   }
-  },
-  {
    "id":"ax4u-academy",
    "name":"AX4U Academy",
    "url":"https://devpost.com/software/ax4u-academy",
@@ -213,6 +122,7 @@
    "why_not_promoted":[
     "verdict:thin",
     "artifact_exists failed \u2192 capped at 'thin' (A3)",
+    "audited-lite refused: lite fields unwritten: numbers_with_arithmetic; no artifact we could resolve (lite still requires something to look at)",
     "unknown: numbers_with_arithmetic \u2014 no measurable outcome is asserted; a benchmark table would settle it"
    ],
    "would_settle_it":[
@@ -234,7 +144,8 @@
     "hazard":false,
     "evidence":6,
     "reasons":[
-     "artifact_exists failed \u2192 capped at 'thin' (A3)"
+     "artifact_exists failed \u2192 capped at 'thin' (A3)",
+     "audited-lite refused: lite fields unwritten: numbers_with_arithmetic; no artifact we could resolve (lite still requires something to look at)"
     ]
    },
    "verdict":"thin",
@@ -384,7 +295,8 @@
    "provenance":"audited-hold",
    "why_not_promoted":[
     "verdict:thin",
-    "artifact_exists failed \u2192 capped at 'thin' (A3)"
+    "artifact_exists failed \u2192 capped at 'thin' (A3)",
+    "audited-lite refused: no artifact we could resolve (lite still requires something to look at)"
    ],
    "would_settle_it":[
     "artifact_exists: a repository, deployment or store listing we can resolve",
@@ -404,7 +316,8 @@
     "hazard":false,
     "evidence":6,
     "reasons":[
-     "artifact_exists failed \u2192 capped at 'thin' (A3)"
+     "artifact_exists failed \u2192 capped at 'thin' (A3)",
+     "audited-lite refused: no artifact we could resolve (lite still requires something to look at)"
     ]
    },
    "verdict":"thin",
@@ -465,6 +378,7 @@
    "why_not_promoted":[
     "verdict:thin",
     "artifact_exists failed \u2192 capped at 'thin' (A3)",
+    "audited-lite refused: no artifact we could resolve (lite still requires something to look at)",
     "hazard: compliance-signoff (no team disclaimer found)"
    ],
    "would_settle_it":[
@@ -486,7 +400,8 @@
     "hazard":true,
     "evidence":6,
     "reasons":[
-     "artifact_exists failed \u2192 capped at 'thin' (A3)"
+     "artifact_exists failed \u2192 capped at 'thin' (A3)",
+     "audited-lite refused: no artifact we could resolve (lite still requires something to look at)"
     ]
    },
    "verdict":"thin",
@@ -1032,6 +947,7 @@
    "why_not_promoted":[
     "verdict:thin",
     "soundness 0.27 is too low to certify; stays in the pool",
+    "audited-lite refused: lite fields unwritten: numbers_with_arithmetic",
     "unknown: numbers_with_arithmetic \u2014 no measurable outcome is asserted; a benchmark table would settle it",
     "hazard: clinical (no team disclaimer found)"
    ],
@@ -1054,7 +970,8 @@
     "hazard":true,
     "evidence":6,
     "reasons":[
-     "soundness 0.27 is too low to certify; stays in the pool"
+     "soundness 0.27 is too low to certify; stays in the pool",
+     "audited-lite refused: lite fields unwritten: numbers_with_arithmetic"
     ]
    },
    "verdict":"thin",
@@ -1359,71 +1276,6 @@
     "artifact check via repo_verify.py"
    ],
    "audit":null
-  },
-  {
-   "id":"neuroguard-ai-0qb34c",
-   "name":"NeuroGuard AI (v2)",
-   "url":"https://devpost.com/software/neuroguard-ai-0qb34c",
-   "domain":"Health, Care & Human Performance",
-   "subsystem":"Screening & Diagnostics",
-   "event":"Hack for Humanity | Summer 2026",
-   "coolness":0.3765,
-   "moves":[
-    "deterministic-guardrail"
-   ],
-   "specificity":0.54,
-   "summary":"Uses personalized cognitive and physical tests to track concussion recovery, detect unusual changes, and provide AI-powered recovery insights.",
-   "provenance":"audited-hold",
-   "why_not_promoted":[
-    "verdict:thin",
-    "soundness 0.33 is too low to certify; stays in the pool",
-    "hazard: clinical"
-   ],
-   "would_settle_it":[
-    "artifact_exists: a repository, deployment or store listing we can resolve",
-    "stack_consistency: a repository to compare the declared stack against",
-    "build_is_real: a readable source tree (a repo link, then `python3 pipeline/repo_verify.py`)",
-    "numbers_add_up: a denominator and baseline for the headline figure, or the raw log behind it",
-    "limits_disclosed: a statement of what the system itself cannot do (accuracy, coverage, privacy, failure modes)"
-   ],
-   "audit":{
-    "verdict":"thin",
-    "worth":"niche",
-    "soundness":"weak",
-    "soundness_score":0.3281,
-    "rubric_coverage":0.64,
-    "audited_at":"2026-09-19",
-    "unknowns":0,
-    "duplicate_of":null,
-    "hazard":true,
-    "evidence":6,
-    "reasons":[
-     "soundness 0.33 is too low to certify; stays in the pool"
-    ]
-   },
-   "verdict":"thin",
-   "worth":"niche",
-   "soundness":"weak",
-   "soundness_score":0.3281,
-   "rubric_coverage":0.64,
-   "audited_at":"2026-09-19",
-   "unknowns":0,
-   "repo_url":null,
-   "detail":{
-    "what_it_is":"Concussion recovery tracking that scores short cognitive and camera-based physical tests against the patient's own baseline and flags unusual change.",
-    "what_it_does":"Short cognitive tests (reaction time, memory, attention) plus camera-based balance/movement assessment, a recovery dashboard, and alerts when performance moves away from the user's own baseline.",
-    "how_they_tested":"No test suite, evaluation set, or validation against clinical measures is described; the page presents the concept and a prototype update, not results.",
-    "limits_they_disclosed":"Assessments simple enough for anyone to use while still producing meaningful signal; individual differences; keeping the framing away from unsafe medical claims.",
-    "numbers_with_arithmetic":[
-     {
-      "arithmetic":"unfalsifiable as published - no sensitivity, false-alarm rate or session count is given",
-      "claim":"detects unusual changes versus a personal baseline",
-      "denominator":"each user's own prior sessions; count and window not stated",
-      "verifiable":false
-     }
-    ],
-    "worth_note":"The framing is right - measure the person against their own baseline instead of a population threshold - and that transferable piece survives even though nothing about this build is checkable: no dataset, no metric, no repo, and a browser webcam asked to judge balance in someone who is dizzy."
-   }
   },
   {
    "id":"exefast",

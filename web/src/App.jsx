@@ -477,8 +477,9 @@ function PlateCard({ row, hue, rank, onOpen, inShelf, onShelf, moveMeta, rubric 
             {row.coolness.toFixed(2)}
           </span>
           <span className={`stamp ${toneClass(auditHeadline(row, null, rubric).tone)}`}
-            title={auditHeadline(row, null, rubric).verdictLabel}>
-            {row.verdict === 'strong' ? 'strong' : row.verdict === 'sound-with-caveats' ? 'vetted' : row.verdict || 'unaudited'}
+            title={`${auditHeadline(row, null, rubric).verdictLabel}` +
+              (auditHeadline(row, null, rubric).tierLabel ? ` · ${auditHeadline(row, null, rubric).tierLabel}` : '')}>
+            {auditHeadline(row, null, rubric).vettedLabel}
           </span>
           <span className={`stamp ${row.depth === 'deep' ? 'border-brass-500 text-brass-700' : 'border-bone-400 text-bone-500'}`}
             title={row.depth === 'deep' ? 'project page fetched: likes, tags, authored sections' : 'listing row: title, summary, sector, moves'}>

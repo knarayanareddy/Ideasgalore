@@ -50,6 +50,9 @@ export function decodeRows(packed) {
       // build has 14 columns, so read them defensively: absent must mean "unaudited",
       // never "verified".
       verdict: r.length > 15 ? (packed.verdicts || {})[String(r[14])] ?? null : null,
+      // row_format 17: which ladder certified this row. `lite` means six fields were established from
+      // the page and the build/stack checks were never run — never render it as an unqualified `vetted`.
+      tier: r.length > 16 ? (Number(r[16]) === 1 ? 'lite' : 'full') : (r.length > 15 ? 'full' : null),
       worth: r.length > 15 ? (packed.worth || {})[String(r[15])] ?? null : null,
       vetted: r.length > 15
         ? ['strong', 'sound-with-caveats'].includes((packed.verdicts || {})[String(r[14])])
@@ -296,6 +299,15 @@ export function auditHeadline(row, sheet, rubric) {
     coverage: typeof cov === 'number' ? cov : null,
     tone: verdictTone(verdict),
     vetted: verdict === 'strong' || verdict === 'sound-with-caveats',
+    // ADR-P15. `vetted` stays true for a lite row — it *was* vetted, on six fields, by the same gates —
+    // and the label is what carries the difference, so a filter on `vetted` keeps working while nobody
+    // reads more than the audit actually established.
+    tier: row?.tier || sheet?.tier || null,
+    tierLabel: (row?.tier || sheet?.tier) === 'lite' ? 'audited-lite · 6 fields' : null,
+    vettedLabel: verdict === 'strong' ? 'strong'
+      : verdict === 'sound-with-caveats'
+        ? ((row?.tier || sheet?.tier) === 'lite' ? 'vetted · lite' : 'vetted')
+        : (verdict || 'unaudited'),
   }
 }
 
@@ -304,6 +316,7 @@ export function auditHeadline(row, sheet, rubric) {
 export function auditMarkdown(row, sheet, rubric) {
   const head = auditHeadline(row, sheet, rubric)
   const lines = ['', `**Audit verdict:** ${head.verdict || 'unaudited'}` +
+    (head.tier === 'lite' ? ` (audited-lite: ${(sheet?.fields_absent || []).length} of 12 fields not captured)` : '') +
     (head.worth ? ` · worth copying: ${head.worth}` : '') +
     (head.score !== null ? ` · soundness ${head.score.toFixed(2)} over ${Math.round((head.coverage ?? 0) * 100)}% of the rubric` : '')]
   if (sheet?.worth_note) lines.push(`> ${sheet.worth_note}`)

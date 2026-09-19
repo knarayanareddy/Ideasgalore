@@ -93,8 +93,9 @@ export default function IdeaInspector({ row, detail, moveMeta, sector, rows, sha
           <div className="plate !border-brass-300 p-3.5" style={{ borderLeft: `3px solid ${sector?.hue || '#877c63'}` }}>
             <div className="flex flex-wrap items-baseline gap-2">
               <h3 className="micro">audit · evidence-gated</h3>
-              <span className={`stamp ${toneClass(head.tone)}`} title={head.verdictLabel}>
-                {head.verdict || 'unaudited'}
+              <span className={`stamp ${toneClass(head.tone)}`}
+                title={head.verdictLabel + (head.tierLabel ? ` · ${head.tierLabel}` : '')}>
+                {head.verdict || 'unaudited'}{head.tier === 'lite' ? ' · lite' : ''}
               </span>
               {head.worth && (
                 <span className="stamp border-bone-400 text-bone-600" title={head.worthLabel}>
@@ -187,6 +188,24 @@ export default function IdeaInspector({ row, detail, moveMeta, sector, rows, sha
                 {AUDIT_FIELD_ORDER.filter((f) => sheet.fields[f] || AUDIT_FIELD_LABELS[f]).map((f) => {
                   const cell = sheet.fields[f]
                   const v = cell?.value
+                  // ADR-P15: on a lite row the six unwritten fields are *said*, not left blank. An
+                  // absent field and an unwritten one look identical to a reader, and the difference is
+                  // the whole point of the tier.
+                  if (!cell && (sheet.fields_absent || []).includes(f)) {
+                    return (
+                      <div key={f}>
+                        <p className="micro">
+                          {AUDIT_FIELD_LABELS[f] || f}
+                          <span className="stamp ml-1 !px-1 !py-0 border-bone-400 text-bone-500">
+                            not captured
+                          </span>
+                        </p>
+                        <p className="mt-0.5 text-[12.5px] italic leading-snug text-bone-600">
+                          audited-lite row — this field needs a repository or a longer read than the page
+                        </p>
+                      </div>
+                    )
+                  }
                   return (
                     <div key={f}>
                       <p className="micro">

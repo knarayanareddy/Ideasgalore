@@ -93,6 +93,52 @@
   "contradicted",
   "duplicate"
  ],
+ "tiers": {
+  "full": {
+   "fields": [
+    "what_it_is",
+    "what_it_does",
+    "how_it_works",
+    "built_with_verified",
+    "data_and_models",
+    "how_they_tested",
+    "limits_they_disclosed",
+    "numbers_with_arithmetic",
+    "what_to_steal",
+    "what_breaks_first",
+    "clone_cost",
+    "prior_art"
+   ],
+   "note": "twelve fields, checked against the page and, when a repository was linked, against the source tree",
+   "verdicts": [
+    "strong",
+    "sound-with-caveats"
+   ]
+  },
+  "lite": {
+   "fields": [
+    "what_it_is",
+    "what_it_does",
+    "limits_they_disclosed",
+    "how_they_tested",
+    "prior_art",
+    "numbers_with_arithmetic"
+   ],
+   "note": "six fields established from the page alone; `build_is_real` and `stack_consistency` are unexamined, not passing. A record that fails the full ladder and these four guards publishes as lite; one that contradicts itself never does.",
+   "refused_worth": [
+    "breakthrough"
+   ],
+   "requires": [
+    "an artifact we could resolve (demo, listing or repo)",
+    "zero contradicted claims",
+    "a sentence from the team about limits or measurement",
+    "every lite field actually written"
+   ],
+   "verdicts": [
+    "sound-with-caveats"
+   ]
+  }
+ },
  "verdicts": {
   "duplicate": "Merged into an equivalent record (same submission or same-team resubmission).",
   "sound-with-caveats": "Core mechanism verified; named gaps remain, listed as unknowns.",

@@ -1,10 +1,26 @@
 import { readFileSync } from 'fs'
 import * as L from '../../web/src/lib.js'
 
+// The repo's own check helper (this script has no assert import; a missing one is how a smoke test
+// quietly becomes a console.log).
+function assert(cond, msg) { if (!cond) { console.error('❌ ' + msg); process.exit(1) } }
+
 const pub = new URL('../../web/public/', import.meta.url).pathname
 const packed = JSON.parse(readFileSync(pub + 'catalog-packed.json', 'utf8'))
 const rows = L.decodeRows(packed)
 console.log('rows', rows.length, 'row_format', packed.row_format.length)
+// ADR-P15: the tier must survive decode, or the card badge lies about how much was checked.
+const ti = packed.row_format.indexOf('tier_id')
+assert(ti === 16, `tier_id is not the 17th packed column (found ${ti})`)
+const lite = rows.filter((r) => r.tier === 'lite').map((r) => r.id)
+const full = rows.filter((r) => r.tier === 'full').map((r) => r.id)
+assert(rows.every((r) => r.tier === null || r.tier === 'lite' || r.tier === 'full'), 'tier decoded to junk')
+assert(lite.length > 0 && full.length > 0, 'both ladders must be represented in the served table')
+console.log('tiers: full', full.length, '· lite', lite.length, '->', lite.join(','))
+for (const id of lite) {
+  const r = rows.find((x) => x.id === id)
+  assert(r.verdict === 'sound-with-caveats', `${id} published a ${r.verdict} verdict on six fields`)
+}
 const r0 = rows[0]
 console.log('verdict/worth/vetted:', r0.verdict, r0.worth, r0.vetted)
 if (!r0.verdict || !r0.worth || r0.vetted !== true) throw new Error('Tier-1 audit decode failed')

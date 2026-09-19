@@ -18,10 +18,10 @@
  "scoring_version":1,
  "corpus_sha256":"748541ec0544eb67",
  "corpus_records":167,
- "generated_at":"2026-09-19T21:34:52+00:00",
+ "generated_at":"2026-09-19T22:38:04+00:00",
  "audit_version":1,
- "audited_published":12,
- "pool_records":153,
+ "audited_published":14,
+ "pool_records":151,
  "surfaces":{
   "tier1":"catalog-packed.json",
   "audit":[
@@ -59,7 +59,7 @@
  },
  "budgets":{
   "tier1_gzip_kb":[
-   4.1,
+   4.4,
    1200.0
   ]
  }

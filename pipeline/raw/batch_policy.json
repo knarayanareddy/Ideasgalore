@@ -19,6 +19,7 @@
     }
   ],
   "next_batch_size": 4,
+  "note": "W=4 from 2026-09-19: three further sessions run `next_batch.py --workers 4 --shard i` and this reducer owns build, verify, the governor report and the commit.",
   "reject_rate": 0.0,
   "rule": "if the capture-lint reject rate in a batch exceeds 0.20, next_batch_size halves (to the floor); a clean batch restores it to batch_size. Throughput is capped by the quality signal, mechanically, not by intent (ADR-P9).",
   "workers": 4

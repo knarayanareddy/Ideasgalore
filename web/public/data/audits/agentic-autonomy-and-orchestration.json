@@ -253,6 +253,7 @@
    "soundness":"partial",
    "soundness_score":0.6484,
    "source_url":"https://devpost.com/software/tower-dq18x2",
+   "tier":"full",
    "unknowns":[],
    "verdict":"sound-with-caveats",
    "verdict_reasons":[
@@ -471,6 +472,7 @@
    "soundness":"partial",
    "soundness_score":0.5188,
    "source_url":"https://devpost.com/software/adversarial-compliance-matrix",
+   "tier":"full",
    "unknowns":[],
    "verdict":"sound-with-caveats",
    "verdict_reasons":[
