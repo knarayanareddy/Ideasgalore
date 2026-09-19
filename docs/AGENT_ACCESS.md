@@ -107,15 +107,16 @@ announced by a version bump, not discovered by a `KeyError`.
 
 ## Known limits (do not over-trust)
 
-- The **catalog is audited-only**: 5 records publish today because 10 projects have been
-  captured deeply enough to audit (5 cleared the ladder, 5 are held for cause); the other 155
+- The **catalog is audited-only**: 8 records publish today because 14 projects have been
+  captured deeply enough to audit (8 cleared the ladder, 6 are held for cause); the other 151
   admitted records sit in `data/pool.json` with reasons. Do not describe the pool as weak work —
   most of it is simply unchecked, and a `thin` record with `worth: strong` is a project the
   auditors liked but could not verify. See [`AUDIT_PROTOCOL.md`](AUDIT_PROTOCOL.md).
 - `audit.verdict` (evidence strength) and `audit.worth` (copy-worthiness) are **two axes**; no
-  composite exists, by design. And no record in this corpus can reach `strong`: `strong` needs
-  rubric coverage ≥ 0.80, which requires a published repository, and 0 of 165 admitted records
-  link one. `sound-with-caveats` is the ceiling of what a Devpost page can prove — treat it as
+  composite exists, by design. `strong` is rare, not impossible: it needs rubric coverage ≥ 0.80
+  *and* no open unknowns, which in practice requires a repository the team linked — 1 of the 14
+  captured records has one, and it is the single `strong` row here. For everything else
+  `sound-with-caveats` is the ceiling of what a Devpost page can prove — treat it as
   "the claims hold up against the page and its artifact", not as a weak verdict.
 - The committed corpus is **165 admitted records** (167 ingested, 2 held back as
   placeholder summaries) across 5 sources, harvested at listing depth. `catalog-stats.json

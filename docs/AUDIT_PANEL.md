@@ -339,14 +339,16 @@ assumptions, all in the *same* direction: the engine was too generous, not too s
     `records_hazarded_held` beside `records_hazarded`, so no consumer has
     to infer the split. Same lesson as deviation 4: a derived flag must be recomputed when the
     world it describes changes — a label that was accurate for a 165-row unchecked pool is a
-    false statement about a pool that is now 5-of-160 scored.
+    false statement about a pool that is now 8-of-157 scored.
 
 Also surfaced, and deliberately *not* fixed by softening a rule: coverage tops out near 0.64 for
-any record without a repository, because `build_is_real`, `stack_consistency` and a corroborated
-`built_with_verified` cannot be filed without one — so `strong` is unreachable for projects that
-publish no code, and 0 of 165 admitted records link a repository. The panel's `strong` rung stays
-as specified; the honest reading is that `strong` demands evidence the platform's own norms make
-rare. The protocol states this in §4 and §8 rather than tuning around it.
+any record without a repository, because `build_is_real` and `stack_consistency` cannot be
+*confirmed* without one and the fields that lean on code end up unfiled — so `strong` is
+unreachable for projects that publish no code. One record in fourteen linked a repository, and it
+is `strong`; the panel's rung stayed as specified and the corpus simply did not contain the
+evidence it demands. The honest reading is that `strong` requires something the platform's own
+norms make rare, not that the ladder is decorative. The protocol states this in §4 and §8 rather
+than tuning around it.
 
 **Shipped verdicts after queue batch 1:** SketchWish `sound-with-caveats` 0.68 / worth `strong` ·
 NeuroGuard AI (the team with a red-flag escalation path) 0.55 / `strong` · Adversarial Compliance
@@ -355,6 +357,17 @@ Matrix 0.52 / `niche` — kept as the better-evidenced of the two Gemini-Box lis
 `strong` · Greenlight (nine-agent) 0.77 / `strong`. Held: `gemini-box` `duplicate`,
 `neuroguard-ai-0qb34c` `thin` 0.33, `medvoice-y87kei` `thin` 0.27 *with* `worth: strong`, `MCOP`
 `thin` 0.41, `greenlight-screenplay-to-film` `duplicate`. Catalog 5, pool 160, 64 tests green.
+
+**After queue batches 2 and 3** the catalog is 8 of 157: the batch-1 five plus
+ComplianceGuardian 0.59 / `strong` and Vitalis Bio 0.50 / `niche` (Health → Screening &
+Diagnostics, hazard class `clinical`, after the taxonomy stopped letting the verb "audit" shelve a
+biological-age app as compliance machinery), and **SATU 0.86 / `breakthrough` / `strong`** — the
+first record to clear the top rung, because its repository resolved, its harness tests were found
+in it, and the composite score on its page recomputes to 0.9671 against the 0.9672 it printed.
+Held: `VMS AI Guard` `thin` 0.36 (a compliance scoring engine for fisheries with no schema, no
+metric and a provider score its own page says has no ground truth — hazard `compliance-signoff`,
+no disclaimer). 77 tests green; the batch also removed four ways the *row* could contradict its
+own audit sheet, all of them documented in the protocol §2/§6/§8 and pinned by gates.
 
 ## 9 · What changed against the first instinct
 

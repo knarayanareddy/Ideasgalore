@@ -24,7 +24,7 @@ JSON + CSV + NDJSON + SQLite on GitHub Pages: **$0/month, no backend, no API key
 
 | Capability | Detail |
 | --- | --- |
-| **Quality-gated catalog** | nothing ships without an audit sheet: 12 mandatory fields, 6 evidence-backed checks, a verdict ladder and a duplicate-merge pass. The catalog is deliberately small (5 records out of 165 today); the other 160 stay reachable in `data/pool.json` with a per-record reason — 155 of them have never been audited at all — see [`docs/AUDIT_PROTOCOL.md`](docs/AUDIT_PROTOCOL.md) |
+| **Quality-gated catalog** | nothing ships without an audit sheet: 12 mandatory fields, 6 evidence-backed checks, a verdict ladder and a duplicate-merge pass. The catalog is deliberately small (8 records out of 165 today); the other 157 stay reachable in `data/pool.json` with a per-record reason — 151 of them have never been audited at all — see [`docs/AUDIT_PROTOCOL.md`](docs/AUDIT_PROTOCOL.md) |
 | **Tabular database** | `data/ideas.csv` (31 stable columns — 8 audit + 23 catalog), `data/ideas.ndjson`, and a gzipped **SQLite** file with `events` / `projects` / `moves` / `project_moves` — query it in DuckDB, pandas, Excel or SQL without a server |
 | **Two-tier sharded index** | Tier 1 `catalog-packed.json` (dictionary-encoded, 16 columns including `verdict_id`/`worth_id`, budget 1.2 MB) + Tier 2 per-sector deep shards + per-sector **audit sheets**, lazy-loaded |
 | **Honest coverage** | the corpus publishes its own sampling rate: `catalog-stats.json → coverage` says 83 of the 1,401 projects listed in the XPRIZE gallery are in here, from 4 captured pages — a *gated sample*, never a claim of completeness |
@@ -36,7 +36,7 @@ JSON + CSV + NDJSON + SQLite on GitHub Pages: **$0/month, no backend, no API key
 | **The Remix Bench** | build-time idea collisions: curated + mined pairs, each with `the_wedge`, `starter_stack`, `first_48_hours` and **`kill_criteria`** |
 | **Idea shelf** | star plates → export a markdown brief with links, provenance footer and all — paste it into your next project plan or hand it to an agent |
 | **Agent-native** | `llms.txt`, JSON Schema with **per-field provenance** (the `audit` block included), OpenAPI 3.1 with the audit surfaces, an agent `SKILL.md`, and a stdlib **MCP server** with 11 tools (`audit_report`, `promotion_queue`, `audit_rubric` included) |
-| **Reproducible & gated** | `make verify`: offline rebuild → byte-diff of **every** emitted surface → catalog/pool partition parity → budget ceiling → header/row alignment on both CSV surfaces → 67 tests → a node check that the browser decodes the same verdicts the gates validated. Scores are stamped as-of the corpus, not the clock, so a rebuild in January matches a build in September. CI fails on drift and refuses to publish a collapsed corpus |
+| **Reproducible & gated** | `make verify`: offline rebuild → byte-diff of **every** emitted surface → catalog/pool partition parity → budget ceiling → header/row alignment on both CSV surfaces → 77 tests → a node check that the browser decodes the same verdicts the gates validated. Scores are stamped as-of the corpus, not the clock, so a rebuild in January matches a build in September. CI fails on drift and refuses to publish a collapsed corpus |
 
 ---
 
@@ -162,7 +162,7 @@ Ideasgalore/
 │   ├── build_agent_api.py              llms.txt · schema · OpenAPI · SKILL.md · ethics
 │   ├── corpus.jsonl                    ← single source of truth
 │   ├── raw/gallery_totals.json         upstream gallery sizes → published coverage
-│   └── tests/test_pipeline.py          39 tests (incl. the "no prose in bulk exports" gate)
+│   └── tests/test_pipeline.py          77 tests (incl. the audit engine, both CSV contracts and the "no prose in bulk exports" gate)
 └── web/
     ├── public/                         everything an agent can fetch
     └── src/{App, IdeaAtlas, IdeaInspector, IdeaForge}.jsx · lib.js · index.css

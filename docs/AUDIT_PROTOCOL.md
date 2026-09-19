@@ -23,18 +23,20 @@ else — thin evidence, resubmissions, hazard-blocked, never-audited — moves t
 `data/pool.json` with machine-readable reasons and stays reachable, because nothing here
 is deleted.
 
-The catalog currently holds **5** records out of 165 admitted ones. Ten projects have been
-captured and scored; five cleared the ladder and five are held for cause (two resubmissions,
-three thin-evidence). The other 155 were never captured deeply enough to audit. Both gaps are
+The catalog currently holds **8** records out of 165 admitted ones. Fourteen projects have been
+captured and scored; eight cleared the ladder and six are held for cause (two resubmissions, four
+thin-evidence). The other 151 were never captured deeply enough to audit. Both gaps are
 the point of the promotion queue (§6), not defects to hide: `agents/llms.txt` and
 `catalog-stats.json` publish `audited_published` next to `pool_records`, and `pool.json`
-carries a per-record reason for every one of the 160.
+carries a per-record reason for every one of the 157.
 
 The published five span the range a reader should expect from this method: a cost-model
-pipeline at 0.77, a live production consumer product at 0.68, a concussion-recovery triage
-tool at 0.55, a Rust supply-chain verifier at 0.52, an on-device transcription stack at 0.51.
-All five are `sound-with-caveats` — no project in this corpus can currently reach `strong`,
-and §4 explains why that is a finding about hackathon pages rather than about teams.
+pipeline at 0.77, a live production consumer product at 0.68, a concussion-recovery triage tool
+at 0.55, a Rust supply-chain verifier at 0.52, an on-device transcription stack at 0.51. Seven of
+the eight are `sound-with-caveats`; one — a shopping agent that linked its repository and printed
+the formula its headline score was computed from — reaches `strong` at 0.86. §4 explains why that
+ratio is a finding about hackathon submission pages rather than about teams: a page can describe a
+build, but only code someone can open certifies it.
 
 ---
 
@@ -254,6 +256,83 @@ initially scored too well, in ways that flattered the teams' vocabulary rather t
 with many rows and no audit is worth more than a 12th agentic-crew project. It is a
 *learning* order, explicitly not a merit order.
 
+### Reading the queues back
+
+`make audit` prints the top candidates; the files below are what an agent actually reads.
+Both snippets are pasted from the built surfaces of this run, so their counts are the counts
+the catalog publishes — if they ever disagree with `catalog-stats.json`, the doc is the thing
+that is wrong, and this is the section to fix.
+
+```jsonc
+// data/audits.json — one entry per published record (8 rows)
+{
+ "satu": {
+  "verdict": "strong", 
+  "worth": "breakthrough", 
+  "soundness": "verified", 
+  "soundness_score": 0.862, 
+  "rubric_coverage": 1.0, 
+  "checks": {
+   "artifact_exists": "confirmed", 
+   "build_is_real": "confirmed", 
+   "limits_disclosed": "supported", 
+   "numbers_add_up": "confirmed", 
+   "stack_consistency": "partial", 
+   "test_or_eval_evidence": "confirmed"
+  }, 
+  "unknowns": [], 
+  "evidence": 6, 
+  "contradicted": 0, 
+  "hazard": false, 
+  "repo": "https://github.com/justin-theodorus/techjam", 
+  "audited_at": "2026-09-19", 
+  "audit_version": 1, 
+  "url": "https://devpost.com/software/satu", 
+  "name": "SATU: Shopping Assistant That Understands"
+ }
+}
+
+// data/promotion-queue.json — pool_size counts only records with no sheet at all
+{
+ "audit_version": 1,
+ "pool_size": 151,
+ "queued": 12,
+ "note": "Ranking of never-audited candidates by expected information gain (ADR-A7). Nothing here has been verified; the order is only 'what would teach us most'. `pool_size` counts records with no sheet at all — the full holding area, including audited-but-held records (thin, duplicate, hazard), is data/pool.json.",
+ "candidates": [
+  {
+   "id": "ax4u-academy",
+   "name": "AX4U Academy",
+   "domain": "Learning & Knowledge Systems",
+   "coolness": 0.392,
+   "expected_gain": 0.5495,
+   "why": "sector Learning & Knowledge Systems has 13 rows and no audit",
+   "would_settle_it": [
+    "project page capture",
+    "repo link check"
+   ]
+  }
+ ]
+}
+```
+
+Three properties worth reading off that pair:
+
+- `data/audits.json` is keyed by id — a row carries no `id` field — and each row holds the
+  per-check `status` strings, the `evidence` and `contradicted` counts, and `repo` as a URL
+  rather than a boolean. A record whose repository resolves publishes that link here *and* on
+  its catalog row; both must agree, which is what the capture-parity gate enforces.
+- `data/pool.json` holds all 157 held-out records and `provenance` splits them: 151 `unaudited` rows nobody has captured, 6
+  `audited-hold` rows that were captured, scored and held back for cause. A held row lists its
+  blockers in `why_not_promoted[]` (2 to 7 entries) and what would clear them in
+  `would_settle_it[]` (1 to 5). `"verdict:thin"` alone would read as a grade; what makes it
+  auditable is `"hazard: clinical (no team disclaimer found)"` beside it, and a `duplicate`
+  row naming the richer record it merged into.
+- `pool_size: 151` is the honest denominator and the `note` says what it excludes. Coverage here
+  is 8 of 165 admitted records audited. No surface in this catalog prints a percentage,
+  because a denominator that counted held-for-cause records as "not yet examined" would
+  flatter the audit.
+
+
 ---
 
 ## 7 · Reading the surfaces
@@ -295,18 +374,23 @@ evidence, and it is exactly what happened to the first eight audited records.
   `api.github.com` responds, so a live deployment is credited as `supported`, never
   `confirmed`, and a page with neither repo nor URL cannot be helped at all. A reader or agent
   with a browser *can* do the remaining step; `would_settle_it[]` on the pool row names it.
-- It cannot see a repository that a page does not link. Since 0 of 165 admitted records link
-  one, `build_is_real` and `stack_consistency` are `unverifiable` for the whole corpus, and
-  `strong` is out of reach for every record (§4).
+- It cannot see a repository that a page does not link. Of the 14 records deep-captured so far,
+  exactly one — SATU — printed a repository URL, and it is the only record in this catalog whose
+  `build_is_real` could be `confirmed` and whose verdict reached `strong` (§4). The other 13 sit
+  at `unverifiable` on that check no matter how careful their prose; the bulk listing rows carry
+  no links at all, because the gallery scrape never included them, so a row learns its
+  `repo_url`, `demo_url` and `video_url` only when a capture is folded in at ingest. The audit's
+  reach is therefore a function of what teams chose to link, not of how well they wrote.
 - It scores an authored fixture suite generously unless someone reads it as what it is: an
   agent that wrote its own attack matrix and its own tests, then ran them in CI it configured,
   has produced *agreement with itself*. That reads as `partial 0.5` here with the reason
   spelled out, which is a smaller claim than the page's own "flawless / bulletproof" framing.
-- A `thin` verdict is a statement about this audit's evidence, not about the team. Three of the
-  five held records here are projects a builder may well want to copy — `Medvoice` carries
+- A `thin` verdict is a statement about this audit's evidence, not about the team. Four of the
+  six held records here are projects a builder may well want to copy — `Medvoice` carries
   `worth: strong` while sitting in the pool at 0.27, and `why_not_promoted` says the only thing
-  that would change that.
+  that would change that. Held-for-cause and unpromising are different claims, and this layer
+  publishes only the first.
 - It inherits the corpus's biases. 85 of the 165 admitted rows come from one XPRIZE gallery
-  that is 1,401 pages deep, of which 4 pages were crawled (5.9%); 10 records in total have been
-  captured for audit. `catalog-stats.json → coverage` publishes the same figures so a consumer
+  that is 1,401 pages deep, of which 4 pages were crawled (5.9%); 14 records have been captured
+  for audit, and 165 admitted rows are what the whole corpus holds. `catalog-stats.json → coverage` publishes the same figures so a consumer
   cannot quietly forget them.
