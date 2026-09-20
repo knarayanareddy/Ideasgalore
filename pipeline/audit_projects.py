@@ -365,6 +365,18 @@ def run_checks(cap: Dict[str, Any], repo_name: Optional[str], repo: Optional[Dic
              + (f" ({len(ok)} did reconcile)" if ok else "") + ": "
              + "; ".join(f"{n['claim']} — {n['arithmetic']}" for n in mismatch[:2]),
              "page", cap.get("source_url", ""), when)
+    elif ok and unfalsifiable:
+        # `confirmed` has to mean the record's numbers hold up, not that one of them does while the one
+        # the pitch rests on cannot be tested at all. The first version of this ladder let a listing
+        # figure reconcile its way past an unfalsifiable headline: zeroday-ai's "webhook to tested pull
+        # request in under 30 seconds" has no run count, no repository size and no defined endpoints, and
+        # its "2 likes" (which does reproduce, against two named likers) was lifting the check to 1.0
+        # `confirmed`. A reconciling figure and an untestable claim are both findings, so both are said.
+        emit("numbers_add_up", 0.5, "partial",
+             f"{len(ok)} figure(s) re-derived and reconcile ({'; '.join(n['claim'] for n in ok[:2])}), "
+             f"but {len(unfalsifiable)} headline figure(s) carry no testable denominator: "
+             + "; ".join(n["claim"] for n in unfalsifiable[:2]),
+             "page", cap.get("source_url", ""), when)
     elif ok:
         emit("numbers_add_up", 1.0, "confirmed",
              "; ".join(f"{n['claim']} (recomputed: {n['arithmetic']})" for n in ok[:2]),

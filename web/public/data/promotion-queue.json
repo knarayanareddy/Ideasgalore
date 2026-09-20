@@ -1,21 +1,9 @@
 {
  "audit_version": 1,
- "pool_size": 144,
+ "pool_size": 143,
  "queued": 12,
  "note": "Ranking of never-audited candidates by expected information gain (ADR-A7). Nothing here has been verified; the order is only 'what would teach us most'. `pool_size` counts records with no sheet at all \u2014 the full holding area, including audited-but-held records (thin, duplicate, hazard), is data/pool.json.",
  "candidates": [
-  {
-   "id": "zeroday-ai-autonomous-vulnerability-patching-system",
-   "name": "ZeroDay AI",
-   "domain": "Developer Tooling & Code Intelligence",
-   "coolness": 0.359,
-   "expected_gain": 0.514,
-   "why": "sector Developer Tooling & Code Intelligence has 6 rows and no audit",
-   "would_settle_it": [
-    "project page capture",
-    "repo link check"
-   ]
-  },
   {
    "id": "kimocchi-voice-mood-tracker",
    "name": "Kimocchi - Voice Mood Tracker",
@@ -143,6 +131,18 @@
    "coolness": 0.383,
    "expected_gain": 0.4943,
    "why": "sector Creative Media has 26 rows and no audit",
+   "would_settle_it": [
+    "project page capture",
+    "repo link check"
+   ]
+  },
+  {
+   "id": "duet-l0ks3b",
+   "name": "DUET",
+   "domain": "Emerging & Cross-Domain",
+   "coolness": 0.381,
+   "expected_gain": 0.4937,
+   "why": "sector Emerging & Cross-Domain has 18 rows and no audit",
    "would_settle_it": [
     "project page capture",
     "repo link check"

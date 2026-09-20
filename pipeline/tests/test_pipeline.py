@@ -1412,6 +1412,31 @@ class TestSignalsAreNotWordCollisions(unittest.TestCase):
         chk = A.run_checks(cap, None, None, {})[0]["test_or_eval_evidence"]
         self.assertEqual(chk["pass"], 0.0, "a stack line must not buy a rung on the testing ladder: " + chk["why"])
 
+    def test_one_reconciling_figure_does_not_certify_the_headline(self):
+        """`numbers_add_up: confirmed` has to mean the record's numbers hold up, not that one of them
+        does. zeroday-ai reconciled its Like count against two named likers and was credited at 1.0 while
+        the sentence it sells itself on — "webhook to tested pull request in under 30 seconds" — has no
+        run count, no repository size and no defined endpoints, so there is nothing to time. A
+        reconciliation and an untestable claim are both findings; both get said."""
+        cap = {"id": "fixture", "name": "Fixture",
+               "source_url": "https://devpost.com/software/fixture",
+               "sections": {"what_it_does": "It reads a finding, writes a patch, opens a pull request."},
+               "testing": "No eval set or result is published.", "built_with": ["python"],
+               "links": {"video": "https://youtu.be/x"},
+               "numbers": [
+                   {"claim": "2 likes", "denominator": "the likers listed on the page",
+                    "arithmetic": "reproduces: two named likers are listed under the Like button",
+                    "verifiable": True},
+                   {"claim": "under 30 seconds end to end", "denominator": "one pipeline run",
+                    "arithmetic": "not falsifiable from the page: no run count, no repository size, no "
+                                  "breakdown of the interval, no repository to check the pipeline against",
+                    "verifiable": False}]}
+        chk = A.run_checks(cap, None, None, {})[0]["numbers_add_up"]
+        self.assertEqual(chk["pass"], 0.5, chk["why"])
+        self.assertEqual(chk["status"], "partial")
+        self.assertIn("reconcile", chk["why"], "the half that checks out must stay in the sentence")
+        self.assertIn("no testable denominator", chk["why"])
+
     def test_a_measurement_claim_in_the_testing_field_is_credited(self):
         cap = self._cap("The digest ships weekly.",
                         testing="We instrumented the send path and watch delivery funnels on the live "

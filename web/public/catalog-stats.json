@@ -1,29 +1,29 @@
 {
- "total":14,
- "audited_published":14,
- "pool_records":151,
+ "total":15,
+ "audited_published":15,
+ "pool_records":150,
  "pool_audited_held":7,
- "pool_unaudited":144,
+ "pool_unaudited":143,
  "audit_version":1,
- "audit_index_kb":1.2,
- "audit_sheets_kb":58.8,
- "published_full":12,
+ "audit_index_kb":1.3,
+ "audit_sheets_kb":64.0,
+ "published_full":13,
  "published_lite":2,
  "records_hazarded":5,
  "records_hazarded_held":2,
- "domains":6,
- "subsystems":9,
+ "domains":7,
+ "subsystems":10,
  "moves":15,
  "events":5,
- "deep_records":21,
- "tier1_gzip_kb":4.4,
+ "deep_records":22,
+ "tier1_gzip_kb":4.6,
  "tier1_budget_kb":1200.0,
- "sqlite_kb":6.3,
+ "sqlite_kb":6.5,
  "corpus_ingested":167,
  "held_back":{
   "placeholder_summary":2
  },
- "records_with_moves":70,
+ "records_with_moves":71,
  "coverage":{
   "events":{
    "xprize":{
@@ -48,6 +48,10 @@
   "creative-media-story-and-play":{
    "records":3,
    "kb":21.5
+  },
+  "developer-tooling-and-code-intelligence":{
+   "records":1,
+   "kb":8.5
   },
   "health-care-and-human-performance":{
    "records":3,

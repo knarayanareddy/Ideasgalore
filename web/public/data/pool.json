@@ -1,7 +1,7 @@
 {
  "audit_version":1,
  "generated_at":"2026-09-18",
- "count":151,
+ "count":150,
  "meaning":"Records held out of the catalog. `provenance` splits them in two: `unaudited` rows were never captured or checked; `audited-hold` rows were captured, scored and held for cause (thin, duplicate or hazard-capped) and carry the same audit columns the catalog does. Neither kind is a judgement of merit \u2014 read why_not_promoted and would_settle_it before quoting one (ADR-A1/A10).",
  "records":[
   {
@@ -20,7 +20,7 @@
    "provenance":"audited-hold",
    "why_not_promoted":[
     "verdict:thin",
-    "soundness 0.42 is too low to certify; stays in the pool",
+    "soundness 0.30 is too low to certify; stays in the pool",
     "audited-lite refused: lite fields unwritten: limits_they_disclosed, prior_art; the page says nothing about limits or measurement: a lite row still has to contain a sentence about how the thing behaves",
     "unknown: limits_they_disclosed \u2014 the team disclosed no limitations; ask on the submission thread",
     "unknown: prior_art \u2014 prior-art entries must carry a URL or corpus id (A5/C5); 1 bare assertion(s)"
@@ -36,7 +36,7 @@
     "verdict":"thin",
     "worth":"tired",
     "soundness":"weak",
-    "soundness_score":0.4219,
+    "soundness_score":0.2969,
     "rubric_coverage":0.64,
     "audited_at":"2026-09-19",
     "unknowns":2,
@@ -44,14 +44,14 @@
     "hazard":false,
     "evidence":6,
     "reasons":[
-     "soundness 0.42 is too low to certify; stays in the pool",
+     "soundness 0.30 is too low to certify; stays in the pool",
      "audited-lite refused: lite fields unwritten: limits_they_disclosed, prior_art; the page says nothing about limits or measurement: a lite row still has to contain a sentence about how the thing behaves"
     ]
    },
    "verdict":"thin",
    "worth":"tired",
    "soundness":"weak",
-   "soundness_score":0.4219,
+   "soundness_score":0.2969,
    "rubric_coverage":0.64,
    "audited_at":"2026-09-19",
    "unknowns":2,
@@ -1883,27 +1883,6 @@
    ],
    "specificity":0.3,
    "summary":"A mobile-first assistant explaining everyday Swedish systems to newcomers in Lund - and refusing immigration, tax, legal and medical questions, routing each to the authority that decides.",
-   "provenance":"unaudited",
-   "why_not_promoted":[
-    "not_audited"
-   ],
-   "would_settle_it":[
-    "project page capture (deep)",
-    "artifact check via repo_verify.py"
-   ],
-   "audit":null
-  },
-  {
-   "id":"zeroday-ai-autonomous-vulnerability-patching-system",
-   "name":"ZeroDay AI",
-   "url":"https://devpost.com/software/zeroday-ai-autonomous-vulnerability-patching-system",
-   "domain":"Developer Tooling & Code Intelligence",
-   "subsystem":"Code Repair & Patching",
-   "event":"All Things Agentic Hackathon",
-   "coolness":0.3588,
-   "moves":[],
-   "specificity":0.4,
-   "summary":"Autonomous AI agent that detects code vulnerabilities, writes secure patches, and opens GitHub Pull Requests instantly without human intervention.",
    "provenance":"unaudited",
    "why_not_promoted":[
     "not_audited"

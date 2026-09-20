@@ -300,6 +300,32 @@
    "url":"https://devpost.com/software/adversarial-compliance-matrix",
    "name":"Gemini-Box"
   },
+  "zeroday-ai-autonomous-vulnerability-patching-system":{
+   "verdict":"sound-with-caveats",
+   "worth":"niche",
+   "soundness":"partial",
+   "soundness_score":0.5938,
+   "rubric_coverage":0.64,
+   "checks":{
+    "artifact_exists":"supported",
+    "build_is_real":"unverifiable",
+    "limits_disclosed":"confirmed",
+    "numbers_add_up":"partial",
+    "stack_consistency":"unverifiable",
+    "test_or_eval_evidence":"partial"
+   },
+   "unknowns":[],
+   "evidence":6,
+   "contradicted":0,
+   "hazard":false,
+   "repo":null,
+   "tier":"full",
+   "fields_absent":[],
+   "audited_at":"2026-09-20",
+   "audit_version":1,
+   "url":"https://devpost.com/software/zeroday-ai-autonomous-vulnerability-patching-system",
+   "name":"ZeroDay AI"
+  },
   "vitalis-bio":{
    "verdict":"sound-with-caveats",
    "worth":"niche",

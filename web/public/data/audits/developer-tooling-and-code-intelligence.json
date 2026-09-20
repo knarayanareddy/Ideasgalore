@@ -1,0 +1,243 @@
+{
+ "audit_version":1,
+ "generated_at":"2026-09-18",
+ "records":{
+  "zeroday-ai-autonomous-vulnerability-patching-system":{
+   "audit_version":1,
+   "audited_at":"2026-09-20",
+   "award":null,
+   "built_with":[
+    "fastapi",
+    "firebase",
+    "gemini-api",
+    "google-cloud-firestore",
+    "google-genai",
+    "owasp",
+    "python",
+    "react",
+    "rest-api",
+    "tailwind-css",
+    "tanstack-router",
+    "typescript",
+    "vite"
+   ],
+   "checks":{
+    "artifact_exists":{
+     "pass":0.5,
+     "status":"supported",
+     "why":"no source repo linked, but the page publishes a working artifact: https://www.youtube.com/watch?v=gBseWLGHSgw"
+    },
+    "build_is_real":{
+     "pass":null,
+     "status":"unverifiable",
+     "why":"no repository published, so the build cannot be read"
+    },
+    "limits_disclosed":{
+     "pass":1.0,
+     "status":"confirmed",
+     "why":"the team stated where the system fails, in production terms (fail)"
+    },
+    "numbers_add_up":{
+     "pass":0.5,
+     "status":"partial",
+     "why":"1 figure(s) re-derived and reconcile (2 likes on Devpost), but 2 headline figure(s) carry no testable denominator: webhook to tested pull request \"in under 30 seconds\"; two languages supported today (Python, JavaScript)"
+    },
+    "stack_consistency":{
+     "pass":null,
+     "status":"unverifiable",
+     "why":"no repo to cross-check the declared stack against"
+    },
+    "test_or_eval_evidence":{
+     "pass":0.5,
+     "status":"partial",
+     "why":"a harness is described (unit tests) but no result, run link or case count is published, so it cannot be checked"
+    }
+   },
+   "evidence":[
+    {
+     "checked_at":"2026-09-20",
+     "claim":"Is there an artifact at all \u2014 a repo, a deployed app, or a video of it running?",
+     "detail":"no source repo linked, but the page publishes a working artifact: https://www.youtube.com/watch?v=gBseWLGHSgw",
+     "id":"zeroday-ai-autonomous-vulnerability-patching-system:artifact_exists",
+     "kind":"page",
+     "source":"https://devpost.com/software/zeroday-ai-autonomous-vulnerability-patching-system",
+     "status":"supported"
+    },
+    {
+     "checked_at":"2026-09-20",
+     "claim":"Does the repo's language/file mix match the stack they described?",
+     "detail":"no repo to cross-check the declared stack against",
+     "id":"zeroday-ai-autonomous-vulnerability-patching-system:stack_consistency",
+     "kind":"page",
+     "source":"https://devpost.com/software/zeroday-ai-autonomous-vulnerability-patching-system",
+     "status":"unverifiable"
+    },
+    {
+     "checked_at":"2026-09-20",
+     "claim":"Is the code a real build (source tree, setup steps, non-trivial size) rather than a stub or zip?",
+     "detail":"no repository published, so the build cannot be read",
+     "id":"zeroday-ai-autonomous-vulnerability-patching-system:build_is_real",
+     "kind":"page",
+     "source":"https://devpost.com/software/zeroday-ai-autonomous-vulnerability-patching-system",
+     "status":"unverifiable"
+    },
+    {
+     "checked_at":"2026-09-20",
+     "claim":"Do their metrics have a denominator, and is the arithmetic internally consistent?",
+     "detail":"1 figure(s) re-derived and reconcile (2 likes on Devpost), but 2 headline figure(s) carry no testable denominator: webhook to tested pull request \"in under 30 seconds\"; two languages supported today (Python, JavaScript)",
+     "id":"zeroday-ai-autonomous-vulnerability-patching-system:numbers_add_up",
+     "kind":"page",
+     "source":"https://devpost.com/software/zeroday-ai-autonomous-vulnerability-patching-system",
+     "status":"partial"
+    },
+    {
+     "checked_at":"2026-09-20",
+     "claim":"Did they state what does not work, or where it fails?",
+     "detail":"the team stated where the system fails, in production terms (fail)",
+     "id":"zeroday-ai-autonomous-vulnerability-patching-system:limits_disclosed",
+     "kind":"page",
+     "source":"https://devpost.com/software/zeroday-ai-autonomous-vulnerability-patching-system",
+     "status":"confirmed"
+    },
+    {
+     "checked_at":"2026-09-20",
+     "claim":"Any test suite, eval harness, or measured benchmark we can see?",
+     "detail":"a harness is described (unit tests) but no result, run link or case count is published, so it cannot be checked",
+     "id":"zeroday-ai-autonomous-vulnerability-patching-system:test_or_eval_evidence",
+     "kind":"page",
+     "source":"https://devpost.com/software/zeroday-ai-autonomous-vulnerability-patching-system",
+     "status":"partial"
+    }
+   ],
+   "fields":{
+    "built_with_verified":{
+     "provenance":"observed",
+     "value":"declared by the authors (13): fastapi, firebase, gemini-api, google-cloud-firestore, google-genai, owasp, python, react \u00b7 no repository published, so these are the team's own claim and nothing corroborates them"
+    },
+    "clone_cost":{
+     "note":"our estimate with assumptions visible; not a claim about the team",
+     "provenance":"derived",
+     "value":{
+      "assumptions":[
+       "a container or equivalent isolation to run a target repository's test suite without trusting it \u2014 the security-relevant part, and the one the page does not describe",
+       "repository write credentials scoped to open PRs but not to merge, which is a policy decision as much as a configuration one",
+       "a real scanner or rule set (Semgrep/CodeQL/GoSec class) rather than \"ask the model what looks insecure\" \u2014 otherwise the eval question is unanswerable",
+       "a retry budget plus a distinct FAILED/UNVERIFIED outcome, so an exhausted loop is visible rather than absent"
+      ],
+      "estimate":"multi-week",
+      "why":"the demo-able shell (webhook, one model call, one test command, one PR) is a weekend, and that is exactly why the genre is crowded. What is not a weekend: a detector worth trusting for write access, a sandbox that is isolated enough to run untrusted repo tests safely, and a bounded retry policy with a terminal failure state a human can act on."
+     }
+    },
+    "data_and_models":{
+     "provenance":"observed",
+     "value":"No model is trained here: one model call site family (Gemini 3.5 via google-genai) for reasoning and patch generation, sequenced by ADK, with Firestore for audit-log and state persistence. The load-bearing external dependency is the detector \u2014 how a flaw is found in the first place is never stated (no scanner is named in the build prose, and the `owasp` tag is a reference frame, not a component) \u2014 so the system's ceiling is set by a component the page does not describe."
+    },
+    "how_it_works":{
+     "provenance":"observed",
+     "value":"Three layers, per the page. An AI engine on Gemini 3.5 through the official google-genai SDK, used for code reasoning and patch generation. An agent framework on Google's ADK (Agent Development Kit) to sequence the multi-step reasoning and tool calls. Infrastructure on Google Cloud Run for serverless event handling and test execution, with Firestore holding audit logs and pipeline state. The declared tag list is wider than the prose \u2014 fastapi, firebase, gemini-api, google-cloud-firestore, google-genai, owasp, python, react, rest-api, tailwind-css, tanstack-router, typescript, vite \u2014 which reads as FastAPI at the webhook edge, a React/Vite/Tailwind console with TanStack Router, and OWASP as the reference frame for what counts as a finding rather than as a component."
+    },
+    "how_they_tested":{
+     "provenance":"observed",
+     "value":"The page describes unit tests being *run by the product* inside a containerized sandbox as the gate before a pull request is opened, which is a design claim, not evidence about ZeroDay itself: no test suite for the system, no eval set of known-vulnerable repositories, no detection rate or false-positive rate, and no run log. Nothing is reported on how many patches passed, how many exhausted the retry budget, or what a failed run looks like."
+    },
+    "limits_they_disclosed":{
+     "provenance":"observed",
+     "value":"One named engineering problem, and it is the right one: the self-healing loop. When a generated patch failed the sandbox unit tests, the runtime stack trace had to be fed back to the model to produce the next attempt, and the stated difficulty was doing that \"without causing infinite retry loops\" \u2014 i.e. a bounded retry budget is load-bearing, though no bound, no count of attempts and no final failure state are published. No product limitation is admitted: nothing about what the detector cannot find."
+    },
+    "numbers_with_arithmetic":{
+     "provenance":"observed",
+     "value":[
+      {
+       "arithmetic":"not falsifiable from the page: no number of runs, no repository size, no breakdown between detection, generation, container start-up and git operations, and no repository to check the pipeline against \u2014 the interval's endpoints are not defined, so there is nothing to time",
+       "claim":"webhook to tested pull request \"in under 30 seconds\"",
+       "denominator":"the end-to-end pipeline run, as described on the page",
+       "verifiable":false
+      },
+      {
+       "arithmetic":"structural: \"expand language support beyond Python and JavaScript\" is a scope statement rather than a measured capability, so it bounds what exists without quantifying it",
+       "claim":"two languages supported today (Python, JavaScript)",
+       "denominator":"the scope the page names in its own next-steps sentence",
+       "verifiable":false
+      },
+      {
+       "arithmetic":"reproduces: the page lists exactly two named likers under the Like button, so the count and its population agree",
+       "claim":"2 likes on Devpost",
+       "denominator":"the likes list published with the entry",
+       "verifiable":true
+      }
+     ]
+    },
+    "prior_art":{
+     "note":"each entry resolves to a URL we opened this session or a corpus id",
+     "provenance":"editorial",
+     "value":[
+      {
+       "corpus_id":"tower-dq18x2",
+       "relation":"same event, same shape of problem, opposite answer on the trust boundary: Tower checks obligations against live artifacts and keeps UNVERIFIED as a distinct terminal state so it never asserts what it could not see, whereas ZeroDay's agent acts \u2014 writes code and opens a PR \u2014 with the target project's tests as its only gate. Read together they are the two available designs for \"when is an agent allowed to have an opinion\"."
+      },
+      {
+       "corpus_id":"adversarial-compliance-matrix",
+       "relation":"also an audit-trail-first agent over code and compliance-shaped evidence; that record publishes a repository and this one does not, so the same claims are checkable there and not here \u2014 which is the difference between an unverifiable sound-with-caveats row and an unverifiable thin one."
+      },
+      {
+       "corpus_id":"vms-ai-guard-fisheries-compliance-monitoring-alerts",
+       "relation":"shares the unattended-monitoring-plus-alerting loop over a live external surface, and stops one step earlier: VMS reports and a human acts, ZeroDay patches. The comparison is worth having because the extra automation step is where all of the difficulty lives (isolation, credentials, failure states) and it is the step this page describes least."
+      }
+     ]
+    },
+    "what_breaks_first":{
+     "provenance":"editorial",
+     "value":"The detector, because it is undescribed. Everything downstream is careful \u2014 sandbox, tests, PR \u2014 but a patcher's ceiling is what it notices, and the page names two finding classes (SQL injection, exposed API keys) with no scanner, no ruleset and no false-negative story, so a miss is invisible by construction: the pipeline reports nothing and looks healthy. Second is the retry budget: \"under 30 seconds\" and \"without causing infinite retry loops\" cannot both be true for a hard patch, so on a real failure the run either times out mid-loop or silently gives up, and neither terminal state is published. Third is the trust surface \u2014 an agent with write access to repositories and a chat assistant over its own audit log is an approval target, and nothing on the page says who authorises the PR beyond a human clicking."
+    },
+    "what_it_does":{
+     "provenance":"observed",
+     "value":"ZeroDay AI runs as a background agent over repositories. It watches for security flaws \u2014 the page names SQL injection and exposed API keys \u2014 and when one is detected it reads the surrounding code, writes a patch, executes the project's unit tests inside a containerized sandbox, and only then opens a GitHub pull request, with the run recorded as an audit log. The pipeline is described end to end as hands-off: a raw vulnerability webhook in, a tested pull request out. A chat assistant sits on top of the same state, and the screenshots show a live-scan view, a topology map of the monitored repositories and a Firestore-backed cloud-info panel. Nothing on the page claims it merges anything: the human review boundary is the pull request itself."
+    },
+    "what_it_is":{
+     "provenance":"derived",
+     "value":"An agent that reads a security finding, writes the patch, runs the project's tests in a sandbox, and may not open the pull request until they pass."
+    },
+    "what_to_steal":{
+     "provenance":"editorial",
+     "value":"Make the verification step able to *refuse*: the agent's output is a pull request only after the target project's unit tests pass in a throwaway container, so \"the model wrote something plausible\" never becomes a state the system can reach. Then steal the honest framing of the loop around it \u2014 the page names the retry bound as the hard part instead of describing the loop as always converging, which is the sentence an autonomous-remediation design usually omits. Third, cheap and specific: a local pre-scan (Gemma, client-side, for syntax errors) before paying for a sandbox run is the same trick as checking a claim against a cache before calling the model \u2014 cost the cheap filter first, and only escalate what survives it."
+    }
+   },
+   "hazard":null,
+   "id":"zeroday-ai-autonomous-vulnerability-patching-system",
+   "likes":2,
+   "links":{
+    "demo":null,
+    "repo":null,
+    "video":"https://www.youtube.com/watch?v=gBseWLGHSgw"
+   },
+   "moves":[
+    "human-holds-the-last-button",
+    "long-horizon-watcher"
+   ],
+   "name":"ZeroDay AI",
+   "provenance":{
+    "checks":"derived",
+    "clone_cost":"derived",
+    "evidence":"observed",
+    "fields":"observed",
+    "verdict":"derived",
+    "worth":"editorial"
+   },
+   "publishable":true,
+   "repo":null,
+   "right_of_reply":"https://github.com/knarayanareddy/Ideasgalore/issues/new?labels=audit-recheck",
+   "rubric_coverage":0.64,
+   "soundness":"partial",
+   "soundness_score":0.5938,
+   "source_url":"https://devpost.com/software/zeroday-ai-autonomous-vulnerability-patching-system",
+   "tier":"full",
+   "unknowns":[],
+   "verdict":"sound-with-caveats",
+   "verdict_reasons":[
+    "soundness 0.59 over 64% of the rubric; 0 named unknown(s) remain \u2192 publishable with caveats"
+   ],
+   "worth":"niche",
+   "worth_note":"The most crowded genre in this corpus \u2014 an agent that finds a flaw, writes a patch and opens a pull request \u2014 and this entry publishes no repository, no demo and one number with no denominator, so almost none of it can be checked. It earns a row rather than a pile because two decisions on the page are the correct ones for the genre and are named rather than glossed: the pull request is gated on the project's own tests passing inside a sandbox, and the retry loop's real difficulty is stated as *not looping forever*, which is the failure mode that makes an autonomous patcher dangerous. Read it for those two boundaries; do not read the 30 seconds as a result."
+  }
+ }
+}
