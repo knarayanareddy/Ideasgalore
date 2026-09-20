@@ -1,33 +1,9 @@
 {
  "audit_version": 1,
- "pool_size": 140,
+ "pool_size": 138,
  "queued": 12,
  "note": "Ranking of never-audited candidates by expected information gain (ADR-A7). Nothing here has been verified; the order is only 'what would teach us most'. `pool_size` counts records with no sheet at all \u2014 the full holding area, including audited-but-held records (thin, duplicate, hazard), is data/pool.json.",
  "candidates": [
-  {
-   "id": "learnway-ai",
-   "name": "LearnWay AI",
-   "domain": "Learning & Knowledge Systems",
-   "coolness": 0.377,
-   "expected_gain": 0.5086,
-   "why": "sector Learning & Knowledge Systems has 14 rows and no audit",
-   "would_settle_it": [
-    "project page capture",
-    "repo link check"
-   ]
-  },
-  {
-   "id": "antislop-vkjag3",
-   "name": "Antislop",
-   "domain": "Learning & Knowledge Systems",
-   "coolness": 0.368,
-   "expected_gain": 0.5081,
-   "why": "sector Learning & Knowledge Systems has 14 rows and no audit",
-   "would_settle_it": [
-    "project page capture",
-    "repo link check"
-   ]
-  },
   {
    "id": "nutrisight-ysabil",
    "name": "NutriSight",
@@ -143,6 +119,30 @@
    "coolness": 0.37,
    "expected_gain": 0.4869,
    "why": "sector Money has 13 rows and no audit",
+   "would_settle_it": [
+    "project page capture",
+    "repo link check"
+   ]
+  },
+  {
+   "id": "acl-movemement-analytics-lab",
+   "name": "ACL Movement Analytics Lab",
+   "domain": "Public Trust, Safety & Compliance",
+   "coolness": 0.33,
+   "expected_gain": 0.4865,
+   "why": "sector Public Trust has 16 rows and no audit",
+   "would_settle_it": [
+    "project page capture",
+    "repo link check"
+   ]
+  },
+  {
+   "id": "neuropath-kbe2ys",
+   "name": "NeuroPath",
+   "domain": "Health, Care & Human Performance",
+   "coolness": 0.336,
+   "expected_gain": 0.4845,
+   "why": "sector Health has 24 rows and no audit",
    "would_settle_it": [
     "project page capture",
     "repo link check"

@@ -1,0 +1,45 @@
+{
+  "clone_cost": {
+    "assumptions": [
+      "the courses and progress state exist independently of the AI layer, since the page describes a pivot onto existing infrastructure rather than a new build",
+      "no model is trained or fine-tuned - every AI surface named is a hosted Gemini call - so quality rests on prompting and supplied learner context",
+      "translation is machine translation with AI assistance, as no human review or per-market authoring process is described"
+    ],
+    "estimate": "multi-week",
+    "why": "Reproducing the described surface is weeks, not days: a Flutter client for two platforms, NestJS over PostgreSQL with learner, course, progress and assessment schemas, four Gemini surfaces (tutor, mentor, quiz generation, feedback), translation wiring, plus the authoring workflow for course content. The months are in what the page does not describe and the market demands - a catalogue that is relevant per market rather than merely translated, grading that can be trusted enough to be called assessment, and an economics answer for inference on a learner's five-minute session over metered data."
+  },
+  "prior_art": [
+    {
+      "corpus_id": "antislop-vkjag3",
+      "relation": "the same pitch at the other end of engineering effort, and the reason this batch is instructive: LearnWay has production clients, a Postgres state machine and four named AI surfaces; Antislop has a PySide shell and a prompt. Neither publishes a learning outcome, so the twelve-field ladder cannot separate them on effect - only the page-substance floor does, which is exactly the distinction the audited-lite tier was built to draw."
+    },
+    {
+      "corpus_id": "ax4u-academy",
+      "relation": "the direct competitor in this corpus for the same market, and it holds the answer LearnWay is missing. ax4u sells outputs instead of lessons - an automated workflow, a published book, a deployable system - so 'did the learner acquire a skill' is answered by a deliverable a third party can inspect. LearnWay's loop ends at 'receive feedback'. Read as a pair, the record with the weaker infrastructure has the stronger verification."
+    },
+    {
+      "corpus_id": "kimocchi-voice-mood-tracker",
+      "relation": "the same evidence shape in a different vertical, which is why the lite ladder exists: a shipped, monetised, multi-locale product whose load-bearing model claim is unpublished. Both list localisations as a feature and neither lists an accuracy or outcome figure for the model that the feature depends on."
+    },
+    {
+      "corpus_id": "attaindesk",
+      "relation": "an instruction that transfers. AttainDesk's year of SMB support work concluded 'less AI, not more'; LearnWay's page argues the opposite direction - AI operating the journey - while agreeing that features are not the measure. The pair frames the open question for every agent-shaped product in this catalog: who evaluates whether the added autonomy helped, and where does that evidence get published."
+    }
+  ],
+  "what_breaks_first": [
+    "AI-generated quizzes and assessment feedback, which is the capability the whole pivot claims most from and the one with the least published. A generated quiz tests recall of the lesson that was just shown, not whether the skill exists; a generated feedback sentence reads as coaching while grading against a rubric nobody wrote down. Because no accuracy figure, human comparison or rubric is published, there is no way to tell useful feedback from confident feedback - and in a credential-adjacent product that is the failure a learner pays for.",
+    "'AI-assisted content workflows' for authoring courses: five words carrying the quality of everything downstream. If generated material enters the library unreviewed, the platform's most important asset becomes unverifiable at the exact scale it is trying to reach, and localisation errors travel with it.",
+    "The multilingual claim as stated: Google Cloud Translation localises text, and the page concedes that relevance does not follow from translation. Machine-translated example sentences, currencies, units and cultural references are how a learning product loses credibility with the market it was built for, and no human review step is described anywhere.",
+    "Cost per learner at scale. Tutor, mentor, quiz generation and assessment feedback are four inference surfaces per learner per session on a metered-data phone in a market where the whole pitch is price; the page never states a per-learner cost, so the unit economics that decide whether this model survives outside a hackathon are entirely absent.",
+    "Deployment claims without an artifact: production Android and iOS apps and a production AI stack are asserted, and neither a store listing, a URL nor a repository is linked, so a reader cannot open what the record is built on. If the store apps are the pre-pivot LearnWay client and the AI layer is not yet shipped to it, the word 'production' is doing two jobs at once."
+  ],
+  "what_to_steal": [
+    "Put the model in the transition, not in a panel. The tutor fires while a learner is stuck mid-lesson, the mentor decides what comes next, the assessment closes the loop; the loop Learn -> Ask -> Practice -> Assess -> Feedback -> Improve -> Continue is the spec. A chatbot beside a video library has the same model and none of the leverage.",
+    "Design against the client the user owns, and say so as a constraint: smartphone-only, metered data, cheap hardware, intermittent connectivity. Most AI-edu pitches assume a laptop and a broadband connection and thereby address the learners who least need help.",
+    "Treat the pivot as a kept-and-added structure: LearnWay's courses, progress tracking and PostgreSQL state stayed, and the AI layer was built on top of them with that context as input. The alternative - a green-field AI app with no learner state - is why most education demos cannot personalise anything.",
+    "Bound the model's authority by the human you are not replacing: 'not to eliminate educators and mentors' is stated as the design objective, which is the honest version of the autonomy debate most records only gesture at.",
+    "Instrument the AI features as a first-class product surface - the page says usage and operational data are captured to see how learners interact with them. This is the one hook that could have produced an outcome number, and it is also the caution: telemetry about engagement is not evidence about learning."
+  ],
+  "worth": "niche",
+  "worth_note": "The geography is the idea. 'AI tutor plus mentor plus assessment' is the most common six-bullet pitch on this shelf - learnway's own competitors in this corpus are lumina-study-buddy, accomplish and antislop - and the page concedes that features are not the measure. What makes LearnWay worth a slot is that it is built for the constraint that breaks the others: phones on mobile data, low-cost devices, tutors who are unavailable at any price, and content that must be localised rather than translated. That is a real design brief and it is the reason this is `niche` and not `tired`. It stops there because not one claim about effect is falsifiable: the record asserts production apps, production AI and continuous improvement, and publishes no learner count, no completion rate, no grading comparison and no repository, while naming the right metric - whether learners achieve better outcomes - without reporting it. Publishing on the lite ladder says exactly that: the page establishes what the product is for and how it is wired, and cannot establish that it works."
+}

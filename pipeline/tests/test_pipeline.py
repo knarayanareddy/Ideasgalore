@@ -1456,6 +1456,30 @@ class TestSignalsAreNotWordCollisions(unittest.TestCase):
         self.assertNotIn("recall,", why.replace("(recall,", "recall,"),
                          "the agent's name is not an evaluation word")
 
+    def test_lite_refuses_a_page_with_nothing_on_it(self):
+        """The five guards on the audited-lite ladder all pass on a 161-word page, because each of them
+        is satisfiable by an auditor writing honest denials: a video to look at, no refuted claim, six
+        fields "written" as descriptions of absence. antislop-vkjag3 published at `audited-lite` with the
+        identical score to learnway-ai (0.4094) — one of them is a two-sentence desktop toy, the other a
+        production Flutter/NestJS/Postgres platform — because every field readable without a repository is
+        the same for both. The floor is on the page's own authored words, which only the capture can say."""
+        thin = {"id": "f", "sections": {k: "x" * 40 for k in
+                                        ("inspiration", "what_it_does", "how_we_built_it", "challenges",
+                                         "accomplishments", "learned", "what_next")},
+                "links": {"video": "https://youtu.be/x"}, "page_words": 161}
+        ok = {"id": "f", "sections": thin["sections"], "links": thin["links"]}
+        checks = {"artifact_exists": {"pass": 0.5, "status": "supported"},
+                  "limits_disclosed": {"pass": 0.6, "status": "supported"},
+                  "test_or_eval_evidence": {"pass": 0.0, "status": "unverifiable"},
+                  "numbers_add_up": {"pass": 0.5, "status": "partial"}}
+        fields = {f: {"value": "written"} for f in T.AUDIT_LITE_FIELDS}
+        admit, refuse, _ = A.lite_admission(thin, checks, fields, 0, 0.64)
+        self.assertFalse(admit, refuse)
+        self.assertIn("161 authored words", refuse[0])
+        self.assertIn("because the page is thin", refuse[0])
+        # Absence is unmeasured, not zero: a record without the count keeps the tier it earned.
+        self.assertTrue(A.lite_admission(ok, checks, fields, 0, 0.64)[0])
+
     def test_one_reconciling_figure_does_not_certify_the_headline(self):
         """`numbers_add_up: confirmed` has to mean the record's numbers hold up, not that one of them
         does. zeroday-ai reconciled its Like count against two named likers and was credited at 1.0 while

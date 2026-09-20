@@ -809,6 +809,9 @@ def _measurement_claim(testing_text: str):
     return _affirmative(_MEASURE_RE, " ".join(keep))
 
 
+LITE_MIN_PAGE_WORDS = 300
+
+
 def lite_admission(cap: Dict[str, Any], checks: Dict[str, Any], fields: Dict[str, Any],
                    contradicted: int, coverage: float) -> Tuple[bool, List[str], List[str]]:
     """ADR-P15: the second ladder, and its refusals are recorded rather than swallowed.
@@ -838,6 +841,25 @@ def lite_admission(cap: Dict[str, Any], checks: Dict[str, Any], fields: Dict[str
     numbers = checks.get("numbers_add_up") or {}
     if numbers.get("status") == "contradicted":
         refuse.append("numbers contradicted on their own terms")
+    # Fifth guard, and the one the tier needed most: a floor on the page itself. Every guard above is
+    # satisfiable by a competent auditor working on an empty page — write `how_they_tested` as a clean
+    # sentence saying nothing was published, list the one structural number, restate the one effort
+    # remark as a limit, and six "established from the page" fields come out looking written.
+    # antislop-vkjag3 is that page: 161 authored words in seven one-sentence sections, whose entire
+    # build story is "letting ai handle the core application and functionality". It scored 0.4094, the
+    # identical number learnway-ai scored with production Android and iOS clients, a NestJS/Postgres
+    # backend and four Gemini surfaces behind them, because every field the ladder can read without a
+    # repository is the same for both (artifact 0.5, limits 0.6, numbers 0.5, test 0.0). A reader who
+    # sees `audited-lite` understands the *repository* to be the missing evidence; where the page is
+    # what is missing, the tier is a false statement. Enforced only where `page_words` was recorded, so
+    # no already published row moves — the floor governs records admitted from here on. Its one gap is
+    # honest but real: a capture that omits the count dodges the rule, which is why the key is written
+    # by the same script that writes the sections and not by a later hand.
+    page_words = cap.get("page_words")
+    if isinstance(page_words, int) and not isinstance(page_words, bool) and page_words < LITE_MIN_PAGE_WORDS:
+        refuse.append(f"the page carries only {page_words} authored words (< {LITE_MIN_PAGE_WORDS}): lite "
+                      "promises fields established from the evidence and the page cannot supply that — this "
+                      "is a thin record because the page is thin, not because a repository is missing")
     return (not refuse), refuse, absent
 
 

@@ -196,6 +196,39 @@
    "url":"https://devpost.com/software/continuity-g7bty0",
    "name":"Continuity"
   },
+  "learnway-ai":{
+   "verdict":"sound-with-caveats",
+   "worth":"niche",
+   "soundness":"weak",
+   "soundness_score":0.4094,
+   "rubric_coverage":0.64,
+   "checks":{
+    "artifact_exists":"supported",
+    "build_is_real":"unverifiable",
+    "limits_disclosed":"supported",
+    "numbers_add_up":"partial",
+    "stack_consistency":"unverifiable",
+    "test_or_eval_evidence":"unverifiable"
+   },
+   "unknowns":[],
+   "evidence":6,
+   "contradicted":0,
+   "hazard":false,
+   "repo":null,
+   "tier":"lite",
+   "fields_absent":[
+    "how_it_works",
+    "built_with_verified",
+    "data_and_models",
+    "what_to_steal",
+    "what_breaks_first",
+    "clone_cost"
+   ],
+   "audited_at":"2026-09-20",
+   "audit_version":1,
+   "url":"https://devpost.com/software/learnway-ai",
+   "name":"LearnWay AI"
+  },
   "kimocchi-voice-mood-tracker":{
    "verdict":"sound-with-caveats",
    "worth":"niche",

@@ -1,24 +1,24 @@
 {
- "total":17,
- "audited_published":17,
- "pool_records":148,
- "pool_audited_held":8,
- "pool_unaudited":140,
+ "total":18,
+ "audited_published":18,
+ "pool_records":147,
+ "pool_audited_held":9,
+ "pool_unaudited":138,
  "audit_version":1,
  "audit_index_kb":1.4,
- "audit_sheets_kb":76.8,
+ "audit_sheets_kb":82.0,
  "published_full":14,
- "published_lite":3,
+ "published_lite":4,
  "records_hazarded":5,
  "records_hazarded_held":3,
  "domains":8,
- "subsystems":11,
+ "subsystems":12,
  "moves":15,
  "events":5,
- "deep_records":25,
- "tier1_gzip_kb":4.8,
+ "deep_records":27,
+ "tier1_gzip_kb":4.9,
  "tier1_budget_kb":1200.0,
- "sqlite_kb":7.0,
+ "sqlite_kb":7.1,
  "corpus_ingested":167,
  "held_back":{
   "placeholder_summary":2
@@ -62,8 +62,8 @@
    "kb":19.4
   },
   "learning-and-knowledge-systems":{
-   "records":1,
-   "kb":8.5
+   "records":2,
+   "kb":19.4
   },
   "money-commerce-and-marketplaces":{
    "records":3,

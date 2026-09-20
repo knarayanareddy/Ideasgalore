@@ -1,0 +1,73 @@
+{
+  "award": null,
+  "built_with": [
+    "dart",
+    "flutter",
+    "gemini",
+    "google-cloud",
+    "google-translate",
+    "nestjs",
+    "postgresql",
+    "typescript"
+  ],
+  "captured_at": "2026-09-20",
+  "data_and_models": "Learner, course, progress, assessment and application data in PostgreSQL, served by NestJS/Node.js to Flutter clients. Gemini is the model behind tutoring, mentorship, quiz generation and assessment feedback, with Google Cloud Translation for localisation; the personalisation is described as context-driven (goals, activity, lesson content, assessment performance, progress) with no retrieval store, embedding pipeline or fine-tune mentioned. Usage and operational telemetry are captured about the AI features themselves. No evaluation set, rubric, benchmark or grading study is described for the assessment claims, and no learner outcome measure appears on the page. Educational content is authored through 'AI-assisted content workflows', which is where the quality risk sits and is described in five words.",
+  "gallery_images": [
+    "https://d112y698adiu2z.cloudfront.net/photos/production/software_photos/005/124/183/datas/gallery.jpg"
+  ],
+  "id": "learnway-ai",
+  "likes": 4,
+  "limits_admitted": [
+    "connectivity and device cost: the target learner is on a smartphone, mobile data, lower-cost devices and inconsistent internet, so the client had to stay simple while the AI got heavier",
+    "localisation: material written for one market is not automatically understandable or relevant in another",
+    "autonomy is deliberately bounded - the stated aim is not to eliminate educators and mentors, and the team says it had to decide where AI decides and where human oversight stays",
+    "no outcome evidence anywhere: no learner count, no completion or assessment figure, no study"
+  ],
+  "links": {
+    "demo": null,
+    "repo": null,
+    "video": "https://www.youtube.com/watch?v=ZvUzd7mBRbU"
+  },
+  "name": "LearnWay AI",
+  "numbers": [
+    {
+      "arithmetic": "reproduces: four named likers are listed, one of whom (Francis Owusu-Mensah) also posted the project update, so three of four are outside the team",
+      "claim": "4 likes on Devpost",
+      "denominator": "the likers listed under the Like button",
+      "reconciles": true,
+      "verifiable": true
+    },
+    {
+      "arithmetic": "structural: tutor, mentor, assessments, content workflows, pathways and multilingual are enumerable in the product text; the tag list (dart, flutter, gemini, google-cloud, google-translate, nestjs, postgresql, typescript) is what the page declares, with no repo to compare it against",
+      "claim": "six AI capabilities and eight Built With tags",
+      "denominator": "the lists on the page",
+      "verifiable": false
+    },
+    {
+      "arithmetic": "not falsifiable from the page: no market size, source, learner count or addressable figure is given for the population the whole pitch rests on",
+      "claim": "millions of people want into the digital economy",
+      "denominator": "none stated",
+      "verifiable": false
+    },
+    {
+      "arithmetic": "structural: a named sequence rather than a measurement - it states the shape of the product, and nothing about how well any stage works",
+      "claim": "the learning loop Learn -> Ask -> Practice -> Assess -> Feedback -> Improve -> Continue",
+      "denominator": "seven named stages",
+      "verifiable": false
+    }
+  ],
+  "one_line": "A Flutter and NestJS learning platform for African and other emerging markets that put Gemini into tutoring, mentorship, quiz generation, assessment feedback and pathway choice rather than beside the content - and publishes no learner or outcome figure for any of it.",
+  "schema": 2,
+  "sections": {
+    "accomplishments": "None are claimed. The page has no accomplishments section and no figure anywhere: no learner count, no course count, no completion or assessment statistic, no cost per student, no pilot result. What the page does assert, in the build narrative, is that production Android and iOS applications exist and that the AI features are in the production stack rather than in a demo - a claim about deployment with nothing on the page to open, since no store listing, no URL and no repository is linked. Four people liked the entry.",
+    "challenges": "Four, and they are architecture and access rather than model quality. Moving from AI as a feature to AI as part of the operating architecture: a chatbot is easy, but a system that knows what a learner is studying, weighs their progress, guides, evaluates and recommends needs far more context and orchestration. Accessibility: the learners they want to serve rely on smartphones, mobile data, lower-cost devices and inconsistent connectivity, so sophisticated AI had to be balanced against a simple, efficient client. Localisation: material written for one market is not automatically understandable or relevant in another, answered with multilingual and AI-assisted capability. And the boundary of autonomy: they had to decide where AI makes decisions and where human oversight stays valuable, explicitly framing the goal as not eliminating educators and mentors but making personalized support affordable at a scale that would otherwise be expensive.",
+    "how_we_built_it": "Mobile-first, with production Android and iOS applications in Flutter (dart, typescript, QML-free: the page lists flutter/dart), a NestJS and Node.js backend and PostgreSQL for learner, course, progress, assessment and application data. The production AI stack is named as Gemini-powered Tutor, Gemini-powered Mentor, an AI Quiz Studio for generating quizzes and assessments, AI-powered assessment workflows for evaluating learner work, Gemini-assisted personalisation over goals, activity, progress and educational context, and Google Cloud Translation for localisation. Everything is described as built by integrating Gemini into the workflows rather than standing beside them, with the learner's context (goals, course activity, lesson content, assessment performance, progress) supplied to it. AI usage and operational data are captured so the team can monitor performance and see how learners interact with the AI systems. The platform was assembled by pivoting an existing product: LearnWay's infrastructure and content were kept, the AI layer was built new.",
+    "inspiration": "Millions of people in Africa and other emerging markets want into the digital economy while practical education, mentorship and career guidance stay scarce; online learning solved access to content and left the rest - what to learn next, how past a hard concept, whether the skill is actually being built. The team says they met this while building the pre-AI LearnWay: learners did not need more content, they needed guidance, feedback, assessment and adaptation. The XPRIZE is named as the occasion for a question rather than a feature: what if AI did not assist a learning platform but actively operated key parts of the learning journey - which is stated as the reason for the pivot from LearnWay to LearnWay AI.",
+    "learned": "That AI-native education is a different thing from adding AI to education, and that AI becomes useful when it has context and participates through the whole journey rather than as a disconnected service: tutoring, mentorship, assessment, feedback and recommendation are described as one loop a model can connect. That AI lowers the cost of personalized educational support, which is the actual lever in markets where individual tutors, mentors and career advisers are unavailable at any price most learners can pay. And the line the record ends on, which is the correct metric to name and is not one they report: the value of AI is not how many AI features a product contains but whether those capabilities help users achieve better outcomes.",
+    "what_it_does": "Six named capabilities run through the journey, each attached to a point in it rather than offered as a chat window: an AI Tutor giving contextual explanations while a learner studies; an AI Mentor using goals and progress to recommend what to learn next; AI-powered assessments that evaluate understanding and return actionable feedback; AI-assisted content workflows for authoring material and quizzes; personalised learning pathways through the course catalogue; and multilingual operation across markets. These sit on top of structured courses, practical projects, quizzes, progress tracking and gamification. The stated ambition is the sharp part of the sentence: not a chatbot beside educational content but intelligence embedded through the learner journey, in the shape Learn -> Ask -> Practice -> Assess -> Receive Feedback -> Improve -> Continue.",
+    "what_next": "No roadmap is given. The closing section is a vision - that digital learning will move beyond static content libraries toward systems that understand each learner, respond to their needs, assess what they can actually do and guide them toward skills and opportunities - and LearnWay AI is offered as a step toward it, framed as making personalized learning, mentorship, practical assessment and career-relevant skills accessible regardless of geography or income. No next build, integration, market or experiment is named."
+  },
+  "software_id": 1277637,
+  "source_url": "https://devpost.com/software/learnway-ai",
+  "testing": "Nothing is published: no test suite, no eval harness, no learner pilot, no grading comparison, no A/B of the tutor's usefulness, and no repository to look for any of it. The closest thing to an evidence practice on the page is the stated capture of AI usage and operational data to monitor performance and understand learner interaction, which is a measurement loop pointed at the features rather than at learning outcomes - and no figure from it is reported."
+}

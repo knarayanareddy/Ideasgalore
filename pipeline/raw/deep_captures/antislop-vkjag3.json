@@ -1,0 +1,50 @@
+{
+  "award": null,
+  "built_with": [
+    "gemini",
+    "python",
+    "pyside",
+    "qml"
+  ],
+  "captured_at": "2026-09-20",
+  "data_and_models": "A learning goal in, a roadmap out. The page names Gemini as the model and 'the best prompt' as the mechanism; it does not say whether resources are retrieved or generated, whether anything is stored, whether a learner's history persists, or what the 'research backed methods' are. 'Further fine tuning' is offered as the next step with no dataset, base model or method named, so it cannot be read as a training claim.",
+  "gallery_images": [],
+  "id": "antislop-vkjag3",
+  "likes": 0,
+  "links": {
+    "demo": null,
+    "repo": null,
+    "video": "https://www.youtube.com/watch?v=9nzrHXqoFEI"
+  },
+  "name": "Antislop",
+  "numbers": [
+    {
+      "arithmetic": "reproduces: the button is unlabelled and there is no 'people like this' block, so the record has no social proof at all - it is not a small number, it is an absence",
+      "claim": "0 likes on Devpost",
+      "denominator": "the Like button, which carries no count and names no likers",
+      "reconciles": true,
+      "verifiable": true
+    },
+    {
+      "arithmetic": "structural: the stack is countable on the page, and it is the only concrete technical fact the page supplies",
+      "claim": "four Built With tags (gemini, python, pyside, qml)",
+      "denominator": "the Built With list",
+      "verifiable": false
+    }
+  ],
+  "one_line": "An adaptive study app that turns a learning goal into a roadmap: two people, PySide and QML, Gemini behind the plan, and a page of about 160 words that says the AI was handed the core application after the interface was set up.",
+  "page_words": 161,
+  "schema": 2,
+  "sections": {
+    "accomplishments": "One sentence of felt outcome: pride at having solved one of their own biggest learning problems, and 'experiencing the quality it gives knowing that we built it is very rejoicing'. No external claim accompanies it - no user, no session count, no outcome, no award, no placement in the event.",
+    "challenges": "One sentence: the goal is high-quality learning through research-backed methods, and the biggest challenge was 'setting up the best prompt the AI will use' to achieve it. This is the only difficulty named on the page and it is a prompt-design difficulty, not a limitation of the system - no failure, no accuracy figure and no incapability is stated anywhere.",
+    "how_we_built_it": "One sentence, and it is the most informative line on the page: the interface was set up first, then 'letting ai handle the core application and functionality'. Built With lists gemini, python, pyside and qml, so the artifact is a desktop application in PySide/QML with a Gemini-backed core. No repository, no architecture, no module count, no deployment.",
+    "inspiration": "One sentence, and it is a personal one: the team is solving analysis paralysis in their own learning, which they name as their biggest bottleneck in learning. No market, population or external observation is described beyond that.",
+    "learned": "One sentence: they learnt how AI agents can be implemented into applications to provide maximum value. There is no concrete lesson attached - no measurement that changed a mind, no bug, no decision.",
+    "what_it_does": "One sentence: it helps you pave your path to a learning goal by constructing roadmaps and adaptive focused learning. The page does not enumerate screens, does not say what an adaptive step looks like, does not name a subject area, and does not describe what the roadmap is built from.",
+    "what_next": "One sentence: the next updates improve the models and 'further fine tuning' for an even higher quality learning experience. Nothing about the roadmap format, the resource sources, evaluation or distribution is stated."
+  },
+  "software_id": 1373250,
+  "source_url": "https://devpost.com/software/antislop-vkjag3",
+  "testing": "Nothing. No test suite, evaluation set, benchmark, learner pilot or before/after comparison appears anywhere on the page, and no repository exists to look in. The quality claim is 'experiencing the quality it gives' - the authors using their own app."
+}

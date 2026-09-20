@@ -1,0 +1,39 @@
+{
+  "clone_cost": {
+    "assumptions": [
+      "the roadmap is generated rather than curated from a corpus, since no data source is described",
+      "no user accounts or persistence beyond local state, since none is mentioned"
+    ],
+    "estimate": "single-day",
+    "why": "As specified, this is a weekend of prompt work: a PySide/QML shell that takes a goal, asks Gemini for a staged roadmap, and renders it. Nothing in the page requires infrastructure, retrieval, persistence or evaluation, which is also why the artifact can be rebuilt in a day and why it would carry the same evidentiary problem: the quality of the roadmap is asserted, not shown."
+  },
+  "prior_art": [
+    {
+      "corpus_id": "learnway-ai",
+      "relation": "same promise, opposite scale, identical evidence position. LearnWay AI runs production Android and iOS apps on NestJS and PostgreSQL for learners across Africa and still publishes no outcome figure; Antislop is the same product idea at two-person desktop size. Between them is the whole point of the education shelf in this catalog: the pitch is not the risk, the absence of a measured learning outcome is."
+    },
+    {
+      "corpus_id": "ax4u-academy",
+      "relation": "the sharpest contrast available in the corpus. ax4u sells outputs instead of lessons - a finished workflow, a published book, a deployable system - which makes its quality claim checkable by looking at what the learner ends up holding; Antislop's quality claim is 'experiencing the quality it gives'. Same sector, and one of them has a verifiable deliverable."
+    },
+    {
+      "corpus_id": "lumina-study-buddy",
+      "relation": "a near-neighbour in the same event: a learning companion for students who cannot afford commercial apps. Both are adaptive-study pitches with no evaluation; the difference is that one names the population it is for and the other names the feeling."
+    },
+    {
+      "corpus_id": "accomplish",
+      "relation": "the same problem from the other end. Accomplish is an accountability layer for self-paced courses, which presumes the learner already knows what to study; Antislop presumes the roadmap is the hard part. Paired, they show that roadmap generation and follow-through are two different products and that most of this shelf builds the first and needs the second."
+    }
+  ],
+  "what_breaks_first": [
+    "Everything, equally, because none of it is described: with no repository, no screenshots, no screen inventory and no test, there is no way to tell a working roadmap generator from a prompt wrapper around a chat window. That is the finding, not a criticism of competence.",
+    "The one thing the page promises to change next is the thing that cannot be checked: 'improving the models and further fine tuning' with no base model, dataset, method or evaluation - fine-tuning a hosted Gemini is not what the Built With tags describe, so the roadmap for the next version points at work that does not match the stack on the page.",
+    "Quality is asserted through 'research backed methods' with no citation, and the only evidence offered is the authors' own use. The failure mode is invisible by construction: if the roadmap is wrong, the person who would notice is the person the roadmap is for."
+  ],
+  "what_to_steal": [
+    "Nothing yet, and saying so is the useful part: a page that names analysis paralysis as the target problem has picked a real failure mode of self-directed learning - the learner's inability to choose the next step. Any study tool that ships a roadmap generator should say which step it removes, because 'the roadmap' is where the crowd is.",
+    "The one technique worth noting is the honesty about who wrote what. 'We set up the interface, then let the AI handle the core application' is the shape most hackathon builds actually have; the difference between this record and a strong one is that a strong record then says what the AI was constrained to do, and shows a result."
+  ],
+  "worth": "tired",
+  "worth_note": "'AI builds you a learning roadmap, adaptively' is the single most crowded pitch in this corpus - learnway-ai, lumina-study-buddy, accomplish and school-pulse are four more records in the same fifteen-metre radius, and Antislop adds no constraint they do not share: no subject, no population, no retrieval source, no outcome. What it does have is one honest sentence that many of its neighbours would not print: after setting up the interface they let the AI handle the core application and functionality. Taken on its own that is a reasonable 2026 way to build a desktop toy, and it is also the reason nothing here can be audited - the team's account of the build and the model's account of the build are the same sentence. `tired` is about the idea's crowdedness, not the team's standing; there is no claim here to refute, only claims too few to hold. The row stays in the pool on the page-substance floor rather than for any fault of its own."
+}

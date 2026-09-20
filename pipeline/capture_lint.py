@@ -45,7 +45,7 @@ CAPTURE_SCHEMA = 2
 REQUIRED_CAPTURE_KEYS = ("schema", "id", "name", "source_url", "software_id", "award", "likes", "built_with",
                         "links", "one_line", "numbers", "sections", "testing", "data_and_models",
                         "gallery_images", "captured_at")
-OPTIONAL_CAPTURE_KEYS = ("limits_admitted",)
+OPTIONAL_CAPTURE_KEYS = ("limits_admitted", "page_words")
 SEVEN_SECTIONS = ("inspiration", "what_it_does", "how_we_built_it", "challenges",
                   "accomplishments", "learned", "what_next")
 REQUIRED_NOTES_KEYS = ("worth", "worth_note", "what_to_steal", "what_breaks_first",
@@ -126,6 +126,18 @@ def lint_capture(cap, notes, corpus_row=None):
         f.bad("capture.keys.unknown", "unexpected key(s): " + ", ".join(unknown),
               "a key nobody reads is a key that will silently stop being written — fold it into a "
               "section or add it to REQUIRED_CAPTURE_KEYS with a consumer")
+
+    # `page_words` counts the words the team authored across the seven sections. It is optional because
+    # most of the registry predates it, and it exists for one reason: the audited-lite ladder has to tell
+    # "we could not examine the build" apart from "there was barely a page". Only the page's own length
+    # answers that, since the length of a capture measures the auditor and not the record. The rule keeps
+    # the number from becoming a vibe — it must be a real count — and nothing more.
+    if "page_words" in cap:
+        pw = cap.get("page_words")
+        if isinstance(pw, bool) or not isinstance(pw, int) or pw < 0:
+            f.bad("capture.page_words.shape",
+                  "`page_words` must be a non-negative integer count of the words the page itself authors",
+                  f"got {pw!r} — count the seven sections as submitted, not as summarised")
 
     # 2 · the seven authored sections exist; thin prose is a property of the page, not of the capture
     secs = cap.get("sections") or {}
