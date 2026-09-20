@@ -538,7 +538,7 @@
     "limits_disclosed":{
      "pass":1.0,
      "status":"confirmed",
-     "why":"the team stated where the system fails, in production terms (fail)"
+     "why":"the team stated where the system fails, in production terms (drift, fail)"
     },
     "numbers_add_up":{
      "pass":1.0,
@@ -596,7 +596,7 @@
     {
      "checked_at":"2026-09-19",
      "claim":"Did they state what does not work, or where it fails?",
-     "detail":"the team stated where the system fails, in production terms (fail)",
+     "detail":"the team stated where the system fails, in production terms (drift, fail)",
      "id":"greenlight-nine-agent-production-crew:limits_disclosed",
      "kind":"page",
      "source":"https://devpost.com/software/greenlight-nine-agent-production-crew",

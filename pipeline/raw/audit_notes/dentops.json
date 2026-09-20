@@ -1,0 +1,46 @@
+{
+  "clone_cost": {
+    "assumptions": [
+      "the 15 demoed clinics are not 15 live deployments; the production log of 84 actions is the better guide to what has actually run",
+      "practice-management connectors (Dentrix, Eaglesoft) require vendor partnerships or marketplace licensing, which no hackathon stack choice substitutes for",
+      "message generation and KPI interpretation all run through a hosted Gemini API with no owned model, as the page describes no training or fine-tuning"
+    ],
+    "estimate": "multi-week",
+    "why": "The demonstrated build is a two-person MERN app with a structured questionnaire, three reasoning loops over MongoDB, Twilio and Gmail send, a Calendar booking call and a KPI dashboard, which is weeks, not months. The expensive part is what the page does not show: a HIPAA posture - BAA with the model and messaging providers, consent to be messaged by an automated system, access control on the interaction logs - and the Dentrix/Eaglesoft integration every real clinic will ask for on day one, which is a licensing and connector problem rather than a coding one. Copy the audit-as-product and the approval gate in a weekend; ship this to paying clinics in a quarter."
+  },
+  "hazard_note": "Regulated-outcome language was stamped by the engine's own test, so it is answered here rather than argued away. What the team said about the regulated part of this product is: nothing. The page states that patient history is passed into the model on every agent turn, that patient interaction logs live in MongoDB, that messages go to patients over Twilio SMS and Gmail, and that the expansion plan runs through medical clinics, optometry and physiotherapy - and it contains no mention of HIPAA, a business associate agreement with the model provider or Twilio, consent to be contacted by an automated system, de-identification before the prompt, retention limits on the logs, or who inside a clinic may read them. The one control the page does describe, the two-week approval-first window, governs *tone* - whether a message should be sent - and not data, so it is not an answer to this hazard. `team_disclaimed: false` is therefore correct and the record is held for a second reason beyond its arithmetic: a builder copying the operations model should copy the audit-as-product and the approval gate, and must not assume the compliance surface was thought about. The strongest available reading is that the hazard is unaddressed rather than mishandled - a hackathon page is not a data-processing agreement - which is why it is written here as an open obligation and not as misconduct.",
+  "prior_art": [
+    {
+      "corpus_id": "attaindesk",
+      "relation": "the same buyer, the same lesson arrived at from the other side. AttainDesk is an SMB support desk whose conclusion after a year of real use was 'less AI, not more'; DentOps is an SMB operations layer that reached 'AI-native doesn't mean AI-everywhere' from 15 clinics and a two-week approval gate. Both independently shrink the model's authority in front of small business owners, and neither has a public artefact to verify the results with."
+    },
+    {
+      "corpus_id": "calc-506yp2",
+      "relation": "a study in how to handle a money number. Both products put a dollar figure in front of a cash-poor owner - '47 lapsed patients worth about $14,000' against CALC's per-kilo and per-receipt arithmetic. CALC's figures re-derive and are published with their denominators; DentOps' headline is an average over an unstated denominator and contradicts its own log. The pair is the corpus's clearest illustration that a dollarized claim is a claim, not a style."
+    },
+    {
+      "corpus_id": "zeroday-ai-autonomous-vulnerability-patching-system",
+      "relation": "identical trust architecture, opposite disclosure. Both gate an autonomous agent behind a verification step before it acts on the world - a passing test suite there, a human approval window here - and both then publish a headline speed or volume figure with no denominator. DentOps at least supplies a production log to be contradicted by."
+    },
+    {
+      "corpus_id": "medvoice-y87kei",
+      "relation": "both automate outreach to people in a clinical context, and both have to decide how much of the patient the model may see. Medvoice narrows the channel deliberately - a photo and a spoken instruction, nothing that reads like a record - while DentOps puts patient history in the prompt to personalise a text message."
+    }
+  ],
+  "what_breaks_first": [
+    "The headline metric, in front of a buyer. If 330 is patients *surfaced by a query* rather than patients rebooked, then the recall rate the product is judged on is a search result count, and the dashboard's 'reappointment rate' column is the number that will disagree with the sales deck - which is exactly the disagreement already visible between the 330 and the 84 logged actions.",
+    "The un-messaged boundary: patient history is in the prompt for every outbound message. The first security or compliance conversation with a real clinic - or the first practice-management vendor that reads the integration as a data-processing relationship - requires an answer the page does not contain: no BAA, no consent model for automated messages to patients, no de-identification, no statement of who can read the interaction logs. The expansion to medical, optometry and physiotherapy makes the same gap wider rather than narrower.",
+    "The intake. Everything after the audit depends on data that came from a questionnaire and a spreadsheet snapshot; the waitlist backfill, the 180-day window and the reappointment tracking all go stale the moment the clinic books in Dentrix and not in Google Calendar. Until the native connectors exist, the agents are reasoning over a copy, and a stale copy sends a reminder for an appointment that was already moved.",
+    "Tone, at scale and per clinic: they got 'warm, clinic-branded, not chatbot' by hand with a staff rating loop on a handful of clinics. That is a prompt-and-review process, not a guarantee, and the failure mode is a message that reads wrong to a patient - the one error class a clinic will not forgive, because it is sent under the dentist's name.",
+    "The single-number pricing: $249 per month with Twilio SMS, Gmail sending and Gemini inference on every turn. At 330 conversations per clinic per month the variable cost is not small, and the page gives no margin figure - so the growth claim and the price only survive together if the real volume is the one the 84 actions suggest."
+  ],
+  "what_to_steal": [
+    "Sell the diagnosis before the automation: a 20-minute structured audit that returns a prioritised gap report with a dollar estimate attached to each gap. They expected it to be a funnel step and found it was the artefact customers shared with a business partner - a paid-shaped deliverable that also happens to be the onboarding. Works for any agent product whose buyer cannot articulate their own leak.",
+    "Approval-first autonomy with a stated clock: for the first two weeks every agent message is reviewed by the clinic before it goes out, then it goes automatically. This is the trust ramp the rest of the corpus argues about in the abstract, priced in days and applied to the highest-stakes channel (their patients).",
+    "Cap the dashboard and interpret every cell: cut from ~40 measures to 12 that map to money, and put the sentence under the number ('your no-show rate is 18%. industry average is 10%. fixing this could recover approximately $X per month'). The comparison plus the dollar is the whole feature - a KPI without a benchmark is decoration.",
+    "Niche the vertical before the workflow: the reason the recall agent is credible is that '180+ days inactive', '6+ months', 'chair utilisation' and 'treatment acceptance rate' are dental-specific objects. The same loop over a generic 'small business' has nothing to reason with.",
+    "Use the prospect's own numbers as the close. '47 lapsed patients worth about $14,000' converted in one call every time, because the arithmetic came out of their data - and note the discipline implied: the estimate is only persuasive because it is specific enough to be checked."
+  ],
+  "worth": "strong",
+  "worth_note": "The operating model is worth more than the metrics claim, and the two have to be separated. What is well evidenced here is design: a paid diagnosis (the audit) that a clinic forwards to its business partner, twelve KPIs chosen because forty were unusable, every number carrying its own interpretation sentence, and an approval gate that exists because the objection was trust and not capability - all of it derived from talking to owners, and all of it stated plainly enough to copy. What is not sound is the growth story: an average of 330 recovered patients per clinic in 30 days cannot be produced by the 84 logged production actions the same section offers as proof, and it contradicts the team's own $298-per-patient value. Held on that, at `strong` worth: the pattern is a keeper, the numbers are not."
+}

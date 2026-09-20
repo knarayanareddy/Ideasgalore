@@ -1,0 +1,48 @@
+{
+  "clone_cost": {
+    "assumptions": [
+      "SNIIM remains reachable and its 222-product page keeps a parseable structure, since no contract or API exists and the whole pre-purchase alert depends on it",
+      "voice and typed Spanish go through a hosted model with no fine-tuning, as no training data or owned-model is described anywhere on the page",
+      "the 167 tests and the 30-case evaluation exist in a private repository - nothing on the page links to them, so the count is taken from the authors"
+    ],
+    "estimate": "multi-week",
+    "why": "The visible surface is days of work - a React PWA with voice and camera input, an Express API on Cloud Run, Firestore, and a Gemini call that turns Spanish into an expression mathjs evaluates. The cost is everything they built so the money can be trusted: the parse-to-expression boundary, the invariant suite (167 tests, including 'never hand-repair a broken money JSON' and 'an agent never gives orders'), the accuracy agent that separates wrong from blind, and a defensive parser for a government HTML page that 503s non-browser clients and has no API. Reaching this state without weeks of field contact in a cash market also means reproducing their failure catalogue: Costco line ordering, discounts below the subtotal, gender in the alert copy, and the cold start that produced avisos_creados=0 for weeks."
+  },
+  "prior_art": [
+    {
+      "corpus_id": "finova-j9av5f",
+      "relation": "same users, same language, opposite relationship to being wrong. Finova is a Spanish-language personal finance app that prices a gamified ledger off six live external feeds; it discloses no failure mode, publishes no evaluation and is held at `thin` for it. CALC is the answer to the same problem stated as a correctness contract - refuse to save unverifiable money, publish the confidence bound - which makes the pair the clearest illustration in the corpus that 'money app' is not an evidence class."
+    },
+    {
+      "corpus_id": "attaindesk",
+      "relation": "convergent instinct, different mechanism. AttainDesk's conclusion after a year of SMB support work was 'less AI, not more'; CALC removes the model from the arithmetic entirely. Both arrive at narrowing the model's authority by watching where it fails, and both are listed at the same Build with Gemini XPRIZE showcase."
+    },
+    {
+      "corpus_id": "zeroday-ai-autonomous-vulnerability-patching-system",
+      "relation": "two records where the model acts only behind a gate the code enforces - failing unit tests block a pull request there, a non-balancing receipt blocks a save here. ZeroDay's gate has no published result or denominator; CALC's gate ships with a test count, an eval set and a bound, which is why one publishes as a full record and the other's headline figure reads as a slogan."
+    },
+    {
+      "corpus_id": "tower-dq18x2",
+      "relation": "the same 'never assert what you could not see' rule, arrived at independently. Tower keeps UNVERIFIED as a terminal state in an obligations ledger; CALC reports 10/10 correct with 2 unanswered rather than calling a provider outage a failure. Together they are the corpus's evidence that distinguishing absence of data from bad data is the recurring mark of a trustworthy agent."
+    }
+  ],
+  "what_breaks_first": [
+    "The SNIIM scraper is the first thing to fail: an ASP.NET HTML page with no API, which already answers 503 to anything without browser headers, is a dependency the team cannot schedule with the publisher. The saved-response test detects a format change, but a wholesale price that is a day stale or silently missing produces a confident, wrong 'buy now' alert on the one channel where being late makes the alert worthless.",
+    "Two sources of truth for the same number nearly shipped: the backend summed by line amount while the screen recomputed, so the same receipt was simultaneously balanced and not. Any path where a validation rule and a displayed total are computed separately - including in the three agents that read the books - will diverge again on the next store that prints an unusual layout.",
+    "The unattended agent loop has no user-visible failure state. 'Retries on failure, every run logged' is the design, and a Cloud Run Job that quietly stops firing costs the user an unnoticed warning before a purchase; the green column is checked by the authors, not by the person who needed the alert.",
+    "The alert vocabulary at 28 hand-corrected Spanish products is fragile in the specific way that loses trust with this audience: gender and agreement errors ('papa esta mas barato') read as an outsider writing about your market. The fix they found - an article on every product plus verbs that carry no gender - does not scale on its own to the 222 published products and the meat, grain and oil sections they want to add next.",
+    "Cost scales with attention, not with value: a 2,596-token system prompt on every call was their biggest line, so a cheap day of many small questions is the worst economic case. The proposed fixes (prompt caching, lower thinking budget) are not in yet, and the unit figures that would show whether they work are only checkable against the authors' own invoice."
+  ],
+  "what_to_steal": [
+    "Make 'the model never does arithmetic' the architectural decision rather than a mitigation: the model turns language into a structured expression and code evaluates it, with the stated reason that money does not tolerate a plausible answer. Any product that lets a model produce the number it then acts on can be reduced to this sentence.",
+    "Refuse to persist money you cannot verify - a receipt whose rows do not sum to the printed total cannot be saved - and then read the rest of their story: the same rule left a user stuck with a disabled button and no way out, so pair the refusal with an explicit escape hatch before copying it.",
+    "Publish the bound, not the score: '0 errors in 30 cases; 95% upper bound on the error rate is about 10%' costs one sentence and is why a technical reader believes the other thirty. It also happens to be arithmetic a reader can check.",
+    "Teach your eval to tell wrong from blind. Reporting 10/10 with 2 unanswered on a provider-overload day instead of raising a false alarm is the difference between a monitor and an alarm; most agent scorecards conflate the two.",
+    "Log the thing that refutes you. finishReason logging was added to confirm a MAX_TOKENS hypothesis and instead proved it wrong (STOP, deterministically at temperature 0) - 'instrument before you diagnose' is the cheapest engineering culture in this corpus.",
+    "Pin a real saved response as a test against any scraped page you depend on, so you find out the day the publisher changes the format rather than the day your users do.",
+    "Say nothing most days: an agent that speaks every day gets ignored within a week, so the correct output is often empty. This is the opposite default of every 'proactive assistant' in the corpus.",
+    "Look for the category the data excludes by construction, not the workflow a model can now do: fiscal-receipt-fed price systems are excellent in Brazil and Argentina precisely because informal sellers are not in the receipts, and that is a market argument a wrapper cannot copy."
+  ],
+  "worth": "strong",
+  "worth_note": "The claim this record rests on is not the product but the discipline, and it is the only one in the corpus whose discipline survives checking: the 26% per-kilo figure reproduces, the Costco row reproduces, the 95% upper bound on 0 errors in 30 cases reproduces and is even conservative, and the likes count reproduces to its discomfort (one like, by the author). Against that, the market evidence is nil and self-declared as nil - no interviews, no paying customer - so this is `strong`, not `breakthrough`: what is proven here is that the money path is correct, not that anyone outside the team uses it. One figure is quoted that its own two numbers do not support (the 43% cost share, where 417 of 536 output tokens is 78% and 35% once the prompt is counted at a 4x multiplier), which is recorded rather than held against it because the page's habit is to name the denominator it used."
+}

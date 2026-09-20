@@ -1,0 +1,39 @@
+{
+  "clone_cost": {
+    "assumptions": [
+      "the eight languages are string localisations over an already-built app, not per-region behaviour",
+      "no clinical or regulatory review is needed for a product that explicitly does not diagnose, so long as the non-medical framing stays in the listing and the terms",
+      "the emotion reading is a prompt against a hosted model rather than a trained classifier, since no training data or model is described anywhere on the page"
+    ],
+    "estimate": "multi-week",
+    "why": "The idea is a weekend and the shipped thing is not. Reaching this state means Flutter on two platforms, on-device speech recognition with a typed fallback, an emotion-label pass with day titles and a weekly letter, Firestore plus Firebase Auth/Analytics/Crashlytics, a Cloud Run service, a physics toy in the feelings box, and a RevenueCat entitlement loop with three in-flow gates, a trial and cross-reinstall entitlement correctness - then eight localisations. For one developer that is weeks of integration, most of it on the billing path and the speech path, neither of which the page shows any evidence of testing."
+  },
+  "prior_art": [
+    {
+      "corpus_id": "neuroguard-ai-0qb34c",
+      "relation": "same contract, opposite evidence culture. Both track a person against their own baseline, both refuse to diagnose, both flag unusual change rather than score it. Neuroguard runs timed cognitive and camera-based physical tests with per-test scoring; Kimocchi reads free prose and publishes no figure for how often it reads correctly. The pair is the argument that the soft-input version needs the measurement discipline the clinical version already has, and does not have it."
+    },
+    {
+      "corpus_id": "medvoice-y87kei",
+      "relation": "the same removal of capability-as-a-precondition: medvoice takes reading out of the loop for patients who cannot manage it, Kimocchi takes articulate writing out of the loop for people who cannot manage that at 11pm. Both arrive at 'the interface should not require the thing the user is short of' from opposite directions - clinical necessity and consumer retention."
+    },
+    {
+      "corpus_id": "zeroday-ai-autonomous-vulnerability-patching-system",
+      "relation": "useful as a contrast in disclosure only: both records state what they will not do, but ZeroDay's limit is an engineering constraint it could not fully solve (retry loops) while Kimocchi's are product boundaries chosen deliberately - a reminder that 'what it deliberately does not do' is a stronger signal than a capability list."
+    }
+  ],
+  "what_breaks_first": [
+    "The reading, silently. On-device speech recognition on a late-night mumble, then a six-label pass over two minutes of prose: sarcasm, a flat 'I'm fine', a day that was actually bad but got narrated cheerfully all produce a confident label with no uncertainty attached, and the calendar of faces becomes a record of what the model guessed. Because nothing in the UI can tell a wrong label from an unusual day, the failure mode is invisible to exactly the user the product is for.",
+    "The VIP voice-level signal is the one place audio-derived features leave the device, and the page does not say whether the baseline it is compared against is computed on device or on the server. If it is server-side, the 'recordings stay on your phone' sentence needs a qualifier a reader can find - for a product whose pitch is privacy, an ambiguous data boundary is a product bug.",
+    "The Sunday letter is the second thing to decay: a generated recap of six labels and a handful of day-titles reads warmly for two weeks and templated by week four, and there is no evaluation or user feedback anywhere on the page about whether anyone keeps opening it.",
+    "RevenueCat entitlements are the boring break: the trial, the three gates and the crown all depend on entitlement state being correct across reinstall and store-side refunds, and a gate that misfires in a journal the user cannot re-read is worse than a paywall. There is no test or CI evidence for the billing path, which is the path that carries money."
+  ],
+  "what_to_steal": [
+    "Put the paywall at the moment of reaching and nowhere else: three named triggers, each reached by someone already asking for more, each keeping what they made before the prompt appears (talk twice in a day and your words are stored first; tap 1mo/3mo/1y and you see the week you can already see; tap an empty day and you are invited to fill it). Feature screens carry no locks and no 'you have run out' state at all, only a small crown on the ranges beyond the free window. This is a monetisation rule that costs nothing to adopt and is the opposite of the metered-gate default.",
+    "Design the retention mechanic so it cannot punish: a streak is shown only while it is alive, '0 days' and 'streak lost' never render, and totals only go up. In any product where the tracked object is a bad week, the counter is the harm.",
+    "State the model's job as a boundary in the product, not in a blog post: 'the AI is instructed to receive, not to fix', no advice, no diagnosis, and the non-medical-device claim made in the app, the store listing and the terms together, with signposting to professional help - plus a switch to turn the AI off entirely, which is the disclosure that makes the rest believable.",
+    "Make the derived signal tactile instead of charted: emotions become objects in a box you can tilt, tap and fling. A chart invites analysis; a physics toy invites return. Same data, different second use."
+  ],
+  "worth": "niche",
+  "worth_note": "What is on this page is craft at a level the rest of the corpus does not reach - a shipped, monetised, eight-language app with the entitlement loop wired end to end - but craft is not evidence of an idea worth building over. The shape itself is already in the corpus twice: neuroguard-ai scores short tests against the patient's own baseline and flags change without diagnosing, medvoice removes reading from the loop for people who cannot do it; Kimocchi is the consumer, self-directed version of the same contract. And the load-bearing capability - that a model can read six feelings out of two muttered minutes - is asserted with no accuracy figure, no labelled set and no comparison against the 1-5 scale it claims to replace, so the record that is best evidenced on execution is unevidenced exactly where it needs to be. `niche`, not `strong`: the stealable part is a pattern, not a product."
+}

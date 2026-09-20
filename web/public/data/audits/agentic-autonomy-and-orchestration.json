@@ -2,6 +2,298 @@
  "audit_version":1,
  "generated_at":"2026-09-18",
  "records":{
+  "calc-506yp2":{
+   "audit_version":1,
+   "audited_at":"2026-09-20",
+   "award":null,
+   "built_with":[
+    "cloud-run",
+    "cloud-scheduler",
+    "express.js",
+    "firestore",
+    "google-cloud",
+    "google-gemini",
+    "javascript",
+    "jest",
+    "mathjs",
+    "node.js",
+    "pwa",
+    "react",
+    "tailwindcss",
+    "vite",
+    "web-scraping"
+   ],
+   "checks":{
+    "artifact_exists":{
+     "pass":0.5,
+     "status":"supported",
+     "why":"no source repo linked, but the page publishes a working artifact: https://www.youtube.com/watch?v=AxnG97aaISk"
+    },
+    "build_is_real":{
+     "pass":null,
+     "status":"unverifiable",
+     "why":"no repository published, so the build cannot be read"
+    },
+    "limits_disclosed":{
+     "pass":0.6,
+     "status":"supported",
+     "why":"the team described how hard the build was, but not a limitation of the system itself \u2014 no accuracy, coverage, privacy or failure-mode statement"
+    },
+    "numbers_add_up":{
+     "pass":0.5,
+     "status":"partial",
+     "why":"4 figure(s) re-derived and reconcile (the bigger bag is 26% more expensive per kilo; 0 errors in 30 evaluated cases, 95% upper bound on the error rate is about 10%), but 4 headline figure(s) carry no testable denominator: 167 tests, twelve daily accuracy cases, five agents, 28 products given an article, 49 central markets and 222 products at the source; 417 tokens of thinking against 119 of visible answer is 43% of the cost of every question"
+    },
+    "stack_consistency":{
+     "pass":null,
+     "status":"unverifiable",
+     "why":"no repo to cross-check the declared stack against"
+    },
+    "test_or_eval_evidence":{
+     "pass":0.75,
+     "status":"supported",
+     "why":"a measured evaluation with a stated denominator is described on the page (an A/B comparison or a logged-outcome harness counts; a bare 'we tested it' does not)"
+    }
+   },
+   "evidence":[
+    {
+     "checked_at":"2026-09-20",
+     "claim":"Is there an artifact at all \u2014 a repo, a deployed app, or a video of it running?",
+     "detail":"no source repo linked, but the page publishes a working artifact: https://www.youtube.com/watch?v=AxnG97aaISk",
+     "id":"calc-506yp2:artifact_exists",
+     "kind":"page",
+     "source":"https://devpost.com/software/calc-506yp2",
+     "status":"supported"
+    },
+    {
+     "checked_at":"2026-09-20",
+     "claim":"Does the repo's language/file mix match the stack they described?",
+     "detail":"no repo to cross-check the declared stack against",
+     "id":"calc-506yp2:stack_consistency",
+     "kind":"page",
+     "source":"https://devpost.com/software/calc-506yp2",
+     "status":"unverifiable"
+    },
+    {
+     "checked_at":"2026-09-20",
+     "claim":"Is the code a real build (source tree, setup steps, non-trivial size) rather than a stub or zip?",
+     "detail":"no repository published, so the build cannot be read",
+     "id":"calc-506yp2:build_is_real",
+     "kind":"page",
+     "source":"https://devpost.com/software/calc-506yp2",
+     "status":"unverifiable"
+    },
+    {
+     "checked_at":"2026-09-20",
+     "claim":"Do their metrics have a denominator, and is the arithmetic internally consistent?",
+     "detail":"4 figure(s) re-derived and reconcile (the bigger bag is 26% more expensive per kilo; 0 errors in 30 evaluated cases, 95% upper bound on the error rate is about 10%), but 4 headline figure(s) carry no testable denominator: 167 tests, twelve daily accuracy cases, five agents, 28 products given an article, 49 central markets and 222 products at the source; 417 tokens of thinking against 119 of visible answer is 43% of the cost of every question",
+     "id":"calc-506yp2:numbers_add_up",
+     "kind":"page",
+     "source":"https://devpost.com/software/calc-506yp2",
+     "status":"partial"
+    },
+    {
+     "checked_at":"2026-09-20",
+     "claim":"Did they state what does not work, or where it fails?",
+     "detail":"the team described how hard the build was, but not a limitation of the system itself \u2014 no accuracy, coverage, privacy or failure-mode statement",
+     "id":"calc-506yp2:limits_disclosed",
+     "kind":"page",
+     "source":"https://devpost.com/software/calc-506yp2",
+     "status":"supported"
+    },
+    {
+     "checked_at":"2026-09-20",
+     "claim":"Any test suite, eval harness, or measured benchmark we can see?",
+     "detail":"a measured evaluation with a stated denominator is described on the page (an A/B comparison or a logged-outcome harness counts; a bare 'we tested it' does not)",
+     "id":"calc-506yp2:test_or_eval_evidence",
+     "kind":"page",
+     "source":"https://devpost.com/software/calc-506yp2",
+     "status":"supported"
+    }
+   ],
+   "fields":{
+    "built_with_verified":{
+     "provenance":"observed",
+     "value":"declared by the authors (15): cloud-run, cloud-scheduler, express.js, firestore, google-cloud, google-gemini, javascript, jest \u00b7 no repository published, so these are the team's own claim and nothing corroborates them"
+    },
+    "clone_cost":{
+     "note":"our estimate with assumptions visible; not a claim about the team",
+     "provenance":"derived",
+     "value":{
+      "assumptions":[
+       "SNIIM remains reachable and its 222-product page keeps a parseable structure, since no contract or API exists and the whole pre-purchase alert depends on it",
+       "voice and typed Spanish go through a hosted model with no fine-tuning, as no training data or owned-model is described anywhere on the page",
+       "the 167 tests and the 30-case evaluation exist in a private repository - nothing on the page links to them, so the count is taken from the authors"
+      ],
+      "estimate":"multi-week",
+      "why":"The visible surface is days of work - a React PWA with voice and camera input, an Express API on Cloud Run, Firestore, and a Gemini call that turns Spanish into an expression mathjs evaluates. The cost is everything they built so the money can be trusted: the parse-to-expression boundary, the invariant suite (167 tests, including 'never hand-repair a broken money JSON' and 'an agent never gives orders'), the accuracy agent that separates wrong from blind, and a defensive parser for a government HTML page that 503s non-browser clients and has no API. Reaching this state without weeks of field contact in a cash market also means reproducing their failure catalogue: Costco line ordering, discounts below the subtotal, gender in the alert copy, and the cold start that produced avisos_creados=0 for weeks."
+     }
+    },
+    "data_and_models":{
+     "provenance":"observed",
+     "value":"Receipt photographs, voice and typed Spanish queries, per-user purchase history and daily books in Firestore. Two model uses only, both non-arithmetic: natural-language parsing into a structured expression and receipt line transcription (gemini-3.5-flash). Every number is evaluated by mathjs in code. External data is SNIIM, the Mexican Ministry of Economy's market price system - 49 central markets, 222 products, no API - obtained by defensively parsing an ASP.NET HTML page with browser-like headers and pinning a real saved response as a regression test. Five scheduled Cloud Run Jobs run the agents, with retries and a logged history."
+    },
+    "how_it_works":{
+     "provenance":"observed",
+     "value":"React 19 PWA on the front, Node.js and Express on Cloud Run serving API and PWA from the same origin, Firestore for data, Gemini (gemini-3.5-flash) for natural-language parsing and receipt transcription, mathjs for arithmetic. The central decision is stated as the one the whole product rests on: the model never does arithmetic - Gemini turns language into a structured expression and code evaluates it, because 'a language model is not a calculator, and money does not tolerate a plausible answer'. The agents are five Cloud Run Jobs triggered by Cloud Scheduler: no laptop open, no session running, retries on failure, every run logged. Wholesale prices come from SNIIM, the Mexican Ministry of Economy's market price system - 49 central markets, 222 products, no API - so the backend parses the HTML of an ASP.NET page defensively and tests against a real saved response 'so we find out the day the government changes the page'. Jest, 167 tests."
+    },
+    "how_they_tested":{
+     "provenance":"observed",
+     "value":"167 Jest tests, named as including the invariants that matter: that a broken money JSON is never repaired by hand, that an agent never gives orders, that a receipt which does not balance cannot be saved. Separate from the unit suite, an accuracy agent scores twelve cases daily and distinguishes 'wrong' from 'no answer', so a Gemini overload day produced 10/10 with 2 unanswered rather than a false alarm. On the record's own evaluation of 30 cases the reported result is 0 errors with a 95% upper bound on the error rate of about 10%, and that bound reproduces exactly (1 - 0.05^(1/30) = 9.5%). Unit costs were read from usageMetadata and then cross-checked against the billing report's output-token line. No repository or CI link appears on the page, so the harness itself cannot be read; the figures it reports can."
+    },
+    "limits_they_disclosed":{
+     "provenance":"observed",
+     "value":"Four problems are told as diagnoses, two of them as wrong diagnoses. The cold start: the price alert could only compare a user's own history, so it needed three purchases of the same product before it could say anything, and in production that read avisos_creados=0 day after day - 'not a hypothesis, a measurement' - which is what forced the fifth agent and the SNIIM integration. A government endpoint answering 503 to anything without browser headers, for data that is public and free by mandate. The receipts-coming-back-truncated bug, where the team assumed the model was running out of output budget, added finishReason logging to confirm it, and the data said STOP rather than MAX_TOKENS: the model was stopping on its own, mid-word, deterministically at temperature 0. And two money bugs: Costco prints the weight on the line above the item, so the model copied the line amount into the unit price field and 2.845 kg at $433.64 became $1,233 for a row that reads $433.64 - the backend summed by line amount and said it balanced while the screen recomputed and said it did not, two sources of truth for the same number, leaving a user with a disabled save button and no way out; then a discount living in the totals block below the subtotal that the model kept forgetting. Even the Spanish gave them away: the first market alert said 'papa esta mas barato', wrong gender, fixed by putting an article on all 28 products and rewriting the message around a verb, which carries none."
+    },
+    "numbers_with_arithmetic":{
+     "provenance":"observed",
+     "value":[
+      {
+       "arithmetic":"reproduces: $122.50/kg against $154.19/kg is +25.9%, which rounds to the 26% stated",
+       "claim":"the bigger bag is 26% more expensive per kilo",
+       "denominator":"2 kg at $245 against 6.81 kg at $1,050",
+       "reconciles":true,
+       "verifiable":true
+      },
+      {
+       "arithmetic":"reproduces: the rule-of-three bound for 0 failures in 30 trials is 1 - 0.05^(1/30) = 9.5%, so the caveat is arithmetically correct and slightly conservative; what cannot be read is the composition of the 30 cases",
+       "claim":"0 errors in 30 evaluated cases, 95% upper bound on the error rate is about 10%",
+       "denominator":"the 30-case evaluation the accuracy agent runs",
+       "reconciles":true,
+       "verifiable":true
+      },
+      {
+       "arithmetic":"reproduces: 2.845 x 433.64 = $1,233.71, so the story's numbers are internally consistent; the failure was the transcription, not the sum",
+       "claim":"the Costco row that looked wrong: 2.845 kg x $433.64 giving $1,233 for a line reading $433.64",
+       "denominator":"the line as printed on the receipt",
+       "reconciles":true,
+       "verifiable":true
+      },
+      {
+       "arithmetic":"structural: countable facts about the product and about an external public source, not outcome metrics. Note 28 (products carrying an article in the alert copy) and 222 (products SNIIM publishes) count different sets and are not in conflict; the 167 and the twelve cannot be checked without a repository",
+       "claim":"167 tests, twelve daily accuracy cases, five agents, 28 products given an article, 49 central markets and 222 products at the source",
+       "denominator":"the counts as stated for the suite, the agent, the alert vocabulary and SNIIM",
+       "verifiable":false
+      },
+      {
+       "arithmetic":"not falsifiable from the page, and the two figures it does give do not close on 43% under either reading: as a share of billed output tokens 417 of 536 is 78%, and against the 2,596-token prompt at a 4x output multiplier it is 35%. The share is quotable only with a price ratio the page never states",
+       "claim":"417 tokens of thinking against 119 of visible answer is 43% of the cost of every question",
+       "denominator":"an unstated input/output price ratio",
+       "verifiable":false
+      },
+      {
+       "arithmetic":"self-reported with a stated derivation and an invoice cross-check, so it is falsifiable in principle for the authors and not for a reader: no invoice excerpt or model price is on the page",
+       "claim":"$0.0087 per text question and $0.0218 per receipt",
+       "denominator":"usageMetadata on real responses, cross-checked against the billing report",
+       "verifiable":false
+      },
+      {
+       "arithmetic":"structural: a production measurement offered as the refutation of the team's own cold-start assumption, cited without an excerpt a reader could check, but used as evidence against themselves rather than for them",
+       "claim":"avisos_creados=0, day after day, before the fifth agent existed",
+       "denominator":"the team's own production logs",
+       "verifiable":false
+      },
+      {
+       "arithmetic":"reproduces: one named liker, and it is the author, who is also the only person who posted an update - so the record's social proof is zero, which the page does not try to hide",
+       "claim":"1 like on Devpost",
+       "denominator":"the likers listed under the Like button",
+       "reconciles":true,
+       "verifiable":true
+      }
+     ]
+    },
+    "prior_art":{
+     "note":"each entry resolves to a URL we opened this session or a corpus id",
+     "provenance":"editorial",
+     "value":[
+      {
+       "corpus_id":"finova-j9av5f",
+       "relation":"same users, same language, opposite relationship to being wrong. Finova is a Spanish-language personal finance app that prices a gamified ledger off six live external feeds; it discloses no failure mode, publishes no evaluation and is held at `thin` for it. CALC is the answer to the same problem stated as a correctness contract - refuse to save unverifiable money, publish the confidence bound - which makes the pair the clearest illustration in the corpus that 'money app' is not an evidence class."
+      },
+      {
+       "corpus_id":"attaindesk",
+       "relation":"convergent instinct, different mechanism. AttainDesk's conclusion after a year of SMB support work was 'less AI, not more'; CALC removes the model from the arithmetic entirely. Both arrive at narrowing the model's authority by watching where it fails, and both are listed at the same Build with Gemini XPRIZE showcase."
+      },
+      {
+       "corpus_id":"zeroday-ai-autonomous-vulnerability-patching-system",
+       "relation":"two records where the model acts only behind a gate the code enforces - failing unit tests block a pull request there, a non-balancing receipt blocks a save here. ZeroDay's gate has no published result or denominator; CALC's gate ships with a test count, an eval set and a bound, which is why one publishes as a full record and the other's headline figure reads as a slogan."
+      },
+      {
+       "corpus_id":"tower-dq18x2",
+       "relation":"the same 'never assert what you could not see' rule, arrived at independently. Tower keeps UNVERIFIED as a terminal state in an obligations ledger; CALC reports 10/10 correct with 2 unanswered rather than calling a provider outage a failure. Together they are the corpus's evidence that distinguishing absence of data from bad data is the recurring mark of a trustworthy agent."
+      }
+     ]
+    },
+    "what_breaks_first":{
+     "provenance":"editorial",
+     "value":[
+      "The SNIIM scraper is the first thing to fail: an ASP.NET HTML page with no API, which already answers 503 to anything without browser headers, is a dependency the team cannot schedule with the publisher. The saved-response test detects a format change, but a wholesale price that is a day stale or silently missing produces a confident, wrong 'buy now' alert on the one channel where being late makes the alert worthless.",
+      "Two sources of truth for the same number nearly shipped: the backend summed by line amount while the screen recomputed, so the same receipt was simultaneously balanced and not. Any path where a validation rule and a displayed total are computed separately - including in the three agents that read the books - will diverge again on the next store that prints an unusual layout.",
+      "The unattended agent loop has no user-visible failure state. 'Retries on failure, every run logged' is the design, and a Cloud Run Job that quietly stops firing costs the user an unnoticed warning before a purchase; the green column is checked by the authors, not by the person who needed the alert.",
+      "The alert vocabulary at 28 hand-corrected Spanish products is fragile in the specific way that loses trust with this audience: gender and agreement errors ('papa esta mas barato') read as an outsider writing about your market. The fix they found - an article on every product plus verbs that carry no gender - does not scale on its own to the 222 published products and the meat, grain and oil sections they want to add next.",
+      "Cost scales with attention, not with value: a 2,596-token system prompt on every call was their biggest line, so a cheap day of many small questions is the worst economic case. The proposed fixes (prompt caching, lower thinking budget) are not in yet, and the unit figures that would show whether they work are only checkable against the authors' own invoice."
+     ]
+    },
+    "what_it_does":{
+     "provenance":"observed",
+     "value":"Ask anything with numbers in it, in Spanish with typos and slang: 'cuanto es el 15% de 800 pesos', 'vendi 40 tacos a 25 y gaste 300 en carne, cuanto gane'. Photograph a receipt and every line is transcribed - discounts, coupons and per-weight items included - and the app refuses to save if the rows do not add up to the printed total. Ask which package is cheaper: 2 kg at $245 or 6.81 kg at $1,050, where the big one looks like the deal and is 26% more expensive per kilo. Five agents run on their own every day: one reads wholesale prices from the government's market system, one compares against your own purchase history, one closes the books at night. The alert arrives before the purchase, because 'an alert you read once you have already paid is worthless'. Voice and camera input on a mobile-first PWA."
+    },
+    "what_it_is":{
+     "provenance":"derived",
+     "value":"A money copilot for cash commerce that leaves no paper trail, in the Spanish people actually speak: the model turns a sentence into an expression and code evaluates it, a receipt that does not balance cannot be saved, and five scheduled agents warn you before you buy."
+    },
+    "what_to_steal":{
+     "provenance":"editorial",
+     "value":[
+      "Make 'the model never does arithmetic' the architectural decision rather than a mitigation: the model turns language into a structured expression and code evaluates it, with the stated reason that money does not tolerate a plausible answer. Any product that lets a model produce the number it then acts on can be reduced to this sentence.",
+      "Refuse to persist money you cannot verify - a receipt whose rows do not sum to the printed total cannot be saved - and then read the rest of their story: the same rule left a user stuck with a disabled button and no way out, so pair the refusal with an explicit escape hatch before copying it.",
+      "Publish the bound, not the score: '0 errors in 30 cases; 95% upper bound on the error rate is about 10%' costs one sentence and is why a technical reader believes the other thirty. It also happens to be arithmetic a reader can check.",
+      "Teach your eval to tell wrong from blind. Reporting 10/10 with 2 unanswered on a provider-overload day instead of raising a false alarm is the difference between a monitor and an alarm; most agent scorecards conflate the two.",
+      "Log the thing that refutes you. finishReason logging was added to confirm a MAX_TOKENS hypothesis and instead proved it wrong (STOP, deterministically at temperature 0) - 'instrument before you diagnose' is the cheapest engineering culture in this corpus.",
+      "Pin a real saved response as a test against any scraped page you depend on, so you find out the day the publisher changes the format rather than the day your users do.",
+      "Say nothing most days: an agent that speaks every day gets ignored within a week, so the correct output is often empty. This is the opposite default of every 'proactive assistant' in the corpus.",
+      "Look for the category the data excludes by construction, not the workflow a model can now do: fiscal-receipt-fed price systems are excellent in Brazil and Argentina precisely because informal sellers are not in the receipts, and that is a market argument a wrapper cannot copy."
+     ]
+    }
+   },
+   "hazard":null,
+   "id":"calc-506yp2",
+   "likes":1,
+   "links":{
+    "demo":null,
+    "repo":null,
+    "video":"https://www.youtube.com/watch?v=AxnG97aaISk"
+   },
+   "moves":[
+    "make-the-invisible-measurable",
+    "crew-of-specialists",
+    "verification-first"
+   ],
+   "name":"CALC",
+   "provenance":{
+    "checks":"derived",
+    "clone_cost":"derived",
+    "evidence":"observed",
+    "fields":"observed",
+    "verdict":"derived",
+    "worth":"editorial"
+   },
+   "publishable":true,
+   "repo":null,
+   "right_of_reply":"https://github.com/knarayanareddy/Ideasgalore/issues/new?labels=audit-recheck",
+   "rubric_coverage":0.64,
+   "soundness":"partial",
+   "soundness_score":0.5734,
+   "source_url":"https://devpost.com/software/calc-506yp2",
+   "tier":"full",
+   "unknowns":[],
+   "verdict":"sound-with-caveats",
+   "verdict_reasons":[
+    "soundness 0.57 over 64% of the rubric; 0 named unknown(s) remain \u2192 publishable with caveats"
+   ],
+   "worth":"strong",
+   "worth_note":"The claim this record rests on is not the product but the discipline, and it is the only one in the corpus whose discipline survives checking: the 26% per-kilo figure reproduces, the Costco row reproduces, the 95% upper bound on 0 errors in 30 cases reproduces and is even conservative, and the likes count reproduces to its discomfort (one like, by the author). Against that, the market evidence is nil and self-declared as nil - no interviews, no paying customer - so this is `strong`, not `breakthrough`: what is proven here is that the money path is correct, not that anyone outside the team uses it. One figure is quoted that its own two numbers do not support (the 43% cost share, where 417 of 536 output tokens is 78% and 35% once the prompt is counted at a 4x multiplier), which is recorded rather than held against it because the page's habit is to name the denominator it used."
+  },
   "tower-dq18x2":{
    "audit_version":1,
    "audited_at":"2026-09-19",

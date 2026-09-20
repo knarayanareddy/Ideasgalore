@@ -1,29 +1,29 @@
 {
- "total":15,
- "audited_published":15,
- "pool_records":150,
- "pool_audited_held":7,
- "pool_unaudited":143,
+ "total":17,
+ "audited_published":17,
+ "pool_records":148,
+ "pool_audited_held":8,
+ "pool_unaudited":140,
  "audit_version":1,
- "audit_index_kb":1.3,
- "audit_sheets_kb":64.0,
- "published_full":13,
- "published_lite":2,
+ "audit_index_kb":1.4,
+ "audit_sheets_kb":76.8,
+ "published_full":14,
+ "published_lite":3,
  "records_hazarded":5,
- "records_hazarded_held":2,
- "domains":7,
- "subsystems":10,
+ "records_hazarded_held":3,
+ "domains":8,
+ "subsystems":11,
  "moves":15,
  "events":5,
- "deep_records":22,
- "tier1_gzip_kb":4.6,
+ "deep_records":25,
+ "tier1_gzip_kb":4.8,
  "tier1_budget_kb":1200.0,
- "sqlite_kb":6.5,
+ "sqlite_kb":7.0,
  "corpus_ingested":167,
  "held_back":{
   "placeholder_summary":2
  },
- "records_with_moves":71,
+ "records_with_moves":72,
  "coverage":{
   "events":{
    "xprize":{
@@ -42,8 +42,12 @@
  "generated_at":"2026-09-18",
  "shards":{
   "agentic-autonomy-and-orchestration":{
-   "records":2,
-   "kb":16.1
+   "records":3,
+   "kb":28.2
+  },
+  "climate-energy-and-the-physical-world":{
+   "records":1,
+   "kb":10.2
   },
   "creative-media-story-and-play":{
    "records":3,

@@ -1412,6 +1412,50 @@ class TestSignalsAreNotWordCollisions(unittest.TestCase):
         chk = A.run_checks(cap, None, None, {})[0]["test_or_eval_evidence"]
         self.assertEqual(chk["pass"], 0.0, "a stack line must not buy a rung on the testing ladder: " + chk["why"])
 
+    def test_a_refutation_from_the_pages_own_numbers_is_not_a_missing_denominator(self):
+        """A figure contradicted by nothing but other figures on the same page is the strongest kind of
+        finding an audit can make about a page, and the `numbers_add_up` ladder could not express it:
+        `mismatch` was drawn from `ok`, which requires `verifiable`, so the entry fell through to
+        `unfalsifiable` and was described as carrying "no testable denominator". dentops' average of 330
+        recovered patients per clinic in 30 days cannot coexist with the 84 logged agent actions the same
+        section offers as proof of operation."""
+        cap = {"id": "fixture", "name": "Fixture", "source_url": "https://devpost.com/software/fixture",
+               "sections": {"what_it_does": "A recall agent messages lapsed patients and books replies."},
+               "testing": "No test suite or harness is published.", "built_with": ["react"],
+               "links": {"video": "https://youtu.be/x"},
+               "numbers": [
+                   {"claim": "330 patients recovered per clinic in 30 days",
+                    "denominator": "active clinics, count unstated",
+                    "arithmetic": "does not reconcile: a recovery is a send, a reply and a booking, and the "
+                                   "page logs 84 agent actions in production in total",
+                    "verifiable": False, "reconciles": False, "load_bearing": True},
+                   {"claim": "84 agent actions executed in production", "denominator": "the activity log",
+                    "arithmetic": "structural: a count a reader cannot open, offered as verifiable",
+                    "verifiable": False}]}
+        chk = A.run_checks(cap, None, None, {})[0]["numbers_add_up"]
+        self.assertEqual(chk["pass"], 0.0, chk["why"])
+        self.assertEqual(chk["status"], "contradicted")
+        self.assertIn("does not reconcile", chk["why"])
+        self.assertNotIn("no testable denominator", chk["why"],
+                         "a refutation must not be filed as an absence of data")
+
+    def test_a_metric_word_in_a_product_sentence_is_not_evaluation_language(self):
+        """`page_bench` credits a measured comparison quoted from elsewhere on the page, but only when the
+        sentence is doing measurement work. Without that requirement a dental product's Recall Agent scored
+        as a retrieval-metric claim (and a fix that required a digit and a comparator word alone demoted
+        audionova's real "up to 2x faster and ~35% lower power draw versus the unoptimised path")."""
+        cap = {"id": "fixture", "name": "Fixture", "source_url": "https://devpost.com/software/fixture",
+               "sections": {"what_it_does": "A Recall Agent that finds patients inactive for 180+ days and "
+                                            "sends reactivation messages over SMS, tracking reappointment rate "
+                                            "weekly. Reported up to 2x faster transcription and ~35% lower "
+                                            "power draw on snapdragon x versus the unoptimised path."},
+               "testing": "No test suite or eval harness is described.", "built_with": ["python"],
+               "links": {"video": "https://youtu.be/x"}, "numbers": []}
+        why = A.run_checks(cap, None, None, {})[0]["test_or_eval_evidence"]["why"]
+        self.assertIn("measured comparison", why, "the before/after figure is still a comparison")
+        self.assertNotIn("recall,", why.replace("(recall,", "recall,"),
+                         "the agent's name is not an evaluation word")
+
     def test_one_reconciling_figure_does_not_certify_the_headline(self):
         """`numbers_add_up: confirmed` has to mean the record's numbers hold up, not that one of them
         does. zeroday-ai reconciled its Like count against two named likers and was credited at 1.0 while

@@ -1,0 +1,88 @@
+{
+  "award": null,
+  "built_with": [
+    "android",
+    "dart",
+    "firebase",
+    "firestore",
+    "flutter",
+    "gemini",
+    "google-cloud-run",
+    "ios",
+    "revenuecat",
+    "sensors_plus",
+    "speech-recognition",
+    "vertex-ai"
+  ],
+  "captured_at": "2026-09-20",
+  "data_and_models": "User voice recordings (kept on device; only the transcript leaves for the reading), plus typed entries. For VIP, 'coarse voice-level signals' compared to the user's own baseline - the only derived audio feature the page says is sent anywhere, and the page does not say where the baseline is computed. Six fixed emotion labels (joy, bashfulness, surprise, sadness, anger, tiredness), a generated day title and a companion line from Gemini via Vertex AI; a weekly letter from the same model over the week's entries. Firestore holds entries, Firebase Auth identity, Analytics and Crashlytics instrument the funnel, RevenueCat holds entitlement state. No labelled corpus, fine-tune or evaluation set is described, and no retention or usage figure is published.",
+  "gallery_images": [
+    "https://d112y698adiu2z.cloudfront.net/photos/production/software_photos/005/336/624/datas/gallery.jpg",
+    "https://d112y698adiu2z.cloudfront.net/photos/production/software_photos/005/336/625/datas/gallery.jpg",
+    "https://d112y698adiu2z.cloudfront.net/photos/production/software_photos/005/336/626/datas/gallery.jpg",
+    "https://d112y698adiu2z.cloudfront.net/photos/production/software_photos/005/336/627/datas/gallery.jpg",
+    "https://d112y698adiu2z.cloudfront.net/photos/production/software_photos/005/336/628/datas/gallery.jpg",
+    "https://d112y698adiu2z.cloudfront.net/photos/production/software_photos/005/336/640/datas/gallery.jpg"
+  ],
+  "id": "kimocchi-voice-mood-tracker",
+  "likes": 2,
+  "limits_admitted": [
+    "no diagnosis, no advice, no encouragement - the model is instructed to receive, not to fix",
+    "no streak mechanics that can register a loss: '0 days' and 'streak lost' are never shown",
+    "not a medical device, stated in the app, the store listing and the terms, with signposting to help",
+    "audio stays on the phone; only the transcript (plus VIP voice-level signals) is sent"
+  ],
+  "links": {
+    "demo": null,
+    "repo": null,
+    "video": "https://www.youtube.com/watch?v=L7FEh6JDRxM"
+  },
+  "name": "Kimocchi - Voice Mood Tracker",
+  "numbers": [
+    {
+      "arithmetic": "structural: a bound the product enforces, checkable in the app, not a measured outcome",
+      "claim": "a recording is capped at two minutes",
+      "denominator": "the recording limit stated in the product",
+      "verifiable": false
+    },
+    {
+      "arithmetic": "structural: joy, bashfulness, surprise, sadness, anger and tiredness are a closed set of six, checkable in the day view; no coverage or accuracy figure accompanies it",
+      "claim": "six feelings are read per entry",
+      "denominator": "the label set listed on the page",
+      "verifiable": false
+    },
+    {
+      "arithmetic": "structural: English, Japanese, Korean, German, French, Spanish, Italian and Traditional Chinese are named one by one; countable, but a listing of localisations rather than an outcome metric",
+      "claim": "8 languages",
+      "denominator": "the languages the page lists",
+      "verifiable": false
+    },
+    {
+      "arithmetic": "structural: three named gates (reading limit, look-back range, missed day) all resolve to one RevenueCat paywall, so the counts are internally consistent; whether those caps convert is not stated",
+      "claim": "free tier: first three readings, then one a day; VIP trial 7 days",
+      "denominator": "the entitlement rules stated on the page",
+      "verifiable": false
+    },
+    {
+      "arithmetic": "reproduces: two named likers (YUKA FUKUDA, Keisuke Fukuda) are listed, so the count matches its own evidence",
+      "claim": "2 likes on Devpost",
+      "denominator": "the likers listed under the Like button",
+      "reconciles": true,
+      "verifiable": true
+    }
+  ],
+  "one_line": "Voice journaling that reads six feelings instead of asking for a score: recordings stay on the phone, the model is instructed to receive rather than fix, and the paywall only appears at the moment someone reaches for more.",
+  "schema": 2,
+  "sections": {
+    "accomplishments": "A running product with live subscriptions, on both platforms, in eight languages, with the full RevenueCat loop wired (products, purchases, entitlements, free trial) - not a demo of a screen. Two RevenueCat Shipaton 2026 categories name what the judges were being pointed at: the Design Award for the physics-driven feelings box and an interface that never turns anyone away, and the Peace Prize for a gentle, judgment-free place to put unspoken feelings. The page posts these as the categories it entered and writes the pitch for each; no result is claimed, so none is recorded here. Completeness of the loop is the accomplishment: five steps from mic tap to Sunday letter, and every step has a UI.",
+    "challenges": "The engineering difficulty the page spends its time on is not the model but the moment of the ask. Placing a paywall in an app whose whole promise is being a place you can put an unspoken feeling without being judged is the tension the design keeps circling, and the answer given is behavioural: 'our first subscribers came back on later days and looked back before paying, so this is where we put the value' - so the value is sold at the look-back and at the missed day, words are always kept first, and declining the prompt loses nothing. The second difficulty is on the other side of the same coin: the mechanics that make a journaling app sticky (streaks, totals, encouragements) are the ones that make it hurt on a bad week, which is why the streak is shown only while it lasts. No implementation obstacle, cost or failure is described.",
+    "how_we_built_it": "Flutter front end (Android and iOS) with sensors_plus driving the physics in the feelings box, on-device speech recognition through the Apple Speech framework, and Gemini through Vertex AI for the reading and the weekly letter. Firebase Auth, Analytics and Crashlytics plus Firestore for storage, Google Cloud Run behind it. Monetisation is RevenueCat end to end - `purchases_flutter` for products, purchases and entitlements - offered weekly, monthly and yearly with a 7-day free trial. The billing surface is deliberately quiet: feature screens carry no locks and no 'you have run out' dialogs, only a small crown on the longer look-back ranges, and the paywall appears at exactly three in-flow moments - talking a second time in a day, tapping 1mo/3mo/1y, tapping an empty calendar day. Shipped in 8 languages: English, Japanese, Korean, German, French, Spanish, Italian, Traditional Chinese.",
+    "inspiration": "The page's opening argument is a failure taxonomy of existing tools rather than a personal story. People who start journaling stop, because the blank page asks for the right words and on the days that matter most those words do not come; mood trackers solve the effort problem by asking for a 1-5 face and lose the record of why; voice memos keep everything and are never played back. 'What gets lost is the part you couldn't write down' is the stated gap Kimocchi sits in. Who it is for is named just as narrowly: people who want to let a day out but will not write it down, described as night-time, alone in their room, after a day they could not put into words to anyone.",
+    "learned": "Two things are stated as lessons rather than features. That the reading has to arrive without asking the user to be articulate - the blank page is the failure, so the interface asks for talk and gives structure afterwards, not the reverse. And that monetisation works by being present at the moment of reaching and absent everywhere else: the trial, the crown, the three prompts exist because users demonstrably came back and looked further before paying, which is the one behavioural observation on the page, given without a number attached to it.",
+    "what_it_does": "Tap the mic and talk for up to two minutes, or type on days you cannot speak out loud. On-device speech recognition turns the audio into text; the model returns six feeling labels (joy, bashfulness, surprise, sadness, anger, tiredness), a short title for the day and one gentle line from the companion. Those labels become physical objects: little characters, one colour per feeling, that drop into that day's box, roll when you tilt the phone, squish when tapped, and fall back in when flung off the screen. A calendar of faces holds every day's words, feelings and your own voice if you kept it, with look-backs over a week, a month or a year, and every Sunday night the companion writes a letter about the week. Four limits are authored as a section of their own: no diagnosis, no advice, no pushy encouragement - 'the AI is instructed to receive, not to fix'; no streak guilt, since a current streak shows only while it lasts, '0 days' and 'streak lost' are never displayed and totals only go up; not a medical device, stated in the app, the store listing and the terms, with signposting to professional help when things feel heavy; and recordings stay on the phone, with only the transcript sent for the reading plus, for VIP, coarse voice-level signals compared against the user's own baseline, and AI can be switched off entirely.",
+    "what_next": ""
+  },
+  "software_id": 1432751,
+  "source_url": "https://devpost.com/software/kimocchi-voice-mood-tracker",
+  "testing": "Nothing is published about how the reading was validated: no accuracy figure, no labelled set, no comparison against the 1-5 scale it replaces, no agreement between the on-device transcript and a reference transcript, and no retention data for a product whose pitch is that people abandon journaling. The only evidence offered for the design decisions is observational - that early subscribers returned on later days and looked back before paying - stated without counts. No repository, test harness or CI link appears anywhere on the page."
+}

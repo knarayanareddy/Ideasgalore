@@ -1,7 +1,7 @@
 {
  "audit_version":1,
  "generated_at":"2026-09-18",
- "count":150,
+ "count":148,
  "meaning":"Records held out of the catalog. `provenance` splits them in two: `unaudited` rows were never captured or checked; `audited-hold` rows were captured, scored and held for cause (thin, duplicate or hazard-capped) and carry the same audit columns the catalog does. Neither kind is a judgement of merit \u2014 read why_not_promoted and would_settle_it before quoting one (ADR-A1/A10).",
  "records":[
   {
@@ -81,6 +81,110 @@
      }
     ],
     "worth_note":"Executed with real care \u2014 six external feeds, three refresh cadences, multi-currency balances converted at entry time rather than at display time \u2014 but the idea is a genre: a gamified personal-finance app with XP, levels and a mascot that grows is one of the most-rebuilt shapes in this corpus and in the app stores. It does not become a transferable mechanism until the gamification is shown to change behaviour, and the page offers no such evidence: no retention figure, no study, no before/after. What would change the verdict is a measured effect of the challenge system on saving, which is precisely the number a habit app could publish and almost never does."
+   }
+  },
+  {
+   "id":"dentops",
+   "name":"DentOps",
+   "url":"https://devpost.com/software/dentops",
+   "domain":"Health, Care & Human Performance",
+   "subsystem":"Care Navigation & Records",
+   "event":"Build with Gemini XPRIZE",
+   "coolness":0.4718,
+   "moves":[],
+   "specificity":0.66,
+   "summary":"DentOps is an AI ops co-pilot for dental clinics that slashes no-shows, reactivates lapsed patients, and turns messy ops data into clear, revenue-driving insights.",
+   "provenance":"audited-hold",
+   "why_not_promoted":[
+    "verdict:thin",
+    "soundness 0.37 is too low to certify; stays in the pool",
+    "audited-lite refused: 1 claim(s) contradicted by evidence \u2014 lite never washes a refutation; numbers contradicted on their own terms",
+    "hazard: clinical (no team disclaimer found)"
+   ],
+   "would_settle_it":[
+    "artifact_exists: a repository, deployment or store listing we can resolve",
+    "stack_consistency: a repository to compare the declared stack against",
+    "build_is_real: a readable source tree (a repo link, then `python3 pipeline/repo_verify.py`)",
+    "numbers_add_up: a denominator and baseline for the headline figure, or the raw log behind it",
+    "limits_disclosed: a statement of what the system itself cannot do (accuracy, coverage, privacy, failure modes)"
+   ],
+   "audit":{
+    "verdict":"thin",
+    "worth":"strong",
+    "soundness":"weak",
+    "soundness_score":0.3719,
+    "rubric_coverage":0.64,
+    "audited_at":"2026-09-20",
+    "unknowns":0,
+    "duplicate_of":null,
+    "hazard":true,
+    "evidence":6,
+    "reasons":[
+     "soundness 0.37 is too low to certify; stays in the pool",
+     "audited-lite refused: 1 claim(s) contradicted by evidence \u2014 lite never washes a refutation; numbers contradicted on their own terms"
+    ]
+   },
+   "verdict":"thin",
+   "worth":"strong",
+   "soundness":"weak",
+   "soundness_score":0.3719,
+   "rubric_coverage":0.64,
+   "audited_at":"2026-09-20",
+   "unknowns":0,
+   "repo_url":null,
+   "detail":{
+    "what_it_is":"An AI operations layer for a two-chair dental practice: a 20-minute audit prices the leaks, a small agent team sends recall and no-show messages behind a two-week approval gate, and twelve KPIs on one dashboard explain themselves in plain English.",
+    "what_it_does":"Onboarding is a 20-minute structured audit of the clinic's operations with existing tools connected - Google Calendar, the practice management system, or a spreadsheet if there is nothing better. Gemini analyses the answers and returns a prioritised ops gap report that says where revenue is leaking and estimates the dollar impact of each gap, rendered as a visual priority matrix. From that report the clinic gets a tailored agent team: a Recall Agent that finds patients inactive for 180+ days and sends personalised reactivation messages over SMS and email, tracking reappointment rate weekly; a No-Show Agent that runs confirmation sequences at 48 hours and 2 hours out and backfills cancelled slots from the waitlist; a New Patient Agent that answers Google My Business inquiries, follows up missed calls and requests reviews after the appointment. The dashboard carries twelve KPIs in three departments - patient ops (recall, no-show, reappointment, chair utilisation), revenue (per visit, treatment acceptance, average invoice, monthly trend) and marketing (acquisition by source, cost per new patient, review count and rating) - updated daily, with plain-English interpretation under each number. Every agent action is logged to an activity feed, and in the first two weeks nothing goes out unreviewed: the clinic approves each message before it is sent.",
+    "how_they_tested":"No test suite, evaluation set, harness or run link is published anywhere on the page. The quality work is described only as prompt engineering plus a staff feedback loop in which clinic users rated and adjusted message quality during early use. The one figure offered as evidence of operation is '84 agent actions executed in production (logged and verifiable)', which is a count of actions taken rather than of outcomes measured, and it is the number that contradicts the growth claim in the same section. There is no repository to look for tests in.",
+    "limits_they_disclosed":"Four difficulties, three of them about the data and one about trust. Dental data is messy - Dentrix, Eaglesoft, plain Excel - and building an intake flexible enough to normalise it without deep integrations was harder than expected, answered by the structured audit questionnaire that extracts what is needed from any source system. Agent reliability and tone: patient-facing messages had to sound clinic-branded rather than chatbot-generic, which took significant prompt engineering plus a feedback loop where clinic staff rated and adjusted message quality early. Meaningful KPIs versus vanity metrics: the first dashboard tracked around 40 measures, dentists had no time to interpret them, so it was stripped to twelve with a sentence of interpretation under each ('your no-show rate is 18%. industry average is 10%. fixing this could recover approximately $X per month'). And the biggest obstacle was not the product but permission - convincing owners to let agents message their patients - solved with the approval-first mode for the first two weeks.",
+    "numbers_with_arithmetic":[
+     {
+      "arithmetic":"does not reconcile with the page's own production log: '84 agent actions executed in production (logged and verifiable)'. A recovery is at minimum one outbound message, one reply handled and one booking, so 330 recoveries at one clinic is hundreds of logged actions before any of the other two agents are counted. It also fails against their own unit value: the audit pitch prices lapsed patients at about $14,000 for 47 of them, i.e. $298 each, so 330 recovered in a month is roughly $98,000 of recalled revenue per clinic - which does not sit inside the two-chair practice the whole page is written for, and would make a $249 per month subscription absurdly underpriced",
+      "claim":"330 lapsed patients recovered per clinic on average in the first 30 days",
+      "denominator":"active clinics, count not stated",
+      "load_bearing":true,
+      "reconciles":false,
+      "verifiable":false
+     },
+     {
+      "arithmetic":"not falsifiable from the page: the number of clinics in 'active' is never given, the measurement window before and after is not defined, and the 18% figure is also used as the example clinic's baseline inside the KPI copy, so the same number is doing two jobs - a halving may be real and is unlocatable either way",
+      "claim":"no-show rate fell from 18% to 9% across active clinics",
+      "denominator":"active clinics, count not stated",
+      "verifiable":false
+     },
+     {
+      "arithmetic":"structural, and the sharpest number on the page: small enough to be a real production log rather than a demo, described as verifiable, and it is what contradicts the 330-patient claim. 84 actions across even two clinics is a trickle, which is what 15 clinics 'demoed' rather than 'live' would predict",
+      "claim":"84 agent actions executed in production",
+      "denominator":"the activity feed's log, over an unstated number of clinics and days",
+      "verifiable":false
+     },
+     {
+      "arithmetic":"reproduces: the page names 4 patient-ops, 4 revenue and 4 marketing measures, which is 12, and each carries an interpretation sentence - a product fact a reader can count, not an outcome metric",
+      "claim":"12 core KPIs across three departments, stripped from about 40 metrics",
+      "denominator":"the dashboard as listed on the page",
+      "verifiable":false
+     },
+     {
+      "arithmetic":"structural: four operating parameters a reader could check against the deployed product, with no outcome attached to any of them",
+      "claim":"reminders at 48 hours and 2 hours; recall threshold 180+ days; audit takes 20 minutes; $249 per month",
+      "denominator":"the agent configuration as stated",
+      "verifiable":false
+     },
+     {
+      "arithmetic":"reproduces: $14,000 / 47 = $298 per patient, in range for a dental recall visit, so the per-patient value the whole pitch rests on is internally consistent - and it is also the number that makes 330 recovered patients per clinic hard to believe",
+      "claim":"47 lapsed patients worth approximately $14,000",
+      "denominator":"one clinic's audit output, quoted as a sales anecdote",
+      "verifiable":false
+     },
+     {
+      "arithmetic":"reproduces: ten named likers are listed, one of whom (Uddam Bhathal) also posted the project update, so nine of ten are outside the team",
+      "claim":"10 likes on Devpost",
+      "denominator":"the likers listed under the Like button",
+      "reconciles":true,
+      "verifiable":true
+     }
+    ],
+    "worth_note":"The operating model is worth more than the metrics claim, and the two have to be separated. What is well evidenced here is design: a paid diagnosis (the audit) that a clinic forwards to its business partner, twelve KPIs chosen because forty were unusable, every number carrying its own interpretation sentence, and an approval gate that exists because the objection was trust and not capability - all of it derived from talking to owners, and all of it stated plainly enough to copy. What is not sound is the growth story: an average of 330 recovered patients per clinic in 30 days cannot be produced by the 84 logged production actions the same section offers as proof, and it contradicts the team's own $298-per-patient value. Held on that, at `strong` worth: the pattern is a keeper, the numbers are not."
    }
   },
   {
@@ -198,27 +302,6 @@
    ],
    "specificity":0.86,
    "summary":"$13T Industry. Built on paper and WhatsApp. Capo turns any quote into a full job plan, schedules the crew, and runs the build through chat. The AI co-pilot for every contractor on earth.",
-   "provenance":"unaudited",
-   "why_not_promoted":[
-    "not_audited"
-   ],
-   "would_settle_it":[
-    "project page capture (deep)",
-    "artifact check via repo_verify.py"
-   ],
-   "audit":null
-  },
-  {
-   "id":"kimocchi-voice-mood-tracker",
-   "name":"Kimocchi - Voice Mood Tracker",
-   "url":"https://devpost.com/software/kimocchi-voice-mood-tracker",
-   "domain":"Health, Care & Human Performance",
-   "subsystem":"Mental Health & Wellbeing",
-   "event":"Devpost Software Showcase \u2014 Staff Picks & Rails",
-   "coolness":0.4281,
-   "moves":[],
-   "specificity":0.52,
-   "summary":"Say how your day felt out loud - Kimocchi turns it into six feelings, a box of little characters, and a diary you can look back on.",
    "provenance":"unaudited",
    "why_not_promoted":[
     "not_audited"
@@ -540,29 +623,6 @@
    "audit":null
   },
   {
-   "id":"calc-506yp2",
-   "name":"CALC",
-   "url":"https://devpost.com/software/calc-506yp2",
-   "domain":"Agentic Autonomy & Orchestration",
-   "subsystem":"General",
-   "event":"Build with Gemini XPRIZE",
-   "coolness":0.4001,
-   "moves":[
-    "crew-of-specialists"
-   ],
-   "specificity":0.6,
-   "summary":"A financial copilot for Latin America's informal economy, in the Spanish people actually speak. The model reads; the code calculates. Five agents run it daily, with nobody at a keyboard.",
-   "provenance":"unaudited",
-   "why_not_promoted":[
-    "not_audited"
-   ],
-   "would_settle_it":[
-    "project page capture (deep)",
-    "artifact check via repo_verify.py"
-   ],
-   "audit":null
-  },
-  {
    "id":"asylonia-com",
    "name":"Asylonia.com",
    "url":"https://devpost.com/software/asylonia-com",
@@ -790,27 +850,6 @@
    ],
    "specificity":0.18,
    "summary":"WordPress plugin providing an on-device AI assistant: AI Assistant Block, Paragraph Rewriter, Title Generator.",
-   "provenance":"unaudited",
-   "why_not_promoted":[
-    "not_audited"
-   ],
-   "would_settle_it":[
-    "project page capture (deep)",
-    "artifact check via repo_verify.py"
-   ],
-   "audit":null
-  },
-  {
-   "id":"dentops",
-   "name":"DentOps",
-   "url":"https://devpost.com/software/dentops",
-   "domain":"Health, Care & Human Performance",
-   "subsystem":"Care Navigation & Records",
-   "event":"Build with Gemini XPRIZE",
-   "coolness":0.3863,
-   "moves":[],
-   "specificity":0.57,
-   "summary":"DentOps is an AI ops co-pilot for dental clinics that slashes no-shows, reactivates lapsed patients, and turns messy ops data into clear, revenue-driving insights.",
    "provenance":"unaudited",
    "why_not_promoted":[
     "not_audited"

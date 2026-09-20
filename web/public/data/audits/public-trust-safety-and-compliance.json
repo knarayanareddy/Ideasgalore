@@ -300,7 +300,7 @@
     "test_or_eval_evidence":{
      "pass":0.5,
      "status":"partial",
-     "why":"a figure with a stated denominator is quoted, but the capture records no harness, held-out set or method behind it (the page's measurement words: measured)"
+     "why":"a figure with a stated denominator is quoted, but the capture records no harness, held-out set or method behind it (the page's measurement words: before/after, measured)"
     }
    },
    "evidence":[
@@ -352,7 +352,7 @@
     {
      "checked_at":"2026-09-19",
      "claim":"Any test suite, eval harness, or measured benchmark we can see?",
-     "detail":"a figure with a stated denominator is quoted, but the capture records no harness, held-out set or method behind it (the page's measurement words: measured)",
+     "detail":"a figure with a stated denominator is quoted, but the capture records no harness, held-out set or method behind it (the page's measurement words: before/after, measured)",
      "id":"newspectives-new-perspective-on-news:test_or_eval_evidence",
      "kind":"page",
      "source":"https://devpost.com/software/newspectives-new-perspective-on-news",

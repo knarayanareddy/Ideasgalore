@@ -1,45 +1,9 @@
 {
  "audit_version": 1,
- "pool_size": 143,
+ "pool_size": 140,
  "queued": 12,
  "note": "Ranking of never-audited candidates by expected information gain (ADR-A7). Nothing here has been verified; the order is only 'what would teach us most'. `pool_size` counts records with no sheet at all \u2014 the full holding area, including audited-but-held records (thin, duplicate, hazard), is data/pool.json.",
  "candidates": [
-  {
-   "id": "kimocchi-voice-mood-tracker",
-   "name": "Kimocchi - Voice Mood Tracker",
-   "domain": "Health, Care & Human Performance",
-   "coolness": 0.428,
-   "expected_gain": 0.5121,
-   "why": "sector Health has 25 rows and no audit",
-   "would_settle_it": [
-    "project page capture",
-    "repo link check"
-   ]
-  },
-  {
-   "id": "calc-506yp2",
-   "name": "CALC",
-   "domain": "Agentic Autonomy & Orchestration",
-   "coolness": 0.4,
-   "expected_gain": 0.51,
-   "why": "mechanism-rich hook; depth likely to convert",
-   "would_settle_it": [
-    "project page capture",
-    "repo link check"
-   ]
-  },
-  {
-   "id": "dentops",
-   "name": "DentOps",
-   "domain": "Health, Care & Human Performance",
-   "coolness": 0.386,
-   "expected_gain": 0.51,
-   "why": "sector Health has 25 rows and no audit",
-   "would_settle_it": [
-    "project page capture",
-    "repo link check"
-   ]
-  },
   {
    "id": "learnway-ai",
    "name": "LearnWay AI",
@@ -143,6 +107,42 @@
    "coolness": 0.381,
    "expected_gain": 0.4937,
    "why": "sector Emerging & Cross-Domain has 18 rows and no audit",
+   "would_settle_it": [
+    "project page capture",
+    "repo link check"
+   ]
+  },
+  {
+   "id": "ai-productivity-flow",
+   "name": "AI Productivity Flow",
+   "domain": "Money, Commerce & Marketplaces",
+   "coolness": 0.369,
+   "expected_gain": 0.4914,
+   "why": "sector Money has 13 rows and no audit",
+   "would_settle_it": [
+    "project page capture",
+    "repo link check"
+   ]
+  },
+  {
+   "id": "cota-xo9prl",
+   "name": "COTA",
+   "domain": "Agentic Autonomy & Orchestration",
+   "coolness": 0.393,
+   "expected_gain": 0.4874,
+   "why": "mechanism-rich hook; depth likely to convert",
+   "would_settle_it": [
+    "project page capture",
+    "repo link check"
+   ]
+  },
+  {
+   "id": "ava-ebqmj6",
+   "name": "AVA",
+   "domain": "Money, Commerce & Marketplaces",
+   "coolness": 0.37,
+   "expected_gain": 0.4869,
+   "why": "sector Money has 13 rows and no audit",
    "would_settle_it": [
     "project page capture",
     "repo link check"

@@ -197,7 +197,19 @@ def _affirmative(rx: re.Pattern, text: str, lookback: int = 80) -> List[str]:
     """
     hits: List[str] = []
     for m in rx.finditer(text):
-        if _NEG_CUE.search(text[max(0, m.start() - lookback):m.start()]):
+        start = max(0, m.start() - lookback)
+        # The window is clamped to the clause the keyword sits in. A negation belonging to the
+        # sentence before is not a negation of this metric, and the unclamped window let one
+        # swallow the other: calc-506yp2's testing field reads "...a receipt which does not
+        # balance cannot be saved. Separate from the unit suite, an accuracy agent scores twelve
+        # cases daily...", and "cannot", 60 characters back across the full stop, silenced the
+        # only affirmative accuracy sentence in the record. A capture that writes honest
+        # denials next to real evidence — which is the whole style of these pages — was scored
+        # as having written none.
+        cut = max((text.rfind(ch, start, m.start()) for ch in ".;!?:"), default=-1)
+        if cut >= start:
+            start = cut + 1
+        if _NEG_CUE.search(text[start:m.start()]):
             continue
         hits.append(m.group(0))
     return hits
@@ -242,7 +254,16 @@ def run_checks(cap: Dict[str, Any], repo_name: Optional[str], repo: Optional[Dic
     # "the walkthrough enumerates seven, the cost narrative says six" is precisely the
     # judgement a keyword check cannot be trusted with. Continuity's stage count landed in the
     # top tier before this, because we had in fact done the arithmetic — on the wrong side of it.
-    mismatch = [n for n in ok if n.get("reconciles") is False]
+    # `reconciles: false` is the auditor's own recorded refutation, so it cannot be gated on
+    # `_testable`, which asks a different question: whether a *reader* could re-derive the figure.
+    # Restricting mismatches to `ok` meant the most damning kind of finding — a number refuted by
+    # nothing but other numbers on the same page — could not be recorded at all, and fell through to
+    # the `unfalsifiable` bucket, whose sentence ("carries no testable denominator") then described
+    # it wrongly. dentops' "330 lapsed patients recovered per clinic in 30 days" is exactly that: it
+    # cannot coexist with the same section's "84 agent actions executed in production (logged and
+    # verifiable)", since a recovery is a send, a reply and a booking, and the page prices those
+    # patients at about $298 each, which would make one clinic's month of recall worth ~$98,000.
+    mismatch = [n for n in numbers if n.get("reconciles") is False]
     ok = [n for n in ok if n.get("reconciles") is not False]
     load_bearing = [n for n in mismatch if n.get("load_bearing")]
     unfalsifiable = [n for n in unfalsifiable
@@ -418,7 +439,16 @@ def run_checks(cap: Dict[str, Any], repo_name: Optional[str], repo: Optional[Dic
              "the page states no measurable outcome at all", "page", cap.get("source_url", ""), when)
 
     # 5 · limits_disclosed
+    # `challenges` is the Devpost heading, not the disclosure. Pages name the place where they say
+    # what the system will not do however they like — kimocchi-voice-mood-tracker authored a section
+    # called "What it deliberately does not do", which is the strongest such admission in the corpus,
+    # and the ladder scored it on effort words alone because those lived under `challenges`. The
+    # capture's optional `limits_admitted` field is the audited home for it, so it is now read here;
+    # the 21 records that filed no list are unaffected.
+    _admitted = [str(a) for a in (cap.get("limits_admitted") or []) if str(a).strip()]
     limits = str(sec.get("challenges") or sec.get("limitations") or "")
+    if _admitted:
+        limits = (limits + "\n" if limits else "") + ". ".join(_admitted)
     effort = re.search(r"(couldn|could not|had to|required|balanc|trade-?off|hard|difficult|"
                        r"never got to|struggl)", limits.lower())
     capability = [c for c in _affirmative(_CAPABILITY_RE, limits.lower())
@@ -490,10 +520,23 @@ def run_checks(cap: Dict[str, Any], repo_name: Optional[str], repo: Optional[Dic
     # A comparator word in *prose* is not a measured comparison: "the work demanded
     # precision" says nothing was measured. Only a hit sitting in a sentence that carries a
     # figure counts, which is the difference between an evaluation claim and an adjective.
+    _EVAL_CUE_RE = re.compile(
+        r"(test|eval|benchmar|accuracy|error rate|holdout|held-?out|a/?b test|baseline|sample"
+        r"|\b\d+ cases?\b|measured|scored|ground truth|inter-?rater"
+        # An explicit comparator is measurement language too, and the first pass at this cue list
+        # forgot it: audionova's "up to 2x faster transcription and ~35% lower power draw on
+        # snapdragon x versus the unoptimised path" is a before/after result, and dropping it to
+        # `0.0 nothing published` demoted a published record on a vocabulary miss.
+        r"|versus|compared to|vs\.?\b|unoptimis|before/after|against the [a-z]+ baseline)", re.I)
+
     def _bench_with_figures(blob: str) -> List[str]:
+        # A metric noun sitting near a digit is only a measurement claim if the sentence is doing
+        # measurement work. The first version read "recall" as a retrieval metric wherever it
+        # appeared, which in a dental product means a Recall Agent, and handed dentops a sentence
+        # about "a measured comparison (recall, versus)" for prose that describes sending SMS.
         out: List[str] = []
         for sent in re.split(r"(?<=[.!?])\s+", blob or ""):
-            if re.search(r"\d", sent):
+            if re.search(r"\d", sent) and _EVAL_CUE_RE.search(sent):
                 out += _affirmative(_BENCH_RE, sent.lower())
         return out
 
